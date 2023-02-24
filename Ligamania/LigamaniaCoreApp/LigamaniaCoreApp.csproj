@@ -1,0 +1,158 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-ASPNETCoreUserIdentity-AA562C7A-BBD9-4301-AF6A-2073DCF6EEF7</UserSecretsId>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <AssemblyName>LigamaniaCoreApp</AssemblyName>
+    <RootNamespace>LigamaniaCoreApp</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+	<ServerGarbageCollection>false</ServerGarbageCollection>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <Compile Remove="Data\DataModels\Base\Interfaces\BACKUP\**" />
+    <Compile Remove="Data\DataModels\Base\Model\BACKUP\**" />
+    <Compile Remove="Data\DataModels\Ligamania\Model\BACKUP\**" />
+    <Compile Remove="Data\Repository\Base\BACKUP\**" />
+    <Compile Remove="Data\Repository\Ligamania\BACKUP\**" />
+    <Compile Remove="Logs\**" />
+    <Compile Remove="Views\AccountC\**" />
+    <Compile Remove="Views\Shared\MvcGrid 4.1.1\**" />
+    <Compile Remove="Views\Shared\MvcGrid 5.0.0\**" />
+    <Compile Remove="Views\StockC\**" />
+    <Compile Remove="wwwroot\css\mvc-grid\**" />
+    <Compile Remove="wwwroot\js\mvc-grid\**" />
+    <Content Remove="Data\DataModels\Base\Interfaces\BACKUP\**" />
+    <Content Remove="Data\DataModels\Base\Model\BACKUP\**" />
+    <Content Remove="Data\DataModels\Ligamania\Model\BACKUP\**" />
+    <Content Remove="Data\Repository\Base\BACKUP\**" />
+    <Content Remove="Data\Repository\Ligamania\BACKUP\**" />
+    <Content Remove="Logs\**" />
+    <Content Remove="Views\AccountC\**" />
+    <Content Remove="Views\Shared\MvcGrid 4.1.1\**" />
+    <Content Remove="Views\Shared\MvcGrid 5.0.0\**" />
+    <Content Remove="Views\StockC\**" />
+    <Content Remove="wwwroot\css\mvc-grid\**" />
+    <Content Remove="wwwroot\js\mvc-grid\**" />
+    <EmbeddedResource Remove="Data\DataModels\Base\Interfaces\BACKUP\**" />
+    <EmbeddedResource Remove="Data\DataModels\Base\Model\BACKUP\**" />
+    <EmbeddedResource Remove="Data\DataModels\Ligamania\Model\BACKUP\**" />
+    <EmbeddedResource Remove="Data\Repository\Base\BACKUP\**" />
+    <EmbeddedResource Remove="Data\Repository\Ligamania\BACKUP\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="Views\AccountC\**" />
+    <EmbeddedResource Remove="Views\Shared\MvcGrid 4.1.1\**" />
+    <EmbeddedResource Remove="Views\Shared\MvcGrid 5.0.0\**" />
+    <EmbeddedResource Remove="Views\StockC\**" />
+    <EmbeddedResource Remove="wwwroot\css\mvc-grid\**" />
+    <EmbeddedResource Remove="wwwroot\js\mvc-grid\**" />
+    <None Remove="Data\DataModels\Base\Interfaces\BACKUP\**" />
+    <None Remove="Data\DataModels\Base\Model\BACKUP\**" />
+    <None Remove="Data\DataModels\Ligamania\Model\BACKUP\**" />
+    <None Remove="Data\Repository\Base\BACKUP\**" />
+    <None Remove="Data\Repository\Ligamania\BACKUP\**" />
+    <None Remove="Logs\**" />
+    <None Remove="Views\AccountC\**" />
+    <None Remove="Views\Shared\MvcGrid 4.1.1\**" />
+    <None Remove="Views\Shared\MvcGrid 5.0.0\**" />
+    <None Remove="Views\StockC\**" />
+    <None Remove="wwwroot\css\mvc-grid\**" />
+    <None Remove="wwwroot\js\mvc-grid\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\DataModels\Base\Interfaces\IAuditableAlineacionEntity.cs" />
+    <Compile Remove="Data\DataModels\Base\Interfaces\ICommonUser.cs" />
+    <Compile Remove="Data\DataModels\Base\Model\MyLazyLoader.cs" />
+    <Compile Remove="Data\Migrations\20191101110749_temporadaronda.cs" />
+    <Compile Remove="Data\Migrations\20191101110749_temporadaronda.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201120201751_notificacionClasificaciones.cs" />
+    <Compile Remove="Data\Migrations\20201120201751_notificacionClasificaciones.Designer.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Interfaces\IEntrenadorRepository.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Interfaces\ITemporadaClubJugadorRepository.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Interfaces\ITemporadaPuestoJugadorRepository.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Model\EntrenadorRepository.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Model\TemporadaClubJugadorRepository.cs" />
+    <Compile Remove="Data\Repository\Ligamania\Model\TemporadaPuestoJugadorRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="global.json" />
+    <Content Remove="Views\ManagerC\_NestedEntrenadores.cshtml" />
+    <Content Remove="Views\ManagerC\_NestedEquipos.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Bootstrap.Datepicker" Version="1.8.0.1" />
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="jQuery.UI" Version="1.12.1.1" />
+    <PackageReference Include="MailKit" Version="2.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="MimeKit" Version="2.14.0" />
+    <PackageReference Include="Moment.js" Version="2.24.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NonFactors.Grid.Mvc6" Version="4.1.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\DataModels\Ligamania\Interfaces\" />
+    <Folder Include="wwwroot\lib\bootstrap4\datepicker\" />
+    <Folder Include="wwwroot\lib\bootstrap4\datepicker\content\Content\" />
+    <Folder Include="wwwroot\ExcelFiles\" />
+    <Folder Include="wwwroot\reports\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\MvcGrid\mvc-grid.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\INVITADOH\Clasificacion.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\INVITADOH\Vitrina.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\ManagerC\CierreTemporada.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_ClasificacionesPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" appsettings_1staging_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

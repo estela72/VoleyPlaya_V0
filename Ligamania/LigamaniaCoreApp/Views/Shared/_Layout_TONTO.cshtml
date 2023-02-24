@@ -1,0 +1,249 @@
+﻿@*@inject LigamaniaCoreApp.Services.MenuMasterService menus
+@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ligamania</title>
+
+    <environment include="Development">
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <link href="@Url.Content("~/css/site.css")" rel="stylesheet" type="text/css" id="ligamaniaStyle" />
+
+        @*Uso de iconos fas fa-*** *@
+        <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
+        <link href="~/css/MvcGrid/mvc-grid.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/twiter-bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="~/Home/Index">
+                            <img src="~/images/ligamania-logo.png" alt="Ligamania" class="img-responsive" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.facebook.com/groups/ligamania/?fref=ts">Facebook</a>
+                    </li>
+                    @*@{ 
+                        var UserRoles = "";
+                        IEnumerable<MenuMasterViewModel> listaMenus;
+                        IEnumerable<MenuMasterViewModel> subMenus;
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            if (@User.IsInRole("Manager"))
+                            {
+                                UserRoles = "Manager";
+                                listaMenus = menus.GetMenuMaster(@UserRoles);
+                            @if (listaMenus.Any())
+                            {
+                                listaMenus = listaMenus.Where(n => n.Parent_MenuID == "*").ToList();
+                                @foreach (var menuNames in listaMenus)
+                                {
+                                    subMenus = menus.GetMenuMaster(@UserRoles).Where(n => n.Parent_MenuID == @menuNames.MenuID).ToList();
+                                    var hRef = "~/" + @menuNames.MenuURL + "/" + @menuNames.MenuFileName;
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @menuNames.MenuName
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            @foreach (var subMenu in subMenus)
+                                            {
+                                                var hSubRef = "~/" + subMenu.MenuURL;
+                                                <a class="dropdown-item" asp-area="" asp-controller=@subMenu.MenuURL asp-action=@subMenu.MenuFileName>@subMenu.MenuName</a>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            }
+                            if (@User.IsInRole("Admin"))
+                            {
+                                UserRoles = "Admin";
+                                listaMenus = menus.GetMenuMaster(@UserRoles);
+                            @if (listaMenus.Any())
+                            {
+                                listaMenus = listaMenus.Where(n => n.Parent_MenuID == "*").ToList();
+                                @foreach (var menuNames in listaMenus)
+                                {
+                                    subMenus = menus.GetMenuMaster(@UserRoles).Where(n => n.Parent_MenuID == @menuNames.MenuID).ToList();
+                                    var hRef = "~/" + @menuNames.MenuURL + "/" + @menuNames.MenuFileName;
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @menuNames.MenuName
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            @foreach (var subMenu in subMenus)
+                                            {
+                                                var hSubRef = "~/" + subMenu.MenuURL;
+                                                <a class="dropdown-item" asp-area="" asp-controller=@subMenu.MenuURL asp-action=@subMenu.MenuFileName>@subMenu.MenuName</a>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            }
+                            if (@User.IsInRole("Entrenador"))
+                            {
+                                UserRoles = "Entrenador";
+                                listaMenus = menus.GetMenuMaster(@UserRoles).ToList();
+                            @if (listaMenus.Any())
+                            {
+                                listaMenus = listaMenus.Where(n => n.Parent_MenuID == "*").ToList();
+                                @foreach (var menuNames in listaMenus)
+                                {
+                                    subMenus = menus.GetMenuMaster(@UserRoles).Where(n => n.Parent_MenuID == @menuNames.MenuID);
+                                    var hRef = "~/" + @menuNames.MenuURL + "/" + @menuNames.MenuFileName;
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @menuNames.MenuName
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            @foreach (var subMenu in subMenus)
+                                            {
+                                                var hSubRef = "~/" + subMenu.MenuURL;
+                                                <a class="dropdown-item" asp-area="" asp-controller=@subMenu.MenuURL asp-action=@subMenu.MenuFileName>@subMenu.MenuName</a>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            }
+                        }
+                        UserRoles = "Invitado";
+                        listaMenus = menus.GetMenuMaster(@UserRoles);
+                    @if (listaMenus.Any())
+                    {
+                        listaMenus = listaMenus.Where(n => n.Parent_MenuID == "*").ToList();
+                        @foreach (var menuNames in listaMenus)
+                        {
+                            subMenus = menus.GetMenuMaster(@UserRoles).Where(n => n.Parent_MenuID == @menuNames.MenuID).ToList();
+                            var hRef = "~/" + @menuNames.MenuURL + "/" + @menuNames.MenuFileName;
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @menuNames.MenuName
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach (var subMenu in subMenus)
+                                    {
+                                        var hSubRef = "~/" + subMenu.MenuURL;
+                                        <a class="dropdown-item" asp-area="" asp-controller=@subMenu.MenuURL asp-action=@subMenu.MenuFileName>@subMenu.MenuName</a>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    }
+
+                    }*@
+                </ul>
+                @*@await Html.PartialAsync("_LoginPartial")*@
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid body-content">
+        @{
+            string bienvenido = "Bienvenid@ a LIGAMANÍA";
+        }
+        @*@if (User.Identity.IsAuthenticated)
+        {
+            var estados = await ligamaniaService.GetEstadoCompeticiones();
+            var lastNew = await ligamaniaService.GetLastNew();
+            @if (estados.Any())
+            {
+                foreach (var competicion in estados)
+                {
+                    <div class="row" style="background-color:darkblue;color:aliceblue">
+                        <h2>@competicion.Key - @competicion.Value</h2>
+                    </div>
+                }
+            }
+            <div class="row" style="background-color:darkviolet;color:aliceblue">
+                <h2>@lastNew</h2>
+            </div>
+        }*@
+        <hr />
+        <div class="row">
+            <div class="col-md-2">
+                @*@if (User.Identity.IsAuthenticated)
+                {
+                    <h2 class="text-center">Jugadores eliminados</h2>
+                    @Html.AjaxGrid(Url.Action("JugadoresEliminadosGrid", "Home"), new { id = "ajax-grid-jugeli" })
+                }*@
+                </div>
+            <div class="col-md-7">
+                <h1 class="text-center">@bienvenido</h1>
+                <div class="row">
+                    <img src="~/Images/cabecera_ligamania.jpg" title="Ligamanía" alt="Logo" class="img-responsive img-rounded center-block" />
+                </div>
+                @RenderBody()
+            </div>
+            <div class="col-md-3">
+                @*@if (User.Identity.IsAuthenticated)
+                {
+                    <h2 class="text-center">Clasificaciones</h2>
+                    <div id="grid-clasi" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                        @Html.AjaxGrid(Url.Action("ClasificacionesGrid", "Home"), new { id = "ajax-grid-clasi" })
+                    </div>
+                }*@
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2019 - Ligamania</p>
+        </footer>
+        <script src="~/js/MvcGrid/mvc-grid.js"></script>
+        <script>
+            [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
+                new MvcGrid(element);
+            });
+        </script>
+    </div>
+
+    <environment include="Development">
+        @*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+        <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>*@
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/bootstrap.min.js"
+                asp-fallback-src="~/lib/twiter-bootstrap/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

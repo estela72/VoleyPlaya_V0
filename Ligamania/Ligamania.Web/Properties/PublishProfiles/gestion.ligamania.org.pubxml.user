@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Este archivo se usa en el proceso de publicación y empaquetado del proyecto web. Para personalizar el comportamiento de este proceso,
+edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 para obtener más información. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAVfS0Pv/wPkCdjCPSpRyG0AAAAAACAAAAAAAQZgAAAAEAACAAAACii0HJyEAOqL9GWf0j+HaoHs5d1Wp/jhJfIhnK0dzyEgAAAAAOgAAAAAIAACAAAABOJeezqPignRre+dem1nakXD1zAB50sdi876sL1Hs4WiAAAABH4fNOjDU6Aobl60iYU/QorkOCjnoCjHGhVoFMFg4YJUAAAABrtHuLlfJdLJRQ2P+79ZPgLNLib3o2tdT9LMcPb/XXI8fnBZeXhoEzO0mlM7REyQkB0XmShC9yY4QQIm07WVUU</EncryptedPassword>
+    <History>True|2023-02-17T17:08:17.3538183Z;False|2023-02-17T17:46:36.3798611+01:00;False|2023-02-17T17:42:22.3225790+01:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DatabaseConnection">
+      <Value>Server= sql5085.site4now.net%3bDatabase=DB_9C4A5E_PRD1920%3bUser Id=DB_9C4A5E_PRD1920_admin%3b Password=Carcaba_51%3bTrusted_Connection=False%3bMultipleActiveResultSets=true</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

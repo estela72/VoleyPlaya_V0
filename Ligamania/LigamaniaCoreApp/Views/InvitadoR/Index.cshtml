@@ -1,0 +1,34 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model ICollection<ReglamentoViewModel>
+
+@{
+    ViewData["Title"] = "Reglamentos";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div>
+            @(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Description).Titled("Documentos y Reglamentos de Ligamanía").Filterable(true).Encoded(false).
+                        RenderedAs(model => Html.ActionLink(model.Description, "DownloadFile", "InvitadoR", new { fileId = model.Id }, null));
+                })
+                .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                .Empty("No hay reglamentos")
+                .Id("ajax-grid-reglamentos")
+            //.Pageable(pager =>
+            //{
+            //    pager.RowsPerPage = 10;
+            //})
+            //.Filterable()
+            //.Sortable()
+            )
+            <div>
+                <a class="webgrid-noticiaAplicacion" href="https://docs.google.com/spreadsheets/d/1c_t-ONjUORKk6CEoNlI6pYSSsfO6oN942UYwIsqR9BE/pubhtml?gid=1&single=true">Cuadro de Copa</a>
+            </div>
+        </div>
+    </div>
+</div>
+

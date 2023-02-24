@@ -1,0 +1,30 @@
+﻿@model ClubListVM
+@{
+
+    ViewData["Title"] = "Clubs";
+    var clubs = Model.clubs;
+    var primera = Model.nuevoClub;
+    var col = "collapse";
+    if (Model.Error) { col = "show"; }
+    var colHor = String.Concat(col, " collapse-horizontal");
+}
+
+<div class="card m-3 card-filter p-2">
+    @await Html.PartialAsync("CreateClub",primera)
+</div>
+
+<div class="row">
+    <div class="col">
+        <form id="taClubsForm" action="#" method="post">
+          <select id="clubs" multiple="multiple" size="20" name="clubs[]" title="clubs[]" class="clubs_dualListBox">
+
+          </select>
+          <br>
+          <button type="submit" class="btn btn-primary btn-block">Aplicar cambios</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/temporadaClubs.js"></script>
+}

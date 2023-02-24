@@ -1,0 +1,54 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model ClasificacionHistoricaViewModel
+
+@{
+    ViewData["Title"] = "Clasificación Histórica";
+    var clasificaciones = Model.LClasificacion.Values.OrderByDescending(e=>e.Puntos).ThenBy(e=>e.Coeficiente).ToList();
+}
+<h2>Clasificación Histórica</h2>
+
+<div id="grid-clasi-historica" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+    <h3>Puntuaciones de Ligamania</h3>
+    @(Html
+        .Grid(Model.LPuntuaciones)
+        .Build(columns =>
+        {
+            columns.Add(model => model.Competicion).Titled("Competición");
+            columns.Add(model => model.Categoria).Titled("Categoría");
+            columns.Add(model => model.Campeon).Titled("Campeón");
+            columns.Add(model => model.Subcampeon).Titled("Subcampeón");
+            columns.Add(model => model.Tercero).Titled("Tercero");
+            columns.Add(model => model.Pichichi).Titled("Pichichi");
+            columns.Add(model => model.Todos).Titled("Por participar");
+        })
+        .Empty("No hay puntuaciones")
+    )
+</div>
+<hr />
+<h2>Clasificación de equipos</h2>
+
+<div id="grid-clasi-historica-equipos" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+    @(Html
+        .Grid(clasificaciones)
+        .Build(columns =>
+        {
+            int row = 1;
+
+            columns.Add().Titled("Puesto").RenderedAs(model => row++).Css("col-puesto");
+            columns.Add(model => @Html.ActionLink(model.Equipo, "HistorialEquipo", "InvitadoH", new { equipo = @model.Equipo })).Titled("Equipo").Css("col-equipo");
+            columns.Add(model => model.Puntos).Titled("Puntos").Css("col-puesto");
+        })
+        .Empty("No hay clasificación")
+    //.Filterable()
+    //.Sortable()
+    )
+</div>
+
+<style>
+    .col-puesto{
+        width:10px;
+    }
+    .col-equipo{
+        width:50px;
+    }
+</style>

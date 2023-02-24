@@ -1,0 +1,701 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+@using LigamaniaCoreApp.Models.ManagerViewModels;
+
+@model InfoPreparacionTemporadaViewModel
+
+@{
+    ViewData["Title"] = "Jugadores";
+    var clubs = await ligamaniaService.GetAllClubs(activo: true);
+    var puestos = await ligamaniaService.GetAllPuestos();
+    var jugadores = Model.Jugadores;
+}
+
+<h2>Alta y Baja de Jugadores para la temporada</h2>
+<div class="flex-container">
+    <div class="flex-item-bold-center col-12">
+        <div class="card col-12 border-primary mt-2">
+            <div class="card-header">
+                @if (ViewBag.ActivarMensaje != null && ViewBag.ActivarMensaje && ViewBag.Message!=null)
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach(var msg in ViewBag.Message)
+                        {
+                            <li class="list-group-item" style="color:red">@msg</li>
+                        }
+                    </ul>
+                }
+                <h3>TEMPORADA @ViewBag.Temporada - Actualizar lista de jugadores desde Excel</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"> 1º) Exportar a excel los jugadores activos en la última temporada que se jugó (o la actual)</li>
+                    <li class="list-group-item"> 2º) Desactivar todos los jugadores - Con esta acción no dejaremos ningún jugador activo en ninguna temporada</li>
+                    <li class="list-group-item"> 3º) Modificar la excel dejando en cada Club los jugadores activos</li>
+                    <li class="list-group-item"> 4º) Cargar la excel con los jugadores. Quedarán activos para la temporada actual o pretemporada.</li>
+                </ul>
+                <hr />
+                <div class="btn-group mx-auto p-5" role="group" aria-label="Toolbar with button groups">
+                    <button type="button" class="btn btn-primary mr-3" onclick="location.href='@Url.Action("ExportarExcel", "AdminP")'">Exportar a Excel</button>
+                    <button type="button" class="btn btn-primary mr-3" onclick="location.href='@Url.Action("DesactivarTodosJugadores", "AdminP")'">Desactivar todos los jugadores</button>
+                    <fieldset style="margin-top: 15px">
+                        @*<legend>Cargar jugadores desde Excel</legend>*@
+                        <form method="post"
+                              asp-action="CargarJugadores"
+                              asp-controller="AdminP"
+                              enctype="multipart/form-data">
+                            <input type="file" name="file" />
+                            <input type="submit" class="btn btn-primary mr-3" value="Actualizar jugadores desde Excel" />
+                        </form>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="flex-container">
+    <div class="flex-item-bold-center card">
+        <div class="card-body">
+            @if (Model.Pretemporada != null)
+            {
+                <h5 class="card-title">Jugadores (@Model.Pretemporada.Temporada)</h5>
+                <h6>Se puede filtrar por Jugador, Club y Puesto pinchando en la cabecera de cada columna</h6>
+                <h6>Con el botón 'Editar' se puede modificar el Club y/o Puesto de cada jugador. El puesto de un jugador sólo se podrá modificar antes de comenzar la temporada</h6>
+                <h6>Con el botón 'Borrar' se elimina el registro. Con el botón 'Desactivar' se desactiva el jugador para la temporada</h6>
+                <div id="grid-pretemporadajugadores" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                    @Html.AjaxGrid(Url.Action("PretemporadaJugadoresGrid", "AdminP"), new { id = "ajax-grid-pretemporadajugadores" })
+                </div>
+            }
+        </div>
+    </div>
+    <div class="flex-item-bold-center card">
+        <div class="card-header">
+            <h6>El botón 'Nuevo jugador' añade un jugador a la tabla general, así como a la pretemporada o temporada actual</h6>
+            <h6>Si el nombre del jugador introducido, existe, y el jugador está inactivo, se preguntará si se quiere activar para la temporada, en el club y puesto seleccionado.</h6>
+            <h6>Si el nombre del jugador introducido, no existe, el jugador se agregará al inventario y a la temporada, con el club y puesto seleccionados.</h6>
+            <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-target='#addJugadorModal'>Nuevo jugador</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="copiarAPretemporada();">Copiar los jugadores de la última temporada. Sólo los clubs activos</button>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Inventario completo de Jugadores</h5>
+            <h6>Se muestra el listado completo de Jugadores, tanto activos como inactivos, de todas las temporadas</h6>
+            <h6>Con el botón 'Editar' se puede modificar el nombre de un jugador</h6>
+            <h6>Con el botón 'Borrar' se elimina el registro. Con el botón 'Desactivar' se pone el jugador en estado 'Inactivo'</h6>
+            <div id="grid-jugadores" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @Html.AjaxGrid(Url.Action("JugadoresGrid", "AdminP"), new { id = "ajax-grid-jugadores" })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="editJugadorModal" tabindex="-1" role="dialog" aria-labelledby="editJugadorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editJugadorModalLabel">Editando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editJugador" class="needs-validation" action="#" novalidate>
+                    <input type="hidden" class="form-control" id="id-jugador">
+                    <div class="form-group">
+                        <label for="edit-jugador-nombre">Nombre del Jugador:</label>
+                        <input type="text" class="form-control" id="edit-jugador-nombre" aria-describedby="jugadorHelp" placeholder="Nombre del jugador" required>
+                        <div class="invalid-feedback" id="message-nombre-jugador">
+                            Por favor, escribir un nombre de un jugador que no exista
+                        </div>
+                        <small id="jugadorHelp" class="form-text text-muted">Se debe introducir un nombre de jugador que aún no exista.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="activeJugadorModal" tabindex="-1" role="dialog" aria-labelledby="activeJugadorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activeJugadorModalLabel">Activando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="activeJugador" class="needs-validation" action="#" novalidate>
+                    <input type="hidden" class="form-control" id="id-jugadorActive">
+                    <div class="form-group">
+                        <label for="edit-jugador-nombre">Nombre del Jugador:</label>
+                        <input type="text" class="form-control" id="active-jugador-nombre" aria-describedby="jugadorHelp" placeholder="Nombre del jugador" disabled>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="club">Club</label>
+                            </div>
+                            @Html.DropDownList("clubActive", clubs, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <div class="invalid-feedback">
+                                Por favor, seleccionar un club
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="puesto">Puesto</label>
+                            </div>
+                            @Html.DropDownList("puestoActive", puestos, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <div class="invalid-feedback">
+                                Por favor, seleccionar el puesto del jugador
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addJugadorModal" tabindex="-1" role="dialog" aria-labelledby="addJugadorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addJugadorModalLabel">Nuevo jugador en la temporada </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createJugador" class="needs-validation" action="#" novalidate>
+                    <div class="form-group">
+                        <label for="add-jugador-nombre">Nombre del Jugador:</label>
+                        <input type="text" class="form-control" id="add-jugador-nombre" aria-describedby="jugadorHelp" placeholder="Nombre del jugador" required>
+                        <div class="invalid-feedback" id="message-nombre-jugador">
+                            Por favor, escribir un nombre de un jugador que no exista o bien que esté inactivo
+                        </div>
+                        <small id="jugadorHelp" class="form-text text-muted">Se debe introducir un nombre de jugador que aún no exista o bien que esté inactivo.</small>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="club">Club</label>
+                        </div>
+                        @Html.DropDownList("club", clubs, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                        <div class="invalid-feedback">
+                            Por favor, seleccionar un club
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="puesto">Puesto</label>
+                        </div>
+                        @Html.DropDownList("puesto", puestos, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                        <div class="invalid-feedback">
+                            Por favor, seleccionar el puesto del jugador
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-add">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editTemporadaJugadorModal" tabindex="-1" role="dialog" aria-labelledby="editTemporadaJugadorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTemporadaJugadorModalLabel">Editando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editTemporadaJugador" class="needs-validation" action="#" novalidate>
+                    <input type="hidden" class="form-control" id="id-temporadajugador">
+                    <div class="form-group">
+                        <label for="edit-Temporadajugador-nombre">Nombre del Jugador:</label>
+                        <input type="text" class="form-control" id="edit-temporadajugador-nombre" readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="club">Club</label>
+                        </div>
+                        @Html.DropDownList("temporadaclub", clubs, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                        <div class="invalid-feedback">
+                            Por favor, seleccionar un club
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="puesto">Puesto</label>
+                        </div>
+                        @Html.DropDownList("temporadapuesto", puestos, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                        <div class="invalid-feedback">
+                            Por favor, seleccionar el puesto del jugador
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function copiarAPretemporada() {
+        var urlToCall = '/ADMINP/CopiarJugadoresAPretemporada';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            success: function (response) {
+                alert("Jugadores copiados a la pretemporada");
+                reloadPage();
+            },
+            error: function (response) {
+                alert("Error al copiar jugadores");
+            }
+        })
+    }
+    function checkJugador(validarClubPuesto, jugador, club, puesto, callback) {
+        var validado = true;
+        if (validarClubPuesto) {
+            if (club === '') {
+                alert('Debe seleccionar un club');
+                validado = false;
+            }
+            if (puesto === '') {
+                alert('Debe seleccionar un puesto');
+                validado = false;
+            }
+        }
+        var respuesta = -2;
+        if (validado) {
+            $.ajax({
+                type: "POST",
+                url: "/ADMINP/CheckNombreJugador",
+                data: JSON.stringify(jugador),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processData: true,
+                cache: false,
+                success: function (response) {
+                    respuesta = response;
+                },
+                error: function (response) {
+                    respuesta = -1;
+                }
+            }).done(function (data) {
+                callback(data);
+            });
+        }
+        return respuesta;
+    }
+    function crearJugador(jugador, club, puesto, callback) {
+        //var jugador = $('#add-jugador-nombre').val();
+        //var club = $('#club').val();
+        //var puesto = $('#puesto').val();
+
+        const jugadorVM = {
+            Id: 0,
+            Jugador: jugador,
+            Club: club,
+            Puesto: puesto
+        };
+        var urlToCall = '/ADMINP/NuevoJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(jugadorVM),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            success: function (partialViewData) {
+                //alert("Jugador añadido");
+            },
+            error: function (response) {
+                alert("Error al crear un nuevo jugador");
+            }
+        }).done(function (data) {
+            callback(data);
+        });
+    }
+    function editJugador(id, jugador, callback) {
+        const jugadorVM = {
+            IdJugador: id,
+            Jugador: jugador,
+            Club: null,
+            Puesto: null
+        };
+        //alert(jugadorVM.Id + "-" + jugadorVM.Jugador);
+        var urlToCall = '/ADMINP/EditJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(jugadorVM),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            error: function (response) {
+                alert("Error al editar un jugador");
+            }
+        }).done(function (data) {
+            callback(data);
+        });
+    }
+    function editTemporadaJugador(id, jugador, club, puesto, callback) {
+        const jugadorVM = {
+            IdTemporadaJugador: id,
+            Jugador: jugador,
+            Club: club,
+            Puesto: puesto
+        };
+        var urlToCall = '/ADMINP/EditTemporadaJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(jugadorVM),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al editar un jugador");
+            }
+        }).done(function (data) {
+            callback(data);
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#addJugadorModal').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+    });
+    $('#addJugadorModal').on('click', '[data-save="modal-add"]', function (event) {
+        var jugador = $('#add-jugador-nombre').val();
+        var club = $('#club').val();
+        var puesto = $('#puesto').val();
+        var form = $('#createJugador');
+        $("#add-jugador-nombre")[0].setCustomValidity("");
+        checkJugador(true, jugador, club, puesto, function (jugadorChecked) {
+            if (jugadorChecked === 2) {   // no existe el jugador
+                alert('El jugador no existe. Lo creamos en la temporada con el club y puesto indicados');
+                crearJugador(jugador, club, puesto, function (jugadorCreado) {
+                    alert(jugadorCreado.message);
+                    $('#addJugadorModal').modal('hide');
+                    reloadPage();
+                });
+            }
+            else if (jugadorChecked === 1)    // existe y está inactivo
+            {
+                var r = confirm("El jugador existe y está inactivo. ¿Activar para la temporada en el club y puesto indicados?");
+                if (r == true) {
+                    crearJugador(jugador, club, puesto, function (jugadorCreado) {
+                        alert(jugadorCreado.message);
+                        $('#addJugadorModal').modal('hide');
+                        reloadPage();
+                    });
+                }
+            }
+            else if (jugadorChecked === 0) {
+                var r = confirm('El jugador existe y está activo. ¿Cambiar para el club y puesto indicados?');
+                if (r == true) {
+                    crearJugador(jugador, club, puesto, function (jugadorCreado) {
+                        alert(jugadorCreado.message);
+                        $('#addJugadorModal').modal('hide');
+                        reloadPage();
+                    });
+                }
+                else {
+                    $("#add-jugador-nombre")[0].setCustomValidity("Ya existe un jugador con este nombre y está Activo");
+                    $('#add-jugador-nombre')[0].reportValidity();
+                }
+            }
+            else {
+                alert('Error al chequear existencia del jugador ' + jugador);
+            }
+        })
+    });
+    $('#editJugadorModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var jugador = button.data('jugador')
+        var activo = button.data('activo')
+        //alert(id + " " + jugador + " " + activo);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición del jugador ' + jugador)
+        modal.find('#id-jugador').val(id)
+        modal.find('#edit-jugador-nombre').val(jugador)
+        //modal.find('#message-text').val(noticia)
+    });
+    $('#editJugadorModal').on('click', '[data-save="modal-edit"]', function (event) {
+        var id = $('#id-jugador').val();
+        var jugador = $('#edit-jugador-nombre').val();
+
+        var form = $('#editJugador');
+        $("#edit-jugador-nombre")[0].setCustomValidity("");
+        checkJugador(false, jugador, "", "", function (jugadorChecked) {
+            if (jugadorChecked === 2)    // no existe
+            {
+                editJugador(id, jugador, function (jugadorModificado) {
+                    alert(jugadorModificado.message);
+                    $('#editJugadorModal').modal('hide');
+                    reloadPage();
+                });
+            }
+            else {
+                alert('Ya existe el jugador ' + jugador);
+            }
+        })
+    });
+    $('#activeJugadorModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var jugador = button.data('jugador')
+        alert(id + " " + jugador);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Activación del jugador ' + jugador)
+        modal.find('#id-jugadorActive').val(id)
+        modal.find('#active-jugador-nombre').val(jugador)
+    });
+    $('#activeJugadorModal').on('click', '[data-save="modal-edit"]', function (event) {
+        var id = $('#id-jugadorActive').val();
+        var jugador = $('#active-jugador-nombre').val();
+        var club = $('#clubActive').val();
+        var puesto = $('#puestoActive').val();
+
+        var validado = true;
+        if (club === '') {
+            alert('Debe seleccionar un club');
+            validado = false;
+        }
+        if (puesto === '') {
+            alert('Debe seleccionar un puesto');
+            validado = false;
+        }
+        if (validado) {
+            crearJugador(jugador, club, puesto, function (jugadorModificado) {
+                alert(jugadorModificado.message);
+                if (jugadorModificado.result) {
+                    $('#activeTemporadaJugadorModal').modal('hide');
+                    reloadPage();
+                }
+            });
+        }
+    });
+
+    $('#editTemporadaJugadorModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var jugador = button.data('jugador')
+        var activo = button.data('activo')
+        var club = button.data('club')
+        var puesto = button.data('puesto')
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición del jugador ' + jugador)
+        modal.find('#id-temporadajugador').val(id)
+        modal.find('#edit-temporadajugador-nombre').val(jugador)
+        modal.find('#temporadaclub').val(club);
+        modal.find('#temporadapuesto').val(puesto);
+    });
+    $('#editTemporadaJugadorModal').on('click', '[data-save="modal-edit"]', function (event) {
+        var id = $('#id-temporadajugador').val();
+        var jugador = $('#edit-temporadajugador-nombre').val();
+        var club = $('#temporadaclub').val();
+        var puesto = $('#temporadapuesto').val();
+
+        var validado = true;
+        if (club === '') {
+            alert('Debe seleccionar un club');
+            validado = false;
+        }
+        if (puesto === '') {
+            alert('Debe seleccionar un puesto');
+            validado = false;
+        }
+        var form = $('#editTemporadaJugador');
+        if (validado) {
+            editTemporadaJugador(id, jugador, club, puesto, function (jugadorModificado) {
+                alert(jugadorModificado.message);
+                if (jugadorModificado.result) {
+                    $('#editTemporadaJugadorModal').modal('hide');
+                    reloadPage();
+                }
+            });
+        }
+    });
+
+    function reloadPage() {
+        var urlToCall = '/ADMINP/Jugadores';
+        $.ajax({
+            type: "GET",
+            data: JSON.stringify(jugador),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al cargar Jugadores");
+            }
+        });
+    };
+</script>
+
+<script type="text/javascript">
+    function buttonBorrarJugador(elementid) {
+        const jugador = {
+            IdJugador: elementid
+        };
+        var r = confirm("¿Está seguro de querer eliminar definitivamente el jugador?");
+        if (r == true) {
+            var urlToCall = '/ADMINP/BorrarJugador';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(jugador),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function (response) {
+                    alert("Error al borrar un jugador");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                reloadPage();
+            });
+        }
+    }
+    function buttonDesactivarJugador(elementid) {
+        const jugador = {
+            IdJugador: elementid
+        };
+        var r = confirm("¿Está seguro de querer desactivar el jugador?");
+        if (r == true) {
+            var urlToCall = '/ADMINP/DesactivarJugador';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(jugador),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                sucess: function (response) {
+                    alert(response.message);
+                    reloadPage();
+                },
+                error: function (response) {
+                    alert("Error al dar de baja un jugador");
+                }
+            });
+        }
+    }
+    function buttonBorrarTemporadaJugador(elementid) {
+        const jugador = {
+            IdTemporadaJugador: elementid
+        };
+        var r = confirm("¿Está seguro de querer eliminar definitivamente el jugador?");
+        if (r == true) {
+            var urlToCall = '/ADMINP/BorrarTemporadaJugador';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(jugador),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function (response) {
+                    alert("Error al borrar un jugador");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                reloadPage();
+            });
+        }
+    }
+    function buttonDesactivarTemporadaJugador(elementid) {
+        const jugador = {
+            IdTemporadaJugador: elementid
+        };
+        var r = confirm("¿Está seguro de querer desactivar el jugador?");
+        if (r == true) {
+            var urlToCall = '/ADMINP/DesactivarTemporadaJugador';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(jugador),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function (response) {
+                    alert("Error al dar de baja un jugador");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                reloadPage();
+            });
+        }
+    }
+</script>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+
+        }, false);
+    })();
+</script>
+<style>
+    /* .invalid class prevents CSS from automatically applying */
+    .invalid input:required:invalid {
+        background: #BE4C54;
+    }
+
+    /* Mark valid inputs during .invalid state */
+    .invalid input:required:valid {
+        background: #17D654;
+    }
+</style>
+
+

@@ -1,0 +1,50 @@
+﻿@model TemporadaListVM
+
+@{
+
+    ViewData["Title"] = "Lista de temporadas";
+    var temporadas = Model.temporadas;
+    var primera = temporadas.FirstOrDefault();
+    var col = "collapse";
+    if (Model.Error) { col = "show"; }
+    var colHor = String.Concat(col, " collapse-horizontal");
+}
+
+<div class="card m-3 card-filter p-2">
+    @await Html.PartialAsync("CreateTemporada", primera)
+</div>
+
+<div class="card m-3">
+    <div class="card-header">
+        <div class="card-title">Temporadas</div>
+    </div>
+    <div class="card-body">
+        <table class="display" id="tbTemporadas">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => primera.Temporada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => primera.Estado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => primera.Actual)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => primera.Clasificacion)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/temporada.js"></script>
+}

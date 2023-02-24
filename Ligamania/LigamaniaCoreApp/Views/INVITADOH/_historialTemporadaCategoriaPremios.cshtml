@@ -1,0 +1,16 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model IEnumerable<PremioHistoricoViewModel>
+@{
+    var premios = Model.OrderBy(p => p.Premio).ToList();
+}
+<div id="grid-premios" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+    @(Html
+        .Grid(premios)
+        .Build(columns =>
+        {
+            columns.Add(model => !model.EsPichichi ? model.PremioTxt : "Pichichi").Titled("Premio").Css("grid-historial-row-premio");
+            columns.Add(model => @Html.ActionLink(model.Equipo,"HistorialEquipo","InvitadoH", new { equipo=@model.Equipo })).Titled("Equipo").Css("grid-historial-row-equipo");
+        })
+        .Empty("No hay premios")
+    )
+</div>

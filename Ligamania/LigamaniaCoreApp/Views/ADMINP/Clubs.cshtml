@@ -1,0 +1,222 @@
+﻿@using LigamaniaCoreApp.Models.AdminViewModels;
+
+@model IEnumerable<ClubViewModel>
+@{
+    ViewData["Title"] = "Clubs";
+    var clubsActivos = Model.Where(c => c.Activo).OrderBy(c => c.Alias).ToList();
+    var clubsBaja = Model.Where(c => !c.Activo).OrderBy(c => c.Alias).ToList();
+}
+<hr />
+<div class="flex-container">
+    <div class="flex-item-bold-center card">
+        <div class="card-body">
+            <h5 class="card-title">Clubs Activos</h5>
+            <div id="grid-club-activo" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @(Html
+                    .Grid(clubsActivos)
+                    .Build(columns =>
+                    {
+                        columns.Add(model => model.Alias).Titled("Alias");
+                        columns.Add(model => model.Club).Titled("Club");
+                        columns.Add(model => $"<button class='button-baja btn-primary' id=\"{model.Id}\" onClick=\"buttonBajaClicked(this.id)\">Baja</button>").Encoded(false);
+                    })
+            .WithFilterMode(GridFilterMode.FilterRow)
+            .Empty("No hay equipos activos")
+            .Pageable(pager =>
+            {
+                pager.RowsPerPage = 20;
+            })
+            .Filterable()
+            .Sortable()
+            .Id("clubsAlta")
+        )
+            </div>
+        </div>
+    </div>
+    <div class="flex-item-bold-center">
+        <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-target='#addClubModal'>Nuevo club</button>
+    </div>
+    @*<div class="flex-item-bold-center card">
+            <div class="card-header">
+                <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-target='#addClubModal'>Nuevo club</button>
+            </div>
+        </div>*@
+    <div class="flex-item-bold-center card">
+        <div class="card-body">
+            <h5 class="card-title">Clubs que están de Baja</h5>
+            <div id="grid-club-inactivo" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @(Html
+                    .Grid(clubsBaja)
+                    .Build(columns =>
+                    {
+                        columns.Add(model => model.Alias).Titled("Alias");
+                        columns.Add(model => model.Club).Titled("Club");
+                        columns.Add(model => $"<button class='button-alta btn-primary' id=\"{model.Id}\" onClick=\"buttonAltaClicked(this.id)\">Alta</button>").Encoded(false);
+                    })
+                       .WithFilterMode(GridFilterMode.FilterRow)
+                     .Empty("No hay equipos de baja")
+                    .Pageable(pager =>
+                    {
+                        pager.RowsPerPage = 20;
+                    })
+                    .Filterable()
+                    .Sortable()
+                    .Id("clubsBaja")
+                )
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addClubModal" tabindex="-1" role="dialog" aria-labelledby="addClubModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClubModalLabel">Nuevo club</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createClub" class="needs-validation" action="#" novalidate>
+                    <div class="form-group">
+                        <label for="add-club-nombre">Nombre del Club:</label>
+                        <input type="text" class="form-control" id="add-club-nombre" aria-describedby="clubHelp" placeholder="Nombre del club" required>
+                        <div class="invalid-feedback" id="message-nombre-club">
+                            Por favor, escribir un nombre de un club que no exista
+                        </div>
+                        <small id="clubHelp" class="form-text text-muted">Se debe introducir un nombre de club que aún no exista.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-club-alias">Alias:</label>
+                        <input type="text" class="form-control" id="add-club-alias" maxlength="3" placeholder="Alias del club (3 caracteres)" required>
+                        <div class="invalid-feedback" id="message-nombre-club">
+                            Por favor, escribir un alias para el club (3 caracteres)
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-add">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function buttonBajaClicked(elementid) {
+        send("BajaClub", elementid);
+    }
+    function buttonAltaClicked(elementid) {
+        send("AltaClub", elementid);
+    }
+    function send(altaBaja, id) {
+        const club = {
+            Id: id,
+            Alias: "",
+            Club: "",
+            Activo: false
+        };
+        var strAltaBaja = "Alta";
+        if (altaBaja == "BajaClub") { strAltaBaja = "Baja"; }
+        var urlToCall = '/ADMINP/' + altaBaja;
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(club),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert(response.message);
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (respones.result) {
+                location.reload();
+            }
+        });
+
+    }
+    $('#addClubModal').on('click', '[data-save="modal-add"]', function (event) {
+        var club = $('#add-club-nombre').val();
+        var alias = $('#add-club-alias').val();
+        var form = $('#createClub');
+        $("#add-club-nombre")[0].setCustomValidity("");
+        $("#add-club-alias")[0].setCustomValidity("");
+        checkClub(club, alias, function (clubChecked) {
+            if (clubChecked === 2) {   // no existe el jugador
+                alert('El club no existe. Lo vamos a crear');
+                crearClub(club, alias, function (clubCreado) {
+                    alert(clubCreado.message);
+                    $('#addClubModal').modal('hide');
+                    location.reload();
+                });
+            }
+            else if (clubChecked === 0)    // existe el club
+            {
+                alert('El club ya existe. Debe indicar otro nombre de club');
+                $("#add-club-nombre")[0].setCustomValidity("Ya existe un club con este nombre");
+                $('#add-club-nombre')[0].reportValidity();
+            }
+            else if (clubChecked === 1)    // existe el alias
+            {
+                alert('El alias ya existe. Debe indicar otro alias de club');
+                $("#add-club-alias")[0].setCustomValidity("Ya existe un club con este alias");
+                $('#add-club-alias')[0].reportValidity();
+            }
+            else {
+                alert('Error al chequear existencia del club ' + jugador);
+            }
+        })
+    });
+    function checkClub(club, alias, callback) {
+        const clubNuevo = {
+            Id: 0,
+            Alias: alias,
+            Club: club,
+            Activo: false
+        };
+        $.ajax({
+            type: "POST",
+            url: "/ADMINP/CheckNuevoClub",
+            data: JSON.stringify(clubNuevo),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: true,
+            cache: false,
+            error: function (response) {
+                alert(response.message);
+                respuesta = -1;
+            }
+        }).done(function (response) {
+            callback(response);
+        });
+    }
+    function crearClub(club, alias, callback) {
+        const clubNuevo = {
+            Id: 0,
+            Alias: alias,
+            Club: club,
+            Activo: false
+        };
+
+        var urlToCall = '/ADMINP/NuevoClub';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(clubNuevo),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert(response.message);
+            }
+        }).done(function (data) {
+            callback(data);
+        });
+    }
+</script>

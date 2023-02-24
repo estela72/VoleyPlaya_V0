@@ -1,0 +1,79 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+
+@model LigamaniaCoreApp.Models.EntrenadorViewModels.CarruselViewModel
+@{
+    ViewData["Title"] = "Carrusel de Partidos";
+
+    var competiciones = ViewBag.Competiciones;
+    var categorias = ViewBag.Categorias;
+    //var jornadas = ViewBag.Jornadas;
+    var partidos = Model.Partidos.OrderBy(p => p.NumeroPartido).ToList();
+}
+@if (Model.Competicion.Equals(LigamaniaConst.Competicion_Copa))
+{
+    <h2>Carrusel de partidos - @Model.Competicion - Ronda @Model.RondaActual - Jornada @Model.Jornada</h2>
+}
+else
+{
+    <h2>Carrusel de partidos - @Model.Competicion - Jornada @Model.Jornada</h2>
+}
+<div style="background-color:yellow">[Jugador eliminado la próxima jornada]</div>
+<div style="background-color:red">[Jugador eliminado]</div>
+@{
+    using (Html.BeginForm())
+    {
+        <div class="flex-container">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex flex-row ">
+                        <div class="p-2 ">
+                            <label for="competicion-name">Seleccionar Competición</label>
+                            @Html.DropDownList("competicion", competiciones, "Seleccionar...", new { @class = "custom-select", required = "required", @onchange = "this.form.submit();" })
+                        </div>
+                        <div class="p-2 ">
+                            <label for="categoria-name">Seleccionar Categoría</label>
+                            @Html.DropDownList("categoria", categorias, "Seleccionar...", new { @class = "custom-select", required = "required", @onchange = "this.form.submit();" })
+                        </div>
+                        @if (Model.Competicion.Equals(LigamaniaConst.Competicion_Copa))
+                        {
+                            if (Model.JornadaActual % 2 == 0 && Model.Jornada % 2 == 0)
+                            {
+                                var jornadaIda = Model.JornadaActual - 1;
+                                <div>
+                                    <a class="nav-link" asp-area="" asp-controller="EntrenadorC" asp-action="Carrusel" title="Jornada de Ida"
+                                       asp-route-competicion="@Model.Competicion"
+                                       asp-route-categoria="@Model.Categoria"
+                                       asp-route-jornada="@jornadaIda">Jornada de ida</a>
+                                </div>
+                            }
+                            else if (Model.JornadaActual % 2 == 0 && Model.Jornada % 2 != 0)
+                            {
+                                var jornadaVuelta = Model.JornadaActual;
+                                <div>
+                                    <a class="nav-link" asp-area="" asp-controller="EntrenadorC" asp-action="Carrusel" title="Jornada de Ida"
+                                       asp-route-competicion="@Model.Competicion"
+                                       asp-route-categoria="@Model.Categoria"
+                                       asp-route-jornada="@jornadaVuelta">Jornada de vuelta</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="card-body d-flex justify-content-start flex-wrap">
+                    @foreach (var partido in partidos)
+                    {
+                        @await Html.PartialAsync("_partidoCarrusel", partido)
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@*jQuery para refrescar página cada 30 seg*@
+<script type="text/javascript">
+    var idleInterval = setInterval("reloadPage()", 300000);//10 minutos
+    function reloadPage() {
+        location.reload();
+    }
+</script>

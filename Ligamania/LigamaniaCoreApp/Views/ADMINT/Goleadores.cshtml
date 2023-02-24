@@ -1,0 +1,201 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+@using  LigamaniaCoreApp.Models.AdminViewModels
+@model GoleadoresViewModel
+
+@{
+    ViewData["Title"] = "Goleadores";
+    var jugadores = new List<TemporadaJornadaJugadorViewModel>();
+    var titulo = "Goleadores";
+    var clubs = await ligamaniaService.GetAllClubs(true);
+    var competicionesActivas = await ligamaniaService.GetCompeticionesActivasStr();
+
+    if (Model != null)
+    {
+        var selectedClub = Model.Club;
+        clubs = await ligamaniaService.GetAllClubs(true, selectedClub);
+        if (Model.Jugadores != null) { jugadores = Model.Jugadores.OrderBy(j => j.OrdenPuesto).ThenBy(j => j.Jugador).ToList(); }
+        if (Model.Fecha != DateTime.MinValue)
+        {
+            titulo = "Goleadores del " + Model.Club + " en la fecha " + Model.Fecha.ToString("dd/MM/yyyy");
+        }
+        else
+        {
+            titulo = "Goleadores del " + Model.Club + " para la jornada carrusel de las competiciones activas";
+        }
+    }
+}
+<h2>@titulo</h2>
+
+<div class="flex-container">
+    <div class="card flex-item-fit">
+        <div class="card-header">
+            <h3>Si no se selecciona una fecha se cargarán los jugadores de la jornada carrusel de todas las competiciones activas</h3>
+            <div class="input-group">
+                <div class="form-group">
+                    <span class="input-group-text" id="basic-addon1">Seleccionar club:</span>
+                    @Html.DropDownList("clubSelected", clubs, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                </div>
+                <button type="button" class="btn btn-primary" id="cargarJugadores">Cargar jugadores</button>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.CompeticionJornada.Any())
+            {
+                <div>
+                    @foreach (var compJor in Model.CompeticionJornada)
+                    {
+                        <p>@compJor.Key - Jornada @compJor.Value</p>
+                    }
+                </div>
+                @(Html
+                        .Grid(jugadores)
+                        .Build(columns =>
+                        {
+                            columns.Add(model => model.Puesto).Titled("Puesto");
+                            columns.Add(model => model.Jugador).Titled("Jugador");
+                            columns.Add(model => $"<button class='goles-favor-menos' data-jugador=\"{model.Jugador}\"> <i class=\"fas fa-minus-circle\"></i><span class=\"sr-only\"></span></button>").Titled("-").Encoded(false);
+                            columns.Add(model => model.GolesFavor).Titled("GF");
+                            columns.Add(model => $"<button class='goles-favor-mas' data-jugador=\"{model.Jugador}\"> <i class=\"fas fa-plus-circle\"></i><span class=\"sr-only\"></span></button>").Titled("+").Encoded(false);
+                            columns.Add(model => $"<button class='goles-contra-menos' data-jugador=\"{model.Jugador}\"> <i class=\"fas fa-minus-circle\"></i><span class=\"sr-only\"></span></button>").Titled("-").Encoded(false);
+                            columns.Add(model => model.GolesContra).Titled("GC");
+                            columns.Add(model => $"<button class='goles-contra-mas' data-jugador=\"{model.Jugador}\"> <i class=\"fas fa-plus-circle\"></i><span class=\"sr-only\"></span></button>").Titled("+").Encoded(false);
+                            columns.Add(model => model.Golden).Titled("Golden");
+                            columns.Add(model => model.SilverA).Titled("Silver A");
+                            columns.Add(model => model.SilverB).Titled("Silver B");
+                            if (competicionesActivas.Contains("Copa"))
+                            {
+                                columns.Add(model => model.Copa).Titled("Copa");
+                            }
+                            if (competicionesActivas.Contains("Supercopa"))
+                            {
+                                columns.Add(model => model.Supercopa).Titled("Supercopa");
+                            }
+                            if (competicionesActivas.Contains("Promocion"))
+                            {
+                                columns.Add(model => model.Promocion).Titled("Promocion");
+                            }
+                        })
+                        .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                        .RowAttributed(model => new { style = model.Eliminado == true ? "background-color:red" : "background-color:transparent" })
+                        .AppendCss("disabled")
+                        .Empty("No hay jugadores")
+                        .Id("ajax-grid-jugadores")
+                        .Pageable(pager =>
+                        {
+                            pager.RowsPerPage = 50;
+                        })
+                        .Filterable()
+                        .Sortable()
+                    )
+            }
+            else
+            {
+                <p>No hay competiciones ACTIVAS y EN JUEGO - No se pueden añadir goles</p>
+            }
+        </div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <script>
+        $(document).ready(function () {
+            var fecha = "@Model.Fecha.ToString("yyyy-MM-dd")";
+            $("#fecha").val(fecha);
+        });
+    </script>
+}
+<script type="text/javascript">
+    $('#cargarJugadores').on('click', function (event) {
+        showSpinner();
+        var fecha = $('#fecha').val();
+        var club = $('#clubSelected').val();
+        if (club != '') {
+            var r = confirm("¿Está seguro de querer cargar los jugadores del club "+club+"?");
+            if (r == true) {
+                var urlToCall = '/ADMINT/GoleadoresClubJornada?club='+club+'&fecha='+fecha;
+                window.location.href = urlToCall;
+            }
+        }
+        else {
+            alert('Debe seleccionar un club');
+        }
+        hideSpinner();
+    });
+
+    $('.goles-favor-mas').on('click', function (event) {
+        showSpinner();
+        var fecha = $('#fecha').val();
+        var jug = this.getAttribute('data-jugador');
+        const goles = {
+            Jugador: jug,
+            Favor: true,
+            Mas: true
+            , Fecha: fecha
+        };
+        golesJugador(goles);
+    });
+    $('.goles-favor-menos').on('click', function (event) {
+        showSpinner();
+        var fecha = $('#fecha').val();
+        var jug = this.getAttribute('data-jugador');
+        const goles = {
+            Jugador: jug,
+            Favor: true,
+            Mas: false
+            , Fecha: fecha
+        };
+        golesJugador(goles);
+    });
+    $('.goles-contra-mas').on('click', function (event) {
+        showSpinner();
+        var fecha = $('#fecha').val();
+        var jug = this.getAttribute('data-jugador');
+        const goles = {
+            Jugador: jug,
+            Favor: false,
+            Mas: true
+            , Fecha: fecha
+        };
+        golesJugador(goles);
+    });
+    $('.goles-contra-menos').on('click', function (event) {
+        showSpinner();
+        var fecha = $('#fecha').val();
+        var jug = this.getAttribute('data-jugador');
+        const goles = {
+            Jugador: jug,
+            Favor: false,
+            Mas: false
+            , Fecha: fecha
+        };
+        golesJugador(goles);
+    });
+    function golesJugador(goles) {
+        var urlToCall = '/ADMINT/GolesJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(goles),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al actualizar el gol");
+                hideSpinner();
+            }
+        }).done(function (response) {
+            alert(response.message);
+            location.reload();
+            hideSpinner();
+        });
+    };
+    function showSpinner() {
+        document.body.style.cursor = 'wait';
+    }
+    function hideSpinner() {
+        document.body.style.cursor = 'arrow';
+    }
+
+    </script>

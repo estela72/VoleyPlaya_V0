@@ -1,0 +1,276 @@
+﻿@model LigamaniaCoreApp.Models.ManagerViewModels.TemporadaEquipoViewModel
+@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+@using LigamaniaCoreApp.Data
+
+@{
+    var porteros = await ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Portero);
+    var defensas = await ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Defensa);
+    var medios = await ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Medio);
+    var delanteros = await ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Delantero);
+
+    var porterosToExclude = new List<string> {  };
+    var listaPorteros = porteros.Where(j=>!porterosToExclude.Contains(j.Text)).ToList();
+
+    var defensas1ToExclude = new List<string> {
+                                               Model.Alineaciones.Defensa2?.JugadorCambio.AliasJugador,  Model.Alineaciones.Defensa2?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Defensa3?.JugadorCambio.AliasJugador,  Model.Alineaciones.Defensa3?.JugadorPrevia.AliasJugador};
+    var listaDefensas1 = defensas.Where(j=>!defensas1ToExclude.Contains(j.Text)).ToList();
+
+    var defensas2ToExclude = new List<string> { Model.Alineaciones.Defensa1?.JugadorCambio.AliasJugador, Model.Alineaciones.Defensa1?.JugadorPrevia.AliasJugador,
+
+                                               Model.Alineaciones.Defensa3?.JugadorCambio.AliasJugador,  Model.Alineaciones.Defensa3?.JugadorPrevia.AliasJugador};
+    var listaDefensas2 = defensas.Where(j=>!defensas2ToExclude.Contains(j.Text)).ToList();
+
+    var defensas3ToExclude = new List<string> { Model.Alineaciones.Defensa1?.JugadorCambio.AliasJugador, Model.Alineaciones.Defensa1?.JugadorPrevia.AliasJugador,
+                                                Model.Alineaciones.Defensa2?.JugadorCambio.AliasJugador, Model.Alineaciones.Defensa2?.JugadorPrevia.AliasJugador
+                                                                                                        };
+    var listaDefensas3 = defensas.Where(j=>!defensas3ToExclude.Contains(j.Text)).ToList();
+
+    var medios1ToExclude = new List<string> {
+                                               Model.Alineaciones.Medio2?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio2?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio3?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio3?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio4?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio4?.JugadorPrevia.AliasJugador};
+    var listaMedios1 = medios.Where(j=>!medios1ToExclude.Contains(j.Text)).ToList();
+    var medios2ToExclude = new List<string> {  Model.Alineaciones.Medio1?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio1?.JugadorPrevia.AliasJugador,
+
+                                               Model.Alineaciones.Medio3?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio3?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio4?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio4?.JugadorPrevia.AliasJugador};
+    var listaMedios2 = medios.Where(j=>!medios2ToExclude.Contains(j.Text)).ToList();
+    var medios3ToExclude = new List<string> {  Model.Alineaciones.Medio1?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio1?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio2?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio2?.JugadorPrevia.AliasJugador,
+
+                                               Model.Alineaciones.Medio4?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio4?.JugadorPrevia.AliasJugador};
+    var listaMedios3 = medios.Where(j=>!medios3ToExclude.Contains(j.Text)).ToList();
+    var medios4ToExclude = new List<string> {  Model.Alineaciones.Medio1?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio1?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio2?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio2?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Medio3?.JugadorCambio.AliasJugador, Model.Alineaciones.Medio3?.JugadorPrevia.AliasJugador
+                                                                                                     };
+    var listaMedios4 = medios.Where(j=>!medios4ToExclude.Contains(j.Text)).ToList();
+
+    var delanteros1ToExclude = new List<string> {
+                                               Model.Alineaciones.Delantero2?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero2?.JugadorPrevia.AliasJugador,
+                                               Model.Alineaciones.Delantero3?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero3?.JugadorPrevia.AliasJugador};
+    var listaDelanteros1 = delanteros.Where(j=>!delanteros1ToExclude.Contains(j.Text)).ToList();
+    var delanteros2ToExclude = new List<string> { Model.Alineaciones.Delantero1?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero1?.JugadorPrevia.AliasJugador,
+
+                                                  Model.Alineaciones.Delantero3?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero3?.JugadorPrevia.AliasJugador};
+    var listaDelanteros2 = delanteros.Where(j=>!delanteros2ToExclude.Contains(j.Text)).ToList();
+    var delanteros3ToExclude = new List<string> { Model.Alineaciones.Delantero1?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero1?.JugadorPrevia.AliasJugador,
+                                                  Model.Alineaciones.Delantero2?.JugadorCambio.AliasJugador, Model.Alineaciones.Delantero2?.JugadorPrevia.AliasJugador
+                                                 };
+    var listaDelanteros3 = delanteros.Where(j=>!delanteros3ToExclude.Contains(j.Text)).ToList();
+
+    var jornadaActual = await ligamaniaService.GetJornadaActual();
+    var jugadoresEliminados = await ligamaniaService.GetJugadoresEliminados();
+    var jugadoresEliminadosJornada = jugadoresEliminados.Where(j => j.JornadaEliminado.Equals(jornadaActual)).ToList();
+
+    var listaEliminados = jugadoresEliminados.Select(j => j.Jugador).ToList();
+    var listaEliminadosJornada = jugadoresEliminadosJornada.Select(j => j.Jugador).ToList();
+
+    var numJugadoresEliminadosJornada = Model.Alineaciones.Previa==null ? 0 : Model.Alineaciones.Previa.Count(a=>listaEliminadosJornada.Contains(a.Jugador));
+
+    var texto = "Alineación Actual";
+    var numJugAlineados = 0;
+    if (Model.Alineaciones.AlineacionInicalActivo) { texto = "Alineación Inicial"; numJugAlineados = Model.Alineaciones.Cambios.Count; }
+    else if (Model.Alineaciones.CambiosActivo) { texto = "Cambios"; }
+
+    var numCambiosTotales = Model.MaxCambiosFijosPosibles + numJugadoresEliminadosJornada;
+}
+<div class="flex-container">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h3 class="card-title">@Model.Competicion - @Model.Equipo - @texto</h3>
+            @if (Model.Alineaciones.AlineacionInicalActivo && numJugAlineados != 11)
+            {
+                <div class="card-title" style="color:red">Alineación Incompleta. Recuerda seleccionar los 11 jugadores</div>
+            }
+            else if (Model.Alineaciones.AlineacionInicalActivo)
+            {
+                <div class="card-title" style="color:red">Alineación Completa</div>
+            }
+            else if (Model.Alineaciones.CambiosActivo)
+            {
+                <div class="card-title" style="color:yellowgreen">Puedes realizar @numCambiosTotales cambios: <strong>@Model.MaxCambiosFijosPosibles cambios ordinarios </strong> y <strong>@numJugadoresEliminadosJornada extras </strong> por jugadores eliminados en la última jornada  </div>
+                <div class="card-title" style="color:yellowgreen">Llevas realizados <strong style="color:red;">Llevas realizados @Model.Alineaciones.NumCambiosFijosRealizados cambios ordinarios y @Model.Alineaciones.NumCambiosExtrasRealizados cambios extras.</strong></div>
+            }
+            else
+            {
+                <div class="card-title" style="color:red;font-weight:bold;font-size:3rem">Alineaciones y cambios cerrados</div>
+            }
+            @if (!Model.RepetirClub)
+            {
+                <div class="card-title" style="color:yellow;font-weight:bold;font-size:3rem">Recuerda que no se debe repetir jugadores del mismo club</div>
+            }
+            </div>
+        <div class="card-body" style="background-image: url('/images/campo-de-futbol-784442.jpeg');background-repeat: no-repeat; background-size: 100% 100%">
+            <div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Medio1, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Medio1" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaMedios1 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Defensa1, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Defensa1" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDefensas1 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Delantero1, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Delantero1" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDelanteros1 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Medio2, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Medio2" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaMedios2 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Portero, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Portero" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaPorteros },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Defensa2, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Defensa2" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDefensas2 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Delantero2, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Delantero2" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDelanteros2 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Medio3, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Medio3" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaMedios3 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                </div>
+                <div class="row" @*style="height:75px"*@>
+                    <div class="col"></div>
+                    <div class="col">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Defensa3, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Defensa3" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDefensas3 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col"></div>
+                    <div class="col">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Delantero3, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Delantero3" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaDelanteros3 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3">
+                        @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Medio4, viewData: new ViewDataDictionary(ViewData)
+                        {   { "puesto", "Medio4" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaMedios4 },
+                            { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                        })
+                    </div>
+                    <div class="col col-lg-3 col-md-3 col-sm-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-dark text-white">
+            @if (Model.Alineaciones.AlineacionInicalActivo)
+            {
+                <h3>Guía para hacer una Alineación Inicial</h3>
+                <ul>
+                    <li>@Html.Label("labelText", "[Lista de jugadores para seleccionar un jugador]", new { @style = "background-color:white;color:black" })</li>
+                    <li>
+                        @Html.Label("labelText", "[Lista de jugadores para seleccionar un jugador ya cambiado]", new { @style = "background-color:yellow;color:black" })
+                    </li>
+                    <li>
+                        @Html.Label("labelText", "[Jugador Eliminado]", new { @style = "background-color:cyan;color:red" })
+                    </li>
+                    <li>
+                        @if (!Model.RepetirClub)
+                        {
+                            <h4 style="color:red;font-weight:bold;font-size:3rem">Recuerda que no se debe repetir jugadores del mismo club. ¡¡Modifica los jugadores de clubs REPETIDOS!!</h4>
+                        }
+                        else
+                        {
+                            <h4 style="color:red;font-weight:bold;font-size:3rem">La alineación inicial de jugadores es TOTALMENTE LIBRE </h4>
+                        }
+                    </li>
+                    <li>
+                        <h4>Si la competición ya comenzó y no hiciste aún tu primera alineación,  ten cuidado con los jugadores ELIMINADOS!</h4>
+                    </li>
+                    <li> <h4>Los jugadores se van almacenando segun se van seleccionando</h4></li>
+                </ul>
+            }
+            else if (Model.Alineaciones.CambiosActivo)
+            {
+                <h3>Guía para hacer cambios</h3>
+                <ul>
+                    <li>@Html.Label("labelText","[Jugador alineación jornada anterior]", new { @style = "border:none;color:yellow" })</li>
+                    <li>@Html.Label("labelText","[Jugador ELIMINADO jornada actual]", new { @style = "border:none;background-color:cyan;color:red" })</li>
+                    <li>@Html.Label("labelText","[Jugador ELIMINADO jornadas previas]", new { @style = "border:none;background-color:red;color:white" })</li>
+                    @*<li>@Html.Label("labelText","[Cambios ordinarios]", new { @style = "background-color:white;color:black" })</li>
+                    <li>@Html.Label("labelText","[Cambios extraordinarios]", new { @style = "background-color:red;color:yellow" })</li>
+                    <li>@Html.Label("labelText","[Cambios ordinarios para jugadores eliminados]", new { @style = "background-color:cyan;color:red" })</li>*@
+                    <li>@Html.Label("labelText","[Cambio realizado]", new { @style = "background-color:yellow;color:blue" })</li>
+                    @*<li>@Html.Label("labelText","[Cambios ordinarios finalizados]", new { @style = "background-color:grey;color:white" })</li>*@
+                    <li>
+                        <a href='#' style="color:yellow">
+                            [Eliminar un cambio]
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="sr-only"></span>
+                        </a> /
+                        <a href='#' style="color:Cyan">
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    <li><h4>Sólo se permite realizar 3 cambios ordinarios por jornada, además de los cambios de todos los jugadores eliminados en la jornada anterior</h4></li>
+                    <li><h4>Si no cambias un jugador eliminado, durante las siguientes jornadas sólo lo podrás cambiar contando como uno de los 3 cambios ordinarios!</h4></li>
+                    <li><h4>Los cambios se van almacenando automáticamente según se van realizando</h4></li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
+<hr />

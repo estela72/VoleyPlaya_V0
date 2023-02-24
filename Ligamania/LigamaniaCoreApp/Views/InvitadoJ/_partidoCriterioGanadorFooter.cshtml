@@ -1,0 +1,18 @@
+﻿@using  LigamaniaCoreApp.Models.ManagerViewModels
+@model IGrid<AlineacionViewModel>
+@{
+    var verCriterioParam = "false";
+    if (ViewData["verCriterio"] != null) { verCriterioParam = ViewData["verCriterio"].ToString(); }
+    var verCriterio = (verCriterioParam == "true") ? true : false;
+    if (verCriterio)
+    {
+        <tr>
+            <td colspan="3"><b>Totales</b></td>
+            <td><b>@(Model.Rows.Sum(row => row.Model.GF))</b></td>
+            <td><b>@(Model.Rows.Sum(row => row.Model.GC))</b></td>
+            <td><b>@(Model.Rows.Sum(row => row.Model.MinutosJugados))</b></td>
+            <td><b>@(Model.Rows.Sum(row => row.Model.TarjetasRojas))</b></td>
+            <td><b>@(Model.Rows.Sum(row => row.Model.TarjetasAmarillas))</b></td>
+        </tr>
+        }
+    }

@@ -1,0 +1,23 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<JugadorEliminadoViewModel>
+@{
+    if (Model.Any())
+    {
+        <h4 class="text-center">Jugadores eliminados</h4>
+
+            @(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Jugador).Titled("Jugador");
+                    columns.Add(model => model.JornadaEliminado).Titled("Jor Eli");
+                    columns.Add(model => model.JornadaVuelta).Titled("Jor Vuelta");
+
+                    columns.Add(model => model.VecesEliminado).Titled("Nº Elim");
+                })
+                .Empty("No hay jugadores eliminados")
+                .Id("ajax-grid-jugeli")
+                .Css("grid-jug-eli")
+        )
+     }
+}

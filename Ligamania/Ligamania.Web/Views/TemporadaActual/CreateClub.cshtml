@@ -1,0 +1,32 @@
+﻿@model ClubVM
+@{
+    var col = "collapse";
+    if (Model.Error) { col = "show"; }
+    var colHor = String.Concat(col, " collapse-horizontal");
+
+}
+<div class="card-header">
+        <div class="btn-group m-2">
+            <button type="button" class="btn-info m-2" data-bs-toggle=@col data-bs-target="#collapseNuevoDocumento" aria-expanded="false" aria-controls="collapseNuevoCalendario">Nuevo club</button>
+        </div>
+    </div>
+    <div class=@colHor id="collapseNuevoDocumento">
+        <div class="card card-body">
+            <form asp-action="CreateClub" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Club" class="control-label"></label>
+                    <input asp-for="Club" class="form-control" />
+                    <span asp-validation-for="Club" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Alias" class="control-label"></label>
+                    <input asp-for="Alias" class="form-control" />
+                    <span asp-validation-for="Alias" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Crear" class="btn btn-primary m-2" />
+                </div>
+            </form>
+        </div>
+    </div>

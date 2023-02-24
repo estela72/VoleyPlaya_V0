@@ -1,0 +1,145 @@
+﻿@using LigamaniaCoreApp.Models.ManagerViewModels;
+@using LigamaniaCoreApp.Data;
+@using LigamaniaCoreApp.Helpers;
+@using LigamaniaCoreApp.Models.ConfigViewModels;
+
+@model TemporadaPartidoRondaViewModel;
+
+@{
+    var criteriosValues = EnumHelper<LigamaniaEnum.eCriteriosGanador>.GetValues(LigamaniaEnum.eCriteriosGanador.Ninguno).ToList();
+    var criterios = new List<ValorDescViewModel>();
+    foreach(var criterio in criteriosValues)
+    {
+        var desc = EnumHelper<LigamaniaEnum.eCriteriosGanador>.GetDisplayValue(criterio);
+        ValorDescViewModel critDesc = new ValorDescViewModel(criterio.ToString(), desc);
+        criterios.Add(critDesc);
+    }
+}
+
+    <h2>Establecer el ganador del partido</h2>
+
+    @if (Model == null)
+    {
+        <div>
+            <h1>Error al obtener información del partido</h1>
+        </div>
+    }
+    else
+    {
+        <div class="card-body d-flex justify-content-start flex-wrap">
+            <h3>Partido de IDA - Jornada @Model.PartidoIda.Jornada</h3>
+            @await Html.PartialAsync("_partidoCarrusel", Model.PartidoIda, viewData: new ViewDataDictionary(ViewData) { { "editable", "true" }, { "verCriterio", "true" }, { "jornada", Model.PartidoIda.JornadaId } })
+        </div>
+
+        <div class="card-body d-flex justify-content-start flex-wrap">
+            <h3>Partido de VUELTA - Jornada @Model.PartidoVuelta.Jornada</h3>
+            @await Html.PartialAsync("_partidoCarrusel", Model.PartidoVuelta, viewData: new ViewDataDictionary(ViewData) { { "editable", "true" }, { "verCriterio", "true" }, { "jornada", Model.PartidoVuelta.JornadaId } })
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">
+                <h3>Después de rellenar minutos, tarjetas rojas y amarillas, se puede establecer el ganador del partido por alguno de los criterios establecidos</h3>
+                <button class="btn btn-primary" id="calculaGanador">Calcular ganador</button>
+            </div>
+
+            <div class="panel-body">
+                <hr />
+                <div id="ganadorManualPanel" class="alert-info" style="visibility:hidden;padding:3em;border:groove">
+                    <h3>Establecer manualmente el ganador del partido (imposible aplicar uno de los criterios conocidos)</h3>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        Ganador:
+                        <label class="btn btn-primary">
+                            @Html.RadioButton("ganador", Model.EquipoA) @Model.EquipoA
+                        </label>
+                        <label class="btn btn-primary">
+                            @Html.RadioButton("ganador", Model.EquipoB) @Model.EquipoB
+                        </label>
+                    </div>
+                    Criterio: @Html.DropDownList("criterio",new SelectList(criterios,"Valor","Descripcion"),"Seleccionar un criterio manualmente")
+                    <button class="btn btn-primary" id="confirmaGanadorManual">Establecer Ganador Manualmente</button>
+                </div>
+
+                <hr />
+                <h3>Criterios</h3>
+                @(Html
+                        .Grid(criterios)
+                            .Build(columns =>
+                            {
+                                columns.Add(model => model.Valor).Titled("Criterio");
+                                columns.Add(model => model.Descripcion).Titled("Descripción");
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .Empty("No hay criterios")
+                            .Id("ajax-grid-criterios")
+                )
+            </div>
+        </div>
+    }
+ <script type="text/javascript">
+    $("#calculaGanador").on("click", function (event) {
+        var idInfo = "@Model.Id";
+        var infoPartidos = {
+            Id: idInfo
+        };
+        var urlToCall = '/ADMINT/SetCriterioGanadorPartido';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(infoPartidos),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            async:false,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al buscar el criterio ganador");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                urlToCall = "/ADMINT/GanadoresPartidosCopa";
+                window.location.href = urlToCall;
+            }
+            else {
+                document.getElementById('ganadorManualPanel').style.visibility = 'visible';
+            }
+        });
+        event.stopImmediatePropagation();
+    });
+     $("#confirmaGanadorManual").on("click", function (event) {
+         var idInfo = "@Model.Id";
+         if ($('input[name="ganador"]:checked').length > 0) {
+             var equipoGanador = $('input[name="ganador"]:checked').val();
+             var criterio = $("#criterio option:selected").val();
+             var infoPartidos = {
+                 Id: idInfo,
+                 Ganador: equipoGanador,
+                 Criterio: criterio
+             };
+             var urlToCall = '/ADMINT/SetGanadorPartidoManual';
+             $.ajax({
+                 type: "POST",
+                 data: JSON.stringify(infoPartidos),
+                 url: urlToCall,
+                 contentType: "application/json; charset=utf-8",
+                 processData: true,
+                 async: false,
+                 cache: false,
+                 dataType: 'json',
+                 error: function (response) {
+                     alert("Error al establecer el ganador manualmente: " + equipoGanador);
+                 }
+             }).done(function (response) {
+                 alert(response.message);
+                 if (response.result) {
+                     urlToCall = "/ADMINT/GanadoresPartidosCopa";
+                     window.location.href = urlToCall;
+                 }
+             });
+         }
+         else {
+             alert("Debe seleccionar un equipo para establecerlo como GANADOR del partido")
+         }
+        event.stopImmediatePropagation();
+     });
+</script>

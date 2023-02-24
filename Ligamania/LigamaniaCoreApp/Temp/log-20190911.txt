@@ -1,0 +1,90 @@
+2019-09-11 21:49:13.890 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/  
+2019-09-11 21:49:13.895 +02:00 [Information] Request starting HTTP/1.1 DEBUG http://localhost:56034/  0
+2019-09-11 21:49:18.190 +02:00 [Information] Request finished in 3591.3787ms 200 
+2019-09-11 21:49:22.576 +02:00 [Information] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "LigamaniaCoreApp.Controllers.HomeController" ("LigamaniaCoreApp").
+2019-09-11 21:49:39.118 +02:00 [Warning] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.
+2019-09-11 21:49:39.773 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2019-09-11 21:49:41.834 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" - Validation state: Valid
+2019-09-11 21:49:41.843 +02:00 [Information] Entrando en Ligamania:(
+2019-09-11 21:49:41.860 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 10.5365ms.
+2019-09-11 21:49:42.002 +02:00 [Information] Executing ViewResult, running view "Index".
+2019-09-11 21:49:42.878 +02:00 [Warning] Query: '"(from Settings_DTO <generated>_1 in DbSet<Settings_DTO> select [<generated>_1]).FirstOrDefault()"' uses First/FirstOrDefault/Last/LastOrDefault operation without OrderBy and filter which may lead to unpredictable results.
+2019-09-11 21:49:47.803 +02:00 [Information] Executed DbCommand ("1,621"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [s].[Id], [s].[Clasificacion_RotuloCopa], [s].[CreatedBy], [s].[CreatedDate], [s].[NumeroJornadasVolverEliminados], [s].[TemporadaPremios], [s].[UpdatedBy], [s].[UpdatedDate], [s].[Ver_CuadroCopa], [s].[Ver_EquiposPretemporada], [s].[Ver_Noticias]
+FROM [Settings] AS [s]"
+2019-09-11 21:49:50.902 +02:00 [Information] Executed DbCommand ("1,456"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2019-09-11 21:49:51.594 +02:00 [Information] Executed DbCommand ("519"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2019-09-11 21:49:51.820 +02:00 [Information] Executed DbCommand ("195"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2019-09-11 21:49:52.026 +02:00 [Information] Executed DbCommand ("198"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2019-09-11 21:49:52.211 +02:00 [Information] Executed DbCommand ("175"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2019-09-11 21:49:52.407 +02:00 [Information] Executed ViewResult - view "Index" executed in 10473.4251ms.
+2019-09-11 21:49:52.621 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" in 29829.8769ms
+2019-09-11 21:49:52.854 +02:00 [Information] Request finished in 38840.2604ms 200 text/html; charset=utf-8
+2019-09-11 21:49:52.924 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery-validation/dist/jquery.validate.js  
+2019-09-11 21:49:53.059 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/bootstrap4/css/bootstrap.css  
+2019-09-11 21:49:53.090 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery-validation/dist/additional-methods.js  
+2019-09-11 21:49:53.198 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/bootstrap4/css/bootstrap-grid.css  
+2019-09-11 21:49:53.286 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery/dist/jquery.js  
+2019-09-11 21:49:53.294 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js  
+2019-09-11 21:49:53.400 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap-grid.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap-grid.css"'
+2019-09-11 21:49:53.409 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/bootstrap4/css/bootstrap-reboot.css  
+2019-09-11 21:49:53.412 +02:00 [Information] Request finished in 317.3484ms 200 text/css
+2019-09-11 21:49:53.420 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/css/site.css  
+2019-09-11 21:49:53.444 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery-ui/jquery-ui.css  
+2019-09-11 21:49:53.504 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/css/MvcGrid/mvc-grid.css  
+2019-09-11 21:49:53.556 +02:00 [Information] Sending file. Request path: '"/lib/jquery-validation/dist/jquery.validate.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery-validation\dist\jquery.validate.js"'
+2019-09-11 21:49:54.736 +02:00 [Information] Sending file. Request path: '"/lib/jquery-validation/dist/additional-methods.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery-validation\dist\additional-methods.js"'
+2019-09-11 21:49:54.737 +02:00 [Information] Request finished in 751.1989ms 200 application/javascript
+2019-09-11 21:49:55.679 +02:00 [Information] Sending file. Request path: '"/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js"'
+2019-09-11 21:49:56.128 +02:00 [Information] Request finished in 1721.0882ms 200 application/javascript
+2019-09-11 21:49:56.652 +02:00 [Information] Request finished in 2487.7434ms 200 application/javascript
+2019-09-11 21:49:57.274 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/jquery-ui/jquery-ui.js  
+2019-09-11 21:49:57.810 +02:00 [Information] Sending file. Request path: '"/css/site.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\css\site.css"'
+2019-09-11 21:49:58.362 +02:00 [Information] Sending file. Request path: '"/lib/jquery-ui/jquery-ui.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery-ui\jquery-ui.css"'
+2019-09-11 21:49:58.699 +02:00 [Information] Request finished in 4401.0058ms 200 text/css
+2019-09-11 21:49:59.034 +02:00 [Information] Request finished in 4949.943ms 200 text/css
+2019-09-11 21:49:59.254 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap-reboot.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap-reboot.css"'
+2019-09-11 21:49:59.543 +02:00 [Information] Sending file. Request path: '"/css/MvcGrid/mvc-grid.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\css\MvcGrid\mvc-grid.css"'
+2019-09-11 21:49:59.885 +02:00 [Information] Request finished in 6099.0883ms 200 text/css
+2019-09-11 21:50:00.344 +02:00 [Information] Request finished in 5859.3482ms 200 text/css
+2019-09-11 21:50:01.526 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap.css"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap.css"'
+2019-09-11 21:50:02.280 +02:00 [Information] Sending file. Request path: '"/lib/jquery/dist/jquery.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery\dist\jquery.js"'
+2019-09-11 21:50:03.088 +02:00 [Information] Request finished in 8581.9442ms 200 text/css
+2019-09-11 21:50:03.191 +02:00 [Information] Request finished in 9201.7627ms 200 application/javascript
+2019-09-11 21:50:03.676 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/images/ligamania-logo.png  
+2019-09-11 21:50:03.685 +02:00 [Information] Sending file. Request path: '"/lib/jquery-ui/jquery-ui.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\jquery-ui\jquery-ui.js"'
+2019-09-11 21:50:04.286 +02:00 [Information] Request finished in 7033.262ms 200 application/javascript
+2019-09-11 21:50:04.514 +02:00 [Information] Sending file. Request path: '"/images/ligamania-logo.png"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\images\ligamania-logo.png"'
+2019-09-11 21:50:04.869 +02:00 [Information] Request finished in 1800.3049ms 200 image/png
+2019-09-11 21:50:05.590 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/lib/bootstrap4/js/bootstrap.js  
+2019-09-11 21:50:06.387 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0  
+2019-09-11 21:50:07.172 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/js/MvcGrid/mvc-grid.js  
+2019-09-11 21:50:07.590 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44330/Images/cabecera_ligamania.jpg  
+2019-09-11 21:50:07.645 +02:00 [Information] Sending file. Request path: '"/js/MvcGrid/mvc-grid.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\js\MvcGrid\mvc-grid.js"'
+2019-09-11 21:50:07.680 +02:00 [Information] Sending file. Request path: '"/js/site.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\js\site.js"'
+2019-09-11 21:50:07.696 +02:00 [Information] Request finished in 2627.0713ms 200 application/javascript
+2019-09-11 21:50:07.761 +02:00 [Information] Request finished in 2887.2384ms 200 application/javascript
+2019-09-11 21:50:08.127 +02:00 [Information] Sending file. Request path: '"/Images/cabecera_ligamania.jpg"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\Images\cabecera_ligamania.jpg"'
+2019-09-11 21:50:08.622 +02:00 [Information] Request finished in 1079.776ms 200 image/jpeg
+2019-09-11 21:50:08.709 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js"'. Physical path: '"C:\Users\egonz\Source\Workspaces\Ligamania_Project\Dev\LIGAMANIA 2019\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js"'
+2019-09-11 21:50:08.912 +02:00 [Information] Request finished in 3916.6351ms 200 application/javascript

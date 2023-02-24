@@ -1,0 +1,314 @@
+﻿@using LigamaniaCoreApp.Data;
+@model LigamaniaCoreApp.Models.ManagerViewModels.TemporadaCompeticionViewModel
+
+@{
+    ViewData["Title"] = "Panel de Control";
+    var estado = Model.EstadoCompeticion;
+
+    bool abrirAliEnabled = false;
+    bool cerrarAliEnabled = false;
+    bool pubCarrAIEnabled = false;
+
+    if (estado == "" || estado == null || estado == LigamaniaConst.JI_EstadoInicial) { abrirAliEnabled = true; }
+    if (estado == LigamaniaConst.JI_AbrirAli) { cerrarAliEnabled = true; }
+    if (estado == LigamaniaConst.JI_CerrarAli) { pubCarrAIEnabled = true; }
+
+    bool resultadosEnabled = false;
+    bool clasificacionEnabled = false;
+    bool cambiarJornadaEnabled = false;
+    bool cerrarJornadaEnabled = false;
+
+    if (estado == LigamaniaConst.JI_PubCarr) { resultadosEnabled = true; }
+    if (estado == LigamaniaConst.CJ_Resultados || estado == LigamaniaConst.AJ_Resultados) { clasificacionEnabled = true; }
+    if (estado == LigamaniaConst.CJ_Clasif) { cerrarJornadaEnabled= true; }
+    if (estado == LigamaniaConst.CJ_CerrarJornada) { cambiarJornadaEnabled= true; }
+    if (estado == LigamaniaConst.AJ_CambJor) { abrirAliEnabled  = true; }
+}
+
+<h2>@Model.Competicion - Panel de Control - Supercopa</h2>
+<div class="text-danger">Jornada Carrusel: <strong>@Model.JornadaCarrusel</strong></div>
+<div class="text-danger">Jornada Actual  : <strong>@Model.JornadaActual</strong></div>
+<div class="flex-container">
+    <div class="flex-item-bold-center col-12">
+        <div class="card col-12 border-primary mt-2">
+            <div class="card-header">
+                <h3>Alineación inicial (al inicio de la competición)</h3>
+            </div>
+            <div class="card-body">
+                <div class="btn-group" role="group" aria-label="Toolbar with button groups">
+                    <button type="button" class="btn btn-primary mr-3" id="abrirAlineaciones" @(abrirAliEnabled ? "active" : "disabled")>Abrir alineaciones</button>
+                    <button type="button" class="btn btn-primary mr-3" id="cerrarAlineaciones" @(cerrarAliEnabled ? "active" : "disabled")>Cerrar alineaciones</button>
+                    <button type="button" class="btn btn-primary mr-3" id="publicarCarruselAI" @(pubCarrAIEnabled ? "active" : "disabled")>Publicar carrusel</button>
+                </div>
+            </div>
+        </div>
+        <div class="card col-12 border-primary mt-2">
+            <div class="card-header">
+                <h3>Cerrar jornada (Lunes/Martes)</h3>
+            </div>
+            <div class="card-body">
+                <div class="btn-group" role="group" aria-label="Toolbar with button groups">
+                    <button type="button" class="btn btn-warning mr-3" id="resultados" @(resultadosEnabled ? "active" : "disabled")>Resultados</button>
+                    <button type="button" class="btn btn-warning mr-3" id="clasificacion" @(clasificacionEnabled ? "active" : "disabled")>Clasificación</button>
+                    <button type="button" class="btn btn-warning mr-3" id="cerrarJornada" @(cerrarJornadaEnabled ? "active" : "disabled")>Cerrar jornada</button>
+                    <button type="button" class="btn btn-warning mr-3" id="cambiarJornada" @(cambiarJornadaEnabled ? "active" : "disabled")>Cambiar jornada</button>
+                </div>
+
+                <div class="btn-group">
+                    <h4>
+                        <strong>
+                            Una vez cerrada la jornada, si hay que añadir un nuevo partido, ir a la página 'Gestionar - Preparar Competición - Supercopa' y añadir una nueva jornada y partido.
+                            Volver al Panel de Control a 'Cambiar Jornada' y 'Abrir alineaciones' nuevamente
+                        </strong>
+                    </h4>
+                    @Html.ActionLink("Ir a Gestionar/Preparar Competición Supercopa", "PrepararCategoriaTemporada", "ManagerC", new { idCompeticion = 2, idCategoria = 5 });
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$('#abrirAlineaciones').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var id = "@Model.Id";
+    var r = confirm("¿Está seguro de querer ABRIR ALINEACIONES en "+competicion+"?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+        Id: id,
+        Competicion: competicion,
+        EstadoCompeticion: "",
+        TipoCompeticion: "Liga"
+    };
+    var urlToCall = '/ADMINT/AbrirAlineaciones';
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(compCat),
+        url: urlToCall,
+        contentType: "application/json; charset=utf-8",
+        processData: true,
+        cache: false,
+        dataType: 'json',
+        error: function () {
+            alert("Error al abrir alineaciones" + competicion);
+                hideSpinner();
+        }
+    }).done(function (response) {
+        if (response.result) {
+            alert(response.message);
+            location.reload();
+        }
+        else {
+            alert(response.message);
+        }
+                hideSpinner();
+    });
+}
+});
+$('#cerrarAlineaciones').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var r = confirm("¿Está seguro de querer CERRAR ALINEACIONES?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion
+        };
+        var urlToCall = '/ADMINT/CerrarAlineaciones';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al cerrar alineaciones" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+$('#publicarCarruselAI').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var estadoCompeticion = "@estado";
+    var r = confirm("¿Está seguro de querer PUBLICAR EL CARRUSEL?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion,
+            EstadoCompeticion: estadoCompeticion
+        };
+        var urlToCall = '/ADMINT/PublicarCarrusel';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al publicar carrusel" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+$('#resultados').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var r = confirm("¿Está seguro de querer calcular los resultados de los partidos la última jornada?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion
+        };
+        var urlToCall = '/ADMINT/CalcularResultados';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al calcular resultados" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+$('#clasificacion').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var r = confirm("¿Está seguro de querer calcular la clasificación?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion
+        };
+        var urlToCall = '/ADMINT/ActualizarClasificacion';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al calcular clasificación" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+$('#cambiarJornada').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var r = confirm("¿Está seguro de querer CAMBIAR JORNADA?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion
+        };
+        var urlToCall = '/ADMINT/CambiarJornada';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al cambiar jornada" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+$('#cerrarJornada').on('click', function (event) {
+    var competicion = "@Model.Competicion";
+    var r = confirm("¿Está seguro de querer CERRAR JORNADA?");
+    if (r == true) {
+        showSpinner();
+        const compCat = {
+            Competicion: competicion
+        };
+        var urlToCall = '/ADMINT/CerrarJornada';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(compCat),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function () {
+                alert("Error al cerrar jornada" + competicion);
+                hideSpinner();
+            }
+        }).done(function (response) {
+            if (response.result) {
+                alert(response.message);
+                location.reload();
+            }
+            else {
+                alert(response.message);
+            }
+                hideSpinner();
+        });
+    }
+});
+function showSpinner() {
+    document.body.style.cursor = 'wait';
+}
+function hideSpinner() {
+    document.body.style.cursor = 'arrow';
+}
+</script>

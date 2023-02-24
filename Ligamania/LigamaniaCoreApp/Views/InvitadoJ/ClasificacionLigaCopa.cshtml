@@ -1,0 +1,16 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<ClasificacionViewModel>
+
+@{
+    Layout = "_LayoutSimple";
+}
+@{
+    <div class="row">
+        @foreach (var categoria in Model)
+        {
+            <div class="col-md-4">
+                @await Html.PartialAsync("_ClasificacionCategoria", categoria)
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,14 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model ClasificacionViewModel
+@(Html
+    .Grid(Model.Premios)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Simbolo).Titled("-").Encoded(false).RenderedAs(model => "<i class='" + model.Simbolo + "'></i><span class='sr-only'></span>");
+        columns.Add(model => model.Descripcion).Titled("Premio");
+    })
+    .RowAttributed(model => new { style= model.UsarColor == true ? "background-color:"+model.HtmlColor : "background-color:transparent" })
+    .Empty("No hay clasificaciones")
+    .Id("ajax-grid-refe")
+    .Css("mvc-grid-clasificaciones")
+)

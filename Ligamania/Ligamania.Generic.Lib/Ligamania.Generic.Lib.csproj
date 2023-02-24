@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Configurations>Debug;Release;Staging</Configurations>
+  </PropertyGroup>
+
+	<!--ItemGroup>
+    <Compile Include="Enums\EstadoEntrenador.cs" />
+    <Compile Include="Enums\EstadoEquipo.cs" />
+    <Compile Include="Enums\EstadoTemporada.cs" />
+    <Compile Include="Enums\EstadoUsuario.cs" />
+    <Compile Include="Enums\PuestoCompeticion.cs" />
+    <Compile Include="Enums\PuestoJugador.cs" />
+    <Compile Include="Enums\TipoCategoria.cs" />
+    <Compile Include="Enums\TipoCompeticion.cs" />
+    <Compile Include="Enums\TipoEntrenador.cs" />
+    <Compile Include="Enums\TipoEquipo.cs" />
+  </ItemGroup>
+    -->
+	
+  <ItemGroup>
+    <None Include="Properties\launchSettings.json" />
+  </ItemGroup>
+
+</Project>

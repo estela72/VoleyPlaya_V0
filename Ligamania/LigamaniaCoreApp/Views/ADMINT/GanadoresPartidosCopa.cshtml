@@ -1,0 +1,73 @@
+﻿@using LigamaniaCoreApp.Models.ManagerViewModels;
+@model TemporadaRondaPartidos;
+
+@{
+    ViewData["Title"] = "Ganadores Partidos de Copa";
+}
+    <h2>Ganadores Partidos de Copa - Ronda @Model.Ronda [Jornada Ida: @Model.JornadaIda - Jornada Vuelta: @Model.JornadaVuelta]</h2>
+
+<div class="flex-container">
+    <div class="flex-item-bold-center col-12">
+        <div class="card col-12 border-primary mt-2">
+            <div class="card-body">
+                @(Html
+                        .Grid(@Model.Partidos)
+                            .Build(columns =>
+                            {
+                                //columns.Add(model => model.PartidoIda.NumeroPartido).Titled("Nº partido");
+                                columns.Add(model => model.EquipoA).Titled("Equipo A");
+                                columns.Add(model => model.EquipoB).Titled("Equipo B");
+                                columns.Add(model => model.PartidoIda.ResultadoA + "-" + model.PartidoIda.ResultadoB).Titled("Resultado IDA");
+                                columns.Add(model => model.PartidoVuelta.ResultadoB + "-" + model.PartidoVuelta.ResultadoA).Titled("Resultado VUELTA");
+                                columns.Add(model => model.Ganador).Titled("Ganador");
+                                columns.Add(model => model.Criterio).Titled("Criterio");
+                                columns.Add(model => model.Ganador.Equals(LigamaniaConst.SinDefinir)||string.IsNullOrEmpty(model.Ganador)||model.Criterio.Equals(LigamaniaConst.SinDefinir)||model.Criterio.Equals(LigamaniaEnum.eCriteriosGanador.Ninguno.ToString()) ?
+                                    $"<button onclick='setGanador(\"{model.Id}\")'> Establece Ganador </button>": null).Titled("").Encoded(false);
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .Empty("No hay partidos")
+                            .Id("ajax-grid-partidos")
+                            .Pageable(pager =>
+                            {
+                                pager.RowsPerPage = 15;
+                            })
+                            .Filterable()
+                            .Sortable()
+                )
+            </div>
+            <div class="panel-footer">
+                <a class="nav-link" href="~/ADMINT/PanelControlCompeticion&idCompeticion=0&competicion=Copa">Volver al panel de control</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div id="divSearchResult">
+
+</div>*@
+<script type="text/javascript">
+    function setGanador(partidoRondaId) {
+        var urlToCall = '/ADMINT/GanadorPartidoCopa?partidoId='+partidoRondaId;
+        window.location.href = urlToCall;
+
+        //const partido = {
+        //    Id: partidoRondaId
+        //};
+
+        //var urlToCall = '/ADMINT/SetGanadorPartidoRonda';
+        //$.ajax({
+        //    type: "POST",
+        //    data: JSON.stringify(partido),
+        //    url: urlToCall,
+        //    contentType: "application/json; charset=utf-8",
+        //    processData: true,
+        //    cache: false,
+        //    dataType: 'json',
+        //    error: function () {
+        //        alert("Error al cargar el partido " + partidoRondaId);
+        //    }
+        //}).done(function (result) {
+        //    urlToCall = '/ADMINT/GanadorPartidoCopa?partidoId='+partidoRondaId;
+        //    window.location.href = urlToCall;
+        //});
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿@using LigamaniaCoreApp.Models.HerramientasViewModels
+@model ICollection<CambioEquipoViewModel>
+
+@{
+    ViewData["Title"] = "Cambios de equipos";
+}
+<div class="flex-container">
+    @(Html.Grid(Model)
+        .Build(columns =>
+        {
+            columns.Add(model => model.Temporada).Titled("Temporada");
+            columns.Add(model => model.EquipoOriginal).Titled("Equipo");
+            columns.Add(model => model.CambioPor).Titled("Cambio por");
+        })
+        .Css("webgrid-cambios") // Overwrites all classes with the new ones
+        .Empty("No hay cambios de equipos")
+        .Id("ajax-grid-cambios")
+    )
+</div>

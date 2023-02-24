@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using LigamaniaCoreApp.Data.DataModels.Base.Ligamania.Model;
+using LigamaniaCoreApp.Models;
+using LigamaniaCoreApp.Models.AccountViewModels;
+using LigamaniaCoreApp.Models.GlobalViewModels;
+using LigamaniaCoreApp.Models.InvitadoViewModels;
+using LigamaniaCoreApp.Models.ManagerViewModels;
+using LigamaniaCoreApp.Utils;
+
+namespace LigamaniaCoreApp.Services.Interfaces
+{
+    public interface IManagerService
+    {
+        Task<TemporadaViewModel> GetTemporadaViewModelActual();
+        Task<TemporadaViewModel> GetTemporadaViewModelFinalizada();
+        Task<TemporadaViewModel> GetPreTemporadaViewModel();
+        Task<ICollection<TemporadaEquipoViewModel>> GetEquiposViewModelPretemporada();
+        Task<TemporadaDTO> GetTemporadaActual();
+        Task<TemporadaDTO> GetTemporadaFinalizada();
+        Task<TemporadaDTO> GetPreTemporada();
+        Task<ICollection<TemporadaEquipoDTO>> GetEquiposPretemporada();
+        Task<ICollection<TemporadaEquipoDTO>> GetEquiposEnTemporada(int temporadaId);
+
+        Task<ResponseOfTReturn<TemporadaViewModel>> FinalizarTemporada(int temporadaId);
+        Task<Response> CrearTemporada(string nuevaTemporada);
+        Task<Response> AgregarLigaYEquiposPretemporada();
+        Task<Response> PreTemporadaToActual();
+        Task<Response> ConfirmarDesconfirmarTemporada(TemporadaEquipoAccion equipo);
+        Task<Response> PagarTemporada(TemporadaEquipoAccion equipo);
+        //Task<TemporadaDTO> GetTemporada(string temporadaName);
+        Task<Response> DarBajaTemporada(TemporadaEquipoAccion equipo);
+        Task<Response> LimpiarBaseDatos(int id);
+        Task<Response> ConvertirAHistorica(int id);
+        Task<Response> AgregarNuevaNoticia(NoticiaViewModel noticiaVM);
+        Task<Response> EditarNoticia(NoticiaViewModel noticiaVM);
+        Task<Response> BorrarNoticia(NoticiaViewModel noticiaVM);
+        Task<Response> DesactivarTodasNoticias();
+        Task<Response> ActivarTodasNoticias();
+        Task<NoticiaViewModel> GetNoticia(int id);
+        Task<Response> DesactivarNoticia(NoticiaViewModel noticiaVM);
+        Task<int> CheckNuevoEquipo(RegisterViewModel menu);
+        Task<Response> NuevoEquipo(RegisterViewModel menu);
+        Task<List<CompeticionCategoriaViewModel>> GetAllCompeticiones();
+        Task<List<TemporadaCompeticionCategoriaViewModel>> GetCompeticionesActivas(TemporadaDTO temporada);
+        Task<Response> ActivarCompeticion(PreparacionTemporadaViewModel competicionToActivar);
+        Task<Response> DesactivarCompeticion(PreparacionTemporadaViewModel competicionToActivar);
+        Task<Response> ActivarParaComenzarCompeticion(PreparacionTemporadaViewModel competicionToActivar);
+        Task<Response> EditarCompeticion(TemporadaCompeticionCategoriaViewModel competicion);
+        Task<TemporadaCompeticionCategoriaViewModel> GetInfoCompeticionCategoria(int idCompeticion, int idCategoria);
+        Task<Response> CopiarEquipos(PreparacionTemporadaViewModel copiarEquipos);
+        Task<Response> AgregarEquipo(PreparacionTemporadaViewModel equipo);
+        Task<Response> AgregarJornada(PreparacionTemporadaViewModel jornada);
+        Task<Response> BorrarJornada(PreparacionTemporadaViewModel jornada);
+        Task<Response> BajaEquipo(PreparacionTemporadaViewModel equipo);
+        Task<Response> ActivarDesactivarEquipo(TemporadaEquipoAccion equipo);
+        Task<Response> GenerarPartidos(PreparacionTemporadaViewModel generaPartidos);
+        Task<Response> RemoveAllJornadas(PreparacionTemporadaViewModel compCat);
+        Task<Response> RemoveAllPartidos(PreparacionTemporadaViewModel compCat);
+        Task<Response> EditarJornada(PreparacionTemporadaViewModel jornada);
+        Task<Response> SetJornadaActual(PreparacionTemporadaViewModel jornada);
+        Task<CalendarioDTO> NuevoCalendario(string nombre, int numequipos);
+        Task<Response> NuevoCalendarioDetalle(CalendarioDTO calendario, int jornada, string local, string visitante);
+        Task<Response> AgregarEquiposSupercopa(PreparacionTemporadaViewModel compCat);
+        Task<Response> SustituirEquipo(TemporadaEquipoAccion sustitucion);
+        Task<Response> AgregarPartidoSupercopa(PreparacionTemporadaViewModel compCat);
+        Task<List<EquipoViewModel>> GetInventarioEquipos();
+        Task<Response> ResetearCompeticion(TemporadaCompeticionViewModel competicion);
+        Task<Response> ResetearAlineaciones(TemporadaCompeticionViewModel competicion);
+        Task<ICollection<CompeticionCategoriaViewModel>> GetReferenciaClasificaciones();
+        Task<Response> FinalizarCompeticion(TemporadaCompeticionViewModel competicion);
+        Task<Response> EditarReferenciaCompeticion(AccionCambiarReferencia referencia);
+        Task<Response> AddDiasJornada(PreparacionTemporadaViewModel jornada);
+        Task<Response> BotNoBotEquipo(TemporadaEquipoAccion equipo);
+        Task<Response> EstablecerEquiposCopa(PreparacionTemporadaViewModel competicion);
+        Task<Response> EstablecerRondasJornadasCopa(PreparacionTemporadaViewModel competicion);
+        Task<Response> NuevaJornadaFinalCopa(PreparacionTemporadaViewModel competicion);
+        Task<Response> AgregarPartidosCopa(PreparacionTemporadaViewModel competicion);
+        Task<Response> NuevoConceptoContabilidad(ContabilidadViewModel concepto);
+        Task<Response> NuevaCompeticionPremio(PremioCompeticionViewModel porcentaje);
+        Task<Response> NuevoPremio(PremioPuestoViewModel premio);
+        Task<ApplicationUser> CrearNuevoUsuarioSinConfirmar(RegisterViewModel registro);
+        Task SendVerificationEmail(ApplicationUser user);
+        Task<Response> AccionSobreEntrenador(AccionUsuarioViewModel accion);
+        Task<Response> AgregarReferenciaCompeticion(AccionCambiarReferencia referencia);
+        Task<Response> GenerarPartidoLibre(PreparacionTemporadaViewModel generaPartidos);
+    }
+}

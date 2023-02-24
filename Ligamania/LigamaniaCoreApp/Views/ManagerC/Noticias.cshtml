@@ -1,0 +1,272 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<NoticiaViewModel>
+
+<hr />
+<div class="card">
+    <div class="card-body">
+        <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-target='#addNoticiaModal'>Nueva noticia</button>
+        <button type="button" class="btn btn-primary btn-lg" id="button-desactivar-noticias" onclick="buttonDesactivarNoticias()">Desactivar todas</button>
+        <button type="button" class="btn btn-primary btn-lg" id="button-activar-noticias" onclick="buttonActivarNoticias()">Activar todas</button>
+    </div>
+</div>
+<hr />
+<h2 class="text-center">Noticias existentes</h2>
+<div class="row">
+    <div id="grid-noticias" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+        @{
+            @(Html
+                    .Grid(Model)
+                    .Build(columns =>
+                    {
+                        columns.Add(model => model.Fecha.ToLocalTime()).Titled("Fecha").Formatted("{0:d}");
+                        columns.Add(model => model.Noticia.Trim()).Titled("Noticia");
+                        columns.Add(model => $"<button type='button' class='btn btn-primary btn-lg' data-fecha=\"{model.Fecha}\" data-noticia=\"{model.Noticia}\" data-id=\"{model.Id}\" data-toggle='modal' data-target='#editNoticiaModal'>Editar</button>").Encoded(false);
+                        columns.Add(model => $"<button class='btn-secondary btn-lg'  id=\"{model.Id}\" onClick=\"buttonBorrarNoticia(this.id)\">Borrar</button>").Encoded(false);
+                        columns.Add(model => $"<button class='btn-secondary btn-lg'  id=\"{model.Id}\" onClick=\"buttonDesactivarNoticia(this.id)\">Desactivar</button>").Encoded(false);
+                    })
+                    .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                    .WithFilterMode(GridFilterMode.FilterRow)
+                    .Empty("No hay noticias activas")
+                    .Id("ajax-grid-noticias")
+                    .Pageable(pager =>
+                    {
+                        pager.RowsPerPage = 10;
+                    })
+                    .Filterable()
+                    .Sortable()
+            )
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="editNoticiaModal" tabindex="-1" role="dialog" aria-labelledby="editNoticiaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNoticiaModalLabel">Editando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="id-noticia">
+                    @*<div class="input-group date" data-provide="datepicker">
+                        <label for="recipient-name" class="col-form-label">Fecha:</label>
+                        <input type="date" class="form-control" id="fecha-edicion">
+                    </div>*@
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Noticia:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addNoticiaModal" tabindex="-1" role="dialog" aria-labelledby="addNoticiaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNoticiaModalLabel">Nueva noticia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    @*<div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" id="add-fecha-edicion">
+                    </div>*@
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Noticia:</label>
+                        <textarea class="form-control" id="add-message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-add">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '-3d'
+        });
+    });
+
+    $('#editNoticiaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        //var fecha = button.data('fecha')
+        var noticia = button.data('noticia')
+        //alert(id+" "+fecha+" "+noticia);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición de noticia ' + id)
+        modal.find('#id-noticia').val(id)
+        //modal.find('#fecha-edicion').val(fecha)
+        modal.find('#message-text').val(noticia)
+    })
+    $('#editNoticiaModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        var elementid = $('#id-noticia').val();
+        //var fecha = $('#fecha-edicion').val();
+        var text = $('#message-text').val();
+        
+        const noticia = {
+            Id: elementid,
+            //Fecha: fecha,
+            Noticia: text
+        };
+        //alert(noticia.Id + "-" + noticia.Fecha + "-" + noticia.Noticia);
+        var urlToCall = '/MANAGERC/EditarNoticia';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(noticia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al guardar la noticia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#editNoticiaModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+    $('#addNoticiaModal').on('click', '[data-save="modal-add"]', function (event) {
+        event.preventDefault();
+        //var fecha = $('#add-fecha-edicion').val();
+        var text = $('#add-message-text').val();
+        const noticia = {
+            Id: 0,
+            //Fecha: fecha,
+            Noticia: text
+        };
+        //alert(noticia.Id + "-" + noticia.Fecha + "-" + noticia.Noticia);
+        var urlToCall = '/MANAGERC/AgregarNoticia';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(noticia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al crear una nueva noticia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#addNoticiaModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    function buttonBorrarNoticia(elementid) {
+        const noticia = {
+            Id: elementid
+        };
+        var urlToCall = '/MANAGERC/BorrarNoticia';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(noticia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al desactivar noticia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                location.reload();
+            }
+        });
+    }
+    function buttonDesactivarNoticia(elementid) {
+        const noticia = {
+            Id: elementid
+        };
+        var urlToCall = '/MANAGERC/DesactivarNoticia';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(noticia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al desactivar noticia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                location.reload();
+            }
+        });
+    }
+    function buttonDesactivarNoticias() {
+        var urlToCall = '/MANAGERC/DesactivarTodasNoticias';
+        $.ajax({
+            type: "POST",
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Se ha producido un error");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                location.reload();
+            }
+        });
+    }
+    function buttonActivarNoticias() {
+        var urlToCall = '/MANAGERC/ActivarTodasNoticias';
+        $.ajax({
+            type: "POST",
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Se ha producido un error");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                location.reload();
+            }
+        });
+    }
+</script>

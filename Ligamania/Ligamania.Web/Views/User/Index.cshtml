@@ -1,0 +1,98 @@
+﻿@model UserListVM
+@inject Ligamania.Web.Services.IGestionService gestionService
+@{
+
+    ViewData["Title"] = "Lista de usuarios";
+    var users = Model.usuarios;
+    var user = users.FirstOrDefault();
+
+    var usuariosPdts = await gestionService.GetAllUsers();
+    usuariosPdts = usuariosPdts.Where(u => u.Estado.Equals(EstadoUsuario.Registered));
+    var numPdts = usuariosPdts.Count();
+}
+
+<div class="card m-3 card-filter p-2">
+    <div class="card-header">
+        <div class="card-title" data-bs-toggle="collapse" data-bs-target="#collapseNuevosRegistros" aria-expanded="false" aria-controls="collapseNuevosRegistros">
+            @if (numPdts > 0)
+            {
+                <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                    @numPdts
+                    <span class="visually-hidden">register pending</span>
+                </span>
+            }
+            else
+            {
+                <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">
+                    @numPdts
+                    <span class="visually-hidden">register pending</span>
+                </span>
+            }
+            Usuarios registrados y pendientes de confirmar como entrenadores
+        </div>
+    </div>
+    <div class="card-body collapse" id="collapseNuevosRegistros">
+        <table class="display" id="tbUsuariosPendientes">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.UserState)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.Email)
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card m-3 card-filter p-2">
+    <div class="btn-group m-2">
+        <button type="button" class="btn-info m-2" onclick="location.href='Create'">Nuevo usuario</button>
+    </div>
+</div>
+
+<div class="card m-3">
+    <div class="card-header">
+        <div class="card-title">Todos los usuarios de Ligamanía</div>
+    </div>
+    <div class="card-body">
+        <table class="display" id="tbUsuarios">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.UserState)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => user.Roles)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/usuario.js"></script>
+}

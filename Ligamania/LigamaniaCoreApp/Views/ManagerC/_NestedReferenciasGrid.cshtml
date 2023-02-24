@@ -1,0 +1,463 @@
+﻿@using LigamaniaCoreApp.Models.ManagerViewModels
+@using LigamaniaCoreApp.Data
+@model IGrid<CompeticionCategoriaViewModel>
+@using System.Drawing
+
+@{
+    var listaSiNo = new SelectList(new List<string> { LigamaniaEnum.eSINO.SI.ToString(), LigamaniaEnum.eSINO.NO.ToString() });
+}
+
+@*<div class="panel">
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addReferenciaModal">Nueva referencia</button>
+</div>*@
+
+<div class="mvc-grid">
+    <table>
+        <thead>
+            <tr>
+                @foreach (IGridColumn column in Model.Columns)
+                {
+                    <th>
+                        <span class="mvc-grid-title">@column.Title</span>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Rows.Any())
+            {
+                foreach (IGridRow<CompeticionCategoriaViewModel> row in Model.Rows)
+                {
+                    <tr class="@row.CssClasses">
+                        @foreach (IGridColumn column in Model.Columns)
+                        {
+                            <td class="@column.CssClasses" style="background-color:grey">@column.ValueFor(row)</td>
+                        }
+                    </tr>
+                    <tr class="@row.CssClasses">
+                        <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addReferenciaModal" data-competicion="@row.Model.Competicion" data-categoria="@row.Model.Categoria">Agregar</button> </td>
+                    </tr>
+                    if (row.Model.Referencias.Any())
+                    {
+                        <tr>
+                            <td colspan="@Model.Columns.Count()">
+                                @(Html
+                                    .Grid(row.Model.Referencias)
+                                    .Build(columns =>
+                                    {
+                                        columns.Add(model => model.Descripcion).Titled("Descripcion");
+                                        columns.Add(model => model.EsPremio ? LigamaniaEnum.eSINO.SI.ToString() : LigamaniaEnum.eSINO.NO.ToString()).Titled("Premio");
+                                        columns.Add(model => model.PosicionInicial).Titled("Desde el puesto");
+                                        columns.Add(model => model.PosicionFinal).Titled("Hasta el puesto");
+                                        columns.Add(model => model.UsarMarca ? LigamaniaEnum.eSINO.SI.ToString() : LigamaniaEnum.eSINO.NO.ToString()).Titled("Usar icono");
+                                        columns.Add().Encoded(false).Titled("Icono").RenderedAs(model => "<i class='"+model.Marca+"'></i>");
+                                        columns.Add(model => model.UsarColor ? LigamaniaEnum.eSINO.SI.ToString() : LigamaniaEnum.eSINO.NO.ToString()).Titled("Usar color");
+                                        columns.Add(model => $"<button type='button' class='btn btn-primary' " +
+                                            $"data-id=\"{model.Id}\" data-desc=\"{model.Descripcion}\" data-premio=\"{model.EsPremio}\" " +
+                                            $"data-posini=\"{model.PosicionInicial}\" " +
+                                            $"data-posfin=\"{model.PosicionFinal}\" data-usarmarca=\"{model.UsarMarca}\" data-marca=\"{model.Marca}\" data-usarcolor=\"{model.UsarColor}\" " +
+                                            $"data-html=\"{model.HtmlColor}\" data-argb=\"{model.Argb}\" " +
+                                            $"data-toggle='modal' data-target='#editReferenciaModal'>Editar</button>").Encoded(false);
+                                        columns.Add(model => $"<button type='button' class='btn btn-secondary' id=\"{model.Id}\" onClick=\"buttonBorrar(this.id)\">Borrar</button>").Encoded(false);
+                                    })
+                                    .RowAttributed(model => new { style= model.UsarColor == true ? "background-color:"+model.HtmlColor : "background-color:transparent" })
+                                )
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                <tr class="mvc-grid-empty-row">
+                    <td colspan="@Model.Columns.Count()">
+                        @Model.EmptyText
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<div class="modal fade" id="editReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="editReferenciaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editReferenciaModalLabel">Editando... </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="edit-id">
+                    <input type="hidden" class="form-control" id="edit-marca">
+                    <input type="hidden" class="form-control" id="edit-color">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend w-50">
+                            <span class="input-group-text" id="basic-addon1">Descripción:</span>
+                        </div>
+                        <input type="text" class="form-control w-50" id="edit-desc-text">
+                    </div>
+                    <div class="input-group  mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Desde el puesto:</span>
+                        </div>
+                        <input type="number" class="form-control" id="edit-posini-text">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Hasta el puesto:</span>
+                        </div>
+                        <input type="number" class="form-control" id="edit-posfin-text">
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend w-50">
+                            <span class="input-group-text" id="basic-addon1">Es Premio?:</span>
+                        </div>
+                        <input type="checkbox" class="form-control w-50" id="edit-premio-text" checked="">
+                    </div>
+                    <div class="input-group  mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Usar icono:</span>
+                        </div>
+                        <input type="checkbox" class="form-control" id="edit-usarmarca-text" checked="">
+                        <i id="edit-marca-icon" class="form-control "></i>
+                    </div>
+                    <div class="input-group  mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Usar color:</span>
+                        </div>
+                        <input type="checkbox" class="form-control" id="edit-usarcolor-text" checked="">
+                        <input type="color" class="form-control" id="edit-html-text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="addReferenciaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReferenciaModalLabel">Añadiendo... </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="add-id">
+                    <input type="hidden" class="form-control" id="add-marca">
+                    <input type="hidden" class="form-control" id="add-color">
+                    <input type="hidden" class="form-control" id="add-competicion">
+                    <input type="hidden" class="form-control" id="add-categoria">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend w-50">
+                            <span class="input-group-text" id="addbasic-addon1">Descripción:</span>
+                        </div>
+                        <input type="text" class="form-control w-150" id="add-desc-text">
+                    </div>
+                    <div class="input-group  mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="addbasic-addon1">Desde el puesto:</span>
+                        </div>
+                        <input type="number" class="form-control" id="add-posini-text">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="addbasic-addon1">Hasta el puesto:</span>
+                        </div>
+                        <input type="number" class="form-control" id="add-posfin-text">
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend w-50">
+                            <span class="input-group-text" id="addbasic-addon1">Es Premio?:</span>
+                        </div>
+                        <input type="checkbox" class="form-control w-50" id="add-premio-text" checked="">
+                    </div>
+                    <div class="input-group  mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="addbasic-addon1">Usar icono:</span>
+                        </div>
+                        <input type="checkbox" class="form-control" id="add-usarmarca-text" checked="">
+                        <i id="add-marca-icon" class="form-control "></i>
+                    </div>
+                    <div class="input-group  mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="addbasic-addon1">Usar color:</span>
+                        </div>
+                        <input type="checkbox" class="form-control" id="add-usarcolor-text" checked="">
+                        <input type="color" class="form-control" id="add-html-text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-add">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var muestrario;
+    var muestrarioAdd;
+    var colorPredeterminado = "#0000ff";
+    var colorSeleccionado = colorPredeterminado;
+    var colorSeleccionadoAdd = colorPredeterminado;
+
+    window.addEventListener("load", startup, false);
+    function startup() {
+        muestrario = document.querySelector("#edit-html-text");
+        muestrario.addEventListener("input", actualizarPrimero, false);
+        muestrario.addEventListener("change", actualizarTodo, false);
+        muestrario.select();
+
+        muestrarioAdd = document.querySelector("#add-html-text");
+        muestrarioAdd.addEventListener("input", actualizarPrimeroAdd, false);
+        muestrarioAdd.addEventListener("change", actualizarTodoAdd, false);
+        muestrarioAdd.select();
+    }
+    function actualizarPrimero(event) {
+        var p = document.querySelector("p");
+        colorSeleccionado = event.target.value;
+        if (p) {
+            p.style.color = event.target.value;
+        }
+    }
+    function actualizarTodo(event) {
+        colorSeleccionado = event.target.value;
+        document.querySelectorAll("p").forEach(function (p) {
+            p.style.color = event.target.value;
+        });
+    }
+    function actualizarPrimeroAdd(event) {
+        var p = document.querySelector("p");
+        colorSeleccionadoAdd = event.target.value;
+        if (p) {
+            p.style.color = event.target.value;
+        }
+    }
+    function actualizarTodoAdd(event) {
+        colorSeleccionadoAdd = event.target.value;
+        document.querySelectorAll("p").forEach(function (p) {
+            p.style.color = event.target.value;
+        });
+    }
+
+    $('#editReferenciaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var color = button.data('argb')
+        var desc = button.data('desc')
+        var premio = button.data('premio')
+        var posini = button.data('posini')
+        var posfin = button.data('posfin')
+        var usarmarca = button.data('usarmarca')
+        var marca = button.data('marca')
+        var usarcolor = button.data('usarcolor')
+        var html = button.data('html')
+        //alert(premio + "" + usarmarca + "" + usarcolor);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición')
+        modal.find('#edit-id').val(id)
+        modal.find('#edit-marca').val(marca)
+        modal.find('#edit-color').val(color)
+        modal.find('#edit-desc-text').val(desc)
+        modal.find('#edit-posini-text').val(posini)
+        modal.find('#edit-posfin-text').val(posfin)
+
+        modal.find('#edit-premio-text').prop("checked", false);
+        if (premio === "True") {
+            modal.find('#edit-premio-text').prop("checked", true);
+        }
+        modal.find('#edit-usarmarca-text').prop('checked', false);
+        if (usarmarca === "True") {
+            modal.find('#edit-usarmarca-text').prop('checked', true);
+        }
+        modal.find('#edit-usarcolor-text').prop('checked', false);
+        if (usarcolor === "True") {
+            modal.find('#edit-usarcolor-text').prop('checked', true);
+        }
+
+        modal.find('#edit-marca-text').val(marca)
+        var newClass = "form-control " + marca;
+        modal.find('#edit-marca-icon').removeClass('form-control').addClass(newClass);
+        modal.find('#edit-html-text').val(html)
+    })
+    $('#editReferenciaModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        var id = $('#edit-id').val();
+        var desc = $('#edit-desc-text').val();
+        //var premio = $('#edit-premio-text').val();
+        var premio = $('#edit-premio-text').is(":checked");
+        var posini = $('#edit-posini-text').val();
+        var posfin = $('#edit-posfin-text').val();
+        var usarmarca = $('#edit-usarmarca-text').is(":checked");
+        var marca = $('#edit-marca').val();
+        var usarcolor = $('#edit-usarcolor-text').is(":checked");
+        //var argb = $('#edit-argb-text').val();
+        //var color = $('#edit-color-text').val();
+        var html = $('#edit-html-text').val();
+        var color = $('#edit-color').val();
+
+        var color = colorSeleccionado;
+
+        //alert(desc + " " + premio + " " + posini + " " + posfin + " " + usarmarca + " " + marca + " " + usarcolor + " " + html);
+
+        const referencia = {
+            Id: id,
+            Descripcion: desc,
+            EsPremio: premio,
+            PosicionInicial: posini,
+            PosicionFinal: posfin,
+            UsarMarca: usarmarca,
+            Marca: marca,
+            UsarColor: usarcolor,
+            HexColor: color,
+            Color: color
+        };
+        var urlToCall = '/MANAGERC/EditarReferenciaCompeticion';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(referencia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al modificar una referencia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#editReferenciaModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+    function buttonBorrar(elementid) {
+        const menu = {
+            MenuIdentity: elementid,
+        };
+        var urlToCall = '/MANAGERC/BorrarMenu';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(menu),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al borrar menú");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            location.reload();
+        });
+    }
+    $('#addReferenciaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = 0 // Extract info from data-* attributes
+        var competicion = button.data('competicion');
+        var categoria = button.data('categoria');
+        var color = "#ffffff"
+        var desc = ""
+        var premio = "False"
+        var posini = 0
+        var posfin = 0
+        var usarmarca = "False"
+        var marca = "fas fa-euro-sign"
+        var usarcolor = "False"
+        var html = "#ffffff"
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Añadiendo...')
+        modal.find('#add-id').val(id)
+        modal.find('#add-marca').val(marca)
+        modal.find('#add-color').val(color)
+        modal.find('#add-competicion').val(competicion)
+        modal.find('#add-categoria').val(categoria)
+        modal.find('#add-desc-text').val(desc)
+        modal.find('#add-posini-text').val(posini)
+        modal.find('#add-posfin-text').val(posfin)
+
+        modal.find('#add-premio-text').prop("checked", false);
+        if (premio === "True") {
+            modal.find('#add-premio-text').prop("checked", true);
+        }
+        modal.find('#add-usarmarca-text').prop('checked', false);
+        if (usarmarca === "True") {
+            modal.find('#add-usarmarca-text').prop('checked', true);
+        }
+        modal.find('#add-usarcolor-text').prop('checked', false);
+        if (usarcolor === "True") {
+            modal.find('#add-usarcolor-text').prop('checked', true);
+        }
+
+        modal.find('#add-marca-text').val(marca)
+        var newClass = "form-control " + marca;
+        modal.find('#add-marca-icon').removeClass('form-control').addClass(newClass);
+        modal.find('#add-html-text').val(html)
+    });
+    $('#addReferenciaModal').on('click', '[data-save="modal-add"]', function (event) {
+        event.preventDefault();
+        var id = $('#add-id').val();
+        var desc = $('#add-desc-text').val();
+        var competicion = $('#add-competicion').val();
+        var categoria = $('#add-categoria').val();
+        var premio = $('#add-premio-text').is(":checked");
+        var posini = $('#add-posini-text').val();
+        var posfin = $('#add-posfin-text').val();
+        var usarmarca = $('#add-usarmarca-text').is(":checked");
+        var marca = $('#add-marca').val();
+        var usarcolor = $('#add-usarcolor-text').is(":checked");
+        var html = $('#add-html-text').val();
+        var color = $('#add-color').val();
+        var color = colorSeleccionado;
+
+        const referencia = {
+            Id: id,
+            Competicion: competicion,
+            Categoria: categoria,
+            Descripcion: desc,
+            EsPremio: premio,
+            PosicionInicial: posini,
+            PosicionFinal: posfin,
+            UsarMarca: usarmarca,
+            Marca: marca,
+            UsarColor: usarcolor,
+            HexColor: color,
+            Color: color
+        };
+        var urlToCall = '/MANAGERC/AgregarReferenciaCompeticion';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(referencia),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al modificar una referencia");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#editReferenciaModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+</script>

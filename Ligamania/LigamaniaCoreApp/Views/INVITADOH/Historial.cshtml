@@ -1,0 +1,15 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model IEnumerable<HistorialViewModel>
+@{
+    ViewData["Title"] = "Historial de Ligamanía";
+    var temporadas = Model.OrderByDescending(h => h.Temporada).ToList();
+}
+<h1><strong>Historia de Ligamanía</strong></h1>
+@foreach (var temporada in temporadas)
+{
+    <hr />
+    <div class="container-fluid" style="border:groove">
+        <h2>Temporada @temporada.Temporada - @Html.ActionLink("Clasificación","ClasificacionesLiga","INVITADOH",new { temporada = temporada.Temporada })</h2>
+        @await Html.PartialAsync("_historialTemporada", temporada)
+    </div>
+}

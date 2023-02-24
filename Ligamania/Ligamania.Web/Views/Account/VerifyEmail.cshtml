@@ -1,0 +1,23 @@
+﻿@model VerifyEmailVM
+@{
+    ViewData["Title"] = "Verificar registro";
+}
+
+<div class="card m-3 p-2">
+    <h4 class="card-header">Revise su correo y pinche en el enlace recibido para confirmar su registro</h4>
+    @*<div class="card-body">
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Token"></label>
+                    <input asp-for="Token" class="form-control" />
+                    <span asp-validation-for="Token" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary m-3">Verificar</button>
+            </form>
+        </div>*@
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,62 @@
+﻿@model UserVM
+
+@{
+    ViewData["Title"] = "Crear nuevo usuario";
+    var listaSiNo = new SelectList(new List<string> { "SI", "NO" });
+    var listaCateg = new SelectList(new List<string> { "Silver A", "Silver B", "Sin Preferencia" });
+}
+
+<div class="card row m-3 p-2">
+    <div class="col-md-4">
+        <form asp-action="CreateUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Conocimiento" class="control-label"></label>
+                <input asp-for="Conocimiento" class="form-control" />
+                <span asp-validation-for="Conocimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompartirGrupo" class="control-label"></label>
+                @Html.DropDownListFor(model => model.CompartirGrupo, listaCateg, "Seleccionar...", new { @class = "form-control custom-select" })
+                <span asp-validation-for="CompartirGrupo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Whatsap" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Whatsap, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                <span asp-validation-for="Whatsap" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary m-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

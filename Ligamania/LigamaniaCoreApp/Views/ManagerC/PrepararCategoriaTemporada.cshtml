@@ -1,0 +1,1121 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+
+@using LigamaniaCoreApp.Models.ManagerViewModels
+@using LigamaniaCoreApp.Data
+@model TemporadaCompeticionCategoriaViewModel
+@{
+    ViewData["Title"] = "Preparar categoría";
+    var competiciones = await ligamaniaService.GetAllCompeticiones();
+    var equiposSinCategoria = await ligamaniaService.GetEquiposSinCategoria(Model.Competicion);
+    var calendarios = await ligamaniaService.GetCalendarios();
+    var equipos = await ligamaniaService.GetEquiposTemporadaActual(Model.Competicion);
+}
+    <div class="flex-container">
+        <div class="card flex-item-bold-center">
+            <div class="card-header">
+                <h3>@Model.Competicion - @Model.Categoria</h3>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Se permite repetir club en alineación:</span>
+                    </div>
+                    <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.Repetir</span>
+                </div>
+                @{
+                    if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+                    {
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Copiar alineación inicial: </span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.CopiarAliIni</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Copiar de la competición: </span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.CompeticionCopiarAliIni</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Jornada de la Liga para establecer equipos del cuadro: </span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.JornadaCuadro</span>
+                        </div>
+                    }
+                    else if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Liga)
+                    {
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Nº de cambios fijos:</span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.CambiosFijos</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Pichichi en clasificación:</span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.Pichichi</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Nº máximo veces alineado un jugador para ser eliminado:</span>
+                            </div>
+                            <span class="input-group-text text-lg-center text-danger" style="font-weight:bold;">@Model.NumMaxJugEliminar</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+        {
+            <div class="card flex-item-bold-center">
+                <div class="card-header">
+                    <h3>Cuadro de Copa</h3>
+                </div>
+                <div class="card-body">
+                    <div id="grid-cuadro" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                        @{
+                            @(Html
+                                .Grid(Model.Cuadro.OrderBy(e => e.Ronda).ThenBy(e => e.NumPartido).ToList())
+                                .Build(columns =>
+                                {
+                                    columns.Add(model => model.Ronda).Titled("Ronda");
+                                    columns.Add(model => model.NumPartido).Titled("NumPartido");
+                                    columns.Add(model => model.EquipoA).Titled("EquipoA");
+                                    columns.Add(model => model.EquipoB).Titled("EquipoB");
+//                                    columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='bajaEquipo(\"{model.Equipo}\")' id='bajaEquipoButton'>Borrar</button>").Encoded(false);
+                                })
+                                .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                                .WithFilterMode(GridFilterMode.FilterRow)
+                                .Empty("No hay cuadro")
+                                .Id("ajax-grid-cuadro")
+                                .Pageable(pager =>
+                                {
+                                    pager.RowsPerPage = 10;
+                                })
+                                .Filterable()
+                                .Sortable()
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card flex-item-bold-center">
+            <div class="card-header">
+                <h3>Equipos (@Model.Equipos.Count)</h3>
+            </div>
+            <div class="card-body">
+                <div id="grid-equipos" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                    @{
+                        @(Html
+                            .Grid(Model.Equipos.OrderBy(e => e.Equipo).ToList())
+                            .Build(columns =>
+                            {
+                                columns.Add(model => model.Equipo).Titled("Equipo");
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='bajaEquipo(\"{model.Equipo}\")' id='bajaEquipoButton'>Borrar</button>").Encoded(false);
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .WithFilterMode(GridFilterMode.FilterRow)
+                            .Empty("No hay equipos")
+                            .Id("ajax-grid-equipos")
+                            .Pageable(pager =>
+                            {
+                                pager.RowsPerPage = 5;
+                            })
+                            .Filterable()
+                            .Sortable()
+                        )
+                    }
+                </div>
+            </div>
+            <div class="card-footer">
+                @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Liga)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Copiar equipos de:</span>
+                            </div>
+                            @Html.DropDownList("competicionCopiarEquipos", competiciones, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <button type="button" class="btn btn-primary" id="copiarEquipos">Copiar</button>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Agregar equipo:</span>
+                            </div>
+                            @Html.DropDownList("equipoSelected", equiposSinCategoria, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <button type="button" class="btn btn-primary" id="agregarEquipo">Agregar</button>
+                        </div>
+                    </div>
+                }
+                else if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Equipos según cuadro y jornada @Model.JornadaCuadro de Liga</span>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="establecerEquiposCopa">Establecer</button>
+                        </div>
+                    </div>
+                }
+                else if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Supercopa)
+                {
+                    <button type="button" class="btn btn-primary" id="agregarEquiposSupercopa">Agregar automáticamente</button>
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Agregar equipo:</span>
+                            </div>
+                            @Html.DropDownList("equipoSelected", equiposSinCategoria, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <button type="button" class="btn btn-primary" id="agregarEquipo">Agregar</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Agregar equipo:</span>
+                            </div>
+                            @Html.DropDownList("equipoSelected", equiposSinCategoria, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <button type="button" class="btn btn-primary" id="agregarEquipo">Agregar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+        {
+            <div class="card flex-item-bold-center">
+                <div class="card-header">
+                    <h3>Cuadro de Copa con los equipos de la temporada</h3>
+                </div>
+                <div class="card-body">
+                    <div id="grid-cuadro" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                        @{
+                            @(Html
+                                .Grid(Model.CuadroConEquipos.OrderBy(e => e.Ronda).ThenBy(e => e.NumPartido).ToList())
+                                .Build(columns =>
+                                {
+                                    columns.Add(model => model.Ronda).Titled("Ronda");
+                                    columns.Add(model => model.NumPartido).Titled("NumPartido");
+                                    columns.Add(model => model.EquipoA).Titled("EquipoA");
+                                    columns.Add(model => model.EquipoB).Titled("EquipoB");
+//                                    columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='bajaEquipo(\"{model.Equipo}\")' id='bajaEquipoButton'>Borrar</button>").Encoded(false);
+                                })
+                                .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                                .WithFilterMode(GridFilterMode.FilterRow)
+                                .Empty("No hay cuadro")
+                                .Id("ajax-grid-cuadro")
+                                .Pageable(pager =>
+                                {
+                                    pager.RowsPerPage = 10;
+                                })
+                                .Filterable()
+                                .Sortable()
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+        {
+            <div class="card flex-item-bold-center">
+                <div class="card-header">
+                    <h3>Rondas</h3>
+                </div>
+                <div class="card-body">
+                    <div id="grid-rondas" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                        @{
+                            @(Html
+                                .Grid(Model.Rondas.OrderBy(r => r.Ronda).ToList())
+                                .Build(columns =>
+                                {
+                                    columns.Add(model => model.Ronda).Titled("Ronda");
+                                    columns.Add(model => model.Final ? LigamaniaConst.SI : LigamaniaConst.NO).Titled("Ronda final");
+                                    columns.Add(model => model.JornadaIda).Titled("Jornada Ida");
+                                    columns.Add(model => model.JornadaVuelta).Titled("Jornada Vuelta");
+                                })
+                                .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                                .WithFilterMode(GridFilterMode.FilterRow)
+                                .Empty("No hay rondas creadas")
+                                .Id("ajax-grid-rondas")
+                                .Pageable(pager =>
+                                {
+                                    pager.RowsPerPage = 10;
+                                })
+                                .Filterable()
+                                .Sortable()
+                            )
+                        }
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="form-group">
+                            <span class="input-group-text">Fecha de la primera jornada:</span>
+                            <input type="date" class="form-control datepicker" id="fechaRonda">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Agregar rondas y jornadas según cuadro</span>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="establecerRondasCopa">Rondas y jornadas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <div class="card flex-item-bold-center">
+            <div class="card-header">
+                <h3>Jornadas</h3>
+                @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Liga)
+                {
+                    <h4>Al menos añadir la primera jornada. Al agregar los partidos, se añadirán el resto de jornadas</h4>
+                }
+            </div>
+            <div class="card-body">
+                <div id="grid-jornadas" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                    @{
+                        @(Html
+                            .Grid(Model.Jornadas.OrderBy(j => j.NumeroJornada).ToList())
+                            .Build(columns =>
+                            {
+                                columns.Add(model => model.NumeroJornada).Titled("Nº Jornada");
+                                columns.Add(model => model.Fecha).Titled("Fecha").Formatted("{0:d}");
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' " +
+                                $"data-competicion=\"{model.Competicion}\" data-jornada=\"{model.NumeroJornada}\" data-fecha=\"{model.Fecha}\" " +
+                                $"data-toggle='modal' data-target='#editJornadaModal'>Editar</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='borraJornada(\"{model.NumeroJornada}\")' id='borraJornadaButton'>Borrar</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='jornadaActual(\"{model.NumeroJornada}\")' id='jornadaActualButton'>Establecer como ACTUAL</button>").Encoded(false);
+                                columns.Add(model => model.NumeroJornada > 1 ? $"<button type='button' class='btn btn-secondary' onclick='addDiasFecha(3, \"{model.NumeroJornada}\")' id='add3DiasButton'>Fecha anterior +3 días</button>" : null).Encoded(false);
+                                columns.Add(model => model.NumeroJornada > 1 ? $"<button type='button' class='btn btn-secondary' onclick='addDiasFecha(4, \"{model.NumeroJornada}\")' id='add4DiasButton'>Fecha anterior +4 días</button>" : null).Encoded(false);
+                                columns.Add(model => model.NumeroJornada > 1 ? $"<button type='button' class='btn btn-secondary' onclick='addDiasFecha(7, \"{model.NumeroJornada}\")' id='add7DiasButton'>Fecha anterior +7 días</button>" : null).Encoded(false);
+                                columns.Add(model => model.NumeroJornada > 1 ? $"<button type='button' class='btn btn-secondary' onclick='addDiasFecha(14, \"{model.NumeroJornada}\")' id='add14DiasButton'>Fecha anterior +14 días</button>" : null).Encoded(false);
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .WithFilterMode(GridFilterMode.FilterRow)
+                            .Empty("No hay jornadas")
+                            .Id("ajax-grid-jornadas")
+                            .Pageable(pager =>
+                            {
+                                pager.RowsPerPage = 10;
+                            })
+                            .Filterable()
+                            .Sortable()
+                        )
+                    }
+                </div>
+            </div>
+            <div class="card-footer">
+                @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Copa)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="form-group">
+                            <span class="input-group-text">Agregar nueva jornada en la última ronda (con los mismos equipos de la última ronda)</span>
+                            <span class="input-group-text">Fecha:</span>
+                            <input type="date" class="form-control datepicker" id="fechaNuevaJornada">
+                        </div>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" id="nuevaJornadaCopa">Nueva jornada</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="form-group">
+                            <span class="input-group-text">Fecha:</span>
+                            <input type="date" class="form-control datepicker" id="fecha">
+                        </div>
+
+                        <div class="input-group-mb3">
+                            <span class="input-group-text" id="basic-addon1">Jornada nº:</span>
+                            <input type="number" class="form-control" id="numerojornada">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addJornada">Agregar jornada</button>
+                    </div>
+                }
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <button type="button" class="btn btn-primary" id="removeJornadas">Eliminar todas las jornadas</button>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-item-bold-center">
+            <div class="card-header">
+                <h3>Calendario y Partidos</h3>
+            </div>
+            <div class="card-body">
+                <div id="grid-partidos" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                    @{
+                        @(Html
+                            .Grid(Model.Partidos.OrderBy(p=>p.Jornada).ThenBy(p => p.NumeroPartido).ToList())
+                                .Build(columns =>
+                                 {
+                                     columns.Add(model => model.Jornada).Titled("Nº Jornada");
+                                     columns.Add(model => model.NumeroPartido).Titled("Nº Partido");
+                                     columns.Add(model => model.Fecha).Titled("Fecha").Formatted("{0:d}");
+                                     columns.Add(model => model.EquipoA).Titled("Local");
+                                     columns.Add(model => model.EquipoB).Titled("Visitante");
+                                 })
+                                .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                                .Empty("No hay jornadas")
+                                .Id("ajax-grid-jornadas")
+                                .Pageable(pager =>
+                                {
+                                    pager.RowsPerPage = 9;
+                                })
+                                .WithFilterMode(GridFilterMode.FilterRow)
+                                .Filterable()
+                                .Sortable()
+                        )
+                    }
+                </div>
+            </div>
+            <div class="card-footer">
+                @if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Supercopa)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="form-group">
+                            <span class="input-group-text">Una vez agregada la jornada en el paso anterior, seleccionar la jornada para la que se quiere agregar el partido</span>
+                            <span class="input-group-text" id="basic-addon1">Jornada nº:</span>
+                            <input type="number" class="form-control" id="numerojornadaPartidoSupercopa">
+                        </div>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" id="agregarPartidoSupercopa">Agregar partido</button>
+                        </div>
+                    </div>
+                }
+                else if (Model.Tipo == LigamaniaCoreApp.Data.LigamaniaEnum.eTipoCompeticion.Liga)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Seleccionar tipo de calendario:</span>
+                            </div>
+                            @Html.DropDownList("calendarioSelected", calendarios, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <button type="button" class="btn btn-primary" id="generarPartidos">Generar partidos</button>
+                        </div>
+                    </div>
+                }
+                else if (Model.Tipo == LigamaniaEnum.eTipoCompeticion.Copa)
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="form-group">
+                            <span class="input-group-text">Seleccionar ronda para generar los partidos (jornadas de Ida y Vuelta)</span>
+                            <span class="input-group-text">Ronda nº:</span>
+                            <input type="number" class="form-control" id="rondaPartidos">
+                        </div>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-primary" id="agregarPartidosCopa">Agregar partidos</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Seleccionar equipos local y visitante:</span>
+                            </div>
+                            @Html.DropDownList("localSelected", equipos, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            @Html.DropDownList("visitanteSelected", equipos, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            <span class="input-group-text">Jornada nº:</span>
+                            <input type="number" class="form-control" id="jornadaPartido">
+                            <button type="button" class="btn btn-primary" id="btGenerarPartido">Generar partido</button>
+                        </div>
+                    </div>
+                }
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <button type="button" class="btn btn-primary" id="removePartidos">Eliminar todos los partidos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="editJornadaModal" tabindex="-1" role="dialog" aria-labelledby="editJornadaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="width:1025px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editJornadaModalLabel">Editando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="flex-container" style="width:1025px;">
+                    <div class="form-group">
+                        <span class="input-group-text">Competición:</span>
+                        <input type="text" class="form-control" id="competicionModal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <span class="input-group-text" id="basic-addon1">Jornada nº:</span>
+                        <input type="number" class="form-control" id="jornadaModal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <span class="input-group-text">Fecha:</span>
+                        <input type="date" class="form-control datepicker" id="fechaModal">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+        $.datepicker.setDefaults($.datepicker.regional["es"]);
+    });
+</script>
+
+<script type="text/javascript">
+    $('#addJornada').on('click', function (event) {
+        var fecha = $('#fecha').val();
+        var jornada = $('#numerojornada').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        var r = confirm("¿Está seguro de agregar la jornada: " + jornada + ". Fecha " + fecha+ "?");
+        if (r == true) {
+            const jornadaInfo = {
+                Fecha: fecha,
+                Jornada: jornada,
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria
+            };
+            var urlToCall = '/MANAGERC/AgregarJornada';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(jornadaInfo),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al agregar jornada" + categoria);
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+            }
+    });
+    $('#copiarEquipos').on('click', function (event) {
+        var competicion = $('#competicionCopiarEquipos').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        if (competicion != '') {
+            var r = confirm("¿Está seguro de querer COPIAR LOS EQUIPOS de: " + competicion + "-" + categoria + " a " + competicionDestino + "?");
+            if (r == true) {
+                const compCat = {
+                    CompeticionOrigen: competicion,
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria
+                };
+                var urlToCall = '/MANAGERC/CopiarEquipos';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(compCat),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al copiar equipos" + categoria);
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+        else {
+            alert('Debe seleccionar una competición');
+        }
+    });
+
+    $('#establecerEquiposCopa').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        var jornadaCuadro = "@Model.JornadaCuadro";
+
+        var r = confirm("¿Está seguro de querer ESTABLECER LOS EQUIPOS de COPA según la jornada " + jornadaCuadro + "?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria
+            };
+            var urlToCall = '/MANAGERC/EstablecerEquiposCopa';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al establecer equipos de Copa" + categoria);
+                }
+            }).done(function (response) {
+                if (response.result) {
+                    alert(response.message);
+                    location.reload();
+                }
+                else {
+                    alert(response.message);
+                }
+            });
+        }
+    });
+    $('#establecerRondasCopa').on('click', function(event) {
+        var fecha = $('#fechaRonda').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        //alert(equipo);
+        if (fecha != '') {
+            var r = confirm("¿Está seguro de querer las rondas y jornadas según el cuadro de Copa?");
+            if (r == true) {
+                const compCat = {
+                    Fecha: fecha,
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria
+                };
+                var urlToCall = '/MANAGERC/EstablecerRondasJornadasCopa';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(compCat),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al establecer rondas y jornadas de Copa" + categoria);
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+        else {
+            alert('Debe poner la fecha de la primera jornada de Copa');
+        }
+    });
+    $('#nuevaJornadaCopa').on('click', function (event) {
+        var fecha = $('#fechaNuevaJornada').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        if (fecha != ' ') {
+            var r = confirm("¿Está seguro de agregar una nueva jornada a la última ronda en la fecha seleccionada?");
+            if (r == true) {
+                const jornadaInfo = {
+                    Fecha: fecha,
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria
+                };
+                var urlToCall = '/MANAGERC/NuevaJornadaFinalCopa';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(jornadaInfo),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al agregar nueva jornada en la última ronda de copa" + categoria);
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+        else {
+            alert("Debe seleccionar una fecha para agregar una nueva jornada");
+        }
+    });
+    $('#agregarEquipo').on('click', function(event) {
+        var equipo = $('#equipoSelected').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        //alert(equipo);
+        if (equipo != '') {
+            var r = confirm("¿Está seguro de querer AGREGAR el equipo " + equipo + "?");
+            if (r == true) {
+                const compCat = {
+                    Equipo: equipo,
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria
+                };
+                var urlToCall = '/MANAGERC/AgregarEquipo';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(compCat),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al agregar equipos" + categoria);
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+        else {
+            alert('Debe seleccionar un equipo');
+        }
+    });
+    $('#generarPartidos').on('click', function (event) {
+        var calendario = $('#calendarioSelected').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        if (calendario != '') {
+            var r = confirm("¿Está seguro de querer GENERAR LOS PARTIDOS a partir del calendario "+calendario+"?");
+            if (r == true) {
+                const partidos = {
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria,
+                    Calendario: calendario
+                };
+                var urlToCall = '/MANAGERC/GenerarPartidos';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(partidos),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al generar partidos" + categoria);
+                    }
+                }).done(function (response) {
+                    alert(response.message);
+                    if (response.result) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+        else {
+            alert('Debe seleccionar un calendario');
+        }
+    });
+    $('#btGenerarPartido').on('click', function (event) {
+        var local = $('#localSelected').val();
+        var visitante = $('#visitanteSelected').val();
+        var jornada = $('#jornadaPartido').val();
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        if (local != '' && visitante != '' && jornada != '') {
+            var r = confirm("¿Está seguro de querer GENERAR EL PARTIDO entre los equipos "+local+" y " + visitante+" para la jornada "+jornada+"?");
+            if (r == true) {
+                const partidos = {
+                    CompeticionDestino: competicionDestino,
+                    Categoria: categoria,
+                    Local: local,
+                    Visitante: visitante,
+                    Jornada: jornada
+                };
+                var urlToCall = '/MANAGERC/GenerarPartidoLibre';
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(partidos),
+                    url: urlToCall,
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    cache: false,
+                    dataType: 'json',
+                    error: function () {
+                        alert("Error al generar partido" + categoria);
+                    }
+                }).done(function (response) {
+                    alert(response.message);
+                    if (response.result) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+        else {
+            alert('Debe seleccionar equipo local, equipo visitante y jornada');
+        }
+    });
+
+    $('#removeJornadas').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        var r = confirm("¿Está seguro de querer ELIMINAR TODAS LAS JORNADAS?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria
+            };
+            var urlToCall = '/MANAGERC/RemoveAllJornadas';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al eliminar todas las jornadas" + categoria);
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    });
+    $('#agregarEquiposSupercopa').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        var r = confirm("Se agregarán los equipos ganadores de Liga y Copa de la temporada anterior. Se podrán modificar a posteriori. ¿Está seguro?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria
+            };
+            var urlToCall = '/MANAGERC/AgregarEquiposSupercopa';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al agregar equipos de Supercopa");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    });
+    $('#agregarPartidoSupercopa').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        var jornada = $('#numerojornadaPartidoSupercopa').val();
+        var r = confirm("Se agregará un partido en la jornada "+jornada+". ¿Está seguro?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria,
+                Jornada: jornada
+            };
+            var urlToCall = '/MANAGERC/AgregarPartidoSupercopa';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al agregar partido de Supercopa");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    });
+    $('#agregarPartidosCopa').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        var ronda = $('#rondaPartidos').val();
+        var r = confirm("Se agregarán los partidos correspondientes a la ronda "+ronda+" de Copa. ¿Está seguro?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria,
+                Ronda: ronda
+            };
+            var urlToCall = '/MANAGERC/AgregarPartidosCopa';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al agregar partidos de Copa");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    });
+
+    $('#removePartidos').on('click', function (event) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+
+        var r = confirm("¿Está seguro de querer ELIMINAR TODOS LOS PARTIDOS?");
+        if (r == true) {
+            const compCat = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria
+            };
+            var urlToCall = '/MANAGERC/RemoveAllPartidos';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al eliminar todos los partidos" + categoria);
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    });
+    $('#editJornadaModal').on('show.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        //alert(button);
+        var competicion = button.data('competicion')
+        var jornada = button.data('jornada')
+        var fecha = button.data('fecha')
+        //alert(competicion + jornada + fecha);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición de jornada ' + jornada)
+        modal.find('#competicionModal').val(competicion)
+        modal.find('#jornadaModal').val(jornada)
+        modal.find('#fechaModal').val(fecha);
+    });
+    $('#editJornadaModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        var competicion = $('#competicionModal').val();
+        var jornada = $('#jornadaModal').val();
+        var fecha = $('#fechaModal').val();
+        alert(competicion + jornada + fecha);
+        var jornadaEditar = {
+            CompeticionDestino: competicion,
+            Jornada: jornada,
+            Fecha: fecha
+        };
+        var urlToCall = '/MANAGERC/EditarJornada';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(jornadaEditar),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al guardar los datos");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#editJornadaModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+    function bajaEquipo(elementid) {
+        var r = confirm("¿Está seguro de dar de baja el equipo "+elementid+"?");
+        if (r == true) {
+            var categoria = "@Model.Categoria";
+            var competicionDestino = "@Model.Competicion";
+            const equipo = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria,
+                Equipo: elementid
+            };
+            var urlToCall = '/MANAGERC/BajaEquipo';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(equipo),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al dar de baja un equipo");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    function borraJornada(elementid) {
+        var r = confirm("¿Está seguro de borrar la jornada "+elementid+"?");
+        if (r == true) {
+            var categoria = "@Model.Categoria";
+            var competicionDestino = "@Model.Competicion";
+
+            const equipo = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria,
+                Jornada: elementid
+            };
+            var urlToCall = '/MANAGERC/BorrarJornada';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(equipo),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al dar de baja un equipo");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    function jornadaActual(elementid) {
+        var r = confirm("¿Está seguro de querer hacer 'ACTUAL' la jornada "+elementid+"?");
+        if (r == true) {
+            var categoria = "@Model.Categoria";
+            var competicionDestino = "@Model.Competicion";
+
+            const equipo = {
+                CompeticionDestino: competicionDestino,
+                Categoria: categoria,
+                Jornada: elementid
+            };
+            var urlToCall = '/MANAGERC/SetJornadaActual';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(equipo),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al hacer una jornada actual");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    function addDiasFecha(dias, jornadaAnterior) {
+        var categoria = "@Model.Categoria";
+        var competicionDestino = "@Model.Competicion";
+        const jornadaAccion = {
+            CompeticionDestino: competicionDestino,
+            Categoria: categoria,
+            Jornada: jornadaAnterior,
+            Dias: dias
+        };
+        var urlToCall = '/MANAGERC/AddDiasJornada';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(jornadaAccion),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType:'json',
+            error: function () {
+                alert("Error al establecer "+dias+" días más sobre la jornada "+(jornadaAnterior-1));
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                location.reload();
+            }
+        });
+
+    }
+</script>

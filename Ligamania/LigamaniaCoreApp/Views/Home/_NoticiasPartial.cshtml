@@ -1,0 +1,82 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<NoticiaViewModel>
+@{
+    @*@(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Fecha).Titled("Fecha").Formatted("{0:d}");
+                    columns.Add(model => model.Noticia.Trim()).Titled("Noticia");
+                })
+                .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                .Empty("No hay noticias activas")
+                .Id("ajax-grid-noticias")
+                .Pageable(pager =>
+                {
+                    pager.RowsPerPage = 10;
+                })
+                .Filterable()
+                .Sortable()
+        )*@
+    @*<div id="myCarousel" class="carousel slide bg-inverse w-350 ml-auto mr-auto" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                @{
+                    var noticias = Model.ToList();
+                    for (int i = 0; i < noticias.Count; i++)
+                    {
+                        var noticia = noticias[i];
+                        if (i == 0)
+                        {
+                            <div class="carousel-item active">
+                                <div class="card d-block w-100">
+                                    <div class="card-body" style="background-color:lightgoldenrodyellow">
+                                        <h5 class="card-title">@noticia.Fecha.ToLocalTime()</h5>
+                                        <h2 class="card-text">@noticia.Noticia</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <div class="card d-block w-100">
+                                    <div class="card-body" style="background-color:lightgoldenrodyellow">
+                                        <h5 class="card-title">@noticia.Fecha.ToLocalTime()</h5>
+                                        <h2 class="card-text">@noticia.Noticia</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>*@
+
+    var noticias = Model.ToList();
+    for (int i = 0; i < noticias.Count; i++)
+    {
+        var noticia = noticias[i];
+        <div class="card">
+            <div class="card-header">
+                @noticia.Fecha.ToLocalTime()
+            </div>
+            <div class="card-body">
+                <p class="card-text">@noticia.Noticia</p>
+            </div>
+            <div class="card-footer" style="background-color:black;height:5px">
+            </div>
+        </div>
+    }
+}
+        

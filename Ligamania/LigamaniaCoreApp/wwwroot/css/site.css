@@ -1,0 +1,498 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+.wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    font-weight: bold;
+    text-align: center;
+}
+
+.wrapper > * {
+    padding: 10px;
+    flex: 1 100%;
+}
+
+.header {
+    background: white;
+}
+
+.footer {
+    background: white;
+}
+
+.main {
+    text-align: center;
+    background: white;
+}
+.main-sin-aside {
+    text-align: center;
+}
+.aside-1 {
+    background: white;
+}
+
+.aside-2 {
+    background: white;
+}
+
+@media all and (min-width: 600px) {
+    .aside {
+        flex: 1 0 0;
+    }
+}
+
+@media all and (min-width: 800px) {
+    .main {
+        flex: 3 0px;
+    }
+
+    .aside-1 {
+        order: 1;
+    }
+
+    .main {
+        order: 2;
+    }
+
+    .aside-2 {
+        order: 3;
+    }
+
+    .footer {
+        order: 4;
+    }
+    .main-sin-aside {
+        order: 1;
+    }
+}
+@import "compass/css3";
+
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+}
+.flex-container-stretch {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    align-content:stretch;
+}
+
+.flex-item-bold-center {
+    font-weight: bold;
+    text-align: center;
+}
+
+.flex-item-fit {
+    font-weight: bold;
+    text-align: center;
+    flex-basis: 30;
+}
+.flex-container-cambios {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    justify-content:space-around;
+}
+.flex-item-cambios {
+    font-weight: bold;
+    flex-basis: 30;
+}
+
+body {
+    padding: 2em;
+}
+
+body {
+    padding-top: 5px;
+    padding-bottom: 20px;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/*body {
+    padding-top: 65px;
+}*/
+
+ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    color: #00000;
+}
+
+.nav {
+    color: #FFFFFF;
+}
+
+.menu {
+    background: transparent;
+    /*height: 60px;*/
+    padding: 0 0px;
+    color: #FFFFFF;
+}
+
+.menu > li {
+    display: inline-block;
+    padding: 0px 0px 0px 0px;
+    display: inline-block;
+    text-align: center;
+    /*line-height: 28px;
+            height: 32px;*/
+    color: #FFFFFF;
+}
+
+.menu > li a {
+    display: inline-block;
+    padding: 0px 0px 0px 0px;
+    display: inline-block;
+    text-align: center;
+    /*line-height: 28px;*/
+    /*height: 32px;
+        width: 130px;*/
+    color: #FFFFFF;
+}
+
+.menu > li a:hover {
+    display: inline-block;
+    padding: 0px 0px 1px 0px;
+    display: inline-block;
+    text-align: center;
+    /*line-height: 28px;*/
+    /*height: 32px;
+    width: 130px;*/
+    color: #FFFFFF;
+}
+
+.sub-menu {
+    position: absolute;
+    display: none;
+    background-color: transparent;
+    /*width: 230px;*/
+    color: #FFFFFF;
+    padding: 2px;
+}
+
+.sub-menu > li {
+    display: inline-block;
+    padding: 0px 0px 0px 0px;
+    display: inline-block;
+    text-align: left;
+    /*line-height: 28px;*/
+    /*height: 32px;*/
+    /*width: 230px;*/
+    background: #3d3b3b;
+    color: #FFFFFF;
+    width: unset;
+}
+
+.sub-menu > li a:hover {
+    display: block;
+    cursor: pointer;
+    /*width: 130px;*/
+    background: #ddd;
+    color: #000000
+}
+
+.sub-menu2 {
+    position: absolute;
+    display: none;
+    background-color: pink;
+}
+
+.sub-menu2 > li {
+    display: block;
+    cursor: pointer;
+    background-color: green;
+}
+
+.sub-menu2 > li a:hover {
+    display: block;
+    cursor: pointer;
+    background-color: pink;
+}
+
+.sub-menu2 {
+    margin-top: -2px;
+}
+
+li:hover .sub-menu {
+    display: block;
+    color: #FFFFFF
+}
+
+li:hover .sub-menu2 {
+    display: block;
+    color: #FFFFFF
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+/* grid btns */
+.editbtn, .delbtn, .editnst, .delnst {
+    padding: .2em .3em;
+}
+
+.ico-crud {
+    background-image: url(editdel.png);
+}
+
+.ico-edit, .ico-del {
+    display: block;
+    overflow: hidden;
+    height: 18px;
+    width: 18px;
+    background-repeat: no-repeat;
+}
+
+.ico-edit {
+    background-position: 0 -1px;
+}
+
+.ico-del {
+    background-position: -17px -1px;
+}
+/* grid btns */
+
+/* grid jugadores eliminados*/
+.jugador {
+    width:50px;
+}
+.jornada {
+    width:20px;
+}
+.numeli {
+    width:20px;
+}
+.grid-jug-eli {
+    font-display:block;
+    font-size:small;
+    color:black;
+    font-weight:bold;
+}
+.grid-jug-preeli {
+    font-display: block;
+    font-size: small;
+    color: black;
+    font-weight: bold;
+    background-color:lightgoldenrodyellow;
+}
+.webgrid-noticiaAplicacion {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-size: small;
+    font-weight: bold;
+    /*display: table;*/
+    /*color: white;
+            width: 100%;
+            border-collapse: separate;
+            border: 1px;
+            background-color: darkblue;
+            border-radius: 6px;*/
+}
+.webgrid-premiosCompeticion_1 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: large;
+    font-weight: bold;
+    color: black;
+    background-color:ivory;
+}
+.webgrid-premiosCompeticion_2 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: large;
+    font-weight: bold;
+    color: black;
+    background-color: lavenderblush;
+}
+.mvc-grid-fila-carrusel {
+    font-size: medium;
+    background-color: azure;
+    color: black;
+}
+.mvc-grid-fila-carrusel-bolded {
+    font-size: small;
+    font-weight:bold;
+    background-color: azure;
+    color: black;
+}
+.mvc-grid-fila-carrusel-eliminado{
+    background-color:red;
+}
+.mvc-grid-fila-carrusel-preeliminado {
+    background-color: yellow;
+}
+
+.mvc-grid-medium {
+    font-size: medium;
+    background-color: honeydew;
+}
+
+.mvc-grid-large {
+    font-size:large;
+    background-color: honeydew;
+}
+.mvc-grid-xlarge {
+    font-size: x-large;
+    background-color: honeydew;
+}
+.mvc-grid-negrita{
+    font-weight:bold;
+    font-size:14px;
+}
+.mvc-grid-clasificaciones{
+    font-size:small;
+    font-weight:bold;
+}
+/*.awe-grid .grid-jug-eli a, .jugador tr td, .jornada tr td, .numeli tr td {
+    color: blue;
+}*/
+.grid-historial-row-premio {
+    width: 50px;
+    font-size: 14px;
+    background-color: honeydew;
+}
+.grid-historial-row-equipo {
+    width: 100px;
+    font-size: 14px;
+    background-color: honeydew;
+}
+.grid-historia-equipo-temporada {
+    font-weight: bold;
+    font-size: x-large;
+    padding:25px;
+    
+}
+.grid-historia-equipo-temporada {
+    font-weight: bold;
+    font-size: x-large;
+    padding: 25px;
+    border: double 2px;
+    text-align:center;
+}
+.tit-premio-competicion {
+    font-family: Elephant;
+    font-size: x-large;
+    color: darkblue;
+    background-color: lightyellow;
+}
+
+.premio-competicion {
+    caption-side: top;
+    font-family: Elephant;
+    font-size: large;
+    color: black;
+    background-color: lightblue;
+    padding: 7px;
+}
+
+.fila-premio-competicion {
+    font-family: Elephant;
+    font-size: large;
+    color: black;
+    background-color: blue;
+    padding: 7px;
+    align-items: center;
+}
+
+.col-premio-competicion {
+    font-family: Elephant;
+    font-size: large;
+    color: lightyellow;
+    background-color: darkblue;
+    padding: 7px;
+    align-items: center;
+    border: inset;
+}
+
+.resumen-tit-premio-competicion {
+    font-family: 'Trebuchet MS';
+    font-size: large;
+    color: lightyellow;
+    background-color: darkblue;
+}
+
+.resumen-premio-competicion {
+    caption-side: top;
+    font-family: 'Trebuchet MS';
+    font-size: large;
+    color: lightblue;
+    background-color: black;
+    padding: 7px;
+}
+
+.resumen-fila-premio-competicion {
+    font-family: 'Trebuchet MS';
+    font-size: large;
+    color: blue;
+    background-color: black;
+    padding: 7px;
+    align-items: center;
+}
+
+.resumen-col-premio-competicion {
+    font-family: 'Trebuchet MS';
+    font-size: large;
+    color: darkblue;
+    background-color: lightyellow;
+    padding: 7px;
+    align-items: center;
+    border: inset;
+}
+.clsDatePicker {
+    z-index: 100000;
+}
+.entorno-development{
+    color:yellow;
+    background-color:red;
+}
+.entorno-staging {
+    color: green;
+    background-color: yellow;
+}

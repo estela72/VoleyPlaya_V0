@@ -1,0 +1,39 @@
+﻿@*@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService*@
+@{
+    ViewData["Title"] = "Home Page";
+    //var settings = await ligamaniaService.GetSettings();
+}
+
+A VER SI ESTO FUNCIONA!
+@*@if (User.Identity.IsAuthenticated)
+{
+    if (settings.VerNoticias)
+    {
+        //Ver noticias
+        <div class="row">
+            <h2 class="text-center">Para que estés informado...</h2>
+            <div id="grid-noticias" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @Html.AjaxGrid(Url.Action("NoticiasGrid", "Home"), new { id = "ajax-grid-noticias" })
+            </div>
+        </div>
+    }
+    else if (settings.VerEquiposPretemporada)
+    {
+        //Ver equipos en pretemporada
+        <div class="row">
+            <h2 class="text-center">Información de los equipos para la próxima temporada</h2>
+            <div id="grid-equipos" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @Html.AjaxGrid(Url.Action("VistaEquiposPretemporada", "Home"), new { id = "ajax-grid-equipos" })
+            </div>
+        </div>
+    }
+}
+else
+{
+    //ver pagina para entrar en sesion
+    @using (Html.BeginForm("Login", "Account", FormMethod.Get))
+    {
+        <hr />
+        <button class="btn btn-primary" name="btnEntrar" type="submit">Entrar en sesión</button>
+    }
+}*@

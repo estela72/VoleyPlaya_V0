@@ -1,0 +1,549 @@
+﻿@inject ILigamaniaService _ligamaniaService
+@using LigamaniaCoreApp.Models.HerramientasViewModels
+@using LigamaniaCoreApp.Data
+
+@{
+    var porteros = await _ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Portero);
+    var defensas = await _ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Defensa);
+    var medios = await _ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Medio);
+    var delanteros = await _ligamaniaService.GetJugadoresPorPuestoTemporada(LigamaniaConst.Puesto_Delantero);
+
+    var aliPreviasPorcategoria = ViewData["previas"] as List<AlineacionCompeticionJornadaViewModel>;
+    var aliCambiosPorcategoria = ViewData["cambios"] as List<AlineacionCompeticionJornadaViewModel>;
+    var aliActualPorcategoria = ViewData["actual"] as List<AlineacionCompeticionJornadaViewModel>;
+    var categoria = ViewData["categoria"].ToString();
+    var competicion = ViewData["competicion"].ToString();
+
+    var categ = categoria.Split("-")[1].Trim();
+
+    var selectListEquipos = await _ligamaniaService.GetEquiposTemporadaActual(competicion, categ);
+    var listaEquipos = selectListEquipos.Select(l => l.Text).OrderBy(e => e).ToList();
+    var aliPreviasPorequipo = new Dictionary<string, List<AlineacionCompeticionJornadaViewModel>>();
+    var aliCambiosPorequipo = new Dictionary<string, List<AlineacionCompeticionJornadaViewModel>>();
+    var aliActualPorequipo = new Dictionary<string, List<AlineacionCompeticionJornadaViewModel>>();
+    if (Model != null)
+    {
+        if (aliPreviasPorcategoria != null)
+        {
+            aliPreviasPorequipo = aliPreviasPorcategoria.GroupBy(ap => ap.Equipo).ToDictionary(grp => grp.Key, grp => grp.ToList());
+        }
+
+        aliCambiosPorequipo = aliCambiosPorcategoria.GroupBy(ap => ap.Equipo).ToDictionary(grp => grp.Key, grp => grp.ToList());
+
+        if (aliActualPorcategoria != null)
+        {
+            aliActualPorequipo = aliActualPorcategoria.GroupBy(ap => ap.Equipo).ToDictionary(grp => grp.Key, grp => grp.ToList());
+        }
+    }
+}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">@categoria</div>
+    </div>
+    <div class="card-body">
+        @{var ind = 1; }
+        @foreach (var equipo in listaEquipos)
+        {
+            var titlePrevia = equipo;
+            var titleCambios = equipo;
+            var titleActual = equipo;
+            var previas = new List<AlineacionCompeticionJornadaViewModel>();
+            var cambios = new List<AlineacionCompeticionJornadaViewModel>();
+            var actual = new List<AlineacionCompeticionJornadaViewModel>();
+            var stylePrevia = "color:green";
+            var styleCambios = "color:green";
+            var styleActual = "color:green";
+
+            if (aliPreviasPorequipo.ContainsKey(equipo))
+            {
+                previas = aliPreviasPorequipo[equipo];
+                titlePrevia = previas.Count + " jugadores en jornada anterior";
+                if (previas.Count != 11) { stylePrevia = "color:red;font-weight:bold"; }
+            }
+            else
+            {
+                titlePrevia = "0 jugadores en jornada anterior";
+                stylePrevia = "color:red;font-weight:bold";
+            }
+            if (aliCambiosPorequipo.ContainsKey(equipo))
+            {
+                cambios = aliCambiosPorequipo[equipo];
+                titleCambios = cambios.Count + " jugadores en cambios";
+                if (cambios.Count != 11) { styleCambios = "color:red;font-weight:bold"; }
+            }
+            else
+            {
+                titleCambios = "0 jugadores en cambios";
+                styleCambios = "color:red;font-weight:bold";
+            }
+            if (aliActualPorequipo.ContainsKey(equipo))
+            {
+                actual = aliActualPorequipo[equipo];
+                titleActual = actual.Count + " jugadores en jornada actual";
+                if (actual.Count != 11) { styleActual = "color:red;font-weight:bold"; }
+            }
+            else
+            {
+                titleActual = "0 jugadores en jornada actual";
+                styleActual = "color:red;font-weight:bold";
+            }
+            var diferenciasActual = actual.Select(a=>a.Jugador).Except(cambios.Select(c=>c.Jugador)).ToList();
+            var diferenciasCambios = cambios.Select(a=>a.Jugador).Except(actual.Select(c=>c.Jugador)).ToList();
+            if (diferenciasActual.Any())
+            {
+                titleActual += " - Existen " + diferenciasActual.Count + " diferencias entre cambios y alineación actual";
+                styleActual = "color:red;font-weight:bold";
+            }
+            var styleEquipo = "color:blue;font-weight:bold";
+            var collapse = "#collapse" + ind;
+            var collapseControl = "collapse" + ind;
+            <div class="mvc-grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="mvc-grid-larger" style=@styleEquipo>@ind</span>
+                            </th>
+                            <th>
+                                <span class="mvc-grid-larger" style=@styleEquipo>@equipo</span>
+                            </th>
+                            <th>
+                                <span class="mvc-grid-larger" style="@stylePrevia">@titlePrevia</span>
+                            </th>
+                            <th>
+                                <span class="mvc-grid-larger" style="@styleCambios">@titleCambios</span>
+                            </th>
+                            <th>
+                                <span class="mvc-grid-larger" style="@styleActual">@titleActual</span>
+                            </th>
+                            <th>
+                                <button class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="@collapse" aria-expanded="false" aria-controls="@collapseControl">Alineaciones</button>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="collapse" id="@collapseControl">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col">
+                            Jornada previa (si están los cambios abiertos, coincide con la alineación de la jornada carrusel)
+                            <div id="grid-previa" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                                @{
+                                    previas = previas.OrderBy(p => p.OrdenPuesto).ToList();
+                                    @(Html.Grid(previas)
+                                        .Build(columns =>
+                                        {
+                                            columns.Add(model => model.Puesto).Titled("Puesto");
+                                            columns.Add(model => model.Jugador).Titled("Jugador");
+                                            columns.Add(model => model.Club).Titled("Club");
+                                        })
+                                        .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                                        .Empty("No hay alineaciones")
+                                        .Id("ajax-grid-previa")
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <div class="col">
+                            Cambios (sólo tiene sentido modificar esta tabla si están los cambios abiertos)
+                            @{
+                                cambios = cambios.OrderBy(p => p.OrdenPuesto).ToList();
+                                @(Html.Grid(cambios)
+                                    .Build(columns =>
+                                    {
+                                        columns.Add(model => model.Puesto).Titled("Puesto");
+                                        columns.Add(model => model.Jugador).Titled("Jugador");
+                                        columns.Add(model => model.Club).Titled("Club");
+                                        columns.Add(model => $"<button type='button' class='btn btn-primary' data-tipo='aliCambios' data-id=\"{model.IdAlineacion}\" " +
+                                            $" data-puesto=\"{model.Puesto}\" data-jugador=\"{model.Jugador}\" data-club=\"{model.Club}\" " +
+                                            $"data-toggle='modal' data-target='#editAlineacionModal'>Editar</button>").Encoded(false);
+
+                                        columns.Add(model => $"<button type='button' class='btn btn-primary' data-tipo='aliCambios' data-id=\"{model.IdAlineacion}\" " +
+                                            $" data-puesto=\"{model.Puesto}\" data-jugador=\"{model.Jugador}\" data-club=\"{model.Club}\" " +
+                                            $"data-toggle='modal' data-target='#deleteAlineacionModal'>Borrar</button>").Encoded(false);
+                                    })
+                                    .RowAttributed(model => new { style= diferenciasCambios.Contains(model.Jugador) ? "background-color:red":"background-color:transparent"})
+                                    .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                                    .Empty("No hay alineaciones")
+                                    .Id("ajax-grid-previa")
+                                )
+                            }
+                            <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-name="aliCambios" data-competicion="@competicion" data-categoria="@categoria" data-equipo="@equipo" data-target='#addAlineacionModal'>Agregar jugador</button>
+                        </div>
+                        <div class="col">
+                            Jornada carrusel
+                            @{
+                                actual = actual.OrderBy(p => p.OrdenPuesto).ToList();
+                                @(Html.Grid(actual)
+                                    .Build(columns =>
+                                    {
+                                        columns.Add(model => model.Puesto).Titled("Puesto");
+                                        columns.Add(model => model.Jugador).Titled("Jugador");
+                                        columns.Add(model => model.Club).Titled("Club");
+                                        columns.Add(model => $"<button type='button' class='btn btn-primary' data-tipo='aliActual' data-id=\"{model.IdAlineacion}\" " +
+                                            $" data-puesto=\"{model.Puesto}\" data-jugador=\"{model.Jugador}\" data-club=\"{model.Club}\" " +
+                                            $"data-toggle='modal' data-target='#editAlineacionModal'>Editar</button>").Encoded(false);
+
+                                        columns.Add(model => $"<button type='button' class='btn btn-primary' data-tipo='aliActual' data-id=\"{model.IdAlineacion}\" " +
+                                            $" data-puesto=\"{model.Puesto}\" data-jugador=\"{model.Jugador}\" data-club=\"{model.Club}\" " +
+                                            $"data-toggle='modal' data-target='#deleteAlineacionModal'>Borrar</button>").Encoded(false);
+                                    })
+                                    .RowAttributed(model => new { style= diferenciasActual.Contains(model.Jugador) ? "background-color:red":"background-color:transparent"})
+                                    .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+                                    .Empty("No hay alineaciones")
+                                    .Id("ajax-grid-previa")
+                                )
+                            }
+                            <button type="button" class='btn btn-primary btn-lg' data-toggle='modal' data-name="aliActual" data-competicion="@competicion" data-categoria="@categoria" data-equipo="@equipo" data-target='#addAlineacionModal'>Agregar jugador</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            ind++;
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="addAlineacionModal" tabindex="-1" role="dialog" aria-labelledby="addAlineacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAlineacionModalLabel">Nuevo jugador (seleccionar un único jugador y guardar) </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="add-competicion" disabled>
+                        <input type="text" class="form-control" id="add-categoria" disabled>
+                        <input type="text" class="form-control" id="add-equipo" disabled>
+                        <input type="text" class="form-control" id="add-tipo" disabled hidden>
+                    </div>
+                    <div class="form-group">
+                        <label for="portero-text" class="col-form-label">Porteros</label>
+                        @Html.DropDownList("add-portero", porteros, "Seleccionar un portero", new { @class = "form-control"})
+                    </div>
+                    <div class="form-group">
+                        <label for="defensa-text" class="col-form-label">Defensas:</label>
+                        @Html.DropDownList("add-defensa", defensas, "Seleccionar un defensa", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="medio-text" class="col-form-label">Medios</label>
+                        @Html.DropDownList("add-medio", medios, "Seleccionar un medio", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="delantero-text" class="col-form-label">Delanteros</label>
+                        @Html.DropDownList("add-delantero", delanteros, "Seleccionar un delantero", new { @class = "form-control" })
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-add">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editAlineacionModal" tabindex="-1" role="dialog" aria-labelledby="editAlineacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAlineacionModalLabel">Editando... </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <input type="hidden" class="form-control" id="edit-id-alineacion">
+                        <input type="hidden" class="form-control" id="edit-tipo" />
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="puesto-text" class="col-form-label">Puesto:</label>
+                                <input type="text" class="form-control" id="edit-puesto-text" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="jugador-text" class="col-form-label">Jugador:</label>
+                                <input type="text" class="form-control" id="edit-jugador-text" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="club-text" class="col-form-label">Club:</label>
+                                <input type="text" class="form-control" id="edit-club-text" disabled>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="jugador-text" class="col-form-label">Cambiar por:</label>
+                            @Html.DropDownList("listaPorteros", porteros, "Seleccionar un portero", new { @class = "form-control" })
+                            @Html.DropDownList("listaDefensas", defensas, "Seleccionar un defensa", new { @class = "form-control" })
+                            @Html.DropDownList("listaMedios", medios, "Seleccionar un medio", new { @class = "form-control" })
+                            @Html.DropDownList("listaDelanteros", delanteros, "Seleccionar un delantero", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteAlineacionModal" tabindex="-1" role="dialog" aria-labelledby="deleteAlineacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAlineacionModalLabel">Confirmar borrado </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="delete-id-alineacion">
+                    <input type="hidden" class="form-control" id="delete-tipo" />
+                    <div class="form-group">
+                        <label for="puesto-text" class="col-form-label">Puesto:</label>
+                        <input type="text" class="form-control" id="delete-puesto-text">
+                    </div>
+                    <div class="form-group">
+                        <label for="jugador-text" class="col-form-label">Jugador:</label>
+                        <input type="text" class="form-control" id="delete-jugador-text">
+                    </div>
+                    <div class="form-group">
+                        <label for="club-text" class="col-form-label">Club:</label>
+                        <input type="text" class="form-control" id="delete-club-text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Eliminar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#editAlineacionModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var puesto = button.data('puesto')
+        var jugador = button.data('jugador')
+        var club = button.data('club')
+        var tipo = button.data('tipo')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición de jugador ' + jugador)
+        modal.find('#edit-id-alineacion').val(id)
+        modal.find('#edit-puesto-text').val(puesto)
+        modal.find('#edit-jugador-text').val(jugador)
+        modal.find('#edit-club-text').val(club)
+        modal.find('#edit-tipo').val(tipo)
+
+        if (puesto === "Portero") {
+            $("#listaPorteros").show();
+            $("#listaDefensas").hide();
+            $("#listaMedios").hide();
+            $("#listaDelanteros").hide();
+        }
+        if (puesto === "Defensa") {
+            $("#listaPorteros").hide();
+            $("#listaDefensas").show();
+            $("#listaMedios").hide();
+            $("#listaDelanteros").hide();
+        }
+        if (puesto === "Medio") {
+            $("#listaPorteros").hide();
+            $("#listaDefensas").hide();
+            $("#listaMedios").show();
+            $("#listaDelanteros").hide();
+        }
+        if (puesto === "Delantero") {
+            $("#listaPorteros").hide();
+            $("#listaDefensas").hide();
+            $("#listaMedios").hide();
+            $("#listaDelanteros").show();
+        }
+    });
+    $('#deleteAlineacionModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id') // Extract info from data-* attributes
+        var puesto = button.data('puesto')
+        var jugador = button.data('jugador')
+        var club = button.data('club')
+        var tipo = button.data('tipo')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Borrado del jugador ' + jugador)
+        modal.find('#delete-id-alineacion').val(id)
+        modal.find('#delete-puesto-text').val(puesto)
+        modal.find('#delete-jugador-text').val(jugador)
+        modal.find('#delete-club-text').val(club)
+        modal.find('#delete-tipo').val(tipo)
+    });
+    $('#addAlineacionModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var tipo = button.data('name') // Extract info from data-* attributes
+        var competicion = button.data('competicion')
+        var categoria = button.data('categoria')
+        var equipo = button.data('equipo')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        if (tipo === "aliActual") {
+            modal.find('.modal-title').text('Agregar un jugador en la jornada carrusel')
+        }
+        else {
+            modal.find('.modal-title').text('Agregar un jugador en la tabla Cambios')
+        }
+
+        modal.find('#add-competicion').val(competicion)
+        modal.find('#add-categoria').val(categoria)
+        modal.find('#add-equipo').val(equipo)
+        modal.find('#add-tipo').val(tipo)
+    });
+
+    $('#addAlineacionModal').on('click', '[data-save="modal-add"]', function (event) {
+        event.preventDefault();
+        var portero = $('#add-portero').val();
+        var defensa = $('#add-defensa').val();
+        var medio = $('#add-medio').val();
+        var delantero = $('#add-delantero').val();
+
+        var competicion = $('#add-competicion').val();
+        var categoria = $('#add-categoria').val();
+        var equipo = $('#add-equipo').val();
+        var tipo = $('#add-tipo').val();
+
+        jugador = portero;
+        if (defensa !== "") { jugador = defensa;}
+        if (medio !== "") { jugador = medio;}
+        if (delantero !== "") { jugador = delantero;}
+        const alineacion = {
+            Jugador: jugador,
+            Competicion: competicion,
+            Categoria: categoria,
+            Equipo: equipo,
+            Tipo: tipo
+        };
+        var urlToCall = '/Herramientas/AgregarJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(alineacion),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al agregar una alineación");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#addAlineacionModal').modal('hide');
+                //location.reload();
+            }
+        });
+    });
+
+    $('#editAlineacionModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        var id = $('#edit-id-alineacion').val();
+        var puesto = $('#edit-puesto-text').val();
+        var jugador = $('#edit-jugador-text').val();
+        var club = $('#edit-club-text').val();
+        var tipo = $('#edit-tipo').val();
+
+        var jugadorCambio = "";
+        if (puesto === "Portero") {
+            jugadorCambio = $('#listaPorteros').val();
+        }
+        if (puesto === "Defensa") {
+            jugadorCambio = $('#listaDefensas').val();
+        }
+        if (puesto === "Medio") {
+            jugadorCambio = $('#listaMedios').val();
+        }
+        if (puesto === "Delantero") {
+            jugadorCambio = $('#listaDelanteros').val();
+        }
+        //alert(jugadorCambio);
+        const alineacion = {
+            IdAlineacion: id,
+            Puesto: puesto,
+            Jugador: jugador,
+            Club: club,
+            JugadorCambio: jugadorCambio,
+            Tipo: tipo
+        };
+        var urlToCall = '/Herramientas/EditarJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(alineacion),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al editar una alineación");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#editAlineacionModal').modal('hide');
+                //location.reload();
+            }
+        });
+    });
+
+    $('#deleteAlineacionModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        alert('onclick delete');
+        var id = $('#delete-id-alineacion').val();
+        var puesto = $('#delete-puesto-text').val();
+        var jugador = $('#delete-jugador-text').val();
+        var club = $('#delete-club-text').val();
+        var tipo = $('#edit-tipo').val();
+
+        const alineacion = {
+            IdAlineacion: id,
+            Puesto: puesto,
+            Jugador: jugador,
+            Club: club,
+            Tipo: tipo
+        };
+        var urlToCall = '/Herramientas/BorrarJugador';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(alineacion),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert(response.message);
+            }
+        }).done(function (response) {
+            alert(response.message);
+            if (response.result) {
+                $('#deleteAlineacionModal').modal('hide');
+                //location.reload();
+            }
+        });
+    });
+</script>

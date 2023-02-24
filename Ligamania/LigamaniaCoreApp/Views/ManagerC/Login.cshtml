@@ -1,0 +1,38 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject ApplicationUserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Entrar en Sesión";
+    ICollection<Tuple<string, string>> userNames = await UserManager.GetListofUsersAndTrainers(incluirBots:true);
+    var listUserNames = new SelectList(userNames, "Item1", "Item2");
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <hr />
+                @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                <div class="form-group">
+                    <select asp-for="UserName" asp-items="@(listUserNames)" class="form-control">
+                        <option>Seleccionar un entrenador</option>
+                    </select>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Conectar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

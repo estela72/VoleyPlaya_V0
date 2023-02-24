@@ -1,0 +1,35 @@
+﻿@model  IEnumerable<MenuMasterViewModel>
+
+<div id="grid-menu" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+    @{
+        @(Html
+            .Grid(Model)
+            .Build(columns =>
+            {
+                columns.Add(model => model.MenuIdentity).Titled("Id");
+                columns.Add(model => model.MenuID).Titled("Menu");
+                columns.Add(model => model.MenuName).Titled("Nombre");
+                columns.Add(model => model.Parent_MenuID).Titled("ID Parent");
+                columns.Add(model => model.User_Roll).Titled("Rol");
+                columns.Add(model => model.MenuFileName).Titled("Menu File Name");
+                columns.Add(model => model.MenuURL).Titled("Url");
+                columns.Add(model => model.Order).Titled("Orden");
+                columns.Add(model => $"<button type='button' class='btn btn-primary' data-menuid=\"{model.MenuID}\" data-name=\"{model.MenuName}\" data-id=\"{model.MenuIdentity}\" data-parentid=\"{model.Parent_MenuID}\" " +
+                    $"data-userrol=\"{model.User_Roll}\" data-filename=\"{model.MenuFileName}\" data-url=\"{model.MenuURL}\" data-orden=\"{model.Order}\" " +
+                    $"data-toggle='modal' data-target='#editMenuModal'>Editar</button>").Encoded(false);
+                columns.Add(model => $"<button type='button' class='btn btn-secondary' id=\"{model.MenuIdentity}\" onClick=\"buttonBorrar(this.id)\">Borrar</button>").Encoded(false);
+            })
+            .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+            .Empty("No hay registros")
+            .Id("ajax-grid-menu")
+            .Pageable(pager =>
+            {
+                //pager.PageSizes = new Dictionary<Int32, String> { { 0, "All" }, { 5, "5" }, { 10, "10" } };
+                pager.ShowPageSizes = true;
+                pager.RowsPerPage = 10;
+            })
+            .Filterable()
+            .Sortable()
+        )
+    }
+</div>

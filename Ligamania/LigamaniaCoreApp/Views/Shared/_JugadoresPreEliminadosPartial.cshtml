@@ -1,0 +1,19 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<JugadorEliminadoViewModel>
+@{
+    if (Model.Any())
+    {
+        <h4 class="text-center">Preeliminados</h4>
+
+            @(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Jugador).Titled("Jugador");
+                })
+                .Empty("No hay jugadores pre-eliminados")
+                .Id("ajax-grid-jugpreeli")
+                .Css("grid-jug-preeli")
+        )
+     }
+}

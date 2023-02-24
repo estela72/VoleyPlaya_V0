@@ -1,0 +1,73 @@
+﻿@using Ligamania.Web.Models
+@model ParametroVM
+
+@{
+    ViewData["Title"] = "Parámetros";
+    var listaSiNo = new SelectList(new List<string> { "SI", "NO" });
+}
+<div class="card m-3 p-2">
+    <h2>Parámetros de Ligamanía</h2>
+    <form asp-action="Edit" method="post">
+        @Html.HiddenFor(model => model.Id)
+        <div class="row p-2 m-5">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="NumJorVueltaJugadorEliminado" class="control-label"></label>
+                    <input asp-for="NumJorVueltaJugadorEliminado" class="form-control" />
+                    <span asp-validation-for="NumJorVueltaJugadorEliminado" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="RotuloCopa" class="control-label"></label>
+                    <input asp-for="RotuloCopa" class="form-control" />
+                    <span asp-validation-for="RotuloCopa" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VerRotuloCopa" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.VerRotuloCopa, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                    <span asp-validation-for="VerRotuloCopa" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VerCuadroCopa" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.VerCuadroCopa, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                    <span asp-validation-for="VerCuadroCopa" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="AvisoClasificaciones" class="control-label"></label>
+                    <input asp-for="AvisoClasificaciones" class="form-control" />
+                    <span asp-validation-for="AvisoClasificaciones" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VerAvisoClasificaciones" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.VerAvisoClasificaciones, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                    <span asp-validation-for="VerAvisoClasificaciones" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="VerNoticiasPaginaPrincipal" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.VerNoticiasPaginaPrincipal, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                    <span asp-validation-for="VerNoticiasPaginaPrincipal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VerEquiposPretemporadaPaginaPrincipal" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.VerEquiposPretemporadaPaginaPrincipal, listaSiNo, "Seleccionar...", new { @class = "form-control custom-select" })
+                    <span asp-validation-for="VerEquiposPretemporadaPaginaPrincipal" class="text-danger"></span>
+                </div>            
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary m-3" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

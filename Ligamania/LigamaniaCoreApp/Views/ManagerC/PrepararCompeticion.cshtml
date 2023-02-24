@@ -1,0 +1,439 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+
+@model LigamaniaCoreApp.Models.ManagerViewModels.PreparacionTemporadaViewModel
+
+@{
+    ViewData["Title"] = "Preparar competición";
+    var competiciones = await ligamaniaService.GetAllCompeticiones();
+}
+<h2>Preparar una competición</h2>
+
+<div class=" flex-container">
+    <div class="flex-item-bold-center card">
+        <div class="card-header">
+            <h4>Competiciones activas en @Model.Temporada.Temporada</h4>
+        </div>
+        <div class="card-body">
+            <div id="grid-competiciones-activas" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @{
+                    @(Html
+                            .Grid(Model.CompeticionesCategoriasActivas)
+                            .Build(columns =>
+                            {
+                                columns.Add(model => model.Competicion).Titled("Competición");
+                                columns.Add(model => model.Categoria).Titled("Categoría");
+                                columns.Add(model => model.RepetirClubAliIni ? LigamaniaConst.SI:LigamaniaConst.NO).Titled("Repetir club en alineación");
+                                columns.Add(model => model.CopiarAlineacionInicial ? LigamaniaConst.SI:LigamaniaConst.NO).Titled("Copiar alineación inicial");
+                                columns.Add(model => model.MarcarPichichi ? LigamaniaConst.SI:LigamaniaConst.NO).Titled("Pichichi en clasificación");
+                                columns.Add(model => model.NumMaxJugEliminar).Titled("Nº máximo veces alineado para eliminar un jugador");
+                                columns.Add(model => model.CambiosFijos).Titled("Nº cambios fijos");
+                                columns.Add(model => model.CompeticionCopiarAliIni).Titled("Copiar alineación de la competición");
+                                columns.Add(model => model.JornadaCuadro).Titled("Jornada para iniciar el cuadro");
+
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' " +
+                                $"data-idcompeticion=\"{model.IdCompeticion}\" data-idcategoria=\"{model.IdCategoria}\" " +
+                                $"data-competicion=\"{model.Competicion}\" data-categoria=\"{model.Categoria}\" " +
+                                $"data-repetir=\"{model.RepetirClubAliIni}\" data-copiarali=\"{model.CopiarAlineacionInicial}\" " +
+                                $"data-competicion-copia=\"{model.CompeticionCopiarAliIni}\" " +
+                                $"data-marcarpichichi=\"{model.MarcarPichichi}\" data-nummaxjugeli=\"{model.NumMaxJugEliminar}\" "+
+                                $"data-cambiosfijos=\"{model.CambiosFijos}\" "+
+                                $"data-jornadacuadro=\"{model.JornadaCuadro}\" "+
+                                $"data-toggle='modal' data-target='#editTempCompModal'>Editar</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' title='Preparar equipos, jornadas y partidos' onclick='prepararTemporada(\"{model.IdCompeticion}\",\"{model.IdCategoria}\", \"{model.Categoria}\")' id='prepareTemporada'>Preparar</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' title='Establecer la competición en estado INICIAL. Hacerlo antes de abrir las alineaciones' onclick='activarTemporada(\"{model.IdCompeticion}\",\"{model.IdCategoria}\", \"{model.Categoria}\")' id='activeTemporada'>Activar</button>").Encoded(false);
+
+                                columns.Add(model => $"<button type='button' class='btn btn-danger' title='Borra clasificaciones, eliminados, goleadores y resultados de partidos.' " +
+                                $"onclick='resetearCompeticion(\"{model.IdCompeticion}\", \"{model.Competicion}\")' " +
+                                $"id='panelControl'>Resetear!</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-danger' title='Borra las alineaciones de las 3 tablas (previa, cambios y jornadas.' " +
+                                $"onclick='resetearAlineaciones(\"{model.IdCompeticion}\", \"{model.Competicion}\")' " +
+                                $"id='panelControl'>Resetear Alineaciones!</button>").Encoded(false);
+                                columns.Add(model => $"<button type='button' class='btn btn-danger' " +
+                                $"onclick='desactivarCompeticion(\"{model.IdCompeticion}\",\"{model.IdCategoria}\", \"{model.Categoria}\")' " +
+                                $"id='deactiveButton'>Desactivar!</button>").Encoded(false);
+
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .WithFilterMode(GridFilterMode.FilterRow)
+                            .Empty("No hay competiciones activas")
+                            .Id("ajax-grid-competiciones-activas")
+                            .Pageable(pager =>
+                            {
+                                pager.RowsPerPage = 8;
+                            })
+                            .Filterable()
+                            .Sortable()
+                    )
+                }
+            </div>
+        </div>
+    </div>
+    <div class="flex-item-bold-center card">
+        <div class="card-header">
+            <h4>Competiciones disponibles</h4>
+        </div>
+        <div class="card-body">
+            <div id="grid-all-competiciones" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                @{
+                    @(Html
+                            .Grid(Model.AllCompeticiones)
+                            .Build(columns =>
+                            {
+                                columns.Add(model => model.Competicion).Titled("Competición");
+                                columns.Add(model => model.Categoria).Titled("Categoría");
+                                columns.Add(model => $"<button type='button' class='btn btn-primary' onclick='activeCompeticion(\"{model.IdCompeticion}\",\"{model.IdCategoria}\", \"{model.Categoria}\")' id='activeButton'>Activar</button>").Encoded(false);
+                            })
+                            .Css("mvc-grid-medium") // Overwrites all classes with the new ones
+                            .WithFilterMode(GridFilterMode.FilterRow)
+                            .Empty("No hay competiciones")
+                            .Id("ajax-grid-all-competiciones")
+                            .Pageable(pager =>
+                            {
+                                pager.RowsPerPage = 15;
+                            })
+                            .Filterable()
+                            .Sortable()
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editTempCompModal" tabindex="-1" role="dialog" aria-labelledby="editTempCompModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="width:1025px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTempCompModalLabel">Editando...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="flex-container" style="width:1025px;">
+                    <input type="hidden" class="form-control" id="id-competicion">
+                    <input type="hidden" class="form-control" id="id-categoria">
+                    <div class="card flex-item-fit">
+                        <div class="card-header">
+                            <h3>Datos de la competición</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="competicion-name" class="col-form-label">Competición:</label>
+                                <input type="text" class="form-control" id="competicion-name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria-name" class="col-form-label">Categoría:</label>
+                                <input type="text" class="form-control" id="categoria-name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="repetir-name" class="col-form-label">Se permite repetir club en alineación:</label>
+                                @Html.DropDownList("repetir-name", ViewBag.ListaSiNo, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label for="copiarali-name">Copiar alineación inicial:</label>
+                                @Html.DropDownList("copiarali-name", ViewBag.ListaSiNo, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label for="copiarali-name">Copiar de la competición:</label>
+                                @Html.DropDownList("compcopia-name", competiciones, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label for="jorcuadro-name">Jornada iniciar cuadro:</label>
+                                <input type="number" class="form-control" id="jorcuadro-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="cambios-name" class="col-form-label">Nº de cambios fijos:</label>
+                                <input type="number" class="form-control" id="cambios-name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card flex-item-fit">
+                        <div class="card-header">
+                            <h3>Datos de la categoría</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="pichichi-name" class="col-form-label">Pichichi en clasificación:</label>
+                                @Html.DropDownList("pichichi-name", ViewBag.ListaSiNo, "Seleccionar...", new { @class = "custom-select", required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label for="nummax-name" class="col-form-label">Nº máximo veces alineado para eliminar un jugador:</label>
+                                <input type="number" class="form-control" id="nummax-name">
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal-edit">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function activeCompeticion(idCompeticion, idCategoria, categoria) {
+        var r = confirm("¿Está seguro de querer activar la categoría: " + categoria + "?");
+        if (r == true) {
+            const categoriaConfirmar = {
+                IdCompeticion: idCompeticion,
+                IdCategoria: idCategoria,
+                Activar: true
+            };
+            var urlToCall = '/MANAGERC/ActivarCompeticion';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(categoriaConfirmar),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al activar la categoría " + categoria);
+                }
+            }).done(function (response) {
+                if (response.result) {
+                    alert(response.message);
+                    location.reload();
+                }
+                else {
+                    alert("Error al activar la categoría " + categoria);
+                }
+            });
+        }
+
+    };
+    function prepararTemporada(idCompeticion, idCategoria, categoria) {
+        const categoriaPreparar = {
+            IdCompeticion: idCompeticion,
+            IdCategoria: idCategoria
+        };
+        var urlToCall = '/MANAGERC/PrepararCategoriaTemporada';
+        window.location.href = urlToCall + "?idCompeticion=" + idCompeticion+"&idCategoria="+idCategoria;
+    };
+    function activarTemporada(idCompeticion, idCategoria, categoria) {
+        var r = confirm("¿Está seguro de querer activar la competición para iniciar la temporada? ");
+        if (r == true) {
+            const categoriaConfirmar = {
+                IdCompeticion: idCompeticion,
+                IdCategoria: idCategoria,
+                Activar: true
+            };
+            var urlToCall = '/MANAGERC/ActivarParaComenzarCompeticion';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(categoriaConfirmar),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType: 'json',
+                error: function () {
+                    alert("Error al activar la categoría " + categoria);
+                }
+            }).done(function (response) {
+                if (response.result) {
+                    alert(response.message);
+                    location.reload();
+                }
+                else {
+                    alert("Error al activar la categoría " + categoria);
+                }
+            });
+        }
+    };
+    function resetearCompeticion(idCompeticion, competicion) {
+        var r = confirm("¿Está seguro de querer RESETEAR LA COMPETICIÓN "+competicion+"? Se borrarán TODOS LOS DATOS DESDE INICIO DE COMPETICIÓN");
+        if (r == true) {
+            const compCat = {
+                IdCompeticion: idCompeticion,
+                Competicion: competicion
+            };
+            var urlToCall = '/MANAGERC/ResetearCompeticion';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al resetear la competicion");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                //if (response.result) {
+                //    location.reload();
+                //}
+            });
+        }
+    };
+    function desactivarCompeticion(idCompeticion, competicion) {
+        var r = confirm("¿Está seguro de querer DESACTIVAR LA COMPETICIÓN "+competicion+"? Se dejará de ver en la cabecera");
+        if (r == true) {
+            const compCat = {
+                IdCompeticion: idCompeticion,
+                Competicion: competicion
+            };
+            var urlToCall = '/MANAGERC/DesactivarCompeticion';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al desactivar la competicion");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                if (response.result) {
+                    location.reload();
+                }
+            });
+        }
+    };
+    function resetearAlineaciones(idCompeticion, competicion) {
+        var r = confirm("¿Está seguro de querer RESETEAR LAS ALINEACIONES DE LA COMPETICIÓN "+competicion+"? Se borrarán TODOS LOS DATOS DESDE INICIO DE COMPETICIÓN (es conveniente previamente resetear la competición");
+        if (r == true) {
+            const compCat = {
+                IdCompeticion: idCompeticion,
+                Competicion: competicion
+            };
+            var urlToCall = '/MANAGERC/ResetearAlineaciones';
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(compCat),
+                url: urlToCall,
+                contentType: "application/json; charset=utf-8",
+                processData: true,
+                cache: false,
+                dataType:'json',
+                error: function () {
+                    alert("Error al resetear la competicion");
+                }
+            }).done(function (response) {
+                alert(response.message);
+                //if (response.result) {
+                //    location.reload();
+                //}
+            });
+        }
+    };
+
+</script>
+<script type="text/javascript">
+    $('#editTempCompModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var idCompeticion = button.data('idcompeticion') // Extract info from data-* attributes
+        var idCategoria = button.data('idcategoria')
+        var competicion = button.data('competicion')
+        var categoria = button.data('categoria')
+        var repetir = button.data('repetir')
+        var copiarali = button.data('copiarali')
+        var compcopia = button.data('competicion-copia')
+        var pichichi = button.data('marcarpichichi')
+        var nummax = button.data('nummaxjugeli')
+        var cambios = button.data('cambiosfijos')
+        var jorcuadro = button.data('jornadacuadro')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Edición de competición ' + idCompeticion + " - " + idCategoria)
+        modal.find('#id-competicion').val(idCompeticion)
+        modal.find('#id-categoria').val(idCategoria)
+        modal.find('#competicion-name').val(competicion)
+        modal.find('#categoria-name').val(categoria)
+        if (repetir == "True") {
+            modal.find('#repetir-name').val('SI');
+        }
+        else {
+            modal.find('#repetir-name').val('NO');
+        }
+        if (copiarali == "True") {
+            modal.find('#copiarali-name').val("SI")
+        }
+        else {
+            modal.find('#copiarali-name').val("NO");
+        }
+        modal.find('#compcopia-name').val(compcopia);
+        modal.find('#cambios-name').val(cambios);
+        if (pichichi == "True") {
+            modal.find('#pichichi-name').val("SI")
+        }
+        else {
+            modal.find('#pichichi-name').val("NO");
+        }
+        modal.find('#nummax-name').val(nummax);
+        modal.find('#jorcuadro-name').val(jorcuadro);
+    });
+</script>
+<script type="text/javascript">
+    $('#editTempCompModal').on('click', '[data-save="modal-edit"]', function (event) {
+        event.preventDefault();
+        var idcompeticion = $('#id-competicion').val();
+        var idcategoria = $('#id-categoria').val();
+        var competicionName = $('#competicion-name').val();
+        var categoriaName = $('#categoria-name').val();
+        var repetir = $('#repetir-name').val();
+        var copiarali = $('#copiarali-name').val();
+        var compcopia = $('#compcopia-name').val();
+        var cambios = $('#cambios-name').val();
+        var pichichi = $('#pichichi-name').val();
+        var nummax = $('#nummax-name').val();
+        var jorcuadro = $('#jorcuadro-name').val();
+
+        var si = "SI";
+
+        var boolRepetir = false;
+        if (repetir == si) {
+            boolRepetir = true;
+        }
+        var boolCopiar = false;
+        if (copiarali == si) {
+            boolCopiar = true;
+        }
+        var boolPichichi = false;
+        if (pichichi==si) {
+            boolPichichi = true;
+        }
+
+        var temporadacompeticion = {
+            IdCompeticion: idcompeticion,
+            IdCategoria: idcategoria,
+            Competicion: competicionName,
+            Categoria: categoriaName,
+            RepetirClubAliIni: boolRepetir,
+            CopiarAlineacionInicial: boolCopiar,
+            CompeticionCopiarAliIni: compcopia,
+            MarcarPichichi: boolPichichi,
+            NumMaxJugEliminar: nummax,
+            CambiosFijos: cambios,
+            JornadaCuadro: jorcuadro
+        };
+        var urlToCall = '/MANAGERC/EditarTemporadaCompeticion';
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(temporadacompeticion),
+            url: urlToCall,
+            contentType: "application/json; charset=utf-8",
+            processData: true,
+            cache: false,
+            dataType: 'json',
+            error: function (response) {
+                alert("Error al guardar los datos");
+            }
+        }).done(function (response) {
+            alert(response.message);
+            $('#editTempCompModal').modal('hide');
+            location.reload();
+        });
+    });
+</script>

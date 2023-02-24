@@ -1,0 +1,16 @@
+﻿@using LigamaniaCoreApp.Models.ManagerViewModels
+@model ICollection<CompeticionCategoriaViewModel>
+@{
+    ViewData["Title"] = "Configurar clasificaciones";
+    var clasificaciones = Model.OrderBy(c => c.OrdenCompeticion).ThenBy(c => c.OrdenCategoria).ToList();
+}
+<hr />
+@(Html
+    .Grid("_NestedReferenciasGrid", Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Competicion).Titled("Competicion");
+        columns.Add(model => model.Categoria).Titled("Categoria");
+    })
+)
+

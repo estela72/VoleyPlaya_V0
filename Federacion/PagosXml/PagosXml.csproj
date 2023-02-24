@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<!--ItemGroup>
+    <Compile Include="Dominio\Persona.cs" />
+    <Compile Include="Form1.cs" />
+    <Compile Include="Form1.Designer.cs" />
+    <Compile Include="Infraestructura\esquema_sepa_file1.cs" />
+    <Compile Include="Infraestructura\Utils.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup-->
+
+	<!--ItemGroup>
+    <EmbeddedResource Include="Form1.resx" />
+  </ItemGroup-->
+
+  <ItemGroup>
+    <None Include="Infraestructura\esquema_sepa_file1.xsd" />
+    <None Include="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.XmlSerializer.Generator" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Infraestructura\esquema_sepa_file1.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

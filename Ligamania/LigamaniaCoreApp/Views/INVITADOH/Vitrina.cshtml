@@ -1,0 +1,59 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model IEnumerable<HistorialViewModel>
+
+@{
+    ViewData["Title"] = "La Vitrina de Ligamanía";
+    var temporadas = Model.OrderByDescending(h => h.Temporada).ToList();
+    HistorialViewModel tempDef = null;
+    string idTempDef = "v-pills-home-tab";
+    string hrefTempDef = "#v-pills-home";
+    string ariaTempDef = "v-pills-home";
+    if (temporadas.Any())
+    {
+        tempDef = temporadas.First();
+        idTempDef = "v-pills-" + tempDef.Temporada + "-tab";
+        hrefTempDef = "#v-pills-" + tempDef.Temporada;
+        ariaTempDef = "v-pills-" + tempDef.Temporada;
+    }
+}
+<h2>La Vitrina de Ligamanía</h2>
+
+<div class="nav nav-pills mb-3" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+    <a class="nav-link active" id="@idTempDef" data-toggle="pill" href="@hrefTempDef" role="tab" aria-controls="@ariaTempDef" aria-selected="true">@tempDef.Temporada</a>
+
+    @foreach (var tem in temporadas)
+    {
+        if (tem.Temporada != tempDef.Temporada)
+        {
+            string idTemp = "v-pills-" + tem.Temporada + "-tab";
+            string hrefTemp = "#v-pills-" + tem.Temporada;
+            string ariaTemp = "v-pills-" + tem.Temporada;
+            <a class="nav-link" id="@idTemp" data-toggle="pill" href="@hrefTemp" role="tab" aria-controls="@ariaTemp" aria-selected="false">@tem.Temporada</a>
+        }
+    }
+</div>
+<div class="tab-content" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="@ariaTempDef" role="tabpanel" aria-labelledby="@idTempDef">
+        @{
+            if (!string.IsNullOrEmpty(tempDef.Temporada))
+            {
+                @await Html.PartialAsync("_detalleVitrina", tempDef)
+            }
+        }
+    </div>
+    @foreach (var tem in temporadas)
+    {
+        if (tem.Temporada != tempDef.Temporada)
+        {
+            string idTemp = "v-pills-" + tem.Temporada + "-tab";
+            string hrefTemp = "#v-pills-" + tem.Temporada;
+            string ariaTemp = "v-pills-" + tem.Temporada;
+    <div class="tab-pane fade" id="@ariaTemp" role="tabpanel" aria-labelledby="@idTemp">
+        @if (!string.IsNullOrEmpty(tem.Temporada))
+        {
+            @await Html.PartialAsync("_detalleVitrina", tem)
+        }
+    </div>
+        }
+    }
+</div>

@@ -1,0 +1,126 @@
+﻿@using LigamaniaCoreApp.Data
+@using LigamaniaCoreApp.Models.InvitadoViewModels
+@model HistoriaEquipoCategoriaViewModel
+
+@{
+
+    int campeon = Model.TempCampeon.Count;
+    int subcampeon = Model.TempSubcampeon.Count;
+    int tercero = Model.TempTercero.Count;
+    int pichichi = Model.TempPichichi.Count;
+    if (Model.Categoria.Contains("Copa"))
+    {
+        tercero = 0;pichichi = 0;
+    }
+
+    string campeonVeces = " veces "; if (campeon == 1) { campeonVeces = " vez "; }
+    string subcampeonVeces = " veces "; if (subcampeon == 1) { subcampeonVeces = " vez "; }
+    string terceroVeces = " veces "; if (tercero == 1) { terceroVeces = " vez "; }
+    string pichichiVeces = " veces "; if (pichichi == 1) { pichichiVeces = " vez "; }
+
+    int temporadas = campeon + subcampeon + tercero + pichichi;
+    int rowSpan = campeon > 0 ? 1 : 0;
+    rowSpan += subcampeon > 0 ? 1 : 0;
+    rowSpan += tercero > 0 ? 1 : 0;
+    rowSpan += pichichi > 0 ? 1 : 0;
+
+    if (temporadas > 0)
+    {
+        if (campeon > 0)
+        {
+            <div class="row" style="border:double">
+                <div class="col-md-2">
+                    <h2>@Model.Categoria.ToUpper()</h2>
+                </div>
+                <div class="col-md-2">
+                    <a>
+                        <img class="media-object" src="@Url.Content(Url.Action("GetImagenCategoria", "InvitadoH", new { categoria = @Model.Categoria, puesto = 1 }))" alt="">
+                    </a>
+                </div>
+                <div class="col-md-3" style="font-size:x-large;text-align:center;">
+                    @Html.Label("CAMPEÓN " + campeon + campeonVeces)
+                </div>
+                <div class="col-md-3">
+                    @foreach (var temp in Model.TempCampeon)
+                    {
+                        <ul style="font-size:x-large;text-align:center">
+                            @Html.DisplayFor(model => @temp, new { @class = "form-control" })
+                        </ul>
+                    }
+                </div>
+            </div>
+        }
+        if (subcampeon > 0)
+        {
+            <div class="row" style="border:double">
+                <div class="col-md-2">
+                    <h2>@Model.Categoria.ToUpper()</h2>
+                </div>
+                <div class="col-md-2">
+                    <a>
+                        <img class="media-object" src="@Url.Content(Url.Action("GetImagenCategoria", "InvitadoH", new { categoria = @Model.Categoria, puesto = 2 }))" alt="">
+                    </a>
+                </div>
+                <div class="col-md-3" style="font-size:x-large;text-align:center;">
+                    @Html.Label("SUBCAMPEÓN " + subcampeon + subcampeonVeces)
+                </div>
+                <div class="col-md-3">
+                    @foreach (var temp in Model.TempSubcampeon)
+                    {
+                        <ul style="font-size:x-large;text-align:center">
+                            @Html.DisplayFor(model => @temp, new { @class = "form-control" })
+                        </ul>
+                    }
+                </div>
+            </div>
+        }
+        if (tercero > 0)
+        {
+            <div class="row" style="border:double">
+                <div class="col-md-2">
+                    <h2>@Model.Categoria.ToUpper()</h2>
+                </div>
+                <div class="col-md-2">
+                    <a>
+                        <img class="media-object" src="@Url.Content(Url.Action("GetImagenCategoria", "InvitadoH", new { categoria = @Model.Categoria, puesto = 3 }))" alt="">
+                    </a>
+                </div>
+                <div class="col-md-3" style="font-size:x-large;text-align:center;">
+                    @Html.Label("TERCERO " + tercero + terceroVeces)
+                </div>
+                <div class="col-md-3">
+                    @foreach (var temp in Model.TempTercero)
+                    {
+                        <ul style="font-size:x-large;text-align:center">
+                            @Html.DisplayFor(model => @temp, new { @class = "form-control" })
+                        </ul>
+                    }
+                </div>
+            </div>
+        }
+        if (pichichi > 0)
+        {
+            <div class="row" style="border:double">
+                <div class="col-md-2">
+                    <h2>@Model.Categoria.ToUpper()</h2>
+                </div>
+                <div class="col-md-2">
+                    <a>
+                        <img class="media-object" src="@Url.Content(Url.Action("GetImagenCategoria", "InvitadoH", new { categoria = @Model.Categoria, puesto = 4 }))" alt="">
+                    </a>
+                </div>
+                <div class="col-md-3" style="font-size:x-large;text-align:center;">
+                    @Html.Label("PICHICHI " +  pichichi + pichichiVeces)
+                </div>
+                <div class="col-md-3">
+                    @foreach (var temp in Model.TempPichichi)
+                    {
+                        <ul style="font-size:x-large;text-align:center">
+                            @Html.DisplayFor(model => @temp, new { @class = "form-control" })
+                        </ul>
+                    }
+                </div>
+            </div>            
+        }
+    }
+}

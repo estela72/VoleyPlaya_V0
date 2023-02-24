@@ -1,0 +1,33 @@
+﻿@model LigamaniaCoreApp.Models.InvitadoViewModels.PremioCompeticionViewModel
+
+@{
+    ViewData["Title"] = "_PremioCompeticion";
+}
+
+
+<div class="row">
+    @Html.Display(Model.Competicion + "  (" + Model.Porcentaje.ToString("0") + "%)", new { @class = "tit-premio-competicion" })
+</div>
+<div class="row">
+    <table class="premio-competicion">
+        @foreach (var puesto in Model.Premios)
+        {
+            string puestoStr = puesto.Puesto.ToString();
+            if (puestoStr.Equals("Primero"))
+            {
+                puestoStr = "Campeón";
+            }
+            if (Model.Competicion.Equals("Copa") && puestoStr.Equals("Segundo"))
+            {
+                puestoStr = "Subcampeón";
+            }
+            <tr class="fila-premio-competicion">
+                <td class="col-premio-competicion">@Html.Label(puestoStr)</td>
+                <td class="col-premio-competicion">@Html.Label(puesto.Equipo)</td>
+                <td class="col-premio-competicion">@Html.Label(puesto.Importe.ToString("0") + " €")</td>
+            </tr>
+        }
+    </table>
+
+</div>
+

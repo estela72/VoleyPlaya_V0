@@ -1,0 +1,9 @@
+﻿@inject LigamaniaCoreApp.Services.ILigamaniaService ligamaniaService
+@{
+    ViewData["Title"] = "Ligamanía";
+    Layout = "_LayoutSimple";
+}
+
+<div id="grid-clasi" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+    @Html.AjaxGrid(Url.Action("ClasificacionesGrid", "Home"), new { id = "ajax-grid-clasi" })
+</div>

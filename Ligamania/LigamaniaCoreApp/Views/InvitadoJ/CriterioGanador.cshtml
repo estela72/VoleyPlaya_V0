@@ -1,0 +1,28 @@
+﻿@using LigamaniaCoreApp.Models.ManagerViewModels;
+@model TemporadaPartidoRondaViewModel;
+
+<h2>Datos para establecer el Ganador del partido</h2>
+
+<div class="card-body d-flex justify-content-start flex-wrap">
+    @if (Model.PartidoIda != null)
+    {
+        <h3>Partido de IDA - Jornada @Model.PartidoIda.Jornada</h3>
+        @await Html.PartialAsync("_partidoCriterioGanador", Model.PartidoIda, viewData: new ViewDataDictionary(ViewData) { { "editable", "false" },{ "verCriterio", "true" } , { "jornada", Model.PartidoIda.JornadaId } })
+    }
+    else
+    {
+        <h3>No existen datos del partido de IDA (si el criterio es "EQUIPO BOT", el partido no existe)</h3>
+    }
+</div>
+
+<div class="card-body d-flex justify-content-start flex-wrap">
+    @if (Model.PartidoVuelta != null)
+    {
+        <h3>Partido de VUELTA - Jornada @Model.PartidoVuelta.Jornada</h3>
+        @await Html.PartialAsync("_partidoCriterioGanador", Model.PartidoVuelta, viewData: new ViewDataDictionary(ViewData) { { "editable", "false" },{ "verCriterio", "true" }, { "jornada", Model.PartidoVuelta.JornadaId } })
+    }
+    else
+    {
+        <h3>No existen datos del partido de VUELTA (si el criterio es "EQUIPO BOT", o bien es Ronda Final, el partido de vuelta no existe)</h3>
+    }
+</div>

@@ -1,0 +1,75 @@
+﻿@{
+
+    ViewData["Title"] = "Jugadores";
+}
+
+@model JugadorListVM
+@{
+    ViewData["Title"] = "Jugadores";
+    var clubs = Model.jugadores;
+    var primera = Model.nuevoJugador;
+    var col = "collapse";
+    if (Model.Error) { col = "show"; }
+    var colHor = String.Concat(col, " collapse-horizontal");
+}
+
+<div class="row p-2 m-2">
+    <div class="col">
+        <div class="row card m-2 p-1">
+            <input type="hidden" value="@ViewBag.Club" id="selClub" name="selClub" />
+            <input type="hidden" value="@ViewBag.Puesto" id="selPuesto" name="selPuesto" />
+            <p class="m-1">Seleccionar club y/o puesto para cargar lista de jugadores:</p>
+            <div class="col-2 m-1">
+                <select id="clubs" name="clubs">
+                </select>
+            </div>
+            <div class="col-2 m-1">
+                <select id="puestos" name="puestos">
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="button" id="selForm" value="Filtrar" class="btn btn-primary m-2" />
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card m-2 card-filter p-1">
+            <button class="btn btn-primary" type="button" id="copiarJug">Copiar jugadores de la temporada: </button>
+            <select class="m-2" id="temporadas" name="temporadas">
+            </select>
+        </div>
+        <div class="card m-2 card-filter p-1">
+            <button class="btn btn-primary" type="button" id="exportar">Exportar a excel todos los jugadores de la temporada actual</button>
+        </div>
+
+        <div class="card m-2 card-filter p-1">
+            <form id="formCargarExcel" action="#" method="post" enctype="multipart/form-data">
+                <input type="file" id="fUpload" name="files" class="form-control" style="padding:2px" />
+                <button class="btn btn-primary m-2" type="button" id="cargarExcel">Cargar desde excel</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="spinner-border spinner-border-sm" role="status" id="spinner">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <form id="taJugForm" action="#" method="post">
+            <select id="jugadores" multiple="multiple" size="20" name="jugadores[]" title="jugadores[]" class="jug_dualListBox">
+            </select>
+            <br>
+            <div class="card m-3 card-filter p-2">
+                <input type="submit" value="Aplicar cambios" class="btn btn-primary m-2" />
+            </div>
+            <div class="label">
+                <input type="text" disabled id="cambios" name="cambios" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/temporadaJugadores.js"></script>
+}

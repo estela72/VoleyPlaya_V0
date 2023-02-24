@@ -1,0 +1,45 @@
+﻿@using LigamaniaCoreApp.Models.InvitadoViewModels
+@using LigamaniaCoreApp.Data
+
+@model HistorialViewModel
+
+@{
+    var modelGolden = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Categoria_Golden));
+    var modelSilverA = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Categoria_SilverA));
+    var modelSilverB = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Categoria_SilverB));
+    var modelBronze = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Categoria_Bronze));
+    var modelCopa = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Competicion_Copa));
+    var modelSuperCopa = Model.CategoriasHistoricas.FirstOrDefault(c => c.Categoria.Contains(LigamaniaConst.Competicion_Supercopa));
+}
+
+<h3 style="color:red;font-size:xx-large">Historia de Ligamanía / Temporada @Model.Temporada</h3>
+@if (modelGolden != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelGolden)
+}
+
+@if (modelSilverA != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelSilverA)
+}
+
+@if (modelSilverB != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelSilverB)
+}
+
+@if (modelBronze != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelBronze)
+}
+
+@if (modelCopa != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelCopa)
+}
+
+@if (modelSuperCopa != null)
+{
+    @await Html.PartialAsync("_DetalleVitrinaCategoria", modelSuperCopa)
+}
+

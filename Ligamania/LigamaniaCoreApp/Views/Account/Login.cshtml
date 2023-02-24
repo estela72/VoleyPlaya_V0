@@ -1,0 +1,62 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject ApplicationUserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Entrar en Sesión";
+    ICollection<Tuple<string, string>> userNames = await UserManager.GetListofUsersAndTrainers();
+    var listUserNames = new SelectList(userNames, "Item1", "Item2");
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <select asp-for="UserName" asp-items="@(listUserNames)" class="form-control">
+                        <option>Seleccionar un equipo</option>
+                    </select>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                            @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Conectar</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a asp-action="ForgotPassword">¿Olvidaste tu contraseña?</a>
+                    </p>
+                    @*<p>
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Registrar nuevo usuario</a>
+                    </p>*@
+                    @*<p>
+                        <a>Si quieres disfrutar de la Liga de Fútbol de Primera División de una forma original, prueba con Ligamanía! Escríbenos un mail a <strong>ligamania@gmail.com</strong></a>
+                    </p>*@
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

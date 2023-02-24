@@ -1,0 +1,97 @@
+2023-02-24 16:16:43.819 +01:00 [Information] In Development environment
+2023-02-24 16:16:44.949 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/  
+2023-02-24 16:16:44.949 +01:00 [Information] Request starting HTTP/1.1 DEBUG http://localhost:51912/  0
+2023-02-24 16:16:45.031 +01:00 [Information] Request finished in 89.9471ms 200 
+2023-02-24 16:16:46.022 +01:00 [Information] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "LigamaniaCoreApp.Controllers.HomeController" ("LigamaniaCoreApp").
+2023-02-24 16:16:51.381 +01:00 [Warning] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.
+2023-02-24 16:16:52.325 +01:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-02-24 16:16:55.098 +01:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" - Validation state: Valid
+2023-02-24 16:16:55.167 +01:00 [Information] Entrando en Ligamania:(
+2023-02-24 16:16:55.205 +01:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 70.2705ms.
+2023-02-24 16:16:55.337 +01:00 [Information] Executing ViewResult, running view "Index".
+2023-02-24 16:16:56.170 +01:00 [Warning] Query: '"(from SettingsDTO <generated>_1 in DbSet<SettingsDTO> select [<generated>_1]).FirstOrDefault()"' uses First/FirstOrDefault/Last/LastOrDefault operation without OrderBy and filter which may lead to unpredictable results.
+2023-02-24 16:16:58.969 +01:00 [Information] Executed DbCommand ("559"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [s].[Id], [s].[Clasificacion_RotuloCopa], [s].[CreatedBy], [s].[CreatedDate], [s].[NotificacionClasificaciones], [s].[NumeroJornadasVolverEliminados], [s].[TemporadaPremios], [s].[UpdatedBy], [s].[UpdatedDate], [s].[Ver_CuadroCopa], [s].[Ver_EquiposPretemporada], [s].[Ver_Noticias]
+FROM [Settings] AS [s]"
+2023-02-24 16:17:00.439 +01:00 [Information] Executed DbCommand ("137"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-02-24 16:17:00.553 +01:00 [Information] Executed DbCommand ("46"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-02-24 16:17:00.572 +01:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-02-24 16:17:00.584 +01:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-02-24 16:17:00.593 +01:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-02-24 16:17:00.753 +01:00 [Information] Executed ViewResult - view "Index" executed in 5493.2108ms.
+2023-02-24 16:17:00.760 +01:00 [Information] Executed action "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" in 14730.4408ms
+2023-02-24 16:17:01.036 +01:00 [Information] Request finished in 15889.5526ms 200 text/html; charset=utf-8
+2023-02-24 16:17:02.269 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/css/bootstrap.css  
+2023-02-24 16:17:02.273 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery-validation/dist/additional-methods.js  
+2023-02-24 16:17:02.297 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery-validation/dist/jquery.validate.js  
+2023-02-24 16:17:02.718 +01:00 [Information] Sending file. Request path: '"/lib/jquery-validation/dist/additional-methods.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery-validation\dist\additional-methods.js"'
+2023-02-24 16:17:02.775 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/css/bootstrap-reboot.css  
+2023-02-24 16:17:02.781 +01:00 [Information] Sending file. Request path: '"/lib/jquery-validation/dist/jquery.validate.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery-validation\dist\jquery.validate.js"'
+2023-02-24 16:17:02.781 +01:00 [Information] Request finished in 520.9332ms 200 application/javascript
+2023-02-24 16:17:02.796 +01:00 [Information] Request finished in 554.7024ms 200 application/javascript
+2023-02-24 16:17:02.797 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery-ui/jquery-ui.css  
+2023-02-24 16:17:02.820 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/css/site.css  
+2023-02-24 16:17:02.871 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery-ui/jquery-ui.js  
+2023-02-24 16:17:02.880 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/css/MvcGrid/mvc-grid.css  
+2023-02-24 16:17:02.880 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/css/bootstrap-grid.css  
+2023-02-24 16:17:02.968 +01:00 [Information] Sending file. Request path: '"/css/MvcGrid/mvc-grid.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\css\MvcGrid\mvc-grid.css"'
+2023-02-24 16:17:02.974 +01:00 [Information] Request finished in 95.6947ms 200 text/css
+2023-02-24 16:17:02.987 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery/dist/jquery.js  
+2023-02-24 16:17:03.605 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js  
+2023-02-24 16:17:03.685 +01:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap-reboot.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap-reboot.css"'
+2023-02-24 16:17:03.685 +01:00 [Information] Sending file. Request path: '"/lib/jquery-ui/jquery-ui.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery-ui\jquery-ui.css"'
+2023-02-24 16:17:03.710 +01:00 [Information] Request finished in 912.5127ms 200 text/css
+2023-02-24 16:17:03.715 +01:00 [Information] Request finished in 1144.0489ms 200 text/css
+2023-02-24 16:17:03.723 +01:00 [Information] Sending file. Request path: '"/css/site.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\css\site.css"'
+2023-02-24 16:17:03.753 +01:00 [Information] Request finished in 926.4796ms 200 text/css
+2023-02-24 16:17:03.793 +01:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap-grid.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap-grid.css"'
+2023-02-24 16:17:03.863 +01:00 [Information] Request finished in 979.6021ms 200 text/css
+2023-02-24 16:17:03.863 +01:00 [Information] Sending file. Request path: '"/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js"'
+2023-02-24 16:17:03.883 +01:00 [Information] Request finished in 264.5576ms 200 application/javascript
+2023-02-24 16:17:03.905 +01:00 [Information] Sending file. Request path: '"/lib/bootstrap4/css/bootstrap.css"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\css\bootstrap.css"'
+2023-02-24 16:17:03.910 +01:00 [Information] Request finished in 1709.3646ms 200 text/css
+2023-02-24 16:17:03.941 +01:00 [Information] Sending file. Request path: '"/lib/jquery/dist/jquery.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery\dist\jquery.js"'
+2023-02-24 16:17:04.564 +01:00 [Information] Request finished in 967.5016ms 200 application/javascript
+2023-02-24 16:17:04.597 +01:00 [Information] Sending file. Request path: '"/lib/jquery-ui/jquery-ui.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\jquery-ui\jquery-ui.js"'
+2023-02-24 16:17:04.852 +01:00 [Information] Request finished in 1779.3474ms 200 application/javascript
+2023-02-24 16:17:04.854 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0  
+2023-02-24 16:17:04.884 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/js/MvcGrid/mvc-grid.js  
+2023-02-24 16:17:05.621 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/images/ligamania-logo.png  
+2023-02-24 16:17:06.039 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/js/bootstrap.js  
+2023-02-24 16:17:06.721 +01:00 [Information] Sending file. Request path: '"/js/MvcGrid/mvc-grid.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\js\MvcGrid\mvc-grid.js"'
+2023-02-24 16:17:06.837 +01:00 [Information] Sending file. Request path: '"/images/ligamania-logo.png"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\images\ligamania-logo.png"'
+2023-02-24 16:17:06.944 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/Images/cabecera_ligamania.jpg  
+2023-02-24 16:17:08.711 +01:00 [Information] Request finished in 2054.9817ms 200 application/javascript
+2023-02-24 16:17:09.415 +01:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js"'
+2023-02-24 16:17:09.565 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/js/bootstrap.js.map  
+2023-02-24 16:17:09.994 +01:00 [Information] Request finished in 2064.257ms 200 image/png
+2023-02-24 16:17:10.008 +01:00 [Information] Request finished in 4663.0069ms 200 application/javascript
+2023-02-24 16:17:10.010 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/favicon.ico  
+2023-02-24 16:17:10.016 +01:00 [Information] Sending file. Request path: '"/Images/cabecera_ligamania.jpg"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\Images\cabecera_ligamania.jpg"'
+2023-02-24 16:17:10.021 +01:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js.map"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js.map"'
+2023-02-24 16:17:10.025 +01:00 [Information] Request finished in 5132.1164ms 200 image/jpeg
+2023-02-24 16:17:10.031 +01:00 [Information] Request finished in 1664.6523ms 200 text/plain
+2023-02-24 16:17:10.039 +01:00 [Information] Sending file. Request path: '"/js/site.js"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\js\site.js"'
+2023-02-24 16:17:10.050 +01:00 [Information] Request finished in 5256.9501ms 200 application/javascript
+2023-02-24 16:17:10.061 +01:00 [Information] Sending file. Request path: '"/favicon.ico"'. Physical path: '"D:\srcRepository\Proyectos Estela\Ligamania\LigamaniaCoreApp\wwwroot\favicon.ico"'
+2023-02-24 16:17:10.078 +01:00 [Information] Request finished in 67.7277ms 200 image/x-icon

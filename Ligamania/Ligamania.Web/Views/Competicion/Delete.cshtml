@@ -1,0 +1,23 @@
+﻿@model CompeticionVM
+
+@{
+    ViewData["Title"] = "Borrar competición";
+}
+<h3>¿Está seguro de querer eliminar esta competición?</h3>
+<div class="card m-3 p-2">
+    <dl class="row">
+        @Html.HiddenFor(model => Model.Id)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => Model.Competicion)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => Model.Competicion)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        @Html.HiddenFor(model => Model.Id)
+        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver a la lista</a>
+    </form>
+</div>

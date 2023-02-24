@@ -1,0 +1,29 @@
+﻿@using LigamaniaCoreApp.Models.AdminViewModels
+@model IEnumerable<TemporadaJugadorViewModel>
+@{
+    @* Should only include grid declaration *@
+
+    @(Html
+            .Grid(Model)
+            .Build(columns =>
+            {
+                columns.Add(model => model.Jugador).Titled("Jugador");
+                //columns.Add(model => model.Activo ? "Activo" : "Inactivo").Titled("Activo/Inactivo");
+                columns.Add(model => model.Club).Titled("Club");
+                columns.Add(model => model.Puesto).Titled("Puesto");
+                columns.Add(model => $"<button type='button' class='btn btn-primary btn-sm' data-jugador=\"{model.Jugador}\" data-activo=\"{model.Activo}\" data-id=\"{model.IdTemporadaJugador}\" data-club=\"{model.Club}\" data-puesto=\"{model.Puesto}\" data-toggle='modal' data-target='#editTemporadaJugadorModal'>Editar (club y/o puesto)</button>").Encoded(false);
+                columns.Add(model => $"<button class='btn-secondary btn-sm'  id=\"{model.IdTemporadaJugador}\" onClick=\"buttonBorrarTemporadaJugador(this.id)\">Borrar</button>").Encoded(false);
+                columns.Add(model => $"<button class='btn-secondary btn-sm'  id=\"{model.IdTemporadaJugador}\" onClick=\"buttonDesactivarTemporadaJugador(this.id)\">Desactivar</button>").Encoded(false);
+            })
+            .Css("webgrid-noticiaAplicacion") // Overwrites all classes with the new ones
+            .WithFilterMode(GridFilterMode.FilterRow)
+            .Empty("No hay jugadores")
+            .Id("ajax-grid-temporadaactualjugadores")
+            .Pageable(pager =>
+            {
+                pager.RowsPerPage = 20;
+            })
+            .Filterable()
+            .Sortable()
+    )
+}
