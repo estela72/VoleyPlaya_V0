@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VoleyPlaya.ViewModels"
+             x:Class="VoleyPlaya.Views.CompeticionesPage"
+             Title="Competiciones"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <ContentPage.BindingContext>
+        <viewModels:CompeticionesViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Add an item to the toolbar -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding NewCommand}" IconImageSource="{FontImage Glyph='+', Color=White, Size=22}" />
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <Label
+            Text="Lista de competiciones" 
+            TextColor="Blue" FontSize="32" Padding="10" VerticalOptions="Center" 
+            HorizontalOptions="Center"/>
+    <!-- Display competiciones in a list -->
+    <CollectionView x:Name="competicionesCollection"
+                        ItemsSource="{Binding AllCompeticiones}"
+                        Margin="20"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding SelectCompeticionCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
+        <!-- Designate how the collection of items are laid out -->
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+        </CollectionView.ItemsLayout>
+
+        <!-- Define the appearance of each item in the list -->
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <HorizontalStackLayout Padding="2">
+                    <!--<Label Text="{Binding Text}" FontSize="16" Padding="5"/>
+                    <Label Text="{Binding Date}" FontSize="16" TextColor="Black" Padding="5"/>-->
+                    <Label Text="{Binding Competicion.Temporada, StringFormat='Temporada {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.Nombre}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.Categoria}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.Genero}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.Grupo, StringFormat='Grupo {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.NumEquipos, StringFormat='{0} equipos'}" FontSize="16" TextColor="Black" Padding="5"/>
+                    <Label Text="{Binding Competicion.Jornadas, StringFormat='{0} jornadas'}" FontSize="16" TextColor="Black" Padding="5"/>
+                </HorizontalStackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+    </StackLayout>
+
+</ContentPage>

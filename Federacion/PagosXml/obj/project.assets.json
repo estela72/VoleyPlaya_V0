@@ -1,0 +1,127 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0-windows7.0": {
+      "Microsoft.XmlSerializer.Generator/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.dll": {
+            "related": ".runtimeconfig.json;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.dll": {
+            "related": ".runtimeconfig.json;.xml"
+          }
+        },
+        "build": {
+          "build/Microsoft.XmlSerializer.Generator.props": {},
+          "build/Microsoft.XmlSerializer.Generator.targets": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Microsoft.XmlSerializer.Generator/7.0.0": {
+      "sha512": "sRBmjGZxttqpmh48nBAJ+EVJfwvmRPlvu7HqwGY6C/MR/w6mPzRAFaIIrV1gvbMlT2FXmanxTjXvxO1aC4j0zg==",
+      "type": "package",
+      "path": "microsoft.xmlserializer.generator/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "build/Microsoft.XmlSerializer.Generator.props",
+        "build/Microsoft.XmlSerializer.Generator.targets",
+        "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.dll",
+        "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.runtimeconfig.json",
+        "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.xml",
+        "microsoft.xmlserializer.generator.7.0.0.nupkg.sha512",
+        "microsoft.xmlserializer.generator.nuspec",
+        "prefercliruntime",
+        "useSharedDesignerContext.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net7.0-windows7.0": [
+      "Microsoft.XmlSerializer.Generator >= 7.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\egonz\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\srcRepository\\Proyectos Estela\\Federacion\\PagosXml\\PagosXml.csproj",
+      "projectName": "PagosXml",
+      "projectPath": "D:\\srcRepository\\Proyectos Estela\\Federacion\\PagosXml\\PagosXml.csproj",
+      "packagesPath": "C:\\Users\\egonz\\.nuget\\packages\\",
+      "outputPath": "D:\\srcRepository\\Proyectos Estela\\Federacion\\PagosXml\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\egonz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0-windows"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0-windows7.0": {
+          "targetAlias": "net7.0-windows",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net7.0-windows7.0": {
+        "targetAlias": "net7.0-windows",
+        "dependencies": {
+          "Microsoft.XmlSerializer.Generator": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

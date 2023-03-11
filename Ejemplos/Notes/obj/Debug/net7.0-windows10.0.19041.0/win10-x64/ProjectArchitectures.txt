@@ -1,0 +1,1 @@
+D:\srcRepository\Proyectos Estela\Ejemplos\Notes\Notes.csproj;x64
