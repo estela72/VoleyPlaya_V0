@@ -47,7 +47,7 @@ namespace VoleyPlaya.Models
             if (!File.Exists(filename))
                 throw new FileNotFoundException("Unable to find file on local storage.", filename);
             string text = File.ReadAllText(filename);
-            CompeticionWrapper wrapper = new CompeticionWrapper
+            CompeticionWrapper wrapper = new ()
                 {
                     Filename = Path.GetFileName(filename),
                     Competicion = JsonSerializer.Deserialize<Competicion>(text),
@@ -78,7 +78,7 @@ namespace VoleyPlaya.Models
             await Competicion.GenerarPartidosAsync();
         }
 
-        internal void UpdatePartidos()
+        internal void Update()
         {
             string jsonString = JsonSerializer.Serialize(Competicion);
             File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, Filename), jsonString);

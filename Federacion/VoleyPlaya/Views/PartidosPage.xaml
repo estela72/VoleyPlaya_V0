@@ -71,8 +71,8 @@
                                 <Entry Text="{Binding Resultado.Set3.Visitante}" TextChanged="ResultadoParcial_Changed"></Entry>
                             </HorizontalStackLayout>
                             <HorizontalStackLayout Grid.Column="9" HorizontalOptions="Start" VerticalOptions="Center" BackgroundColor="Beige">
-                                <Entry Text="{Binding Resultado.Local}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
-                                <Entry Text="{Binding Resultado.Visitante}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
+                                <Entry Text="{Binding Resultado.Local, Mode=TwoWay}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
+                                <Entry Text="{Binding Resultado.Visitante, Mode=TwoWay}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
                             </HorizontalStackLayout>
                         </Grid>
                     </DataTemplate>

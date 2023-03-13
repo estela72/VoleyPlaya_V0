@@ -12,9 +12,9 @@ namespace VoleyPlaya.ViewModels
 {
     public interface ICompeticionVM
     {
-        void OnNumJornadasChanged();
-        void OnNumEquiposChanged();
-        void OnResultadoParcialChanged();
+        Task OnNumJornadasChanged();
+        Task OnNumEquiposChanged();
+        Task OnResultadoParcialChanged();
     }
     internal class CompeticionViewModel : ObservableObject, IQueryAttributable, ICompeticionVM
     {
@@ -84,8 +84,14 @@ namespace VoleyPlaya.ViewModels
         private async Task Save()
         {
             _competicionWrapper.Date = DateTime.Now;
+            //Generar las jornadas
+            for (int i = _competicionWrapper.Competicion.FechasJornadas.Count; i < _competicionWrapper.Competicion.Jornadas; i++)
+                _competicionWrapper.Competicion.FechasJornadas.Add(new FechaJornada(i + 1));
+            //Generar los equipos
+            for (int i = _competicionWrapper.Competicion.Equipos.Count; i < _competicionWrapper.Competicion.NumEquipos; i++)
+                _competicionWrapper.Competicion.Equipos.Add(new Equipo(i + 1, string.Empty));
+
             await _competicionWrapper.Save();
-            //Reload();
             await Shell.Current.GoToAsync($"..?saved={_competicionWrapper.Filename}");
         }
 
@@ -125,36 +131,39 @@ namespace VoleyPlaya.ViewModels
             OnPropertyChanged(nameof(FechasJornadas));
         }
 
-        public void OnNumJornadasChanged()
+        public Task OnNumJornadasChanged()
         {
             //Generar las jornadas
-            for (int i = _competicionWrapper.Competicion.Jornadas-1; i < _competicionWrapper.Competicion.Jornadas; i++)
+            for (int i = _competicionWrapper.Competicion.Jornadas; i < _competicionWrapper.Competicion.Jornadas; i++)
                 _competicionWrapper.Competicion.FechasJornadas.Add(new FechaJornada(i+1));
-            RefreshProperties();
+            Update();
+            return Task.CompletedTask;
         }
 
-        public void OnNumEquiposChanged()
+        public Task OnNumEquiposChanged()
         {
             //Generar los equipos
-            if (_competicionWrapper.Competicion.NumEquipos != _competicionWrapper.Competicion.Equipos.Count)
-            {
-                for (int i = _competicionWrapper.Competicion.Equipos.Count; i < _competicionWrapper.Competicion.NumEquipos; i++)
-                    _competicionWrapper.Competicion.Equipos.Add(new Equipo(i + 1, string.Empty));
-            }
-            RefreshProperties();
+            for (int i = _competicionWrapper.Competicion.Equipos.Count; i < _competicionWrapper.Competicion.NumEquipos; i++)
+                _competicionWrapper.Competicion.Equipos.Add(new Equipo(i + 1, string.Empty));
+            Update();
+            return Task.CompletedTask;
         }
-        public void OnResultadoParcialChanged()
+        public Task OnResultadoParcialChanged()
         {
             //Actualizar resultado
-            _competicionWrapper.Date = DateTime.Now;
-            _competicionWrapper.UpdatePartidos();
-            Reload();
+            Update();
+            return Task.CompletedTask;
         }
-        public async Task UpdatePartidos()
+        public Task UpdatePartidos()
+        {
+            Update();
+            return Task.CompletedTask;
+        }
+        public async Task Update()
         {
             _competicionWrapper.Date = DateTime.Now;
-            _competicionWrapper.UpdatePartidos();
-            Reload();
+            _competicionWrapper.Update();
+            await Shell.Current.GoToAsync($"..?saved={_competicionWrapper.Filename}");
         }
     }
 }
