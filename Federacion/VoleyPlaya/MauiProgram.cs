@@ -1,4 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+
+using System.Reflection;
+using System.Text.Json;
+
+using VoleyPlaya.Models;
+
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VoleyPlaya
 {
@@ -52,5 +62,32 @@ namespace VoleyPlaya
             mauiAppBuilder.Services.AddTransient<Views.TablasCalendariosPage>();
             return mauiAppBuilder;
         }
+        public static MauiAppBuilder LoadConfigFiles(this MauiAppBuilder mauiAppBuilder)
+        {
+            LoadMauiAsset();
+
+
+
+            return mauiAppBuilder;
+        }
+
+        public static async Task<string> LoadMauiAsset()
+        {
+            try
+            {
+                using var stream = await FileSystem.OpenAppPackageFileAsync("calendarios.json");
+                using var reader = new StreamReader(stream);
+
+                var json = reader.ReadToEnd();
+                RootTablaCalendario calendarios = JsonConvert.DeserializeObject<RootTablaCalendario>(json);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+
     }
 }

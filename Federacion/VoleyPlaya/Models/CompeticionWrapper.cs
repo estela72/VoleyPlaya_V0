@@ -27,17 +27,13 @@ namespace VoleyPlaya.Models
                 Grupo = "",
                 NumEquipos = 0,
                 Jornadas = 0,
-                Equipos = new List<Equipo>()
+                Equipos = new List<Equipo>(),
+                Partidos = new List<Partido>()
             };
         }
-        public void Save()
+        public async Task Save()
         {
-            if (Competicion.NumEquipos != Competicion.Equipos.Count)
-            {
-                for (int i = Competicion.Equipos.Count; i < Competicion.NumEquipos; i++)
-                    Competicion.Equipos.Add(new Equipo(i + 1, string.Empty));
-            }
-
+            await GenerarPartidos();
             string jsonString = JsonSerializer.Serialize(Competicion);
             File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, Filename), jsonString);
         }
@@ -75,6 +71,17 @@ namespace VoleyPlaya.Models
 
                     // With the final collection of notes, order them by date
                     .OrderByDescending(comp => comp.Date);
+        }
+
+        internal async Task GenerarPartidos()
+        {
+            await Competicion.GenerarPartidosAsync();
+        }
+
+        internal void UpdatePartidos()
+        {
+            string jsonString = JsonSerializer.Serialize(Competicion);
+            File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, Filename), jsonString);
         }
     }
 }

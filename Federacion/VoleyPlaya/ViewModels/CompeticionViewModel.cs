@@ -5,18 +5,30 @@ using VoleyPlaya.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using VoleyPlaya.Views;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace VoleyPlaya.ViewModels
 {
-    internal class CompeticionViewModel : ObservableObject, IQueryAttributable
+    public interface ICompeticionVM
+    {
+        void OnNumJornadasChanged();
+        void OnNumEquiposChanged();
+        void OnResultadoParcialChanged();
+    }
+    internal class CompeticionViewModel : ObservableObject, IQueryAttributable, ICompeticionVM
     {
 
         public ObservableCollection<string> Competiciones { get; set; } 
         public ObservableCollection<EnumCategorias> Categorias { get; set; } 
         public ObservableCollection<EnumGeneros> Generos { get; set; }
-        private ObservableCollection<Equipo> _equipos;
-        public IList<Equipo> Equipos => _equipos;
 
+        IList<Equipo> _equipos;
+        IList<Partido> _partidos;
+        IList<FechaJornada> _fechasJornadas;
+        public ObservableCollection<Equipo> Equipos { get=>_equipos; private set=>_equipos=value; }
+        public ObservableCollection<Partido> Partidos { get; private set; }
+        public ObservableCollection<FechaJornada> FechasJornadas { get; private set; }
 
         private Models.CompeticionWrapper _competicionWrapper;
         public Competicion Competicion
@@ -27,20 +39,21 @@ namespace VoleyPlaya.ViewModels
                 if (_competicionWrapper.Competicion != value)
                 {
                     _competicionWrapper.Competicion = value;
-                    _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                    Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                    Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+                    FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                     OnPropertyChanged();
                 }
             }
         }
 
         public DateTime Date => _competicionWrapper.Date;
-
         public string Identifier => _competicionWrapper.Filename;
-
         public ICommand SaveCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
-        public ICommand GenerarPartidosCommand { get; private set; }
-        
+        public ICommand VerPartidosCommand { get; private set; }
+        public ICommand UpdatePartidosCommand { get; private set; }
+
         public CompeticionViewModel()
         {
             Competiciones = new ObservableCollection<string>(EnumCompeticiones.Competiciones.Values);
@@ -48,24 +61,30 @@ namespace VoleyPlaya.ViewModels
             Generos = new ObservableCollection<EnumGeneros>(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
 
             _competicionWrapper = new Models.CompeticionWrapper();
-            _equipos = new ObservableCollection<Equipo>();
+            Equipos = new ObservableCollection<Equipo>();
+            Partidos = new ObservableCollection<Partido>();
+            FechasJornadas = new ObservableCollection<FechaJornada>();
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
-            GenerarPartidosCommand = new AsyncRelayCommand(GenerarPartidos);
+            VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
+            UpdatePartidosCommand = new AsyncRelayCommand(UpdatePartidos);
         }
 
         public CompeticionViewModel(Models.CompeticionWrapper competicionWrapper)
         {
             _competicionWrapper = competicionWrapper;
-            _equipos = new ObservableCollection<Equipo>(competicionWrapper.Competicion.Equipos);
+            Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+            Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+            FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
-            GenerarPartidosCommand = new AsyncRelayCommand(GenerarPartidos);
+            VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
+            UpdatePartidosCommand = new AsyncRelayCommand(UpdatePartidos);
         }
         private async Task Save()
         {
             _competicionWrapper.Date = DateTime.Now;
-            _competicionWrapper.Save();
+            await _competicionWrapper.Save();
             await Shell.Current.GoToAsync($"..?saved={_competicionWrapper.Filename}");
         }
 
@@ -74,16 +93,19 @@ namespace VoleyPlaya.ViewModels
             _competicionWrapper.Delete();
             await Shell.Current.GoToAsync($"..?deleted={_competicionWrapper.Filename}");
         }
-        private async Task GenerarPartidos()
+        private async Task VerPartidos()
         {
-
+            await Shell.Current.GoToAsync($"{nameof(Views.PartidosPage)}?load={Identifier}");
         }
+
         void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.ContainsKey("load"))
             {
                 _competicionWrapper = Models.CompeticionWrapper.Load(query["load"].ToString());
-                _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+                FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                 RefreshProperties();
             }
         }
@@ -98,6 +120,40 @@ namespace VoleyPlaya.ViewModels
             OnPropertyChanged(nameof(Competicion));
             OnPropertyChanged(nameof(Date));
             OnPropertyChanged(nameof(Equipos));
+            OnPropertyChanged(nameof(Partidos));
+            OnPropertyChanged(nameof(FechasJornadas));
+        }
+
+        public void OnNumJornadasChanged()
+        {
+            //Generar las jornadas
+            for (int i = _competicionWrapper.Competicion.Jornadas-1; i < _competicionWrapper.Competicion.Jornadas; i++)
+                _competicionWrapper.Competicion.FechasJornadas.Add(new FechaJornada(i+1));
+            RefreshProperties();
+        }
+
+        public void OnNumEquiposChanged()
+        {
+            //Generar los equipos
+            if (_competicionWrapper.Competicion.NumEquipos != _competicionWrapper.Competicion.Equipos.Count)
+            {
+                for (int i = _competicionWrapper.Competicion.Equipos.Count; i < _competicionWrapper.Competicion.NumEquipos; i++)
+                    _competicionWrapper.Competicion.Equipos.Add(new Equipo(i + 1, string.Empty));
+            }
+            RefreshProperties();
+        }
+        public void OnResultadoParcialChanged()
+        {
+            //Actualizar resultado
+            _competicionWrapper.Date = DateTime.Now;
+            _competicionWrapper.UpdatePartidos();
+            Reload();
+        }
+        public async Task UpdatePartidos()
+        {
+            _competicionWrapper.Date = DateTime.Now;
+            _competicionWrapper.UpdatePartidos();
+            Reload();
         }
     }
 }

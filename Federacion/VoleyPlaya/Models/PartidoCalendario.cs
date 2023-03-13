@@ -6,29 +6,23 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
 {
-    internal class PartidoCalendario : IEquatable<PartidoCalendario>
+    public class PartidoCalendario : IEquatable<PartidoCalendario>
     {
-        private int _numPartido;
-        private int _jornada;
-        private int _ordenLocal;
-        private int _ordenVisitante;
+        private int _local;
+        private int _visitante;
 
         public PartidoCalendario()
         {
         }
 
-        public PartidoCalendario(int numPartido, int jornada, int ordenLocal, int ordenVisitante)
+        public PartidoCalendario(int numPartido,  int ordenLocal, int ordenVisitante)
         {
-            _numPartido = numPartido;
-            _jornada = jornada;
-            _ordenLocal = ordenLocal;
-            _ordenVisitante = ordenVisitante;
+            _local = ordenLocal;
+            _visitante = ordenVisitante;
         }
 
-        public int NumPartido { get => _numPartido; set => _numPartido = value; }
-        public int Jornada { get => _jornada; set => _jornada = value; }
-        public int OrdenLocal { get => _ordenLocal; set => _ordenLocal = value; }
-        public int OrdenVisitante { get => _ordenVisitante; set => _ordenVisitante = value; }
+        public int Local { get => _local; set => _local = value; }
+        public int Visitante { get => _visitante; set => _visitante = value; }
 
         public override bool Equals(object obj)
         {
@@ -38,15 +32,13 @@ namespace VoleyPlaya.Models
         public bool Equals(PartidoCalendario other)
         {
             return other is not null &&
-                   _numPartido == other._numPartido &&
-                   _jornada == other._jornada &&
-                   _ordenLocal == other._ordenLocal &&
-                   _ordenVisitante == other._ordenVisitante;
+                   _local == other._local &&
+                   _visitante == other._visitante;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_numPartido, _jornada, _ordenLocal, _ordenVisitante);
+            return HashCode.Combine(_local, _visitante);
         }
 
         public static bool operator ==(PartidoCalendario left, PartidoCalendario right)
