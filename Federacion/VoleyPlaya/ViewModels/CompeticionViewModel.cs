@@ -23,12 +23,12 @@ namespace VoleyPlaya.ViewModels
         public ObservableCollection<EnumCategorias> Categorias { get; set; } 
         public ObservableCollection<EnumGeneros> Generos { get; set; }
 
-        IList<Equipo> _equipos;
-        IList<Partido> _partidos;
-        IList<FechaJornada> _fechasJornadas;
-        public ObservableCollection<Equipo> Equipos { get=>_equipos; private set=>_equipos=value; }
-        public ObservableCollection<Partido> Partidos { get; private set; }
-        public ObservableCollection<FechaJornada> FechasJornadas { get; private set; }
+        private ObservableCollection<Partido> _partidos;
+        private ObservableCollection<FechaJornada> _fechasJornadas;
+        private ObservableCollection<Equipo> _equipos;
+        public IList<Partido> Partidos { get => _partidos; set => _partidos = (ObservableCollection<Partido>)value; }
+        public IList<FechaJornada> FechasJornadas { get => _fechasJornadas; set => _fechasJornadas = (ObservableCollection<FechaJornada>)value; }
+        public IList<Equipo> Equipos { get => _equipos; set => _equipos = (ObservableCollection<Equipo>)value; }
 
         private Models.CompeticionWrapper _competicionWrapper;
         public Competicion Competicion
@@ -39,9 +39,9 @@ namespace VoleyPlaya.ViewModels
                 if (_competicionWrapper.Competicion != value)
                 {
                     _competicionWrapper.Competicion = value;
-                    Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
-                    Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
-                    FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
+                    _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                    _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+                    _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                     OnPropertyChanged();
                 }
             }
@@ -61,9 +61,9 @@ namespace VoleyPlaya.ViewModels
             Generos = new ObservableCollection<EnumGeneros>(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
 
             _competicionWrapper = new Models.CompeticionWrapper();
-            Equipos = new ObservableCollection<Equipo>();
-            Partidos = new ObservableCollection<Partido>();
-            FechasJornadas = new ObservableCollection<FechaJornada>();
+            _equipos = new ObservableCollection<Equipo>();
+            _partidos = new ObservableCollection<Partido>();
+            _fechasJornadas = new ObservableCollection<FechaJornada>();
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
             VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
@@ -73,9 +73,9 @@ namespace VoleyPlaya.ViewModels
         public CompeticionViewModel(Models.CompeticionWrapper competicionWrapper)
         {
             _competicionWrapper = competicionWrapper;
-            Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
-            Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
-            FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
+            _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+            _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+            _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
             VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
@@ -85,6 +85,7 @@ namespace VoleyPlaya.ViewModels
         {
             _competicionWrapper.Date = DateTime.Now;
             await _competicionWrapper.Save();
+            //Reload();
             await Shell.Current.GoToAsync($"..?saved={_competicionWrapper.Filename}");
         }
 
@@ -103,9 +104,9 @@ namespace VoleyPlaya.ViewModels
             if (query.ContainsKey("load"))
             {
                 _competicionWrapper = Models.CompeticionWrapper.Load(query["load"].ToString());
-                Equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
-                Partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
-                FechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
+                _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
+                _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                 RefreshProperties();
             }
         }

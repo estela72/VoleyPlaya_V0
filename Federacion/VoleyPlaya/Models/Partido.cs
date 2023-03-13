@@ -17,6 +17,11 @@ namespace VoleyPlaya.Models
         string _visitante;
         Resultado _resultado;
 
+        public Partido()
+        {
+            _resultado = new Resultado();
+        }
+
         public int Jornada { get => _jornada; set => _jornada = value; }
         public int NumPartido { get => _numPartido; set => _numPartido = value; }
         public DateTime Fecha { get => _fecha; set => _fecha = value; }

@@ -46,12 +46,12 @@
                         <Label x:Name="NumEquiposLabel"  VerticalTextAlignment="Center"
                             Text="Nº de equipos"/>
                         <Entry x:Name="NumEquiposEntry"
-                                Placeholder="Nº de equipos" Completed="NumEquiposEntry_Completed"
+                                Placeholder="Nº de equipos" Completed="NumEquiposEntry_Completed" TextChanged="NumEquiposEntry_Completed"
                                 Text="{Binding Competicion.NumEquipos}"/>
                         <Label x:Name="NumJornadasLabel" VerticalTextAlignment="Center"
                                 Text="Nº de jornadas"/>
                         <Entry x:Name="NumJornadasEntry" VerticalTextAlignment="Center"
-                                Placeholder="Nº de jornadas" Completed="NumJornadasEntry_Completed" 
+                                Placeholder="Nº de jornadas" Completed="NumJornadasEntry_Completed" TextChanged="NumJornadasEntry_Completed"
                                 Text="{Binding Competicion.Jornadas}"/>
                     </StackLayout>
                 </StackLayout>
