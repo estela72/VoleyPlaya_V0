@@ -88,7 +88,7 @@
         </HorizontalStackLayout>
         <Border Padding="10,10,10,10" Margin="5">
             <VerticalStackLayout>
-                <Label Text="Equipos / Clasificación" FontSize="24" TextColor="Blue" Padding="10,10,10,10" Margin="5"/>
+                <Label Text="Equipos" FontSize="24" TextColor="Blue" Padding="10,10,10,10" Margin="5"/>
                 <CollectionView ItemsSource="{Binding Equipos}">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="60,200,60,60,60,60,60,80,60" ColumnSpacing="10"  Padding="0,5,5,0">
@@ -121,7 +121,7 @@
                                 <Label Text="{Binding Perdidos}" Grid.Column="4"  HorizontalOptions="Center" VerticalOptions="Center"/>
                                 <Label Text="{Binding PuntosFavor}" Grid.Column="5" HorizontalOptions="Center" VerticalOptions="Center"/>
                                 <Label Text="{Binding PuntosContra}" Grid.Column="6"  HorizontalOptions="Center" VerticalOptions="Center"/>
-                                <Label Text="{Binding Coeficiente}" Grid.Column="7"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="{Binding Coeficiente, StringFormat='{0:F3}'}" Grid.Column="7"  HorizontalOptions="Center" VerticalOptions="Center"/>
                                 <Label Text="{Binding Puntos}" Grid.Column="8" HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Grid>
                         </DataTemplate>

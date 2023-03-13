@@ -26,9 +26,13 @@ namespace VoleyPlaya.ViewModels
         private ObservableCollection<Partido> _partidos;
         private ObservableCollection<FechaJornada> _fechasJornadas;
         private ObservableCollection<Equipo> _equipos;
+        private ObservableCollection<Equipo> _equiposOrdered;
+
         public IList<Partido> Partidos { get => _partidos; set => _partidos = (ObservableCollection<Partido>)value; }
         public IList<FechaJornada> FechasJornadas { get => _fechasJornadas; set => _fechasJornadas = (ObservableCollection<FechaJornada>)value; }
         public IList<Equipo> Equipos { get => _equipos; set => _equipos = (ObservableCollection<Equipo>)value; }
+
+        public IList<Equipo> EquiposOrdered { get => _equiposOrdered; set => _equiposOrdered = (ObservableCollection<Equipo>)value; }
 
         private Models.CompeticionWrapper _competicionWrapper;
         public Competicion Competicion
@@ -40,6 +44,7 @@ namespace VoleyPlaya.ViewModels
                 {
                     _competicionWrapper.Competicion = value;
                     _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                    _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
                     _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
                     _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                     OnPropertyChanged();
@@ -62,6 +67,7 @@ namespace VoleyPlaya.ViewModels
 
             _competicionWrapper = new Models.CompeticionWrapper();
             _equipos = new ObservableCollection<Equipo>();
+            _equiposOrdered = new ObservableCollection<Equipo>();
             _partidos = new ObservableCollection<Partido>();
             _fechasJornadas = new ObservableCollection<FechaJornada>();
             SaveCommand = new AsyncRelayCommand(Save);
@@ -74,6 +80,7 @@ namespace VoleyPlaya.ViewModels
         {
             _competicionWrapper = competicionWrapper;
             _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+            _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
             _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
             _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
             SaveCommand = new AsyncRelayCommand(Save);
@@ -111,6 +118,7 @@ namespace VoleyPlaya.ViewModels
             {
                 _competicionWrapper = Models.CompeticionWrapper.Load(query["load"].ToString());
                 _equipos = new ObservableCollection<Equipo>(_competicionWrapper.Competicion.Equipos);
+                _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
                 _partidos = new ObservableCollection<Partido>(_competicionWrapper.Competicion.Partidos);
                 _fechasJornadas = new ObservableCollection<FechaJornada>(_competicionWrapper.Competicion.FechasJornadas);
                 RefreshProperties();
@@ -129,6 +137,12 @@ namespace VoleyPlaya.ViewModels
             OnPropertyChanged(nameof(Equipos));
             OnPropertyChanged(nameof(Partidos));
             OnPropertyChanged(nameof(FechasJornadas));
+            OnPropertyChanged(nameof(EquiposOrdered));
+        }
+        public async Task UpdatePartidos()
+        {
+            await _competicionWrapper.Competicion.UpdateClasificacion();
+            await Update();
         }
 
         public Task OnNumJornadasChanged()
@@ -151,11 +165,6 @@ namespace VoleyPlaya.ViewModels
         public Task OnResultadoParcialChanged()
         {
             //Actualizar resultado
-            Update();
-            return Task.CompletedTask;
-        }
-        public Task UpdatePartidos()
-        {
             Update();
             return Task.CompletedTask;
         }
