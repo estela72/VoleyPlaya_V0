@@ -29,13 +29,13 @@
     <AppXManifest Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2023-03-13T11:54:27.191</Modified>
+      <Modified>2023-03-13T18:54:06.504</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2023-03-13T11:44:41.705</Modified>
+      <Modified>2023-03-13T18:54:03.291</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.runtimeconfig.json">
       <PackagePath>VoleyPlaya.runtimeconfig.json</PackagePath>
@@ -43,11 +43,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.dll">
       <PackagePath>VoleyPlaya.dll</PackagePath>
-      <Modified>2023-03-13T11:54:22.635</Modified>
+      <Modified>2023-03-13T18:54:00.127</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>VoleyPlaya.exe</PackagePath>
-      <Modified>2023-03-13T11:54:22.791</Modified>
+      <Modified>2023-03-13T18:54:00.182</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\egonz\.nuget\packages\microsoft.netcore.app.runtime.win-x64\7.0.3\runtimes\win-x64\lib\net7.0\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -995,7 +995,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.deps.json">
       <PackagePath>VoleyPlaya.deps.json</PackagePath>
-      <Modified>2023-03-13T11:54:26.441</Modified>
+      <Modified>2023-03-13T18:54:04.955</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files\dotnet\packs\Microsoft.Maui.Controls.Ref.win\7.0.59\ref\net7.0-windows10.0.19041\Microsoft.Maui.Controls.Compatibility.pri">
       <PackagePath>Microsoft.Maui.Controls.Compatibility.pri</PackagePath>
