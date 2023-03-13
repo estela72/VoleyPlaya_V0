@@ -14,8 +14,6 @@ namespace VoleyPlaya.Models
         private List<Equipo> _equipos;
         private List<Partido> _partidos;
         private List<FechaJornada> _fechasJornadas;
-
-
         public string Temporada {get { return _temporada; } set { _temporada = value; } }
         public string Nombre { get { return _nombre; } set { _nombre = value; } } 
         public EnumCategorias Categoria { get { return _categoria; } set { _categoria = value; } } 
@@ -23,7 +21,6 @@ namespace VoleyPlaya.Models
         public string Grupo { get { return _grupo;  } set { _grupo = value; } }
         public int NumEquipos { get { return _numEquipos; } set { _numEquipos = value; } } 
         public int Jornadas { get { return _numJornadas; } set { _numJornadas = value; } }
-
         public List<Equipo> Equipos { get => _equipos; set => _equipos = value; }
         public List<Partido> Partidos { get => _partidos; set => _partidos = value; }
         public List<FechaJornada> FechasJornadas { get=>_fechasJornadas; set=> _fechasJornadas=value; }
@@ -40,7 +37,6 @@ namespace VoleyPlaya.Models
             _partidos = new List<Partido>();
             _fechasJornadas = new List<FechaJornada>();
         }
-
         internal async Task GenerarPartidosAsync()
         {
             var tabla = await LoadCalendario(_numEquipos, _numJornadas);
@@ -92,15 +88,17 @@ namespace VoleyPlaya.Models
             }
 
         }
-
-        //internal async Task UpdateFechasJornadas()
-        //{
-        //    for (int i=0; i < Partidos.Count; i++)
-        //    {
-        //        var par = FechasJornadas.Where(fj => fj.Jornada == Partidos[i].Jornada).FirstOrDefault();
-        //        if (par != null)
-        //            Partidos[i].DateTime = par.Fecha;
-        //    }
-        //}
+        public async Task UpdateClasificacion()
+        {
+            foreach (var equipo in Equipos)
+                await equipo.Reset();
+            foreach(var partido in Partidos)
+            {
+                var local = _equipos.First(e => e.Nombre.Equals(partido.Local));
+                var visitante = _equipos.First(e => e.Nombre.Equals(partido.Visitante));
+                await local.SetLocal(partido);
+                await visitante.SetVisitante(partido);
+            }
+        }
     }
 }

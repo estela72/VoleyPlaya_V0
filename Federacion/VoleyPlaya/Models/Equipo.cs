@@ -1,5 +1,7 @@
 ﻿using IronXL.Printing;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,8 @@ namespace VoleyPlaya.Models
         private int _perdidos;
         private int _puntosFavor;
         private int _puntosContra;
-        private int _coeficiente;
+        private double _coeficiente;
+        private int _puntos;
 
         public Equipo()
         {
@@ -36,7 +39,8 @@ namespace VoleyPlaya.Models
         public int Perdidos { get => _perdidos; set => _perdidos = value; }
         public int PuntosFavor { get => _puntosFavor; set => _puntosFavor = value; }
         public int PuntosContra { get => _puntosContra; set => _puntosContra = value; }
-        public int Coeficiente { get => _coeficiente; set => _coeficiente = value; }
+        public double Coeficiente { get => _coeficiente; set => _coeficiente = value; }
+        public int Puntos { get => _puntos; set => _puntos = value; }
 
         public override bool Equals(object obj)
         {
@@ -58,6 +62,51 @@ namespace VoleyPlaya.Models
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        internal Task Reset()
+        {
+            _jugados = 0;
+            _ganados = 0;
+            _perdidos = 0;
+            _puntosFavor = 0;
+            _puntosContra = 0;
+            _coeficiente = 0;
+            _puntos = 0;
+            return Task.CompletedTask;
+        }
+
+        internal Task SetLocal(Partido partido)
+        {
+            _jugados++;
+            if (partido.Resultado.Local > partido.Resultado.Visitante) { _ganados++; _puntos += 2; }
+            else if (partido.Resultado.Local < partido.Resultado.Visitante) { _perdidos++; _puntos += 1; }
+            _puntosFavor += partido.Resultado.Set1.Local;
+            _puntosFavor += partido.Resultado.Set2.Local;
+            _puntosFavor += partido.Resultado.Set3.Local;
+
+            _puntosContra += partido.Resultado.Set1.Visitante;
+            _puntosContra += partido.Resultado.Set2.Visitante;
+            _puntosContra += partido.Resultado.Set3.Visitante;
+
+            _coeficiente = _puntosFavor*1.0 / _puntosContra*1.0;
+            return Task.CompletedTask;
+        }
+        internal Task SetVisitante(Partido partido)
+        {
+            _jugados++;
+            if (partido.Resultado.Local < partido.Resultado.Visitante) { _ganados++; _puntos += 2; }
+            else if (partido.Resultado.Local > partido.Resultado.Visitante) { _perdidos++; _puntos += 1; }
+            _puntosFavor += partido.Resultado.Set1.Visitante;
+            _puntosFavor += partido.Resultado.Set2.Visitante;
+            _puntosFavor += partido.Resultado.Set3.Visitante;
+
+            _puntosContra += partido.Resultado.Set1.Local;
+            _puntosContra += partido.Resultado.Set2.Local;
+            _puntosContra += partido.Resultado.Set3.Local;
+
+            _coeficiente = _puntosFavor*1.0 / _puntosContra*1.0;
+            return Task.CompletedTask;
         }
 
         public static bool operator ==(Equipo left, Equipo right)
