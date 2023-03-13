@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VoleyPlaya.ViewModels"
+             x:Class="VoleyPlaya.Views.TablaCalendarioPage"
+             Title="TablaCalendario">
+    <ContentPage.BindingContext>
+        <viewModels:TablaCalendarioViewModel />
+    </ContentPage.BindingContext>
+    <VerticalStackLayout>
+        <Label 
+                Text=""
+                Grid.Row="0"
+                FontSize="18"
+                FontAttributes="Bold"
+                x:Name="FolderLabel"
+                HorizontalOptions="Center" />
+        <Button 
+                Text="Pick Folder"
+                FontAttributes="Bold"
+                Grid.Row="1"
+                SemanticProperties.Hint="Allows you to pick a folder on the filesystem"
+                Clicked="OnPickFolderClicked"
+                HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>
