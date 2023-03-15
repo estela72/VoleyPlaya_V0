@@ -20,6 +20,14 @@ namespace VoleyPlaya.Repository
         {
             // configure DI for DBContext
             services.AddDbContext<VoleyPlayaDbContext>();
+            // Update Databases when app started
+            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+            {
+                VoleyPlayaDbContext dbContext = serviceProvider.GetRequiredService<VoleyPlayaDbContext>();
+                //dbContext.Database.EnsureDeleted();
+                //dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
+            }
 
             //services.AddIdentity<VoleyPlayaApplicationUser, IdentityRole>(options =>
             //    {
@@ -31,30 +39,30 @@ namespace VoleyPlaya.Repository
 
             //services.TryAddScoped<ApplicationUserManager<VoleyPlayaApplicationUser>>();
             //services.TryAddScoped<SignInManager<VoleyPlayaApplicationUser>>();
-            services.TryAddScoped<RoleManager<IdentityRole>>();
+            //services.TryAddScoped<RoleManager<IdentityRole>>();
 
-            //Password Strength Setting
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 0;
+            ////Password Strength Setting
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    // Password settings
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequiredUniqueChars = 0;
 
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(480);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
+            //    // Lockout settings
+            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(480);
+            //    options.Lockout.MaxFailedAccessAttempts = 10;
+            //    options.Lockout.AllowedForNewUsers = true;
 
-                // User settings
-                //options.User.RequireUniqueEmail = true;
-                // User settings.
-                //options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
-                options.User.RequireUniqueEmail = false;
-            });
+            //    // User settings
+            //    //options.User.RequireUniqueEmail = true;
+            //    // User settings.
+            //    //options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+            //    options.User.RequireUniqueEmail = false;
+            //});
 
             // configure DI for repository
             //services.AddScoped<IEquipoRepository, EquipoRepository>()
@@ -72,21 +80,9 @@ namespace VoleyPlaya.Repository
             //        .AddScoped<ITemporadaJugadorRepository, TemporadaJugadorRepository>()
             //        .AddScoped<IPuestoRepository, PuestoRepository>()
             //        ;
-            
+
             // configure DI for UnitOfWork
             services.AddScoped<IVoleyPlayaUnitOfWork, VoleyPlayaUnitOfWork>();
-        }
-
-        public static void UseRepository(this IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetService<VoleyPlayaDbContext>();
-                if (context != null && context.Database != null)
-                {
-                    context.Database.Migrate();
-                }
-            }
         }
     }
 }

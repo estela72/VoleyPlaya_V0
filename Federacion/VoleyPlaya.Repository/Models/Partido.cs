@@ -18,6 +18,10 @@ namespace VoleyPlaya.Repository.Models
 
         IEnumerable<ParcialPartido> _parciales;
 
+        public Partido()
+        {
+        }
+
         public Partido(Edicion edicion, Equipo local, Equipo visitante)
         {
             _edicion = edicion;
@@ -26,9 +30,9 @@ namespace VoleyPlaya.Repository.Models
             _parciales = new List<ParcialPartido>();
         }
 
-        public Edicion EdicionID { get => _edicion; set => _edicion = value; }
-        public Equipo LocalID { get => _local; set => _local = value; }
-        public Equipo VisitanteID { get => _visitante; set => _visitante = value; }
+        public Edicion Edicion { get => _edicion; set => _edicion = value; }
+        public Equipo Local { get => _local; set => _local = value; }
+        public Equipo Visitante { get => _visitante; set => _visitante = value; }
         public int? ResultadoLocal { get => _resultadoLocal; set => _resultadoLocal = value; }
         public int? ResultadoVisitante { get => _resultadoVisitante; set => _resultadoVisitante = value; }
         internal IEnumerable<ParcialPartido> Parciales { get => _parciales; set => _parciales = value; }

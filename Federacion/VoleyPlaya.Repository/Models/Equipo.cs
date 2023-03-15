@@ -23,6 +23,10 @@ namespace VoleyPlaya.Repository.Models
         IEnumerable<Partido> _locales;
         IEnumerable<Partido> _visitantes;
 
+        public Equipo()
+        {
+        }
+
         public Equipo(Edicion edicion)
         {
             _edicion = edicion;
@@ -30,7 +34,7 @@ namespace VoleyPlaya.Repository.Models
             _visitantes = new List<Partido>();
         }
 
-        public Edicion EdicionID { get => _edicion; set => _edicion = value; }
+        public Edicion Edicion { get => _edicion; set => _edicion = value; }
         public int? OrdenCalendario { get => _ordenCalendario; set => _ordenCalendario = value; }
         public int? Jugados { get => _jugados; set => _jugados = value; }
         public int? Ganados { get => _ganados; set => _ganados = value; }

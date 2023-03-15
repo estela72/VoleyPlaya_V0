@@ -14,6 +14,10 @@ namespace VoleyPlaya.Repository.Models
         int? _resultadoLocal;
         int? _resultadoVisitante;
 
+        public ParcialPartido()
+        {
+        }
+
         public ParcialPartido(Partido partido)
         {
             _partido = partido;
