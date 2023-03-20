@@ -19,7 +19,7 @@ namespace VoleyPlaya.ViewModels
         Task OnNumEquiposChanged();
         Task OnResultadoParcialChanged();
     }
-    public class EdicionViewModel : ObservableObject, IQueryAttributable, IEdicionVM
+    public class EdicionViewModel : ObservableObject, IQueryAttributable
     {
         public ObservableCollection<string> Competiciones { get; set; } 
         public ObservableCollection<EnumCategorias> Categorias { get; set; } 
@@ -32,29 +32,45 @@ namespace VoleyPlaya.ViewModels
         public IList<FechaJornada> FechasJornadas { get => _fechasJornadas; set => _fechasJornadas = (ObservableCollection<FechaJornada>)value; }
         public IList<Equipo> Equipos { get => _equipos; set => _equipos = (ObservableCollection<Equipo>)value; }
         public IList<Equipo> EquiposOrdered { get => _equiposOrdered; set => _equiposOrdered = (ObservableCollection<Equipo>)value; }
-        private Models.EdicionWrapper _edicionWrapper;
+        private Models.Edicion _edicion;
         public Edicion Edicion
         {
-            get => _edicionWrapper?.Edicion;
+            get => _edicion; 
             set
             {
-                if (_edicionWrapper.Edicion != value)
+                if (_edicion!=value)
                 {
-                    _edicionWrapper.Edicion = value;
-                    _equipos = new ObservableCollection<Equipo>(_edicionWrapper.Edicion.Equipos);
+                    _edicion = value;
+                    _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
                     _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
-                    _partidos = new ObservableCollection<Partido>(_edicionWrapper.Edicion.Partidos);
-                    _fechasJornadas = new ObservableCollection<FechaJornada>(_edicionWrapper.Edicion.FechasJornadas);
+                    _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+                    _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
                     OnPropertyChanged();
                 }
             }
         }
-        public DateTime Date => _edicionWrapper.Date;
-        public string Identifier => _edicionWrapper.Filename;
+        const int RefreshDuration = 2;
+        bool isRefreshing;
+
+        public bool IsRefreshing
+        {
+            get { return isRefreshing; }
+            set
+            {
+                isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+        public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
+
+        public DateTime Date => Edicion.Fecha;
+        public string Identifier => Edicion.Nombre;
         public ICommand SaveCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand VerPartidosCommand { get; private set; }
         public ICommand UpdatePartidosCommand { get; private set; }
+        public ICommand AddEquiposCommand { get; private set; }
+        public ICommand AddJornadasCommand { get; private set; }
         private static IVoleyPlayaService _voleyPlayaService;
 
         public EdicionViewModel(IVoleyPlayaService voleyPlayaService)
@@ -64,7 +80,7 @@ namespace VoleyPlaya.ViewModels
             Categorias = new ObservableCollection<EnumCategorias>(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new ObservableCollection<EnumGeneros>(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
 
-            _edicionWrapper = new Models.EdicionWrapper();
+            _edicion = new Models.Edicion();
             _equipos = new ObservableCollection<Equipo>();
             _equiposOrdered = new ObservableCollection<Equipo>();
             _partidos = new ObservableCollection<Partido>();
@@ -73,16 +89,18 @@ namespace VoleyPlaya.ViewModels
             DeleteCommand = new AsyncRelayCommand(Delete);
             VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
             UpdatePartidosCommand = new AsyncRelayCommand(UpdatePartidos);
+            AddEquiposCommand = new AsyncRelayCommand(AddEquipos);
+            AddJornadasCommand = new AsyncRelayCommand(AddJornadas);
         }
 
-        public EdicionViewModel(IVoleyPlayaService voleyPlayaService, Models.EdicionWrapper edicionWrapper)
+        public EdicionViewModel(IVoleyPlayaService voleyPlayaService, Models.Edicion edicion)
         {
             _voleyPlayaService = voleyPlayaService;
-            _edicionWrapper = edicionWrapper;
-            _equipos = new ObservableCollection<Equipo>(_edicionWrapper.Edicion.Equipos);
+            Edicion = edicion;
+            _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
             _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
-            _partidos = new ObservableCollection<Partido>(_edicionWrapper.Edicion.Partidos);
-            _fechasJornadas = new ObservableCollection<FechaJornada>(_edicionWrapper.Edicion.FechasJornadas);
+            _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+            _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
             VerPartidosCommand = new AsyncRelayCommand(VerPartidos);
@@ -90,61 +108,68 @@ namespace VoleyPlaya.ViewModels
         }
         private async Task Save()
         {
-            _edicionWrapper.Date = DateTime.Now;
-            _edicionWrapper.EdicionName = VoleyPlayaService.GetNombreEdicion(_edicionWrapper.Edicion.Temporada,
-                _edicionWrapper.Edicion.Nombre, _edicionWrapper.Edicion.CategoriaStr, _edicionWrapper.Edicion.GeneroStr,
-                _edicionWrapper.Edicion.Grupo);
-
-            //Generar las jornadas
-            for (int i = _edicionWrapper.Edicion.FechasJornadas.Count; i < _edicionWrapper.Edicion.Jornadas; i++)
-                _edicionWrapper.Edicion.FechasJornadas.Add(new FechaJornada(i + 1));
-            //Generar los equipos
-            for (int i = _edicionWrapper.Edicion.Equipos.Count; i < _edicionWrapper.Edicion.NumEquipos; i++)
-                _edicionWrapper.Edicion.Equipos.Add(new Equipo(i + 1, string.Empty));
-
-            await _edicionWrapper.Save();
-
-            string jsonString = JsonSerializer.Serialize(_edicionWrapper.Edicion);
+            IsRefreshing = true;
+            await Task.Delay(TimeSpan.FromSeconds(RefreshDuration));
+            string jsonString = JsonSerializer.Serialize(Edicion);
             await _voleyPlayaService.SaveEdicionAsync(jsonString);
 
-            await Shell.Current.GoToAsync($"..?saved={_edicionWrapper.Filename}");
+            RefreshProperties();
+            IsRefreshing = false;
         }
+        internal async Task AddEquipos()
+        {
+            //Generar los equipos
+            for (int i = Edicion.Equipos.Count; i < Edicion.NumEquipos; i++)
+                Edicion.Equipos.Add(new Equipo(i + 1, string.Empty));
+            if (Edicion.Equipos.Count > Edicion.NumEquipos)
+                Edicion.Equipos.RemoveRange(Edicion.NumEquipos, Edicion.Equipos.Count-Edicion.NumEquipos);
 
+            _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
+            _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
+            RefreshProperties();
+        }
+        internal async Task AddJornadas()
+        {
+            //Generar las jornadas
+            for (int i = Edicion.FechasJornadas.Count; i < Edicion.NumJornadas; i++)
+                Edicion.FechasJornadas.Add(new FechaJornada(i + 1));
+            if (Edicion.FechasJornadas.Count > Edicion.NumJornadas)
+                Edicion.FechasJornadas.RemoveRange(Edicion.NumJornadas, Edicion.FechasJornadas.Count - Edicion.NumJornadas);
+            _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
+            RefreshProperties();
+        }
         private async Task Delete()
         {
-            _edicionWrapper.Delete();
+            await _voleyPlayaService.DeleteEdicionAsync(Edicion.Nombre);
 
-            await _voleyPlayaService.DeleteEdicionAsync(_edicionWrapper.EdicionName);
-
-            await Shell.Current.GoToAsync($"..?deleted={_edicionWrapper.Filename}");
+            await Shell.Current.GoToAsync($"..?deleted={Edicion.Nombre}");
         }
         private async Task VerPartidos()
         {
-            await Shell.Current.GoToAsync($"{nameof(Views.PartidosPage)}?load={Identifier}");
+            await Shell.Current.GoToAsync($"{nameof(Views.PartidosPage)}?load={Edicion.Nombre}");
         }
 
         void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.ContainsKey("load"))
             {
-                //_competicionWrapper = Models.CompeticionWrapper.Load(query["load"].ToString());
-                var jsonEdicion = _voleyPlayaService.GetEdicion(query["load"].ToString());
+                string name = Uri.UnescapeDataString(query["load"].ToString());
+                var jsonEdicion = _voleyPlayaService.GetEdicion(name);
                 JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
-                _edicionWrapper.Edicion = Edicion.FromJson(jsonNode);
-                _equipos = new ObservableCollection<Equipo>(_edicionWrapper.Edicion.Equipos);
+                Edicion = Edicion.FromJson(jsonNode);
+                _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
                 _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
-                _partidos = new ObservableCollection<Partido>(_edicionWrapper.Edicion.Partidos);
-                _fechasJornadas = new ObservableCollection<FechaJornada>(_edicionWrapper.Edicion.FechasJornadas);
-                RefreshProperties();
+                _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+                _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
+                OnPropertyChanged();
             }
         }
         public async Task ReloadAsync()
         {
-            //_competicionWrapper = Models.CompeticionWrapper.Load(_competicionWrapper.Filename);
-            var jsonEdicion = await _voleyPlayaService.GetEdicionAsync(_edicionWrapper.Edicion.Nombre);
+            var jsonEdicion = await _voleyPlayaService.GetEdicionAsync(Edicion.Nombre);
             JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
-            _edicionWrapper.Edicion = Edicion.FromJson(jsonNode);
-            RefreshProperties();
+            Edicion = Edicion.FromJson(jsonNode);
+            OnPropertyChanged();
         }
 
         private void RefreshProperties()
@@ -155,41 +180,19 @@ namespace VoleyPlaya.ViewModels
             OnPropertyChanged(nameof(Partidos));
             OnPropertyChanged(nameof(FechasJornadas));
             OnPropertyChanged(nameof(EquiposOrdered));
+            OnPropertyChanged();
         }
         public async Task UpdatePartidos()
         {
-            await _edicionWrapper.Edicion.UpdateClasificacion();
-            await Update();
+            await Edicion.UpdateClasificacion();
+        }
+        async Task RefreshItemsAsync()
+        {
+            IsRefreshing = true;
+            await Task.Delay(TimeSpan.FromSeconds(RefreshDuration));
+            RefreshProperties();
+            IsRefreshing = false;
         }
 
-        public Task OnNumJornadasChanged()
-        {
-            //Generar las jornadas
-            for (int i = _edicionWrapper.Edicion.Jornadas; i < _edicionWrapper.Edicion.Jornadas; i++)
-                _edicionWrapper.Edicion.FechasJornadas.Add(new FechaJornada(i+1));
-            Update();
-            return Task.CompletedTask;
-        }
-
-        public Task OnNumEquiposChanged()
-        {
-            //Generar los equipos
-            for (int i = _edicionWrapper.Edicion.Equipos.Count; i < _edicionWrapper.Edicion.NumEquipos; i++)
-                _edicionWrapper.Edicion.Equipos.Add(new Equipo(i + 1, string.Empty));
-            Update();
-            return Task.CompletedTask;
-        }
-        public Task OnResultadoParcialChanged()
-        {
-            //Actualizar resultado
-            Update();
-            return Task.CompletedTask;
-        }
-        public async Task Update()
-        {
-            _edicionWrapper.Date = DateTime.Now;
-            _edicionWrapper.Update();
-            await Shell.Current.GoToAsync($"..?saved={_edicionWrapper.Filename}");
-        }
     }
 }

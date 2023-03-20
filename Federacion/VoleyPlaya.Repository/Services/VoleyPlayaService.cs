@@ -16,6 +16,7 @@ namespace VoleyPlaya.Repository.Services
     {
         private IVoleyPlayaUnitOfWork _voleyPlayaUoW;
         public VoleyPlayaService(IVoleyPlayaUnitOfWork unitOfWork) => _voleyPlayaUoW= unitOfWork;
+        JsonSerializerOptions Options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
 
         public async Task<bool> DeleteEdicionAsync(string edicionName)
         {
@@ -27,24 +28,20 @@ namespace VoleyPlaya.Repository.Services
             var dto = await _voleyPlayaUoW.EdicionRepository.GetAllIncludingAsync(
                 e=>e.Temporada, e=>e.Competicion, e=>e.Categoria, e=>e.Equipos, e=>e.Partidos
                 );
-            var options = new JsonSerializerOptions
-            { 
-                ReferenceHandler = ReferenceHandler.IgnoreCycles
-            };
-            var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(), options);
+            var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(), Options);
             return json;
         }
 
         public async Task<string> GetEdicionAsync(string edicionName)
         {
             var dto = await _voleyPlayaUoW.EdicionRepository.GetByNameAsync(edicionName);
-            var json = JsonSerializer.Serialize<Edicion>(dto);
+            var json = JsonSerializer.Serialize<Edicion>(dto, Options);
             return json;
         }
         public string GetEdicion(string edicionName)
         {
             var dto = _voleyPlayaUoW.EdicionRepository.GetByName(edicionName);
-            var json = JsonSerializer.Serialize<Edicion>(dto);
+            var json = JsonSerializer.Serialize<Edicion>(dto, Options);
             return json;
         }
         public async Task<bool> SaveEdicionAsync(string json)

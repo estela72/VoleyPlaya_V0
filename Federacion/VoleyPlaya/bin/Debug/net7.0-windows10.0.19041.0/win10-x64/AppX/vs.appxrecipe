@@ -29,13 +29,13 @@
     <AppXManifest Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2023-03-19T22:06:08.014</Modified>
+      <Modified>2023-03-20T21:51:29.554</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2023-03-19T22:06:05.468</Modified>
+      <Modified>2023-03-20T21:45:29.625</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.runtimeconfig.json">
       <PackagePath>VoleyPlaya.runtimeconfig.json</PackagePath>
@@ -43,11 +43,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.dll">
       <PackagePath>VoleyPlaya.dll</PackagePath>
-      <Modified>2023-03-19T22:06:02.591</Modified>
+      <Modified>2023-03-20T21:51:23.512</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>VoleyPlaya.exe</PackagePath>
-      <Modified>2023-03-19T22:06:02.748</Modified>
+      <Modified>2023-03-20T21:51:23.657</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\appsettings.Development.json">
       <PackagePath>appsettings.Development.json</PackagePath>
@@ -2247,7 +2247,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya.Repository\bin\Debug\net7.0\VoleyPlaya.Repository.dll">
       <PackagePath>VoleyPlaya.Repository.dll</PackagePath>
-      <Modified>2023-03-19T22:05:46.329</Modified>
+      <Modified>2023-03-20T18:27:43.575</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Debug\net7.0\General.CrossCutting.Lib.xml">
       <PackagePath>General.CrossCutting.Lib.xml</PackagePath>
@@ -2255,7 +2255,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.deps.json">
       <PackagePath>VoleyPlaya.deps.json</PackagePath>
-      <Modified>2023-03-19T22:06:07.280</Modified>
+      <Modified>2023-03-20T21:51:28.478</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files\dotnet\packs\Microsoft.Maui.Controls.Ref.win\7.0.59\ref\net7.0-windows10.0.19041\Microsoft.Maui.Controls.Compatibility.pri">
       <PackagePath>Microsoft.Maui.Controls.Compatibility.pri</PackagePath>

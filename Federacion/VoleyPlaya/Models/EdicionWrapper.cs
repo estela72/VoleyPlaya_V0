@@ -16,7 +16,6 @@ namespace VoleyPlaya.Models
         public string EdicionName { get; set; }
         public DateTime Date { get; set; }
         public Edicion Edicion { get; set; }
-
         public EdicionWrapper()
         {
             Filename = $"{Path.GetRandomFileName()}.competiciones.txt";
@@ -30,12 +29,11 @@ namespace VoleyPlaya.Models
                 Genero = EnumGeneros.None,
                 Grupo = "",
                 NumEquipos = 0,
-                Jornadas = 0,
+                NumJornadas = 0,
                 Equipos = new List<Equipo>(),
                 Partidos = new List<Partido>()
             };
         }
-
         public async Task Save()
         {
             EdicionName = VoleyPlayaService.GetNombreEdicion(Edicion.Temporada, Edicion.Nombre, Edicion.CategoriaStr, Edicion.GeneroStr, Edicion.Grupo);
@@ -83,13 +81,11 @@ namespace VoleyPlaya.Models
         {
             await Edicion.GenerarPartidosAsync();
         }
-
         internal async Task Update()
         {
             string jsonString = JsonSerializer.Serialize(Edicion);
             File.WriteAllText(System.IO.Path.Combine(FileSystem.AppDataDirectory, Filename), jsonString);
         }
-
         internal static EdicionWrapper FromJson(JsonNode edicionJson)
         {
             EdicionWrapper wrapper = new()

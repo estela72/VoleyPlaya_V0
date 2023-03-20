@@ -20,6 +20,7 @@ namespace VoleyPlaya.Models
         private List<Equipo> _equipos;
         private List<Partido> _partidos;
         private List<FechaJornada> _fechasJornadas;
+        DateTime _fecha;
         public string Temporada {get { return _temporada; } set { _temporada = value; } }
         public string Nombre { get { return _nombre; } set { _nombre = value; } } 
         public string Competicion { get { return _competicion; } set { _competicion = value; } }
@@ -27,10 +28,11 @@ namespace VoleyPlaya.Models
         public EnumGeneros Genero { get { return _genero; } set { _genero = value; } } 
         public string Grupo { get { return _grupo;  } set { _grupo = value; } }
         public int NumEquipos { get { return _numEquipos; } set { _numEquipos = value; } } 
-        public int Jornadas { get { return _numJornadas; } set { _numJornadas = value; } }
+        public int NumJornadas { get { return _numJornadas; } set { _numJornadas = value; } }
         public List<Equipo> Equipos { get => _equipos; set => _equipos = value; }
         public List<Partido> Partidos { get => _partidos; set => _partidos = value; }
         public List<FechaJornada> FechasJornadas { get=>_fechasJornadas; set=> _fechasJornadas=value; }
+        public DateTime Fecha { get => _fecha; set => _fecha = value; }
 
         public string CategoriaStr { get => Enum.GetName(typeof(EnumCategorias), Categoria); }
         public string GeneroStr { get => Enum.GetName(typeof(EnumGeneros), Genero); }
@@ -48,6 +50,7 @@ namespace VoleyPlaya.Models
             _equipos = new List<Equipo>();
             _partidos = new List<Partido>();
             _fechasJornadas = new List<FechaJornada>();
+            _fecha = DateTime.Now;
         }
         internal async Task GenerarPartidosAsync()
         {
@@ -125,6 +128,8 @@ namespace VoleyPlaya.Models
             edicion.Grupo = jsonEdicion["Grupo"].GetValue<string>();
             edicion.Equipos = EquiposFromJson(jsonEdicion["Equipos"]!.AsArray());
             edicion.Partidos = PartidosFromJson(jsonEdicion["Partidos"]!.AsArray());
+            edicion.Fecha = jsonEdicion["UpdatedDate"]!.GetValue<DateTime>();
+            edicion.Nombre = jsonEdicion["Nombre"]!.GetValue<string>();
             return edicion;
         }
         private static string NombreFromJson(JsonNode jsonNode)

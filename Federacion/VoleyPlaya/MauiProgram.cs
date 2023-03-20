@@ -49,23 +49,23 @@ namespace VoleyPlaya
         }
         public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<ViewModels.EdicionesViewModel>();
-            mauiAppBuilder.Services.AddTransient<ViewModels.EdicionViewModel>();
-            mauiAppBuilder.Services.AddTransient<ViewModels.ConfiguracionViewModel>();
-            mauiAppBuilder.Services.AddTransient<ViewModels.MainPageViewModel>();
-            mauiAppBuilder.Services.AddTransient<ViewModels.TablaCalendarioViewModel>();
-            mauiAppBuilder.Services.AddTransient<ViewModels.TablasCalendariosViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.EdicionesViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.EdicionViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.ConfiguracionViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.MainPageViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.TablaCalendarioViewModel>();
+            mauiAppBuilder.Services.AddScoped<ViewModels.TablasCalendariosViewModel>();
             return mauiAppBuilder;
         }
         public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<Views.EdicionesPage>();
-            mauiAppBuilder.Services.AddTransient<Views.EdicionPage>();
-            mauiAppBuilder.Services.AddTransient<Views.ConfiguracionPage>();
-            mauiAppBuilder.Services.AddTransient<Views.MainPage>();
-            mauiAppBuilder.Services.AddTransient<Views.PartidosPage>();
+            mauiAppBuilder.Services.AddScoped<Views.EdicionesPage>();
+            mauiAppBuilder.Services.AddScoped<Views.EdicionPage>();
+            mauiAppBuilder.Services.AddScoped<Views.ConfiguracionPage>();
+            mauiAppBuilder.Services.AddScoped<Views.MainPage>();
+            mauiAppBuilder.Services.AddScoped<Views.PartidosPage>();
             mauiAppBuilder.Services.AddTransient<Views.TablaCalendarioPage>();
-            mauiAppBuilder.Services.AddTransient<Views.TablasCalendariosPage>();
+            mauiAppBuilder.Services.AddScoped<Views.TablasCalendariosPage>();
             return mauiAppBuilder;
         }
         public static MauiAppBuilder LoadConfigFiles(this MauiAppBuilder mauiAppBuilder)

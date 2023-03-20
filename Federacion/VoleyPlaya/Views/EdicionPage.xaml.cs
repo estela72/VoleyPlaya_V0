@@ -4,21 +4,19 @@ namespace VoleyPlaya.Views;
 
 public partial class EdicionPage : ContentPage
 {
-	public EdicionPage(EdicionViewModel edicionViewModel)
-	{
+    public EdicionPage(EdicionViewModel edicionViewModel)
+    {
         BindingContext = edicionViewModel;
         InitializeComponent();
     }
 
-    private void NumJornadasEntry_Completed(object sender, EventArgs e)
+    private void NumEquiposEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
-		if (((Entry)sender).BindingContext is IEdicionVM edicionVM)
-            edicionVM.OnNumJornadasChanged();
+        (BindingContext as EdicionViewModel).AddEquipos();
     }
 
-    private void NumEquiposEntry_Completed(object sender, EventArgs e)
+    private void NumJornadasEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (((Entry)sender).BindingContext is IEdicionVM edicionVM)
-            edicionVM.OnNumEquiposChanged();
+        (BindingContext as EdicionViewModel).AddJornadas();
     }
 }
