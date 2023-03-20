@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
 {
-    internal class Equipo : IEquatable<Equipo>
+    public class Equipo : IEquatable<Equipo>
     {
         private int _posicion;
         private string _nombre;
@@ -41,6 +42,11 @@ namespace VoleyPlaya.Models
         public int PuntosContra { get => _puntosContra; set => _puntosContra = value; }
         public double Coeficiente { get => _coeficiente; set => _coeficiente = value; }
         public int Puntos { get => _puntos; set => _puntos = value; }
+
+        internal static Equipo FromJson(JsonNode equipo)
+        {
+            throw new NotImplementedException();
+        }
 
         public override bool Equals(object obj)
         {

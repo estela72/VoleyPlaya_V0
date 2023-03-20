@@ -139,7 +139,6 @@ namespace General.CrossCutting.Lib
         {
             get => _dbSet ?? (_dbSet = _dbContext.Set<T>());
         }
-
 #pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public BaseRepository(DbContext context)
 #pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente

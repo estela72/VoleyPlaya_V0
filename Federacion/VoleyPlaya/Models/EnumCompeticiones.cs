@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
 {
-    internal static class EnumCompeticiones
+    public static class EnumCompeticiones
     {
         public static Dictionary<int, string> _competiciones = new Dictionary<int, string>();
         

@@ -12,7 +12,7 @@ using VoleyPlaya.Models;
 
 namespace VoleyPlaya.ViewModels
 {
-    internal class ConfiguracionViewModel : ObservableObject
+    public class ConfiguracionViewModel : ObservableObject
     {
         public ICommand TablasCalendariosCommand { get; private set; }
 

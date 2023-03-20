@@ -83,8 +83,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\CompeticionesPage.xaml.cs">
-	    <DependentUpon>CompeticionesPage.xaml</DependentUpon>
+	  <Compile Update="Views\EdicionPage.xaml.cs">
+	    <DependentUpon>EdicionPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\EdicionesPage.xaml.cs">
+	    <DependentUpon>EdicionesPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\PartidosPage.xaml.cs">
 	    <DependentUpon>PartidosPage.xaml</DependentUpon>
@@ -101,10 +104,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\CompeticionesPage.xaml">
+	  <MauiXaml Update="Views\EdicionesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CompeticionPage.xaml">
+	  <MauiXaml Update="Views\EdicionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ConfiguracionPage.xaml">

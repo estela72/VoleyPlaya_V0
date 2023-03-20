@@ -16,8 +16,8 @@ namespace VoleyPlaya.Repository.Models
         string? _genero;
         string? _grupo;
 
-        IEnumerable<Equipo> _equipos;
-        IEnumerable<Partido> _partidos;
+        IList<Equipo> _equipos;
+        IList<Partido> _partidos;
 
         public Edicion()
         {
@@ -37,7 +37,17 @@ namespace VoleyPlaya.Repository.Models
         public Categoria Categoria { get => _categoria; set => _categoria = value; }
         public string? Genero { get => _genero; set => _genero = value; }
         public string? Grupo { get => _grupo; set => _grupo = value; }
-        public IEnumerable<Equipo> Equipos { get => _equipos; set => _equipos = value; }
-        public IEnumerable<Partido> Partidos {get => _partidos; set => _partidos= value;}
+        public List<Equipo> Equipos { get => (List<Equipo>)_equipos; set => _equipos = value; }
+        public List<Partido> Partidos {get => (List<Partido>)_partidos; set => _partidos= value;}
+
+        internal void AddEquipo(Equipo equipoDto)
+        {
+            _equipos.Add(equipoDto);
+        }
+
+        internal void AddPartido(Partido partidoDto)
+        {
+            _partidos.Add(partidoDto);
+        }
     }
 }

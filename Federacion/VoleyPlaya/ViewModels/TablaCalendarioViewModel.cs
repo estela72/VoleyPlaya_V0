@@ -83,7 +83,7 @@ namespace VoleyPlaya.ViewModels
 
         private void RefreshProperties()
         {
-            OnPropertyChanged(nameof(Competicion));
+            OnPropertyChanged(nameof(Edicion));
             OnPropertyChanged(nameof(Date));
         }
     }

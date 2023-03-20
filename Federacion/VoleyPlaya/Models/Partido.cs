@@ -30,5 +30,10 @@ namespace VoleyPlaya.Models
         public string Local { get => _local; set => _local = value; }
         public string Visitante { get => _visitante; set => _visitante = value; }
         public Resultado Resultado { get => _resultado; set => _resultado = value; }
+
+        internal static Partido FromJson(Partido partido)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

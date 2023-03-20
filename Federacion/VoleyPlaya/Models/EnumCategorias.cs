@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
 {
-    internal enum EnumCategorias
+    public enum EnumCategorias
     {
         None,
         Senior,

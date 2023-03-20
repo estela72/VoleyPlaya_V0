@@ -49,18 +49,18 @@ namespace VoleyPlaya
         }
         public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddSingleton<ViewModels.CompeticionesViewModel>();
-            mauiAppBuilder.Services.AddSingleton<ViewModels.CompeticionViewModel>();
-            mauiAppBuilder.Services.AddSingleton<ViewModels.ConfiguracionViewModel>();
-            mauiAppBuilder.Services.AddSingleton<ViewModels.MainPageViewModel>();
-            mauiAppBuilder.Services.AddSingleton<ViewModels.TablaCalendarioViewModel>();
-            mauiAppBuilder.Services.AddSingleton<ViewModels.TablasCalendariosViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.EdicionesViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.EdicionViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.ConfiguracionViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.MainPageViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.TablaCalendarioViewModel>();
+            mauiAppBuilder.Services.AddTransient<ViewModels.TablasCalendariosViewModel>();
             return mauiAppBuilder;
         }
         public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
         {
-            mauiAppBuilder.Services.AddTransient<Views.CompeticionesPage>();
-            mauiAppBuilder.Services.AddTransient<Views.CompeticionPage>();
+            mauiAppBuilder.Services.AddTransient<Views.EdicionesPage>();
+            mauiAppBuilder.Services.AddTransient<Views.EdicionPage>();
             mauiAppBuilder.Services.AddTransient<Views.ConfiguracionPage>();
             mauiAppBuilder.Services.AddTransient<Views.MainPage>();
             mauiAppBuilder.Services.AddTransient<Views.PartidosPage>();
@@ -70,24 +70,12 @@ namespace VoleyPlaya
         }
         public static MauiAppBuilder LoadConfigFiles(this MauiAppBuilder mauiAppBuilder)
         {
-            //var configurationBuilder = new ConfigurationBuilder()
-            //    .AddJsonFile($"appsettings.json", true, true);
-
-            //Configuration = configurationBuilder.Build();
-            //var configurationBuilder = new ConfigurationBuilder()
-            //    .AddJsonFile($"appsettings.json", true, true);
-            //configuration = configurationBuilder.Build();
-
             var a = Assembly.GetExecutingAssembly();
             using var stream = a.GetManifestResourceStream("VoleyPlaya.appsettings.json");
-
             Configuration = new ConfigurationBuilder()
                         .AddJsonStream(stream)
                         .Build();
-
-
             mauiAppBuilder.Configuration.AddConfiguration(Configuration);
-
             return mauiAppBuilder;
         }
     }

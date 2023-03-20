@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace VoleyPlaya.Repository
 {
-    public class VoleyPlayaDbContext : IdentityDbContext<VoleyPlayaApplicationUser, IdentityRole, string>
+    public class VoleyPlayaDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
 
@@ -27,13 +27,10 @@ namespace VoleyPlaya.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder == null) return;
-            optionsBuilder.EnableSensitiveDataLogging();
-            // connect to sql server database
-            string s = _configuration.GetRequiredSection("ConnectionStrings:DatabaseConnection").Value;
-            optionsBuilder.UseSqlServer(s);
-
-            base.OnConfiguring(optionsBuilder);
+            string connString = _configuration.GetRequiredSection("ConnectionStrings:DatabaseConnection").Value;
+            optionsBuilder
+                .EnableSensitiveDataLogging()
+                .UseSqlServer(connString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

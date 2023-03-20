@@ -20,8 +20,8 @@ namespace VoleyPlaya.Repository.Models
         double? _coeficiente;
         int? _puntos;
 
-        IEnumerable<Partido> _locales;
-        IEnumerable<Partido> _visitantes;
+        ICollection<Partido> _locales;
+        ICollection<Partido> _visitantes;
 
         public Equipo()
         {
@@ -43,7 +43,7 @@ namespace VoleyPlaya.Repository.Models
         public int? PuntosContra { get => _puntosContra; set => _puntosContra = value; }
         public double? Coeficiente { get => _coeficiente; set => _coeficiente = value; }
         public int? Puntos { get => _puntos; set => _puntos = value; }
-        internal IEnumerable<Partido> Locales { get => _locales; set => _locales = value; }
-        internal IEnumerable<Partido> Visitantes { get => _visitantes; set => _visitantes = value; }
+        internal List<Partido> Locales { get => (List<Partido>)_locales; set => _locales = value; }
+        internal List<Partido> Visitantes { get => (List<Partido>)_visitantes; set => _visitantes = value; }
     }
 }

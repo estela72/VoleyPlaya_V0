@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.ViewModels
 {
-    internal class MainPageViewModel
+    public class MainPageViewModel
     {
 
     }
