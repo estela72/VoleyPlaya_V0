@@ -43,9 +43,21 @@ namespace VoleyPlaya.Models
         public double Coeficiente { get => _coeficiente; set => _coeficiente = value; }
         public int Puntos { get => _puntos; set => _puntos = value; }
 
-        internal static Equipo FromJson(JsonNode equipo)
+        internal static Equipo FromJson(JsonNode equipoJson)
         {
-            throw new NotImplementedException();
+            Equipo equipo = new Equipo()
+            {
+                Posicion = equipoJson["OrdenCalendario"]!.GetValue<int>(),
+                Coeficiente = equipoJson["Coeficiente"]!.GetValue<double>(),
+                Ganados = equipoJson["Ganados"]!.GetValue<int>(),
+                Jugados = equipoJson["Jugados"]!.GetValue<int>(),
+                Nombre = equipoJson["Nombre"]!.GetValue<string>(),
+                Perdidos = equipoJson["Perdidos"]!.GetValue<int>(),
+                Puntos = equipoJson["Puntos"]!.GetValue<int>(),
+                PuntosContra = equipoJson["PuntosContra"]!.GetValue<int>(),
+                PuntosFavor = equipoJson["PuntosFavor"]!.GetValue<int>()
+            };
+            return equipo;
         }
 
         public override bool Equals(object obj)

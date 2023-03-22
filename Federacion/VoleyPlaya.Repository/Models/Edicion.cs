@@ -15,9 +15,12 @@ namespace VoleyPlaya.Repository.Models
         Categoria _categoria;
         string? _genero;
         string? _grupo;
+        int _numEquipos;
+        int _numJornadas;
 
-        IList<Equipo> _equipos;
-        IList<Partido> _partidos;
+        HashSet<Equipo> _equipos;
+        HashSet<Partido> _partidos;
+        HashSet<Jornada> _jornadas;
 
         public Edicion()
         {
@@ -28,8 +31,9 @@ namespace VoleyPlaya.Repository.Models
             _temporada = temporada;
             _competicion = competicion;
             _categoria = categoria;
-            _equipos = new List<Equipo>();
-            _partidos = new List<Partido>();
+            _equipos = new HashSet<Equipo>();
+            _partidos = new HashSet<Partido>();
+            _jornadas = new HashSet<Jornada>();
         }
 
         public Temporada Temporada { get => _temporada; set => _temporada = value; }
@@ -37,8 +41,11 @@ namespace VoleyPlaya.Repository.Models
         public Categoria Categoria { get => _categoria; set => _categoria = value; }
         public string? Genero { get => _genero; set => _genero = value; }
         public string? Grupo { get => _grupo; set => _grupo = value; }
-        public List<Equipo> Equipos { get => (List<Equipo>)_equipos; set => _equipos = value; }
-        public List<Partido> Partidos {get => (List<Partido>)_partidos; set => _partidos= value;}
+        public int NumEquipos { get => _numEquipos; set => _numEquipos = value; }
+        public int NumJornadas { get => _numJornadas; set => _numJornadas = value; }
+        public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
+        public HashSet<Partido> Partidos {get => _partidos; set => _partidos= value;}
+        public HashSet<Jornada> Jornadas{ get => _jornadas; set => _jornadas = value; }
 
         internal void AddEquipo(Equipo equipoDto)
         {
@@ -48,6 +55,11 @@ namespace VoleyPlaya.Repository.Models
         internal void AddPartido(Partido partidoDto)
         {
             _partidos.Add(partidoDto);
+        }
+
+        internal void AddJornada(Jornada jornadaDto)
+        {
+            _jornadas.Add(jornadaDto);
         }
     }
 }

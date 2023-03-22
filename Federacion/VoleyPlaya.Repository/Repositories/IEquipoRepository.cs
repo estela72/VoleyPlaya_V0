@@ -35,7 +35,7 @@ namespace VoleyPlaya.Repository.Repositories
             int puntosFavor, int puntosContra, double coeficiente, int puntos)
         {
             if (nombre.Equals(string.Empty)) return null;
-            var dto = await FindAsync(c => c.Nombre.Equals(nombre));
+            var dto = await FindAsync(c => c.Nombre.Equals(nombre) && c.Edicion.Id.Equals(edicionDto.Id));
             if (dto == null)
                 return await AddAsyn(new Equipo(edicionDto)
                 { 

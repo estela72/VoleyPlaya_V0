@@ -29,25 +29,25 @@
     <AppXManifest Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2023-03-20T21:51:29.554</Modified>
+      <Modified>2023-03-22T21:10:17.943</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2023-03-20T21:45:29.625</Modified>
+      <Modified>2023-03-22T19:43:45.688</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.runtimeconfig.json">
       <PackagePath>VoleyPlaya.runtimeconfig.json</PackagePath>
-      <Modified>2023-03-15T18:47:44.916</Modified>
+      <Modified>2023-03-22T18:04:41.923</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\bin\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.dll">
       <PackagePath>VoleyPlaya.dll</PackagePath>
-      <Modified>2023-03-20T21:51:23.512</Modified>
+      <Modified>2023-03-22T21:10:11.710</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>VoleyPlaya.exe</PackagePath>
-      <Modified>2023-03-20T21:51:23.657</Modified>
+      <Modified>2023-03-22T21:10:11.771</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\appsettings.Development.json">
       <PackagePath>appsettings.Development.json</PackagePath>
@@ -2243,19 +2243,19 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Debug\net7.0\General.CrossCutting.Lib.dll">
       <PackagePath>General.CrossCutting.Lib.dll</PackagePath>
-      <Modified>2023-03-19T17:42:21.895</Modified>
+      <Modified>2023-03-22T18:03:59.337</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya.Repository\bin\Debug\net7.0\VoleyPlaya.Repository.dll">
       <PackagePath>VoleyPlaya.Repository.dll</PackagePath>
-      <Modified>2023-03-20T18:27:43.575</Modified>
+      <Modified>2023-03-22T21:08:24.035</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Debug\net7.0\General.CrossCutting.Lib.xml">
       <PackagePath>General.CrossCutting.Lib.xml</PackagePath>
-      <Modified>2023-03-19T17:42:21.005</Modified>
+      <Modified>2023-03-22T18:03:59.177</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\VoleyPlaya.deps.json">
       <PackagePath>VoleyPlaya.deps.json</PackagePath>
-      <Modified>2023-03-20T21:51:28.478</Modified>
+      <Modified>2023-03-22T21:10:16.875</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files\dotnet\packs\Microsoft.Maui.Controls.Ref.win\7.0.59\ref\net7.0-windows10.0.19041\Microsoft.Maui.Controls.Compatibility.pri">
       <PackagePath>Microsoft.Maui.Controls.Compatibility.pri</PackagePath>
@@ -2279,23 +2279,23 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-100.png">
       <PackagePath>splashSplashScreen.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.095</Modified>
+      <Modified>2023-03-22T18:04:25.943</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-125.png">
       <PackagePath>splashSplashScreen.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.126</Modified>
+      <Modified>2023-03-22T18:04:25.974</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-150.png">
       <PackagePath>splashSplashScreen.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.168</Modified>
+      <Modified>2023-03-22T18:04:26.063</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-200.png">
       <PackagePath>splashSplashScreen.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.242</Modified>
+      <Modified>2023-03-22T18:04:26.131</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-400.png">
       <PackagePath>splashSplashScreen.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.520</Modified>
+      <Modified>2023-03-22T18:04:26.400</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\f\OpenSans-Regular.ttf">
       <PackagePath>OpenSans-Regular.ttf</PackagePath>
@@ -2307,207 +2307,207 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appicon.ico">
       <PackagePath>appicon.ico</PackagePath>
-      <Modified>2023-03-10T20:47:52.551</Modified>
+      <Modified>2023-03-22T18:04:26.603</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-100.png">
       <PackagePath>appiconLargeTile.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.929</Modified>
+      <Modified>2023-03-22T18:04:27.677</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-125.png">
       <PackagePath>appiconLargeTile.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.951</Modified>
+      <Modified>2023-03-22T18:04:27.708</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-150.png">
       <PackagePath>appiconLargeTile.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.983</Modified>
+      <Modified>2023-03-22T18:04:27.732</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-200.png">
       <PackagePath>appiconLargeTile.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:53.016</Modified>
+      <Modified>2023-03-22T18:04:27.768</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-400.png">
       <PackagePath>appiconLargeTile.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:53.167</Modified>
+      <Modified>2023-03-22T18:04:27.902</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-16.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-16.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.629</Modified>
+      <Modified>2023-03-22T18:04:26.870</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-24.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-24.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.631</Modified>
+      <Modified>2023-03-22T18:04:26.903</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-256.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-256.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.673</Modified>
+      <Modified>2023-03-22T18:04:27.152</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-32.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-32.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.634</Modified>
+      <Modified>2023-03-22T18:04:27.073</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-48.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-48.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.663</Modified>
+      <Modified>2023-03-22T18:04:27.097</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-16.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-16.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.608</Modified>
+      <Modified>2023-03-22T18:04:26.794</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-24.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-24.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.610</Modified>
+      <Modified>2023-03-22T18:04:26.801</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-256.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-256.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.626</Modified>
+      <Modified>2023-03-22T18:04:26.849</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-32.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-32.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.613</Modified>
+      <Modified>2023-03-22T18:04:26.807</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-48.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-48.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.616</Modified>
+      <Modified>2023-03-22T18:04:26.823</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-100.png">
       <PackagePath>appiconLogo.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.564</Modified>
+      <Modified>2023-03-22T18:04:26.629</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-125.png">
       <PackagePath>appiconLogo.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.569</Modified>
+      <Modified>2023-03-22T18:04:26.645</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-150.png">
       <PackagePath>appiconLogo.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.572</Modified>
+      <Modified>2023-03-22T18:04:26.664</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-200.png">
       <PackagePath>appiconLogo.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.575</Modified>
+      <Modified>2023-03-22T18:04:26.678</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-400.png">
       <PackagePath>appiconLogo.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.582</Modified>
+      <Modified>2023-03-22T18:04:26.688</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-16.png">
       <PackagePath>appiconLogo.targetsize-16.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.585</Modified>
+      <Modified>2023-03-22T18:04:26.693</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-24.png">
       <PackagePath>appiconLogo.targetsize-24.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.587</Modified>
+      <Modified>2023-03-22T18:04:26.699</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-256.png">
       <PackagePath>appiconLogo.targetsize-256.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.603</Modified>
+      <Modified>2023-03-22T18:04:26.777</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-32.png">
       <PackagePath>appiconLogo.targetsize-32.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.590</Modified>
+      <Modified>2023-03-22T18:04:26.725</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-48.png">
       <PackagePath>appiconLogo.targetsize-48.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.592</Modified>
+      <Modified>2023-03-22T18:04:26.739</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-100.png">
       <PackagePath>appiconMediumTile.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.727</Modified>
+      <Modified>2023-03-22T18:04:27.318</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-125.png">
       <PackagePath>appiconMediumTile.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.733</Modified>
+      <Modified>2023-03-22T18:04:27.339</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-150.png">
       <PackagePath>appiconMediumTile.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.742</Modified>
+      <Modified>2023-03-22T18:04:27.352</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-200.png">
       <PackagePath>appiconMediumTile.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.756</Modified>
+      <Modified>2023-03-22T18:04:27.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-400.png">
       <PackagePath>appiconMediumTile.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.788</Modified>
+      <Modified>2023-03-22T18:04:27.408</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-100.png">
       <PackagePath>appiconSmallTile.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.696</Modified>
+      <Modified>2023-03-22T18:04:27.212</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-125.png">
       <PackagePath>appiconSmallTile.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.700</Modified>
+      <Modified>2023-03-22T18:04:27.218</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-150.png">
       <PackagePath>appiconSmallTile.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.703</Modified>
+      <Modified>2023-03-22T18:04:27.228</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-200.png">
       <PackagePath>appiconSmallTile.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.709</Modified>
+      <Modified>2023-03-22T18:04:27.237</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-400.png">
       <PackagePath>appiconSmallTile.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.721</Modified>
+      <Modified>2023-03-22T18:04:27.308</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-100.png">
       <PackagePath>appiconStoreLogo.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.675</Modified>
+      <Modified>2023-03-22T18:04:27.159</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-125.png">
       <PackagePath>appiconStoreLogo.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.679</Modified>
+      <Modified>2023-03-22T18:04:27.179</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-150.png">
       <PackagePath>appiconStoreLogo.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.682</Modified>
+      <Modified>2023-03-22T18:04:27.186</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-200.png">
       <PackagePath>appiconStoreLogo.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.685</Modified>
+      <Modified>2023-03-22T18:04:27.194</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-400.png">
       <PackagePath>appiconStoreLogo.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.693</Modified>
+      <Modified>2023-03-22T18:04:27.204</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-100.png">
       <PackagePath>appiconWideTile.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.795</Modified>
+      <Modified>2023-03-22T18:04:27.420</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-125.png">
       <PackagePath>appiconWideTile.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.806</Modified>
+      <Modified>2023-03-22T18:04:27.436</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-150.png">
       <PackagePath>appiconWideTile.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.820</Modified>
+      <Modified>2023-03-22T18:04:27.467</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-200.png">
       <PackagePath>appiconWideTile.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.841</Modified>
+      <Modified>2023-03-22T18:04:27.503</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-400.png">
       <PackagePath>appiconWideTile.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.914</Modified>
+      <Modified>2023-03-22T18:04:27.657</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-100.png">
       <PackagePath>dotnet_bot.scale-100.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.557</Modified>
+      <Modified>2023-03-22T18:04:26.742</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-125.png">
       <PackagePath>dotnet_bot.scale-125.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.575</Modified>
+      <Modified>2023-03-22T18:04:26.768</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-150.png">
       <PackagePath>dotnet_bot.scale-150.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.598</Modified>
+      <Modified>2023-03-22T18:04:26.820</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-200.png">
       <PackagePath>dotnet_bot.scale-200.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.655</Modified>
+      <Modified>2023-03-22T18:04:26.886</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-400.png">
       <PackagePath>dotnet_bot.scale-400.png</PackagePath>
-      <Modified>2023-03-10T20:47:52.774</Modified>
+      <Modified>2023-03-22T18:04:27.169</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\obj\Debug\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\logo_fvbpa.scale-100.png">
       <PackagePath>logo_fvbpa.scale-100.png</PackagePath>

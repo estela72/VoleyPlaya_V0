@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace VoleyPlaya.Repository.Models
@@ -23,6 +24,7 @@ namespace VoleyPlaya.Repository.Models
             _partido = partido;
         }
 
+        [JsonIgnore]
         public Partido Partido { get => _partido; set => _partido = value; }
         public int? ResultadoLocal { get => _resultadoLocal; set => _resultadoLocal = value; }
         public int? ResultadoVisitante { get => _resultadoVisitante; set => _resultadoVisitante = value; }

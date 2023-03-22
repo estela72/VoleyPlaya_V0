@@ -21,13 +21,13 @@ namespace VoleyPlaya.Models
         private List<Partido> _partidos;
         private List<FechaJornada> _fechasJornadas;
         DateTime _fecha;
-        public string Temporada {get { return _temporada; } set { _temporada = value; } }
-        public string Nombre { get { return _nombre; } set { _nombre = value; } } 
+        public string Temporada { get { return _temporada; } set { _temporada = value; } }
+        public string Nombre { get { return _nombre; } set { _nombre = value; } }
         public string Competicion { get { return _competicion; } set { _competicion = value; } }
-        public EnumCategorias Categoria { get { return _categoria; } set { _categoria = value; } } 
-        public EnumGeneros Genero { get { return _genero; } set { _genero = value; } } 
-        public string Grupo { get { return _grupo;  } set { _grupo = value; } }
-        public int NumEquipos { get { return _numEquipos; } set { _numEquipos = value; } } 
+        public EnumCategorias Categoria { get { return _categoria; } set { _categoria = value; } }
+        public EnumGeneros Genero { get { return _genero; } set { _genero = value; } }
+        public string Grupo { get { return _grupo; } set { _grupo = value; } }
+        public int NumEquipos { get { return _numEquipos; } set { _numEquipos = value; } }
         public int NumJornadas { get { return _numJornadas; } set { _numJornadas = value; } }
         public List<Equipo> Equipos { get => _equipos; set => _equipos = value; }
         public List<Partido> Partidos { get => _partidos; set => _partidos = value; }
@@ -44,7 +44,7 @@ namespace VoleyPlaya.Models
             _categoria = EnumCategorias.None;
             _genero = EnumGeneros.None;
             _grupo = "";
-            _nombre = VoleyPlayaService.GetNombreEdicion(_temporada, _competicion, CategoriaStr, GeneroStr, _grupo);
+            _nombre = "";
             _numEquipos = 0;
             _numJornadas = 0;
             _equipos = new List<Equipo>();
@@ -75,13 +75,13 @@ namespace VoleyPlaya.Models
                     };
                     if (!Partidos.Exists(p => p.NumPartido == nuevoPartido.NumPartido))
                         Partidos.Add(nuevoPartido);
-                    else
-                    {
-                        var par = Partidos.First(p => p.NumPartido == nuevoPartido.NumPartido);
-                        par.Fecha = par.Fecha == DateTime.MinValue ? fecha : par.Fecha;
-                        par.Local = _equipos.Where(e => e.Posicion == partido.Local).First().Nombre;
-                        par.Visitante = _equipos.Where(e => e.Posicion == partido.Visitante).First().Nombre;
-                    }
+                    //else
+                    //{
+                    //    var par = Partidos.First(p => p.NumPartido == nuevoPartido.NumPartido);
+                    //    par.Fecha = par.Fecha == DateTime.MinValue ? fecha : par.Fecha;
+                    //    par.Local = _equipos.Where(e => e.Posicion == partido.Local).First().Nombre;
+                    //    par.Visitante = _equipos.Where(e => e.Posicion == partido.Visitante).First().Nombre;
+                    //}
                 }
             }
         }
@@ -130,6 +130,9 @@ namespace VoleyPlaya.Models
             edicion.Partidos = PartidosFromJson(jsonEdicion["Partidos"]!.AsArray());
             edicion.Fecha = jsonEdicion["UpdatedDate"]!.GetValue<DateTime>();
             edicion.Nombre = jsonEdicion["Nombre"]!.GetValue<string>();
+            edicion.NumEquipos = jsonEdicion["NumEquipos"]!.GetValue<int>();
+            edicion.NumJornadas = jsonEdicion["NumJornadas"]!.GetValue<int>();
+            edicion.FechasJornadas = JornadasFromJson(jsonEdicion["Jornadas"]!.AsArray());
             return edicion;
         }
         private static string NombreFromJson(JsonNode jsonNode)
@@ -146,9 +149,16 @@ namespace VoleyPlaya.Models
         private static List<Partido> PartidosFromJson(JsonArray jsonPartidos)
         {
             List<Partido> partidos = new List<Partido>();
-            foreach (var partido in partidos)
+            foreach (var partido in jsonPartidos)
                 partidos.Add(Partido.FromJson(partido));
             return partidos;
+        }
+        private static List<FechaJornada> JornadasFromJson(JsonArray jsonJornadas)
+        {
+            List<FechaJornada> jornadas = new List<FechaJornada>();
+            foreach (var jornada in jsonJornadas)
+                jornadas.Add(FechaJornada.FromJson(jornada));
+            return jornadas;
         }
     }
 }

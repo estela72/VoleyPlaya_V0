@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
@@ -31,9 +32,30 @@ namespace VoleyPlaya.Models
         public string Visitante { get => _visitante; set => _visitante = value; }
         public Resultado Resultado { get => _resultado; set => _resultado = value; }
 
-        internal static Partido FromJson(Partido partido)
+        internal static Partido FromJson(JsonNode jsonPartido)
         {
-            throw new NotImplementedException();
+            string horaDT = jsonPartido["Hora"]!.GetValue<string>();
+            string[] h = horaDT.Split(":");
+            TimeSpan hora = new TimeSpan(Convert.ToInt32(h[0]), Convert.ToInt32(h[1]), Convert.ToInt32(h[2]));
+            Partido partido = new()
+            {
+                Fecha = jsonPartido["Fecha"]!.GetValue<DateTime>(),
+                Hora = hora,
+                Jornada = jsonPartido["Jornada"]!.GetValue<int>(),
+                Local = EquipoFromJson(jsonPartido["Local"]),
+                NumPartido = jsonPartido["NumPartido"]!.GetValue<int>(),
+                Pista = jsonPartido["Pista"]!.GetValue<string>(),
+                Resultado = Resultado.FromJson(jsonPartido["Parciales"] as JsonArray),
+                Visitante = EquipoFromJson(jsonPartido["Visitante"])
+            };
+            partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
+            partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
+
+            return partido;
+        }
+        private static string EquipoFromJson(JsonNode jsonNode)
+        {
+            return jsonNode["Nombre"].GetValue<string>();
         }
     }
 }

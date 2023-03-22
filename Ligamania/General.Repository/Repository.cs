@@ -55,62 +55,34 @@ namespace General.CrossCutting.Lib
         //por compatibilidad
 #pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<T> FindAsync(Expression<Func<T, bool>> match);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
         //por compatibilidad
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         IQueryable<T> FindAllQueryable(Expression<Func<T, bool>> match);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<ICollection<T>> FindAllIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         IQueryable<T> GetAll();
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<IQueryable<T>> GetAllIncludingAsync(params Expression<Func<T, object>>[] includeProperties);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
+        Task<IQueryable<T>> GetAllQueryableAsync();
         Task<T> AddAsyn(T entity);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<T> UpdateAsyn(T entity, int id);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         T Find(Expression<Func<T, bool>> match);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         ICollection<T> FindAll(Expression<Func<T, bool>> match);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<T> FindIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<IQueryable<T>> FindAllQueryableIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     }
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     public interface IRepository<T> : IBaseRepository<T> where T : IEntity
 #pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     {
@@ -122,66 +94,48 @@ namespace General.CrossCutting.Lib
 #pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     {
         private readonly DbContext _dbContext;
         private DbSet<T> _dbSet;
         private readonly ILogger _logger;
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         protected ILogger Logger { get => _logger ?? throw new ArgumentNullException(nameof(_logger)); }
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         protected DbSet<T> DbSet
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             get => _dbSet ?? (_dbSet = _dbContext.Set<T>());
         }
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public BaseRepository(DbContext context)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
             _dbSet = context.Set<T>();
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public BaseRepository(DbContext context, ILogger logger)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             _dbContext = context ?? throw new ArgumentNullException(nameof(context));
             _dbSet = context.Set<T>();
             _logger = logger;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<int> Count()
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await DbSet.CountAsync();
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<T> CreateAsync(T entity)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             var added = await DbSet.AddAsync(entity);
             return added.Entity;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<bool> ExistsAsync(Expression<Func<T, bool>> match)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             var exists = await DbSet.AnyAsync(match);
             return exists;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<T> UpdateAsync(T entity)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             if (entity == null) return default;
             if (!await ExistsAsync(e => e.Id.Equals(entity.Id))) return default;
@@ -205,24 +159,18 @@ namespace General.CrossCutting.Lib
             return false;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<T> GetByIdAsync(int id)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             var entity = await GetAsync(e => e.Id.Equals(id));
             return entity;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual T GetById(int id)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             var entity = DbSet.SingleOrDefault(e => e.Id.Equals(id));
             return entity;
         }
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual T Get(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             IQueryable<T> queryable = DbSet.Where(match);
             if (queryable == null) return null;
@@ -233,9 +181,7 @@ namespace General.CrossCutting.Lib
             return queryable.SingleOrDefault();
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<T> GetAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         { 
             IQueryable<T> queryable = DbSet.Where(match);
             if (queryable == null) return null;
@@ -246,9 +192,7 @@ namespace General.CrossCutting.Lib
             return await queryable.SingleOrDefaultAsync().ConfigureAwait(false);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             var entities = await DbSet.Where(match).ToListAsync().ConfigureAwait(false);
             foreach (var entity in entities)
@@ -261,23 +205,17 @@ namespace General.CrossCutting.Lib
             return entities;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await GetAsync(match);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public virtual IQueryable<T> FindAllQueryable(Expression<Func<T, bool>> match)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return DbSet.Where(match);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<ICollection<T>> FindAllIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             IQueryable<T> queryable = FindAllQueryable(match);
             if (queryable == null) return null;
@@ -290,16 +228,17 @@ namespace General.CrossCutting.Lib
             return await queryable.ToListAsync().ConfigureAwait(false);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public IQueryable<T> GetAll()
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return DbSet;
         }
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
+        public async Task<IQueryable<T>> GetAllQueryableAsync()
+        {
+            IQueryable<T> queryable = GetAll();
+            if (queryable == null) return null;
+            return await Task.FromResult(queryable).ConfigureAwait(false);
+        }
         public async Task<IQueryable<T>> GetAllIncludingAsync(params Expression<Func<T, object>>[] includeProperties)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             IQueryable<T> queryable = GetAll();
             if (queryable == null) return null;
@@ -311,23 +250,17 @@ namespace General.CrossCutting.Lib
             return await Task.FromResult(queryable).ConfigureAwait(false);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<T> AddAsyn(T entity)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await CreateAsync(entity);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<T> UpdateAsyn(T entity, int id)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await UpdateAsync(entity);
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await DbSet.Where(match).ToListAsync().ConfigureAwait(false);
         }

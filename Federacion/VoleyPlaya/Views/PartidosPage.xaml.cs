@@ -4,8 +4,9 @@ namespace VoleyPlaya.Views;
 
 public partial class PartidosPage : ContentPage
 {
-	public PartidosPage()
+	public PartidosPage(EdicionViewModel edicion)
 	{
+        BindingContext = edicion;
 		InitializeComponent();
 	}
 

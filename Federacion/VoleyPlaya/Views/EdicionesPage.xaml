@@ -34,13 +34,13 @@
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <HorizontalStackLayout Padding="2">
-                        <Label Text="{Binding Edicion.Temporada, StringFormat='Temporada {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.Competicion}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.Categoria}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.Genero}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.Grupo, StringFormat='Grupo {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.NumEquipos, StringFormat='{0} equipos'}" FontSize="16" TextColor="Black" Padding="5"/>
-                        <Label Text="{Binding Edicion.Jornadas, StringFormat='{0} jornadas'}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding Temporada, StringFormat='Temporada {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding Competicion}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding Categoria}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding Genero}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding Grupo, StringFormat='Grupo {0} - '}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding NumEquipos, StringFormat='{0} equipos'}" FontSize="16" TextColor="Black" Padding="5"/>
+                        <Label Text="{Binding NumJornadas, StringFormat='{0} jornadas'}" FontSize="16" TextColor="Black" Padding="5"/>
                 </HorizontalStackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

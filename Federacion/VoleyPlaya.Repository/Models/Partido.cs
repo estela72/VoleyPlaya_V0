@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace VoleyPlaya.Repository.Models
@@ -43,7 +44,7 @@ namespace VoleyPlaya.Repository.Models
         public DateTime? Fecha { get => _fecha; set => _fecha = value; }
         public TimeSpan? Hora { get => _hora; set => _hora = value; }
         public string? Pista { get => _pista; set => _pista = value; }
-        internal List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
+        public List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
 
         internal void AddEquipo(string v, Equipo equipoDto)
         {

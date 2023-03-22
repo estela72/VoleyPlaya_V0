@@ -25,10 +25,9 @@ namespace VoleyPlaya.Repository.Services
 
         public async Task<string> GetAllEdicionesAsync()
         {
-            var dto = await _voleyPlayaUoW.EdicionRepository.GetAllIncludingAsync(
-                e=>e.Temporada, e=>e.Competicion, e=>e.Categoria, e=>e.Equipos, e=>e.Partidos
-                );
-            var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(), Options);
+            var dto = await _voleyPlayaUoW.EdicionRepository.GetFullAsync();
+            //JsonSerializerOptions opt = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve };
+            var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(),Options);
             return json;
         }
 
@@ -46,26 +45,30 @@ namespace VoleyPlaya.Repository.Services
         }
         public async Task<bool> SaveEdicionAsync(string json)
         {
-            JsonNode competicionNode = JsonNode.Parse(json)!;
+            JsonNode edicionNode = JsonNode.Parse(json)!;
             // crear temporada, competicion y categoria si no existen
-             var dtos = await BeforeSaveAsync(competicionNode);
+             var dtos = await BeforeSaveAsync(edicionNode);
             await _voleyPlayaUoW.SaveMauiChangesAsync();
 
             // crear o actualizar la edición
-            string genero = competicionNode["GeneroStr"]!.GetValue<string>();
-            string grupo = competicionNode["Grupo"]!.GetValue<string>();
+            string genero = edicionNode["GeneroStr"]!.GetValue<string>();
+            string grupo = edicionNode["Grupo"]!.GetValue<string>();
+            int numEquipos = edicionNode["NumEquipos"]!.GetValue<int>();
+            int numJornadas = edicionNode["NumJornadas"]!.GetValue<int>();
 
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
                 dtos.temporadaDto,
                 dtos.competicionDto,
                 dtos.categoriaDto,
                 genero,
-                grupo
+                grupo,
+                numEquipos,
+                numJornadas
                 );
             await _voleyPlayaUoW.SaveMauiChangesAsync();
 
             // crear o actualizar los equipos
-            JsonArray equipos = competicionNode["Equipos"]!.AsArray();
+            JsonArray equipos = edicionNode["Equipos"]!.AsArray();
             foreach (var equipo in equipos)
             {
                 int posicion = equipo["Posicion"]!.GetValue<int>()!;
@@ -83,7 +86,7 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.SaveMauiChangesAsync();
 
             // crear o actualizar los partidos con sus resultados
-            await AfterSaveAsync(competicionNode, edicionDto);
+            await AfterSaveAsync(edicionNode, edicionDto);
 
             await _voleyPlayaUoW.SaveMauiChangesAsync();
             return true;
@@ -100,7 +103,7 @@ namespace VoleyPlaya.Repository.Services
             string temporada = competicionNode["Temporada"]!.GetValue<string>();
             var temporadaDto = await _voleyPlayaUoW.TemporadaRepository.CheckAddUpdate(temporada);
 
-            string competicion = competicionNode["Nombre"]!.GetValue<string>();
+            string competicion = competicionNode["Competicion"]!.GetValue<string>();
             var competicionDto = await _voleyPlayaUoW.CompeticionRepository.CheckAddUpdate(competicion);
 
             string categoria = competicionNode["CategoriaStr"]!.GetValue<string>();
@@ -109,10 +112,9 @@ namespace VoleyPlaya.Repository.Services
             return new { temporadaDto, competicionDto, categoriaDto };
         }
 
-        private async Task AfterSaveAsync(JsonNode competicionNode, Edicion edicionDto)
+        private async Task AfterSaveAsync(JsonNode edicionNode, Edicion edicionDto)
         {
-            JsonArray partidos = competicionNode["Partidos"]!.AsArray();
-            List<Partido> partidosDto = new List<Partido>();
+            JsonArray partidos = edicionNode["Partidos"]!.AsArray();
             foreach (var partido in partidos)
             {
                 int jornada = partido["Jornada"]!.GetValue<int>()!;
@@ -146,6 +148,17 @@ namespace VoleyPlaya.Repository.Services
                 partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante);
 
                 edicionDto!.AddPartido(partidoDto);
+            }
+
+            JsonArray jornadas = edicionNode["FechasJornadas"]!.AsArray()!;
+            foreach(var jornada in jornadas)
+            {
+                Jornada jornadaDto = new Jornada()
+                {
+                    Numero = jornada["Jornada"]!.GetValue<int>(),
+                    Fecha = jornada["Fecha"]!.GetValue<DateTime>()
+                };
+                edicionDto.AddJornada(jornadaDto);
             }
         }
     }

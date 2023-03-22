@@ -8,12 +8,15 @@ using VoleyPlaya.Models;
 using System.Text.Json.Nodes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.UI.WebUI;
 
 namespace VoleyPlaya.ViewModels
 {
     public class EdicionesViewModel : ObservableObject, IQueryAttributable
     {
-        public ObservableCollection<ViewModels.EdicionViewModel> AllEdiciones { get; private set; }
+
+        private ObservableCollection<Edicion> _allEdiciones;
+        public IList<Edicion> AllEdiciones { get => _allEdiciones; set => _allEdiciones = (ObservableCollection<Edicion>)value; }
         public ICommand NewCommand { get; }
         public ICommand SelectEdicionCommand { get; }
         IVoleyPlayaService _voleyPlayaService;
@@ -21,7 +24,7 @@ namespace VoleyPlaya.ViewModels
         {
             _voleyPlayaService = voleyPlayaService;
             NewCommand = new AsyncRelayCommand(NewEdicionAsync);
-            SelectEdicionCommand = new AsyncRelayCommand<ViewModels.EdicionViewModel>(SelectEdicionAsync);
+            SelectEdicionCommand = new AsyncRelayCommand<Edicion>(SelectEdicionAsync);
             InicializaEdiciones();
         }
         private async Task InicializaEdiciones()
@@ -29,7 +32,9 @@ namespace VoleyPlaya.ViewModels
             //AllEdiciones = new ObservableCollection<ViewModels.EdicionViewModel>(Models.EdicionWrapper.LoadAll().Select(n => new EdicionViewModel(n)));
             var jsonEdiciones = await _voleyPlayaService.GetAllEdicionesAsync();
             var ediciones = FromJson(jsonEdiciones);
-            AllEdiciones = new ObservableCollection<ViewModels.EdicionViewModel>(ediciones.Select(n => new EdicionViewModel(_voleyPlayaService, n)));
+            _allEdiciones = new ObservableCollection<Edicion>(ediciones.ToList());
+            OnPropertyChanged(nameof(AllEdiciones));
+            OnPropertyChanged();
         }
 
         private IEnumerable<Edicion> FromJson(string jsonEdiciones)
@@ -47,10 +52,10 @@ namespace VoleyPlaya.ViewModels
             await Shell.Current.GoToAsync(nameof(Views.EdicionPage));
         }
 
-        private async Task SelectEdicionAsync(ViewModels.EdicionViewModel edicion)
+        private async Task SelectEdicionAsync(Edicion edicion)
         {
             if (edicion != null)
-                await Shell.Current.GoToAsync($"{nameof(Views.EdicionPage)}?load={edicion.Edicion.Nombre}");
+                await Shell.Current.GoToAsync($"{nameof(Views.EdicionPage)}?load={edicion.Nombre}");
         }
         void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
         {
@@ -58,7 +63,7 @@ namespace VoleyPlaya.ViewModels
             {
                 string edicionId = query["deleted"].ToString();
                 edicionId = Uri.UnescapeDataString(edicionId);
-                EdicionViewModel matchedEdicion = AllEdiciones.Where((n) => n.Identifier == edicionId).FirstOrDefault();
+                Edicion matchedEdicion = AllEdiciones.Where((n) => n.Nombre == edicionId).FirstOrDefault();
 
                 // If edicion exists, delete it
                 if (matchedEdicion != null)
@@ -68,23 +73,29 @@ namespace VoleyPlaya.ViewModels
             {
                 string edicionId = query["saved"].ToString();
                 edicionId = Uri.UnescapeDataString(edicionId);
-                EdicionViewModel matchedEdicion = AllEdiciones.Where((n) => n.Identifier == edicionId).FirstOrDefault();
+                Edicion matchedEdicion = AllEdiciones.Where((n) => n.Nombre == edicionId).FirstOrDefault();
 
                 // If edicion is found, update it
                 if (matchedEdicion != null)
                 {
                     //matchedEdicion.ReloadAsync();
-                    AllEdiciones.Move(AllEdiciones.IndexOf(matchedEdicion), 0);
+                    //AllEdiciones.Move(AllEdiciones.IndexOf(matchedEdicion), 0);
                 }
                 // If edicion isn't found, it's new; add it.
                 else
                 {
-                    var jsonEdicion = _voleyPlayaService.GetEdicion(edicionId);
-                    JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
-                    var edicion = Edicion.FromJson(jsonNode);
-                    AllEdiciones.Insert(0, new EdicionViewModel(_voleyPlayaService, edicion));
+                    Edicion edicion = GetEdicion(edicionId);
+                    AllEdiciones.Insert(0, edicion);
                 }
             }
+        }
+
+        private Edicion GetEdicion(string edicionId)
+        {
+            var jsonEdicion = _voleyPlayaService.GetEdicion(edicionId);
+            JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
+            var edicion = Edicion.FromJson(jsonNode);
+            return edicion;
         }
     }
 }

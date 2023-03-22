@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace VoleyPlaya.Models
@@ -13,6 +16,15 @@ namespace VoleyPlaya.Models
         public int Local { get => _local; set => _local = value; }
         public int Visitante { get => _visitante; set => _visitante = value; }
 
+        internal static ResultadoParcial FromJson(JsonNode jsonNode)
+        {
+            ResultadoParcial resParcial = new ResultadoParcial()
+            {
+                Local = jsonNode["ResultadoLocal"]!.GetValue<int>(),
+                Visitante = jsonNode["ResultadoVisitante"]!.GetValue<int>()
+            };
+            return resParcial;
+        }
     }
     public class Resultado
     {
@@ -36,6 +48,17 @@ namespace VoleyPlaya.Models
         public ResultadoParcial Set1 { get => _set1; set { _set1 = value; UpdateResultado(); } }
         public ResultadoParcial Set2 { get => _set2; set { _set2 = value; UpdateResultado(); } }
         public ResultadoParcial Set3 { get => _set3; set { _set3 = value; UpdateResultado(); } }
+
+        internal static Resultado FromJson(JsonArray jsonParciales)
+        {
+            Resultado resultado = new Resultado()
+            {
+                Set1 = ResultadoParcial.FromJson(jsonParciales[0]),
+                Set2 = ResultadoParcial.FromJson(jsonParciales[1]),
+                Set3 = ResultadoParcial.FromJson(jsonParciales[2]),
+            };
+            return resultado;
+        }
 
         private void UpdateResultado()
         {

@@ -110,8 +110,12 @@ namespace VoleyPlaya.ViewModels
         {
             IsRefreshing = true;
             await Task.Delay(TimeSpan.FromSeconds(RefreshDuration));
+
+            await Edicion.GenerarPartidosAsync();
+
             string jsonString = JsonSerializer.Serialize(Edicion);
             await _voleyPlayaService.SaveEdicionAsync(jsonString);
+            _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
 
             RefreshProperties();
             IsRefreshing = false;
@@ -154,14 +158,16 @@ namespace VoleyPlaya.ViewModels
             if (query.ContainsKey("load"))
             {
                 string name = Uri.UnescapeDataString(query["load"].ToString());
-                var jsonEdicion = _voleyPlayaService.GetEdicion(name);
-                JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
-                Edicion = Edicion.FromJson(jsonNode);
-                _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
-                _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
-                _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
-                _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
-                OnPropertyChanged();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    Edicion = GetEdicion(name);
+                    _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
+                    _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
+                    _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+                    _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
+                    RefreshProperties();
+                    OnPropertyChanged();
+                }
             }
         }
         public async Task ReloadAsync()
@@ -169,7 +175,11 @@ namespace VoleyPlaya.ViewModels
             var jsonEdicion = await _voleyPlayaService.GetEdicionAsync(Edicion.Nombre);
             JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
             Edicion = Edicion.FromJson(jsonNode);
-            OnPropertyChanged();
+            _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
+            _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
+            _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+            _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
+            RefreshProperties(); OnPropertyChanged();
         }
 
         private void RefreshProperties()
@@ -184,7 +194,13 @@ namespace VoleyPlaya.ViewModels
         }
         public async Task UpdatePartidos()
         {
+            await Save();
             await Edicion.UpdateClasificacion();
+            _equipos = new ObservableCollection<Equipo>(Edicion.Equipos);
+            _equiposOrdered = new ObservableCollection<Equipo>(_equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente));
+            _partidos = new ObservableCollection<Partido>(Edicion.Partidos);
+            _fechasJornadas = new ObservableCollection<FechaJornada>(Edicion.FechasJornadas);
+            RefreshProperties(); 
         }
         async Task RefreshItemsAsync()
         {
@@ -193,6 +209,12 @@ namespace VoleyPlaya.ViewModels
             RefreshProperties();
             IsRefreshing = false;
         }
-
+        private Edicion GetEdicion(string edicionId)
+        {
+            var jsonEdicion = _voleyPlayaService.GetEdicion(edicionId);
+            JsonNode jsonNode = JsonNode.Parse(jsonEdicion)!;
+            var edicion = Edicion.FromJson(jsonNode);
+            return edicion;
+        }
     }
 }
