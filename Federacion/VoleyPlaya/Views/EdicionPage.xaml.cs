@@ -19,4 +19,8 @@ public partial class EdicionPage : ContentPage
     {
         (BindingContext as EdicionViewModel).AddJornadas();
     }
+    private void ResultadoParcial_Changed(object sender, TextChangedEventArgs e)
+    {
+        (BindingContext as EdicionViewModel).UpdatePartidos();
+    }
 }

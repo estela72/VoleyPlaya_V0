@@ -25,7 +25,10 @@ namespace VoleyPlaya.Repository.Repositories
                 string genero,
                 string grupo,
                 int numEquipos,
-                int numJornadas);
+                int numJornadas,
+                string lugar
+            );
+
         Task<IEnumerable<Edicion>> GetFullAsync();
         Task<bool> Remove(string edicionName);
     }
@@ -40,7 +43,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
-            string genero, string grupo, int numEquipos, int numJornadas)
+            string genero, string grupo, int numEquipos, int numJornadas, string lugar)
         {
             var dto = await FindAsync(c => c.Temporada.Id.Equals(temporadaDto.Id)
                 && c.Competicion.Id.Equals(competicionDto.Id)
@@ -54,7 +57,8 @@ namespace VoleyPlaya.Repository.Repositories
                     Genero = genero,
                     Grupo = grupo,
                     NumEquipos = numEquipos,
-                    NumJornadas = numJornadas
+                    NumJornadas = numJornadas,
+                    Lugar = lugar
                 });
             else
             {
@@ -62,6 +66,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.Grupo = grupo;
                 dto.NumEquipos = numEquipos;
                 dto.NumJornadas = numJornadas;
+                dto.Lugar = lugar;
                 dto = await UpdateAsync(dto);
             }
             return dto;

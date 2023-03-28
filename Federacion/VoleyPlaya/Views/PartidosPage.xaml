@@ -84,7 +84,7 @@
                 <Border Padding="10,10,10,10" Margin="5">
                     <Grid ColumnDefinitions="*" ColumnSpacing="4">
                         <Button Text="Actualizar partidos y clasificación"
-                                Command="{Binding UpdatePartidosCommand}"/>
+                                Command="{Binding SaveCommand}"/>
                     </Grid>
                 </Border>
                 <Border Padding="10,10,10,10" Margin="5">

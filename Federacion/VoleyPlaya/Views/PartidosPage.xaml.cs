@@ -12,7 +12,6 @@ public partial class PartidosPage : ContentPage
 
     private void ResultadoParcial_Changed(object sender, TextChangedEventArgs e)
     {
-        //if (((Entry)sender).BindingContext is ICompeticionVM partido)
-        //    partido.OnResultadoParcialChanged();
+        (BindingContext as EdicionViewModel).UpdatePartidos();
     }
 }

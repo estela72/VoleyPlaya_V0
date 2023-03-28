@@ -4,12 +4,6 @@
         <name>General.CrossCutting.Lib</name>
     </assembly>
     <members>
-        <member name="M:General.CrossCutting.Lib.BaseRepository`1.GetAllAsync">
-            <inheritdoc/>
-        </member>
-        <member name="M:General.CrossCutting.Lib.BaseRepository`1.DeleteAsync(System.Int32)">
-            <inheritdoc/>
-        </member>
         <member name="P:General.CrossCutting.Lib.UnitOfWork.Configuration">
             <summary>
             Recibe la configuración del proyecto

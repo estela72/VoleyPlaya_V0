@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace VoleyPlaya.Repository.Models
 {
@@ -17,6 +18,7 @@ namespace VoleyPlaya.Repository.Models
         string? _grupo;
         int _numEquipos;
         int _numJornadas;
+        string? _lugar;
 
         HashSet<Equipo> _equipos;
         HashSet<Partido> _partidos;
@@ -43,6 +45,7 @@ namespace VoleyPlaya.Repository.Models
         public string? Grupo { get => _grupo; set => _grupo = value; }
         public int NumEquipos { get => _numEquipos; set => _numEquipos = value; }
         public int NumJornadas { get => _numJornadas; set => _numJornadas = value; }
+        public string? Lugar { get => _lugar; set => _lugar = value; }
         public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
         public HashSet<Partido> Partidos {get => _partidos; set => _partidos= value;}
         public HashSet<Jornada> Jornadas{ get => _jornadas; set => _jornadas = value; }
@@ -54,12 +57,19 @@ namespace VoleyPlaya.Repository.Models
 
         internal void AddPartido(Partido partidoDto)
         {
-            _partidos.Add(partidoDto);
+            var dto = _partidos.First(p => p.Jornada == partidoDto.Jornada && p.NumPartido == partidoDto.NumPartido);
+            if(dto == null)
+                _partidos.Add(partidoDto);
+            else
+            {
+                dto = partidoDto;
+            }
         }
 
         internal void AddJornada(Jornada jornadaDto)
         {
-            _jornadas.Add(jornadaDto);
+            if (!_jornadas.Contains(jornadaDto))
+                _jornadas.Add(jornadaDto);
         }
     }
 }

@@ -8,7 +8,6 @@ using VoleyPlaya.Models;
 using System.Text.Json.Nodes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.UI.WebUI;
 
 namespace VoleyPlaya.ViewModels
 {
@@ -29,7 +28,6 @@ namespace VoleyPlaya.ViewModels
         }
         private async Task InicializaEdiciones()
         { 
-            //AllEdiciones = new ObservableCollection<ViewModels.EdicionViewModel>(Models.EdicionWrapper.LoadAll().Select(n => new EdicionViewModel(n)));
             var jsonEdiciones = await _voleyPlayaService.GetAllEdicionesAsync();
             var ediciones = FromJson(jsonEdiciones);
             _allEdiciones = new ObservableCollection<Edicion>(ediciones.ToList());
@@ -74,12 +72,14 @@ namespace VoleyPlaya.ViewModels
                 string edicionId = query["saved"].ToString();
                 edicionId = Uri.UnescapeDataString(edicionId);
                 Edicion matchedEdicion = AllEdiciones.Where((n) => n.Nombre == edicionId).FirstOrDefault();
+                EdicionViewModel edicionViewModel = new EdicionViewModel(_voleyPlayaService, matchedEdicion);
 
                 // If edicion is found, update it
                 if (matchedEdicion != null)
                 {
-                    //matchedEdicion.ReloadAsync();
+                    edicionViewModel.ReloadAsync();
                     //AllEdiciones.Move(AllEdiciones.IndexOf(matchedEdicion), 0);
+                    AllEdiciones.Insert(0, matchedEdicion);
                 }
                 // If edicion isn't found, it's new; add it.
                 else

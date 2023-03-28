@@ -26,7 +26,6 @@ namespace VoleyPlaya.Repository.Services
         public async Task<string> GetAllEdicionesAsync()
         {
             var dto = await _voleyPlayaUoW.EdicionRepository.GetFullAsync();
-            //JsonSerializerOptions opt = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve };
             var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(),Options);
             return json;
         }
@@ -55,6 +54,7 @@ namespace VoleyPlaya.Repository.Services
             string grupo = edicionNode["Grupo"]!.GetValue<string>();
             int numEquipos = edicionNode["NumEquipos"]!.GetValue<int>();
             int numJornadas = edicionNode["NumJornadas"]!.GetValue<int>();
+            string lugar = edicionNode["Lugar"]!.GetValue<string>();
 
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
                 dtos.temporadaDto,
@@ -63,7 +63,8 @@ namespace VoleyPlaya.Repository.Services
                 genero,
                 grupo,
                 numEquipos,
-                numJornadas
+                numJornadas,
+                lugar
                 );
             await _voleyPlayaUoW.SaveMauiChangesAsync();
 
@@ -153,12 +154,11 @@ namespace VoleyPlaya.Repository.Services
             JsonArray jornadas = edicionNode["FechasJornadas"]!.AsArray()!;
             foreach(var jornada in jornadas)
             {
-                Jornada jornadaDto = new Jornada()
-                {
-                    Numero = jornada["Jornada"]!.GetValue<int>(),
-                    Fecha = jornada["Fecha"]!.GetValue<DateTime>()
-                };
-                edicionDto.AddJornada(jornadaDto);
+                var numero = jornada["Jornada"]!.GetValue<int>();
+                var fecha = jornada["Fecha"]!.GetValue<DateTime>();
+                var nombre = "Jornada " + jornada["Jornada"]!.GetValue<int>().ToString();
+                var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, numero, fecha, nombre);
+                edicionDto!.AddJornada(jornadaDto);
             }
         }
     }

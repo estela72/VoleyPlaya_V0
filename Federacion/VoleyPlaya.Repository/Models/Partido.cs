@@ -46,6 +46,21 @@ namespace VoleyPlaya.Repository.Models
         public string? Pista { get => _pista; set => _pista = value; }
         public List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
 
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string? ToString()
+        {
+            return base.ToString();
+        }
+
         internal void AddEquipo(string v, Equipo equipoDto)
         {
             if (v.Equals("local"))
@@ -58,9 +73,30 @@ namespace VoleyPlaya.Repository.Models
         {
             ResultadoLocal = resLocal;
             ResultadoVisitante = resVisitante;
-            Parciales.Add(new ParcialPartido { Partido = this, ResultadoLocal = set1Local, ResultadoVisitante = set1Visitante });
-            Parciales.Add(new ParcialPartido { Partido = this, ResultadoLocal = set2Local, ResultadoVisitante = set2Visitante });
-            Parciales.Add(new ParcialPartido { Partido = this, ResultadoLocal = set3Local, ResultadoVisitante = set3Visitante });
+            var set1 = Parciales.Where(p => p.Nombre.Equals("Set1"));
+            if (set1 == null || set1.Count()==0)
+                Parciales.Add(new ParcialPartido { Partido = this, Nombre = "Set1", ResultadoLocal = set1Local, ResultadoVisitante = set1Visitante });
+            else
+            {
+                set1.First().ResultadoLocal = set1Local;
+                set1.First().ResultadoVisitante = set1Visitante;
+            }
+            var set2 = Parciales.Where(p => p.Nombre.Equals("Set2"));
+            if (set2 == null || set2.Count()==0)
+                Parciales.Add(new ParcialPartido { Partido = this, Nombre = "Set2", ResultadoLocal = set2Local, ResultadoVisitante = set2Visitante });
+            else
+            {
+                set2.First().ResultadoLocal = set2Local;
+                set2.First().ResultadoVisitante = set2Visitante;
+            }
+            var set3 = Parciales.Where(p => p.Nombre.Equals("Set3"));
+            if (set3 == null || set3.Count() == 0)
+                Parciales.Add(new ParcialPartido { Partido = this, Nombre = "Set3", ResultadoLocal = set3Local, ResultadoVisitante = set3Visitante });
+            else
+            {
+                set3.First().ResultadoLocal = set3Local;
+                set3.First().ResultadoVisitante = set3Visitante;
+            }
         }
     }
 }
