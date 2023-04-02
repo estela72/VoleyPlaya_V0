@@ -1,14 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Nodes;
 
 using VoleyPlaya.Repository.Models;
 using VoleyPlaya.Repository.Services;
 
-namespace VoleyPlaya.Models
+namespace VoleyPlaya.Domain.Models
 {
     public class Edicion
     {
+        int _id;
         string _temporada;
         string _nombre;
         string _competicion;
@@ -22,13 +25,16 @@ namespace VoleyPlaya.Models
         private List<FechaJornada> _fechasJornadas;
         DateTime _fecha;
         string _lugar;
+        public int Id { get { return _id; } set { _id = value; } }
         public string Temporada { get { return _temporada; } set { _temporada = value; } }
         public string Nombre { get { return _nombre; } set { _nombre = value; } }
         public string Competicion { get { return _competicion; } set { _competicion = value; } }
         public EnumCategorias Categoria { get { return _categoria; } set { _categoria = value; } }
         public EnumGeneros Genero { get { return _genero; } set { _genero = value; } }
         public string Grupo { get { return _grupo; } set { _grupo = value; } }
+        [Display(Name ="Nº Equipos")]
         public int NumEquipos { get { return _numEquipos; } set { _numEquipos = value; } }
+        [Display(Name = "Nº Jornadas")]
         public int NumJornadas { get { return _numJornadas; } set { _numJornadas = value; } }
         public string Lugar { get { return _lugar; } set { _lugar = value; } }
         public List<Equipo> Equipos { get => _equipos; set => _equipos = value; }
@@ -55,7 +61,7 @@ namespace VoleyPlaya.Models
             _fecha = DateTime.Now;
             _lugar = string.Empty;
         }
-        internal async Task GenerarPartidosAsync()
+        public async Task GenerarPartidosAsync()
         {
             var tabla = await LoadCalendario(_numEquipos, _numJornadas);
             if (tabla == null) return;
@@ -63,14 +69,14 @@ namespace VoleyPlaya.Models
             foreach (var jornada in tabla.Jornadas)
             {
                 var fecha = _fechasJornadas.Where(j => j.Jornada == jornada.Jornada).First().Fecha;
+                fecha = new DateTime(fecha.Year, fecha.Month, fecha.Day, 10, 0, 0);
                 foreach (var partido in jornada.Partidos)
                 {
                     Partido nuevoPartido = new()
                     {
                         Jornada = jornada.Jornada,
                         NumPartido = numPartido++,
-                        Fecha = fecha,
-                        Hora = new TimeSpan(10, 0, 0),
+                        FechaHora = fecha,
                         Pista = string.Empty,
                         Local = _equipos.Where(e => e.Posicion == partido.Local).First().Nombre,
                         Visitante = _equipos.Where(e => e.Posicion == partido.Visitante).First().Nombre,
@@ -85,12 +91,12 @@ namespace VoleyPlaya.Models
         {
             try
             {
-                using var stream = await FileSystem.OpenAppPackageFileAsync("calendarios.json");
+                using var stream = File.Open("calendarios.json",FileMode.Open);
                 using var reader = new StreamReader(stream);
 
                 var json = reader.ReadToEnd();
                 RootTablaCalendario calendarios = JsonConvert.DeserializeObject<RootTablaCalendario>(json);
-                var calendario = calendarios.calendarios.Where(c => c.NumEquipos == NumEquipos && c.NumJornadas == numJornadas).First();
+                var calendario = calendarios!.calendarios.Where(c => c.NumEquipos == NumEquipos && c.NumJornadas == numJornadas).First();
                 return calendario;
             }
             catch 
@@ -114,9 +120,10 @@ namespace VoleyPlaya.Models
             }
         }
 
-        internal static Edicion FromJson(JsonNode jsonEdicion)
+        public static Edicion FromJson(JsonNode jsonEdicion)
         {
             Edicion edicion = new Edicion();
+            edicion.Id = jsonEdicion["Id"].GetValue<int>();
             edicion.Temporada = NombreFromJson(jsonEdicion["Temporada"]);
             edicion.Competicion = NombreFromJson(jsonEdicion["Competicion"]);
             Enum.TryParse(NombreFromJson(jsonEdicion["Categoria"]), out EnumCategorias categoria);
@@ -158,6 +165,24 @@ namespace VoleyPlaya.Models
             foreach (var jornada in jsonJornadas)
                 jornadas.Add(FechaJornada.FromJson(jornada));
             return jornadas;
+        }
+
+        public void UpdateEquipos(int numEquipos)
+        {
+            for (int i = Equipos.Count; i < numEquipos; i++)
+                Equipos.Add(new Equipo(i + 1, string.Empty));
+            if (Equipos.Count > numEquipos)
+                Equipos.RemoveRange(numEquipos, Equipos.Count - numEquipos);
+            NumEquipos = numEquipos;
+        }
+
+        public void UpdateJornadas(int numJornadas)
+        {
+            for (int i = FechasJornadas.Count; i < numJornadas; i++)
+                FechasJornadas.Add(new FechaJornada(i + 1));
+            if (FechasJornadas.Count > numJornadas)
+                FechasJornadas.RemoveRange(numJornadas, FechasJornadas.Count - numJornadas);
+            NumJornadas = numJornadas;
         }
     }
 }

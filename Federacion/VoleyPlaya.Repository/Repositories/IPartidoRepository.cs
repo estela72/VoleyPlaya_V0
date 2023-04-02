@@ -18,7 +18,7 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IPartidoRepository:IRepository<Partido>
     {
         Task<Partido> CheckAddUpdate(Edicion edicionDto, Equipo localDto, Equipo visitanteDto, 
-            int jornada, int numPartido, DateTime fecha, TimeSpan hora, string pista);
+            int jornada, int numPartido, DateTime fechaHora, string pista);
 
     }
     public class PartidoRepository : Repository<Partido>, IPartidoRepository
@@ -32,7 +32,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Partido> CheckAddUpdate(Edicion edicionDto, Equipo localDto, Equipo visitanteDto, 
-            int jornada, int numPartido, DateTime fecha, TimeSpan hora, string pista)
+            int jornada, int numPartido, DateTime fechaHora, string pista)
         {
             var dto = await FindAsync(c => c.Jornada.Equals(jornada)
                 && c.NumPartido.Equals(numPartido));
@@ -41,14 +41,12 @@ namespace VoleyPlaya.Repository.Repositories
                 {
                     Jornada = jornada,
                     NumPartido = numPartido,
-                    Fecha = fecha,
-                    Hora = hora,
+                    FechaHora = fechaHora,
                     Pista = pista
                 });
             else
             {
-                dto.Fecha = fecha;
-                dto.Hora = hora;
+                dto.FechaHora = fechaHora;
                 dto.Pista = pista;
                 return await UpdateAsync(dto);
             }

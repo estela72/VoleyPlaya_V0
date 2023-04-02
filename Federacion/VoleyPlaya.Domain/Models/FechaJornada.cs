@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace VoleyPlaya.Models
+namespace VoleyPlaya.Domain.Models
 {
     public class FechaJornada
     {

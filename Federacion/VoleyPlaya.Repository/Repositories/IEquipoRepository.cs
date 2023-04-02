@@ -19,7 +19,7 @@ namespace VoleyPlaya.Repository.Repositories
     {
         Task<Equipo> CheckAddUpdate(Edicion edicionDto, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
                     double coeficiente, int puntos);
-
+        Task RemoveEquipos(int numEquipos, Edicion edicion);
     }
     public class EquipoRepository : Repository<Equipo>, IEquipoRepository
     {
@@ -35,7 +35,7 @@ namespace VoleyPlaya.Repository.Repositories
             int puntosFavor, int puntosContra, double coeficiente, int puntos)
         {
             if (nombre.Equals(string.Empty)) return null;
-            var dto = await FindAsync(c => c.Nombre.Equals(nombre) && c.Edicion.Id.Equals(edicionDto.Id));
+            var dto = await FindAsync(c => c.OrdenCalendario.Equals(posicion) && c.Edicion.Id.Equals(edicionDto.Id));
             if (dto == null)
                 return await AddAsyn(new Equipo(edicionDto)
                 { 
@@ -51,6 +51,7 @@ namespace VoleyPlaya.Repository.Repositories
                 });
             else
             {
+                dto.Nombre = nombre;
                 dto.Perdidos = perdidos;
                 dto.Coeficiente = coeficiente;
                 dto.Ganados = ganados;
@@ -58,8 +59,21 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.Puntos = puntos;
                 dto.PuntosContra = puntosContra;
                 dto.PuntosFavor = puntosFavor;
-                dto.OrdenCalendario = posicion;
                 return await UpdateAsync(dto);
+            }
+        }
+
+        public async Task RemoveEquipos(int numEquipos, Edicion edicion)
+        {
+            var actuales = await FindAllAsync(e => e.Edicion.Nombre.Equals(edicion.Nombre));
+            var borrar = edicion.Equipos.Count - numEquipos;
+            var i = edicion.Equipos.Count - 1;
+            var count = 0;
+            while (count != borrar)
+            {
+                await DeleteAsync(actuales.Last().Id);
+                i--;
+                count++;
             }
         }
     }

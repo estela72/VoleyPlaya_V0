@@ -31,6 +31,8 @@ namespace VoleyPlaya.Repository.Repositories
 
         Task<IEnumerable<Edicion>> GetFullAsync();
         Task<bool> Remove(string edicionName);
+
+        Task<bool> Remove(int id);
     }
     public class EdicionRepository : Repository<Edicion>, IEdicionRepository
     {
@@ -92,6 +94,19 @@ namespace VoleyPlaya.Repository.Repositories
             if (dto != null)
             {
                 //dto.Partidos.ToList().RemoveAll();
+                await DeleteAsync(dto.Id);
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> Remove(int id)
+        {
+            var dto = await GetByIdAsync(id);
+            if (dto != null)
+            {
+                dto.Equipos.ToList().Clear();
+                dto.Partidos.ToList().Clear();
+                dto.Jornadas.ToList().Clear();
                 await DeleteAsync(dto.Id);
                 return true;
             }

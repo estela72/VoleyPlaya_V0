@@ -20,19 +20,9 @@ namespace VoleyPlaya.Repository.Models
         public int EdicionId { get => _edicionId; set => _edicionId = value; }
         public Edicion Edicion { get; set; }
 
-        public override bool Equals(object obj)
+        public Jornada()
         {
-            return base.Equals(obj);
-        }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string? ToString()
-        {
-            return base.ToString();
         }
     }
 }

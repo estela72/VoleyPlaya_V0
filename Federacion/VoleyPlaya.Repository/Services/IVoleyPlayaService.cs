@@ -9,9 +9,12 @@ namespace VoleyPlaya.Repository.Services
     public interface IVoleyPlayaService
     {
         Task<bool> SaveEdicionAsync(string json);
-        Task<bool> DeleteEdicionAsync(string json);
+        Task<bool> DeleteEdicionAsync(string nombre);
+        Task<bool> DeleteEdicionAsync(int id);
         Task<string> GetAllEdicionesAsync();
-        Task<string> GetEdicionAsync(string json);
-        string GetEdicion(string json);
+        Task<string> GetEdicionAsync(string name);
+        string GetEdicion(string name);
+        Task<string> GetEdicionAsync(int id);
+
     }
 }

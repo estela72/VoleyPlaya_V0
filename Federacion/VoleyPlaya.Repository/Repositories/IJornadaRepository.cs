@@ -16,6 +16,7 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IJornadaRepository : IRepository<Jornada>
     {
         Task<Jornada> CheckAddUpdate(Edicion edicionDto, int numero, DateTime fecha, string nombre);
+        Task RemoveJornadas(int count, Edicion edicion);
     }
     public class JornadaRepository : Repository<Jornada>, IJornadaRepository
     {
@@ -44,6 +45,20 @@ namespace VoleyPlaya.Repository.Repositories
                 await UpdateAsync(dto);
             }
             return dto;
+        }
+
+        public async Task RemoveJornadas(int numJornadas, Edicion edicion)
+        {
+            var actuales = await FindAllAsync(e => e.Edicion.Nombre.Equals(edicion.Nombre));
+            var borrar = edicion.Jornadas.Count - numJornadas;
+            var i = edicion.Jornadas.Count - 1;
+            var count = 0;
+            while (count != borrar)
+            {
+                await DeleteAsync(actuales.Last().Id);
+                i--;
+                count++;
+            }
         }
     }
 }

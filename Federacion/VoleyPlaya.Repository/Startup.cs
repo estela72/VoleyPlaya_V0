@@ -37,14 +37,14 @@ namespace VoleyPlaya.Repository
             // configure DI for Services
             services.AddScoped<IVoleyPlayaService, VoleyPlayaService>();
 
-            //// Update Databases when app started
-            //using (ServiceProvider serviceProvider = services.BuildServiceProvider())
-            //{
-            //    VoleyPlayaDbContext dbContext = serviceProvider.GetRequiredService<VoleyPlayaDbContext>();
-            //    //dbContext.Database.EnsureDeleted();
-            //    //dbContext.Database.EnsureCreated();
-            //    //dbContext.Database.Migrate();
-            //}
+            // Update Databases when app started
+            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+            {
+                VoleyPlayaDbContext dbContext = serviceProvider.GetRequiredService<VoleyPlayaDbContext>();
+                //dbContext.Database.EnsureDeleted();
+                //dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
+            }
         }
     }
 }

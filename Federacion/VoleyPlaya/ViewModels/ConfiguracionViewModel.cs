@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using VoleyPlaya.Models;
+using Models;
 
 namespace VoleyPlaya.ViewModels
 {

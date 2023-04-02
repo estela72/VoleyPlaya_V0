@@ -18,8 +18,7 @@ namespace VoleyPlaya.Repository.Models
         int? _resultadoVisitante;
         int? _jornada;
         int? _numPartido;
-        DateTime? _fecha;
-        TimeSpan? _hora;
+        DateTime? _fechaHora;
         string? _pista;
 
         ICollection<ParcialPartido> _parciales;
@@ -41,8 +40,7 @@ namespace VoleyPlaya.Repository.Models
         public int? ResultadoVisitante { get => _resultadoVisitante; set => _resultadoVisitante = value; }
         public int? Jornada { get => _jornada; set => _jornada = value; }
         public int? NumPartido { get => _numPartido; set => _numPartido = value; }
-        public DateTime? Fecha { get => _fecha; set => _fecha = value; }
-        public TimeSpan? Hora { get => _hora; set => _hora = value; }
+        public DateTime? FechaHora { get => _fechaHora; set => _fechaHora = value; }
         public string? Pista { get => _pista; set => _pista = value; }
         public List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
 

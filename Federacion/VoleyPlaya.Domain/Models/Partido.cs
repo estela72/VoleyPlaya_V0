@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace VoleyPlaya.Models
-{
+namespace VoleyPlaya.Domain.Models
+{ 
     public class Partido
     {
+        int _id;
         int _jornada;
         int _numPartido;
-        DateTime _fecha;
-        TimeSpan _hora;
+        DateTime _fechaHora;
         string _pista;
         string _local;
         string _visitante;
@@ -22,11 +23,12 @@ namespace VoleyPlaya.Models
         {
             _resultado = new Resultado();
         }
-
+        public int Id { get => _id; set => _id = value; }
         public int Jornada { get => _jornada; set => _jornada = value; }
         public int NumPartido { get => _numPartido; set => _numPartido = value; }
-        public DateTime Fecha { get => _fecha; set => _fecha = value; }
-        public TimeSpan Hora { get => _hora; set => _hora = value; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)] 
+        public DateTime FechaHora { get => _fechaHora; set => _fechaHora = value; }
         public string Pista { get => _pista; set => _pista = value; }
         public string Local { get => _local; set => _local = value; }
         public string Visitante { get => _visitante; set => _visitante = value; }
@@ -34,13 +36,13 @@ namespace VoleyPlaya.Models
 
         internal static Partido FromJson(JsonNode jsonPartido)
         {
-            string horaDT = jsonPartido["Hora"]!.GetValue<string>();
-            string[] h = horaDT.Split(":");
-            TimeSpan hora = new TimeSpan(Convert.ToInt32(h[0]), Convert.ToInt32(h[1]), Convert.ToInt32(h[2]));
+            //string horaDT = jsonPartido["Hora"]!.GetValue<string>();
+            //string[] h = horaDT.Split(":");
+            //TimeSpan hora = new TimeSpan(Convert.ToInt32(h[0]), Convert.ToInt32(h[1]), Convert.ToInt32(h[2]));
             Partido partido = new()
             {
-                Fecha = jsonPartido["Fecha"]!.GetValue<DateTime>(),
-                Hora = hora,
+                Id = jsonPartido["Id"]!.GetValue<int>(),
+                FechaHora = jsonPartido["FechaHora"]!.GetValue<DateTime>(),
                 Jornada = jsonPartido["Jornada"]!.GetValue<int>(),
                 Local = EquipoFromJson(jsonPartido["Local"]),
                 NumPartido = jsonPartido["NumPartido"]!.GetValue<int>(),

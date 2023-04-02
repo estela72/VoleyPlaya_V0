@@ -22,7 +22,12 @@ namespace VoleyPlaya.Repository.Services
         {
             return await _voleyPlayaUoW.EdicionRepository.Remove(edicionName);
         }
-
+        public async Task<bool> DeleteEdicionAsync(int id)
+        {
+            bool res = await _voleyPlayaUoW.EdicionRepository.Remove(id);
+            await _voleyPlayaUoW.SaveMauiChangesAsync();
+            return res;
+        }
         public async Task<string> GetAllEdicionesAsync()
         {
             var dto = await _voleyPlayaUoW.EdicionRepository.GetFullAsync();
@@ -36,6 +41,13 @@ namespace VoleyPlaya.Repository.Services
             var json = JsonSerializer.Serialize<Edicion>(dto, Options);
             return json;
         }
+        public async Task<string> GetEdicionAsync(int id)
+        {
+            var dto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
+            var json = JsonSerializer.Serialize<Edicion>(dto, Options);
+            return json;
+        }
+
         public string GetEdicion(string edicionName)
         {
             var dto = _voleyPlayaUoW.EdicionRepository.GetByName(edicionName);
@@ -56,7 +68,7 @@ namespace VoleyPlaya.Repository.Services
             int numJornadas = edicionNode["NumJornadas"]!.GetValue<int>();
             string lugar = edicionNode["Lugar"]!.GetValue<string>();
 
-            var edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
+            Edicion edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
                 dtos.temporadaDto,
                 dtos.competicionDto,
                 dtos.categoriaDto,
@@ -83,6 +95,11 @@ namespace VoleyPlaya.Repository.Services
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
                 var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicionDto, posicion, nombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
                     coeficiente, puntos);
+            }
+            // borrar equipos si es necesario
+            if (numEquipos < edicionDto.Equipos.Count)
+            {
+                await _voleyPlayaUoW.EquipoRepository.RemoveEquipos(numEquipos, edicionDto);
             }
             await _voleyPlayaUoW.SaveMauiChangesAsync();
 
@@ -120,17 +137,14 @@ namespace VoleyPlaya.Repository.Services
             {
                 int jornada = partido["Jornada"]!.GetValue<int>()!;
                 int numPartido = partido["NumPartido"]!.GetValue<int>()!;
-                DateTime fecha = partido["Fecha"]!.GetValue<DateTime>()!;
-                string horaDT = partido["Hora"]!.GetValue<string>();
-                string[] val = horaDT.Split(':');
-                TimeSpan hora = new TimeSpan(int.Parse(val[0]), int.Parse(val[1]), int.Parse(val[2]));
+                DateTime fechaHora = partido["FechaHora"]!.GetValue<DateTime>()!;
                 string pista = partido["Pista"]!.GetValue<string>();
                 string local = partido["Local"]!.GetValue<string>();
                 string visitante = partido["Visitante"]!.GetValue<string>();
                 var localDto = await _voleyPlayaUoW!.EquipoRepository.GetByNameAsync(local);
                 var visitanteDto = await _voleyPlayaUoW.EquipoRepository.GetByNameAsync(visitante);
 
-                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(edicionDto, localDto, visitanteDto, jornada, numPartido, fecha, hora, pista);
+                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(edicionDto, localDto, visitanteDto, jornada, numPartido, fechaHora, pista);
 
                 JsonObject resultado = partido["Resultado"]!.AsObject()!;
                 int resLocal = resultado["Local"]!.GetValue<int>()!;
@@ -159,6 +173,11 @@ namespace VoleyPlaya.Repository.Services
                 var nombre = "Jornada " + jornada["Jornada"]!.GetValue<int>().ToString();
                 var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, numero, fecha, nombre);
                 edicionDto!.AddJornada(jornadaDto);
+            }
+            // borrar jornadas si es necesario
+            if (jornadas.Count < edicionDto.Jornadas.Count)
+            {
+                await _voleyPlayaUoW.JornadaRepository.RemoveJornadas(jornadas.Count, edicionDto);
             }
         }
     }

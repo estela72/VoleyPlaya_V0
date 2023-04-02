@@ -27,7 +27,7 @@ namespace VoleyPlaya.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connString = _configuration.GetRequiredSection("ConnectionStrings:DatabaseConnection").Value;
+            string connString = _configuration.GetConnectionString("DatabaseConnection");
             optionsBuilder
                 .EnableSensitiveDataLogging()
                 .UseSqlServer(connString);
@@ -84,7 +84,8 @@ namespace VoleyPlaya.Repository
                 entity.HasOne(d => d.Edicion)
                     .WithMany(p => p.Equipos)
                     .HasForeignKey("EdicionId")
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    //.OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.ClientCascade)
                     .HasConstraintName("FK_dbo.Equipo_dbo.Edicion_Id");
             });
             modelBuilder.Entity<Edicion>(entity =>
@@ -111,10 +112,15 @@ namespace VoleyPlaya.Repository
                   .HasForeignKey("CategoriaId")
                   .OnDelete(DeleteBehavior.ClientSetNull)
                   .HasConstraintName("FK_dbo.EdicionCategoria_Id");
+                entity.Navigation(e => e.Temporada).AutoInclude();
+                entity.Navigation(e => e.Competicion).AutoInclude();
+                entity.Navigation(e => e.Categoria).AutoInclude();
+                entity.Navigation(e => e.Jornadas).AutoInclude();
+                entity.Navigation(e => e.Equipos).AutoInclude();
+                entity.Navigation(e => e.Partidos).AutoInclude();
             });
             modelBuilder.Entity<Jornada>(entity =>
             {
-                entity.HasKey(e => new { e.EdicionId, e.Numero });
                 entity.HasIndex(e => new { e.EdicionId, e.Numero })
                     .HasDatabaseName("IX_Jornada")
                     .IsUnique();
@@ -132,7 +138,8 @@ namespace VoleyPlaya.Repository
                 entity.HasOne(d => d.Edicion)
                       .WithMany(p => p.Partidos)
                       .HasForeignKey("PartidoId")
-                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      //.OnDelete(DeleteBehavior.ClientSetNull)
+                      .OnDelete(DeleteBehavior.ClientCascade)
                       .HasConstraintName("FK_dbo.PartidoEdicion_Id");
                 entity.HasOne(d => d.Local)
                       .WithMany(p => p.Locales)
@@ -144,6 +151,7 @@ namespace VoleyPlaya.Repository
                       .HasForeignKey("EquipoVisitanteId")
                       .OnDelete(DeleteBehavior.ClientSetNull)
                       .HasConstraintName("FK_dbo.PartidoVisitante_Id");
+                entity.Navigation(p => p.Parciales).AutoInclude();
             });
             modelBuilder.Entity<ParcialPartido>(entity =>
             {
@@ -158,7 +166,8 @@ namespace VoleyPlaya.Repository
                 entity.HasOne(d => d.Partido)
                       .WithMany(p => p.Parciales)
                       .HasForeignKey("PartidoId")
-                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      //.OnDelete(DeleteBehavior.ClientSetNull)
+                      .OnDelete(DeleteBehavior.ClientCascade)
                       .HasConstraintName("FK_dbo.ParcialPartido_Id");
             });
 
