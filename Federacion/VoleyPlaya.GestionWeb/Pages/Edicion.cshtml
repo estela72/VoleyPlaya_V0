@@ -1,0 +1,228 @@
+﻿@page "{handler?}"
+@model VoleyPlaya.GestionWeb.Pages.EdicionModel
+@{
+}
+@Html.AntiForgeryToken()
+<form method="post">
+    <div class="card">
+        <div class="card-header alert-info">Modificar Competición</div>
+        <div class="card-body">
+            <div class="row g-3 m-2">
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Temporada)
+                </div>
+                <div class="col">
+                    @Html.EditorFor(m=>Model.Edicion.Temporada)
+                </div>
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Lugar)
+                </div>
+                <div class="col">
+                    @Html.EditorFor(m=>Model.Edicion.Lugar)
+                </div>
+            </div>
+            <div class="row g-3 m-2">
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Competicion)
+                </div>
+                <div class="col">
+                    @Html.DropDownListFor(m=>Model.Edicion.Competicion, Model.Competiciones)
+                </div>
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Categoria)
+                </div>
+                <div class="col">
+                    @Html.DropDownListFor(m=>Model.Edicion.Categoria, Model.Categorias)
+                </div>
+            </div>
+            <div class="row g-3 m-2">
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Genero)
+                </div>
+                <div class="col">
+                    @Html.DropDownListFor(m=>Model.Edicion.Genero, Model.Generos)
+                </div>
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.Grupo)
+                </div>
+                <div class="col">
+                    @Html.EditorFor(m=>Model.Edicion.Grupo)
+                </div>
+            </div>
+            <div class="row g-3 m-2">
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.NumEquipos)
+                </div>
+                <div class="col">
+                    @Html.EditorFor(m=>Model.Edicion.NumEquipos)
+                </div>
+                <div class="col">
+                    @Html.DisplayNameFor(m=>Model.Edicion.NumJornadas)
+                </div>
+                <div class="col">
+                    @Html.EditorFor(m=>Model.Edicion.NumJornadas)
+                </div>
+            </div>
+            <div class="row g-2 m-2">
+                <div class="card col">
+                    <div class="card-header alert-success p-2">Equipos</div>
+                    <div class="card-body p-2">
+                        <table class="table" id="tableEquipos">
+                            <thead>
+                                <tr>
+                                    <td>@Html.DisplayNameFor(m=>Model.Edicion.Equipos.First().Posicion)</td>
+                                    <td>@Html.DisplayNameFor(m=>Model.Edicion.Equipos.First().Nombre)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i=0; i < Model.Edicion.Equipos.Count(); i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.EditorFor(modelItem => Model.Edicion.Equipos[@i].Posicion)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(modelItem => Model.Edicion.Equipos[@i].Nombre)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card col">
+                    <div class="card-header alert-success p-2">Jornadas</div>
+                    <div class="card-body p-2">
+                        <table class="table" id="tableJornadas">
+                            <thead>
+                                <tr>
+                                    <td>@Html.DisplayNameFor(m=>Model.Edicion.FechasJornadas.First().Jornada)</td>
+                                    <td>@Html.DisplayNameFor(m=>Model.Edicion.FechasJornadas.First().Fecha)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i=0; i < Model.Edicion.FechasJornadas.Count();i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.EditorFor(modelItem => Model.Edicion.FechasJornadas[@i].Jornada)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(modelItem => Model.Edicion.FechasJornadas[@i].Fecha)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#Edicion_NumEquipos").on("change", function () {
+                var num = $(this).val();
+                var id = @Model.Edicion.Id;
+                $.ajax({
+                    type: "POST",
+                    url: "/Edicion/UpdateEquipos",
+                    data: {id: id, numEquipos: num},
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    }, success: function (response) {
+                        FillTablaEquipos(response.equiActual, response.equiNuevo);
+                    },
+                    failure: function (response) {
+                        alert("Failure");
+                    },
+                    error: function (response) {
+                        alert("Error");
+                    }
+                });
+            });
+        });
+        $(function () {
+            $("#Edicion_NumJornadas").on("change", function () {
+                var num = $(this).val();
+                var id = @Model.Edicion.Id;
+                $.ajax({
+                    type: "POST",
+                    url: "/Edicion/UpdateJornadas",
+                    data: { id: id, numJornadas: num },
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    }, success: function (response) {
+                        FillTablaJornadas(response.jorActual, response.jorNuevo);
+                    },
+                    failure: function (response) {
+                        alert("Failure");
+                    },
+                    error: function (response) {
+                        alert("Error");
+                    }
+                });
+            });
+        });
+        function FillTablaEquipos(actual, nuevo) {
+            // completar con tantos equipos como falten hasta llegar a nuevo
+            // o eliminar filas
+            var $t = $("#tableEquipos");
+            var $body = $t.find("tbody");
+            var $row = $t.find("tbody tr").last();
+            var fila = "<tr><td><input type='text' name='AddedPos[]' placeholder='Orden calendario'></td><td><input type='text' name='AddedEquipos[]' placeholder='Equipo'></td></tr>";            
+
+            var act = $('#tableEquipos>tbody>tr').length;
+            var filas = nuevo-act;
+            if (filas > 0) {
+                // añadir
+                for (var i=0; i < filas; i++) {
+                    $body.append(fila);
+                }
+            }
+            else {
+                // borrar
+                var count = act-nuevo;
+                for (var i = 0; i < count; i++) {
+                    $row.remove();
+                    $row = $t.find("tableEquipos tbody tr").last();
+                }
+            }
+        };
+        function FillTablaJornadas(actual, nuevo) {
+            // completar con tantas jornadas como falten hasta llegar a nuevo
+            // o eliminar filas
+            var $t = $("#tableJornadas");
+            var $body = $t.find("tbody");
+            var $row = $t.find("tbody tr").last();
+            var fila = "<tr><td><input type='text' name='AddedJor[]' placeholder='Nº jornada'></td><td><input type='date' name='AddedFechas[]' placeholder='Fecha'></td></tr>";
+
+            var act = $('#tableJornadas>tbody>tr').length;
+            var filas = nuevo - act;
+            if (filas > 0) {
+                // añadir
+                for (var i = 0; i < filas; i++) {
+                    $body.append(fila);
+                }
+            }
+            else {
+                // borrar
+                var count = act - nuevo;
+                for (var i = 0; i < count; i++) {
+                    $row.remove();
+                    $row = $t.find("tableJornadas tbody tr").last();
+                }
+            }
+        };
+    </script>
+}

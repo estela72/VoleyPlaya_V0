@@ -110,6 +110,15 @@ namespace VoleyPlaya.Repository.Services
             return true;
         }
 
+        public async Task UpdatePartidosAsync(string json)
+        {
+            JsonNode edicionNode = JsonNode.Parse(json)!;
+            var id = edicionNode["Id"].GetValue<int>();
+            Edicion edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
+            await UpdatePartidos(edicionNode, edicionDto);
+            await _voleyPlayaUoW.SaveMauiChangesAsync();
+        }
+
         public static string GetNombreEdicion(string temporada, string competicion, string categoria, string genero, string grupo)
         {
             return temporada + "_" + competicion + "_" + categoria + "_" + genero + "_" + grupo;
@@ -132,9 +141,30 @@ namespace VoleyPlaya.Repository.Services
 
         private async Task AfterSaveAsync(JsonNode edicionNode, Edicion edicionDto)
         {
+            await UpdatePartidos(edicionNode, edicionDto);
+
+            JsonArray jornadas = edicionNode["FechasJornadas"]!.AsArray()!;
+            foreach (var jornada in jornadas)
+            {
+                var numero = jornada["Jornada"]!.GetValue<int>();
+                var fecha = jornada["Fecha"]!.GetValue<DateTime>();
+                var nombre = "Jornada " + jornada["Jornada"]!.GetValue<int>().ToString();
+                var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, numero, fecha, nombre);
+                edicionDto!.AddJornada(jornadaDto);
+            }
+            // borrar jornadas si es necesario
+            if (jornadas.Count < edicionDto.Jornadas.Count)
+            {
+                await _voleyPlayaUoW.JornadaRepository.RemoveJornadas(jornadas.Count, edicionDto);
+            }
+        }
+
+        private async Task UpdatePartidos(JsonNode edicionNode, Edicion edicionDto)
+        {
             JsonArray partidos = edicionNode["Partidos"]!.AsArray();
             foreach (var partido in partidos)
             {
+                var id = partido["Id"]!.GetValue<int>();
                 int jornada = partido["Jornada"]!.GetValue<int>()!;
                 int numPartido = partido["NumPartido"]!.GetValue<int>()!;
                 DateTime fechaHora = partido["FechaHora"]!.GetValue<DateTime>()!;
@@ -144,7 +174,7 @@ namespace VoleyPlaya.Repository.Services
                 var localDto = await _voleyPlayaUoW!.EquipoRepository.GetByNameAsync(local);
                 var visitanteDto = await _voleyPlayaUoW.EquipoRepository.GetByNameAsync(visitante);
 
-                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(edicionDto, localDto, visitanteDto, jornada, numPartido, fechaHora, pista);
+                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(edicionDto, localDto, visitanteDto, id, jornada, numPartido, fechaHora, pista);
 
                 JsonObject resultado = partido["Resultado"]!.AsObject()!;
                 int resLocal = resultado["Local"]!.GetValue<int>()!;
@@ -163,21 +193,6 @@ namespace VoleyPlaya.Repository.Services
                 partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante);
 
                 edicionDto!.AddPartido(partidoDto);
-            }
-
-            JsonArray jornadas = edicionNode["FechasJornadas"]!.AsArray()!;
-            foreach(var jornada in jornadas)
-            {
-                var numero = jornada["Jornada"]!.GetValue<int>();
-                var fecha = jornada["Fecha"]!.GetValue<DateTime>();
-                var nombre = "Jornada " + jornada["Jornada"]!.GetValue<int>().ToString();
-                var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, numero, fecha, nombre);
-                edicionDto!.AddJornada(jornadaDto);
-            }
-            // borrar jornadas si es necesario
-            if (jornadas.Count < edicionDto.Jornadas.Count)
-            {
-                await _voleyPlayaUoW.JornadaRepository.RemoveJornadas(jornadas.Count, edicionDto);
             }
         }
     }

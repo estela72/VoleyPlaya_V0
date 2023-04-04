@@ -10,29 +10,19 @@ namespace VoleyPlaya.Domain.Models
 { 
     public class Partido
     {
-        int _id;
-        int _jornada;
-        int _numPartido;
-        DateTime _fechaHora;
-        string _pista;
-        string _local;
-        string _visitante;
-        Resultado _resultado;
-
         public Partido()
         {
-            _resultado = new Resultado();
+            Resultado = new Resultado();
         }
-        public int Id { get => _id; set => _id = value; }
-        public int Jornada { get => _jornada; set => _jornada = value; }
-        public int NumPartido { get => _numPartido; set => _numPartido = value; }
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)] 
-        public DateTime FechaHora { get => _fechaHora; set => _fechaHora = value; }
-        public string Pista { get => _pista; set => _pista = value; }
-        public string Local { get => _local; set => _local = value; }
-        public string Visitante { get => _visitante; set => _visitante = value; }
-        public Resultado Resultado { get => _resultado; set => _resultado = value; }
+        public int Id { get; set; }
+        public int Jornada { get; set; }
+        public int NumPartido { get; set; }
+        public DateTime FechaHora { get; set; }
+        public string Pista { get; set; }
+        public string Local { get; set; }
+        public string Visitante { get; set; }
+        public Resultado Resultado { get; set; }
+
 
         internal static Partido FromJson(JsonNode jsonPartido)
         {

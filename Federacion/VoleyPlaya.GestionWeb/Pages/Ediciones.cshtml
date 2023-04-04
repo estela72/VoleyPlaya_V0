@@ -1,0 +1,54 @@
+﻿@page "{handler?}"
+@model VoleyPlaya.Gestion.Web.Views.Edicion.EdicionesModel
+@{
+
+}
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <label class="col-11 alert-info align-content-start">Competiciones</label>
+            <a class="col-1 btn btn-primary align-content-end" asp-page="./Edicion" asp-route-id="">+</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.Ediciones)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Temporada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lugar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Competicion)
+                            @Html.DisplayFor(modelItem => item.CategoriaStr)
+                            @Html.DisplayFor(modelItem => item.GeneroStr)
+                            @Html.DisplayName("Grupo ")
+                            @Html.DisplayFor(modelItem => item.Grupo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumEquipos)
+                            @Html.DisplayName(" equipos")
+
+                            @Html.DisplayFor(modelItem => item.NumJornadas)
+                            @Html.DisplayName(" jornadas")
+                        </td>
+                        <td>
+                            <form asp-page-handler="Delete" method="post">
+                                <a class="btn btn-primary" asp-page="./Calendario" asp-route-id="@item.Id">
+                                    Calendario <span class="badge text-bg-secondary">@item.Partidos.Count()</span>
+                                </a>
+                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Nombre"> Editar</a>
+                                <button class="btn btn-danger">Borrar</button>
+                                <input type="hidden" name="id" value="@item.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

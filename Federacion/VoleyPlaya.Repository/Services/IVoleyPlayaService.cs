@@ -15,6 +15,6 @@ namespace VoleyPlaya.Repository.Services
         Task<string> GetEdicionAsync(string name);
         string GetEdicion(string name);
         Task<string> GetEdicionAsync(int id);
-
+        Task UpdatePartidosAsync(string jsonString);
     }
 }
