@@ -1,0 +1,10 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/Federacion/VoleyPlaya/obj/Debug
+/Federacion/VoleyPlaya.Domain/bin/Debug/net7.0
+/Federacion/VoleyPlaya.GestionWeb/bin/Debug/net7.0
+/Federacion/VoleyPlaya.GestionWeb/obj
+/Ligamania/Ligamania.Web/obj/Debug/net7.0
+/Ligamania/LigamaniaCoreApp/obj/Debug/netcoreapp2.2
