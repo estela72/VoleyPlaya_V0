@@ -75,11 +75,9 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser
                 {
-                    UserName = Input.Email,
+                    UserName = Input.Name,
                     Email = Input.Email,
-                    NormalizedUserName = Input.Name,
-                    //Name = Input.Name,
-                    //Age = Input.Age
+                    NormalizedUserName = Input.Name
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -101,11 +99,11 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
                 }
                 foreach (var error in result.Errors)
                 {

@@ -10,7 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddDomainStartup();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+// Configura Identity
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    // Configura la validación del nombre de usuario
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._@+´";
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedAccount = true;
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<VoleyPlayaDbContext>();
 
@@ -37,7 +44,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
