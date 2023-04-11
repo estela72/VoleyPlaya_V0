@@ -14,18 +14,19 @@ namespace VoleyPlaya.Repository.Models
         Temporada _temporada;
         Competicion _competicion;
         Categoria _categoria;
-        string? _genero;
-        string? _grupo;
-        int _numEquipos;
-        int _numJornadas;
         string? _lugar;
+        string? _genero;
+        string? _tipoCalendario;
 
-        HashSet<Equipo> _equipos;
-        HashSet<Partido> _partidos;
         HashSet<Jornada> _jornadas;
+        HashSet<EdicionGrupo> _grupos;
+        HashSet<Equipo> _equipos;
 
         public Edicion()
         {
+            _jornadas = new HashSet<Jornada>();
+            _grupos = new HashSet<EdicionGrupo>();
+            _equipos = new HashSet<Equipo>();
         }
 
         public Edicion(Temporada temporada, Competicion competicion, Categoria categoria)
@@ -33,43 +34,37 @@ namespace VoleyPlaya.Repository.Models
             _temporada = temporada;
             _competicion = competicion;
             _categoria = categoria;
-            _equipos = new HashSet<Equipo>();
-            _partidos = new HashSet<Partido>();
             _jornadas = new HashSet<Jornada>();
+            _grupos = new HashSet<EdicionGrupo>();
+            _equipos = new HashSet<Equipo>();
         }
 
         public Temporada Temporada { get => _temporada; set => _temporada = value; }
         public Competicion Competicion { get => _competicion; set => _competicion = value; }
         public Categoria Categoria { get => _categoria; set => _categoria = value; }
         public string? Genero { get => _genero; set => _genero = value; }
-        public string? Grupo { get => _grupo; set => _grupo = value; }
-        public int NumEquipos { get => _numEquipos; set => _numEquipos = value; }
-        public int NumJornadas { get => _numJornadas; set => _numJornadas = value; }
+        public string? TipoCalendario { get => _tipoCalendario; set => _tipoCalendario = value; }
         public string? Lugar { get => _lugar; set => _lugar = value; }
-        public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
-        public HashSet<Partido> Partidos {get => _partidos; set => _partidos= value;}
         public HashSet<Jornada> Jornadas{ get => _jornadas; set => _jornadas = value; }
-
-        internal void AddEquipo(Equipo equipoDto)
-        {
-            _equipos.Add(equipoDto);
-        }
-
-        internal void AddPartido(Partido partidoDto)
-        {
-            var dto = _partidos.First(p => p.Jornada == partidoDto.Jornada && p.NumPartido == partidoDto.NumPartido);
-            if(dto == null)
-                _partidos.Add(partidoDto);
-            else
-            {
-                dto = partidoDto;
-            }
-        }
+        public HashSet<EdicionGrupo> Grupos { get => _grupos; set => _grupos = value; }
+        public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
 
         internal void AddJornada(Jornada jornadaDto)
         {
             if (!_jornadas.Contains(jornadaDto))
                 _jornadas.Add(jornadaDto);
+        }
+        public void AddGrupo(EdicionGrupo edicionGrupo)
+        {
+            var dto = Grupos.Where(g => g.Nombre.Equals(edicionGrupo.Nombre));
+            if (dto == null)
+                Grupos.Add(edicionGrupo);
+        }
+        public void AddEquipo(Equipo equipo)
+        {
+            var dto = Equipos.Where(e => e.Nombre.Equals(equipo.Nombre));
+            if (dto == null)
+                Equipos.Add(equipo);
         }
     }
 }

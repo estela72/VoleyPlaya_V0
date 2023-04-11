@@ -26,6 +26,7 @@ namespace VoleyPlaya.Domain.Models
     }
     public class Resultado
     {
+        int _id;
          int _local;
          int _visitante;
         ResultadoParcial _set1;
@@ -42,7 +43,7 @@ namespace VoleyPlaya.Domain.Models
             _set2 = new ResultadoParcial();
             _set3 = new ResultadoParcial();
         }
-
+        public int Id { get => _id; set => _id = value; }
         public int Local { get => _local; set => _local = value; }
         public int Visitante { get => _visitante; set => _visitante = value; }
         public ResultadoParcial Set1 { get => _set1; set { _set1 = value; UpdateResultado(); } }

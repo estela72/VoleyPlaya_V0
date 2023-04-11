@@ -3,20 +3,23 @@
     {
       "nombre": "calendario31",
       "numEquipos": "3",
-      "numJornadas": "1",
-      "jornadas": [
+      "numVueltas": "1",
+      "vueltas": [
         {
-          "jornada": "1",
+          "vuelta": "1",
           "partidos": [
             {
+              "jornada": "1",
               "local": "1",
               "visitante": "3"
             },
             {
+              "jornada": "2",
               "local": "2",
               "visitante": "3"
             },
             {
+              "jornada": "3",
               "local": "1",
               "visitante": "2"
             }
@@ -27,37 +30,43 @@
     {
       "nombre": "calendario32",
       "numEquipos": "3",
-      "numJornadas": "2",
-      "jornadas": [
+      "numVueltas": "2",
+      "vueltas": [
         {
-          "jornada": "1",
+          "vuelta": "1",
           "partidos": [
             {
+              "jornada": "1",
               "local": "1",
               "visitante": "3"
             },
             {
+              "jornada": "2",
               "local": "2",
               "visitante": "3"
             },
             {
+              "jornada": "3",
               "local": "1",
               "visitante": "2"
             }
           ]
         },
         {
-          "jornada": "2",
+          "vuelta": "2",
           "partidos": [
             {
+              "jornada": "4",
               "local": "3",
               "visitante": "1"
             },
             {
+              "jornada": "5",
               "local": "3",
               "visitante": "2"
             },
             {
+              "jornada": "6",
               "local": "2",
               "visitante": "1"
             }
@@ -68,42 +77,38 @@
     {
       "nombre": "calendario4",
       "numEquipos": "4",
-      "numJornadas": "3",
-      "jornadas": [
+      "numVueltas": "1",
+      "vueltas": [
         {
-          "jornada": "1",
+          "vuelta": "1",
           "partidos": [
             {
+              "jornada": "1",
               "local": "1",
               "visitante": "4"
             },
             {
+              "jornada": "1",
               "local": "2",
               "visitante": "3"
-            }
-          ]
-        },
-        {
-          "jornada": "2",
-          "partidos": [
+            },
             {
+              "jornada": "2",
               "local": "3",
               "visitante": "1"
             },
             {
+              "jornada": "2",
               "local": "4",
               "visitante": "2"
-            }
-          ]
-        },
-        {
-          "jornada": "3",
-          "partidos": [
+            },
             {
+              "jornada": "3",
               "local": "1",
               "visitante": "2"
             },
             {
+              "jornada": "3",
               "local": "3",
               "visitante": "4"
             }
@@ -114,68 +119,58 @@
     {
       "nombre": "calendario5",
       "numEquipos": "5",
-      "numJornadas": "5",
-      "jornadas": [
+      "numVueltas": "1",
+      "vueltas": [
         {
-          "jornada": "1",
+          "vuelta": "1",
           "partidos": [
             {
+              "jornada": "1",
               "local": "4",
               "visitante": "2"
             },
             {
+              "jornada": "1",
               "local": "1",
               "visitante": "5"
-            }
-          ]
-        },
-        {
-          "jornada": "2",
-          "partidos": [
+            },
             {
+              "jornada": "2",
               "local": "1",
               "visitante": "4"
             },
             {
+              "jornada": "2",
               "local": "2",
               "visitante": "3"
-            }
-          ]
-        },
-        {
-          "jornada": "3",
-          "partidos": [
+            },
             {
+              "jornada": "3",
               "local": "3",
               "visitante": "1"
             },
             {
+              "jornada": "3",
               "local": "4",
               "visitante": "5"
-            }
-          ]
-        },
-        {
-          "jornada": "4",
-          "partidos": [
+            },
             {
+              "jornada": "4",
               "local": "5",
               "visitante": "2"
             },
             {
+              "jornada": "4",
               "local": "4",
               "visitante": "3"
-            }
-          ]
-        },
-        {
-          "jornada": "5",
-          "partidos": [
+            },
             {
+              "jornada": "5",
               "local": "1",
               "visitante": "2"
             },
             {
+              "jornada": "5",
               "local": "5",
               "visitante": "3"
             }
@@ -186,88 +181,83 @@
     {
       "nombre": "calendario6",
       "numEquipos": "6",
-      "numJornadas": "5",
-      "jornadas": [
+      "numVueltas": "1",
+      "vueltas": [
         {
-          "jornada": "1",
+          "vuelta": "1",
           "partidos": [
             {
+              "jornada": "1",
               "local": "1",
               "visitante": "2"
             },
             {
+              "jornada": "1",
               "local": "4",
-              "visitante": "2"
+              "visitante": "5"
             },
             {
+              "jornada": "1",
               "local": "3",
               "visitante": "6"
-            }
-          ]
-        },
-        {
-          "jornada": "2",
-          "partidos": [
+            },
             {
+              "jornada": "2",
               "local": "1",
               "visitante": "4"
             },
             {
+              "jornada": "2",
               "local": "6",
               "visitante": "5"
             },
             {
+              "jornada": "2",
               "local": "2",
               "visitante": "3"
-            }
-          ]
-        },
-        {
-          "jornada": "3",
-          "partidos": [
+            },
             {
+              "jornada": "3",
               "local": "2",
               "visitante": "6"
             },
             {
+              "jornada": "3",
               "local": "3",
               "visitante": "1"
             },
             {
+              "jornada": "3",
               "local": "4",
               "visitante": "5"
-            }
-          ]
-        },
-        {
-          "jornada": "4",
-          "partidos": [
+            },
             {
+              "jornada": "4",
               "local": "1",
               "visitante": "6"
             },
             {
+              "jornada": "4",
               "local": "2",
               "visitante": "5"
             },
             {
+              "jornada": "4",
               "local": "3",
               "visitante": "4"
-            }
-          ]
-        },
-        {
-          "jornada": "5",
-          "partidos": [
+            },
             {
+              "jornada": "5",
               "local": "1",
               "visitante": "2"
             },
             {
+              "jornada": "5",
               "local": "6",
               "visitante": "4"
             },
             {
+              "jornada": "5",
               "local": "5",
               "visitante": "3"
             }

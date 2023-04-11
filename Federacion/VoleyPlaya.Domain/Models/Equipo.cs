@@ -9,6 +9,7 @@ namespace VoleyPlaya.Domain.Models
 {
     public class Equipo : IEquatable<Equipo>
     {
+        private int _id;
         private int _posicion;
         private string _nombre;
         private int _jugados;
@@ -26,9 +27,9 @@ namespace VoleyPlaya.Domain.Models
         public Equipo(int posicion, string nombre)
         {
             _posicion = posicion;
-            _nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            _nombre = nombre;
         }
-
+        public int Id { get => _id; set => _id = value; }
         public int Posicion { get => _posicion; set => _posicion = value; }
         public string Nombre { get => _nombre; set => _nombre = value; }
         public int Jugados { get => _jugados; set => _jugados = value; }
@@ -43,6 +44,7 @@ namespace VoleyPlaya.Domain.Models
         {
             Equipo equipo = new Equipo()
             {
+                Id = equipoJson["Id"]!.GetValue<int>(),
                 Posicion = equipoJson["OrdenCalendario"]!.GetValue<int>(),
                 Coeficiente = equipoJson["Coeficiente"]!.GetValue<double>(),
                 Ganados = equipoJson["Ganados"]!.GetValue<int>(),
@@ -110,7 +112,7 @@ namespace VoleyPlaya.Domain.Models
         }
         internal Task SetVisitante(Partido partido)
         {
-            _jugados++;
+            //_jugados++;
             if (partido.Resultado.Local < partido.Resultado.Visitante) { _ganados++; _puntos += 2; }
             else if (partido.Resultado.Local > partido.Resultado.Visitante) { _perdidos++; _puntos += 1; }
             _puntosFavor += partido.Resultado.Set1.Visitante;

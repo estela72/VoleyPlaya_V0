@@ -23,9 +23,7 @@ namespace VoleyPlaya.Repository.Repositories
                 Competicion competicionDto,
                 Categoria categoriaDto,
                 string genero,
-                string grupo,
-                int numEquipos,
-                int numJornadas,
+                string tipoCalendario,
                 string lugar
             );
 
@@ -45,34 +43,29 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
-            string genero, string grupo, int numEquipos, int numJornadas, string lugar)
+            string genero, string tipoCalendario, string lugar)
         {
             var dto = await FindAsync(c => c.Temporada.Id.Equals(temporadaDto.Id)
                 && c.Competicion.Id.Equals(competicionDto.Id)
                 && c.Categoria.Id.Equals(categoriaDto.Id)
                 && c.Genero!.Equals(genero)
-                && c.Grupo!.Equals(grupo));
+                );
             if (dto == null)
                 return await AddAsyn(new Edicion(temporadaDto, competicionDto, categoriaDto)
-                { 
-                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre,competicionDto.Nombre,categoriaDto.Nombre,genero,grupo),
+                {
+                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, competicionDto.Nombre, categoriaDto.Nombre, genero),
                     Genero = genero,
-                    Grupo = grupo,
-                    NumEquipos = numEquipos,
-                    NumJornadas = numJornadas,
+                    TipoCalendario = tipoCalendario,
                     Lugar = lugar
                 });
             else
             {
                 dto.Genero = genero;
-                dto.Grupo = grupo;
-                dto.NumEquipos = numEquipos;
-                dto.NumJornadas = numJornadas;
+                dto.TipoCalendario = tipoCalendario;
                 dto.Lugar = lugar;
                 dto = await UpdateAsync(dto);
             }
             return dto;
-
         }
 
         public async Task<IEnumerable<Edicion>> GetFullAsync()
@@ -82,9 +75,12 @@ namespace VoleyPlaya.Repository.Repositories
                 .Include(h => h.Temporada)
                 .Include(h => h.Competicion)
                 .Include(h => h.Categoria)
-                .Include(h => h.Equipos)
-                .Include(h => h.Jornadas)
-                .Include(h => h.Partidos).ThenInclude(p => p.Parciales);
+                .Include(h => h.Grupos)
+                //.ThenInclude(g=>g.Partidos).ThenInclude(p => p.Parciales)
+                //.Include(h => h.Jornadas)
+                //.Include(h => h.Grupos)
+                //.ThenInclude(g=>g.Equipos);
+                ;
             return await ediciones.ToListAsync();
         }
 
@@ -93,7 +89,6 @@ namespace VoleyPlaya.Repository.Repositories
             var dto = await GetByNameAsync(edicionName);
             if (dto != null)
             {
-                //dto.Partidos.ToList().RemoveAll();
                 await DeleteAsync(dto.Id);
                 return true;
             }
@@ -104,13 +99,11 @@ namespace VoleyPlaya.Repository.Repositories
             var dto = await GetByIdAsync(id);
             if (dto != null)
             {
-                dto.Equipos.ToList().Clear();
-                dto.Partidos.ToList().Clear();
-                dto.Jornadas.ToList().Clear();
                 await DeleteAsync(dto.Id);
                 return true;
             }
             return false;
         }
+        
     }
 }

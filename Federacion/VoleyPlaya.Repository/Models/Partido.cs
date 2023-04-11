@@ -11,7 +11,7 @@ namespace VoleyPlaya.Repository.Models
 {
     public class Partido:Entity   
     {
-        Edicion _edicion;
+        EdicionGrupo _edicionGrupo;
         Equipo _local;
         Equipo _visitante;
         int? _resultadoLocal;
@@ -20,20 +20,26 @@ namespace VoleyPlaya.Repository.Models
         int? _numPartido;
         DateTime? _fechaHora;
         string? _pista;
+        string? _label;
 
         ICollection<ParcialPartido> _parciales;
 
-        public Partido() => _parciales = new List<ParcialPartido>();
-
-        public Partido(Edicion edicion, Equipo local, Equipo visitante)
+        public Partido()
         {
-            _edicion = edicion;
-            _local = local;
-            _visitante = visitante;
+            _edicionGrupo = new EdicionGrupo();
+            _local = new Equipo();
+            _visitante = new Equipo();
             _parciales = new List<ParcialPartido>();
         }
 
-        public Edicion Edicion { get => _edicion; set => _edicion = value; }
+        public Partido(EdicionGrupo edicionGrupo, Equipo local, Equipo visitante):this()
+        {
+            _edicionGrupo = edicionGrupo;
+            _local = local;
+            _visitante = visitante;
+        }
+
+        public EdicionGrupo Grupo { get => _edicionGrupo; set => _edicionGrupo = value; }
         public Equipo Local { get => _local; set => _local = value; }
         public Equipo Visitante { get => _visitante; set => _visitante = value; }
         public int? ResultadoLocal { get => _resultadoLocal; set => _resultadoLocal = value; }
@@ -42,6 +48,7 @@ namespace VoleyPlaya.Repository.Models
         public int? NumPartido { get => _numPartido; set => _numPartido = value; }
         public DateTime? FechaHora { get => _fechaHora; set => _fechaHora = value; }
         public string? Pista { get => _pista; set => _pista = value; }
+        public string? Label { get => _label; set => _label = value; }
         public List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
 
         public override bool Equals(object obj)

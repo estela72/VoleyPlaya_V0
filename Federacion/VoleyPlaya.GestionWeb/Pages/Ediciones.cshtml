@@ -7,11 +7,11 @@
     <div class="card-header">
         <div class="row">
             <label class="col-11 alert-info align-content-start">Competiciones</label>
-            <a class="col-1 btn btn-primary align-content-end" asp-page="./Edicion" asp-route-id="">+</a>
+            <a class="col-1 btn btn-primary align-content-end" asp-page="./TutorialEdicion" asp-route-id="">+</a>
         </div>
     </div>
     <div class="card-body">
-        <table class="table">
+        <table class="table table-borderless table-striped table-hover">
             <tbody>
                 @foreach (var item in Model.Ediciones)
                 {
@@ -24,26 +24,30 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Competicion)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.CategoriaStr)
                             @Html.DisplayFor(modelItem => item.GeneroStr)
-                            @Html.DisplayName("Grupo ")
-                            @Html.DisplayFor(modelItem => item.Grupo)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NumEquipos)
-                            @Html.DisplayName(" equipos")
-
-                            @Html.DisplayFor(modelItem => item.NumJornadas)
-                            @Html.DisplayName(" jornadas")
-                        </td>
+                        @if (item.NumGrupos > 0)
+                        {
+                            <form asp-page-handler="Grupos" method="post">
+                            @foreach (var grupo in item.Grupos)
+                            {
+                                <td>
+                                    <a class="btn btn-success" asp-page="./EdicionGrupo" asp-route-id="@grupo.Id"> Grupo @grupo.Name</a>
+                                </td>
+                            }
+                            </form>
+                        }
                         <td>
                             <form asp-page-handler="Delete" method="post">
-                                <a class="btn btn-primary" asp-page="./Calendario" asp-route-id="@item.Id">
-                                    Calendario <span class="badge text-bg-secondary">@item.Partidos.Count()</span>
-                                </a>
                                 <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Nombre"> Editar</a>
                                 <button class="btn btn-danger">Borrar</button>
                                 <input type="hidden" name="id" value="@item.Id" />
+                                @*<a class="btn btn-primary" asp-page="./Calendario" asp-route-id="@item.Id">
+                            Calendario <span class="badge text-bg-secondary">@item.Partidos.Count()</span>
+                            </a>*@
                             </form>
                         </td>
                     </tr>

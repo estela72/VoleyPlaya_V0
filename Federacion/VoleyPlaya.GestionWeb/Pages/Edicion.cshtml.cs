@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Nodes;
 
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
@@ -13,99 +15,226 @@ namespace VoleyPlaya.GestionWeb.Pages
         IEdicionService _service;
 
         [BindProperty]
+        public string EdicionName { get; set; }
+
+        [BindProperty]
         public Edicion Edicion { get; set; }
         public SelectList Competiciones { get; set; }
         public SelectList Categorias { get; set; }
         public SelectList Generos { get; set; }
+        public SelectList TipoCalendarios { get; set; }
 
         [BindProperty]
-        public List<int> AddedPos { get;set; }
+        public string TipoCalendarioSeleccionado { get; set; }
         [BindProperty]
-        public List<string> AddedEquipos { get; set; }
-        [BindProperty]
-        public List<int> AddedJor { get; set; }
-        [BindProperty]
-        public List<DateTime> AddedFechas { get; set; }
+        public int PasoActual { get; set; }
 
-        public EdicionModel(IEdicionService service)
+        [BindProperty]
+        public int NumEquiposGrupo { get; set; }
+
+        public SelectList ListaEquipos { get; set; } = default;
+
+        [BindProperty]
+        public int NumVueltas { get; set; }
+
+        [BindProperty]
+        public int NumJornadas { get; set; }
+
+        public EdicionModel (IEdicionService service)
         {
             _service = service;
             Competiciones = new SelectList(EnumCompeticiones.Competiciones.Values);
             Categorias = new SelectList(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
+            PasoActual = 1;
         }
         public async Task<IActionResult> OnGetAsync(string? id)
         {
             if (id == null)
             {
                 Edicion = new Edicion();
+                await Fill();
                 return Page();
             }
+            EdicionName = id;
 
-            var jsonEdicion = await _service.GetEdicionByName(id);
-            Edicion = _service.FromJson(jsonEdicion);
-            
+            await GetEdicion(id);
+            await Fill();
+
             if (Edicion == null)
             {
                 return NotFound();
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostAsync()
+        private async Task GetEdicion(string? id)
         {
-            if (!ModelState.IsValid)
+            var jsonEdicion = await _service.GetEdicionByName(id);
+            Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+        }
+        private async Task Fill()
+        { 
+            if (Edicion.Id != 0)
+                PasoActual = 1;
+            if (Edicion.Equipos.Count > 0)
+                PasoActual = 2;
+            if (Edicion.Grupos!.Count > 0)
+                PasoActual = 3;
+            if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count>0)
+                PasoActual = 4;
+
+            ListaEquipos = new SelectList(Edicion.Equipos.OrderBy(e => e.Nombre).Select(e => e.Nombre).ToList());
+            TipoCalendarios = new SelectList(await TablaCalendario.LoadTipos());
+            if (string.IsNullOrEmpty(Edicion.TipoCalendario))
+                TipoCalendarioSeleccionado = TipoCalendarios.First().Text;
+            else
+                TipoCalendarioSeleccionado = Edicion.TipoCalendario;
+            EdicionName = Edicion.Nombre;
+            if (Edicion.Grupos.Count > 0)
             {
+                int maxEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
+                NumVueltas = await TablaCalendario.NumVueltasPosibles(maxEquipos);
+                NumJornadas = await TablaCalendario.NumJornadas(maxEquipos, NumVueltas);
+            }
+            else
+            {
+                NumVueltas = 0;
+                NumJornadas = 0;
+            }
+            if (NumJornadas>0 && Edicion.FechasJornadas.Count==0)
+            {
+                for (int i = 0; i < NumJornadas; i++)
+                {
+                    Edicion.FechasJornadas.Add(new FechaJornada
+                    {
+                        Jornada = i + 1,
+                        Fecha = DateTime.Today
+                    });
+                }
+            }
+        }
+        public async Task<IActionResult> OnPostCompeticionAsync()
+        {
+            await _service.UpdateEdicionAsync(Edicion, "paso1");
+            EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
+            await GetEdicion(EdicionName);
+            await Fill();
+            return Page();
+        }
+        public async Task<IActionResult> OnPostEquiposAsync(IFormFile file, int id)
+        {
+            if (file == null || file.Length == 0)
+            {
+                // Manejar el caso en que no se seleccionó ningún archivo
+                ModelState.AddModelError("file", "Por favor selecciona un archivo Excel.");
                 return Page();
             }
 
-            if (Edicion != null)
-            {
-                // añadir equipos
-                for (int i = 0; i < AddedEquipos.Count(); i++)
-                    Edicion.Equipos.Add(new Equipo() { Posicion = AddedPos[i], Nombre = AddedEquipos[i] });
-
-                // borrar equipos
-                if (Edicion.NumEquipos < Edicion.Equipos.Count())
-                    Edicion.UpdateEquipos(Edicion.NumEquipos);
-
-                // añadir jornadas
-                for (int i = 0; i < AddedFechas.Count(); i++)
-                    Edicion.FechasJornadas.Add(new FechaJornada() { Jornada = AddedJor[i], Fecha = AddedFechas[i] });
-
-                // borrar jornadas
-                if (Edicion.NumJornadas < Edicion.FechasJornadas.Count())
-                    Edicion.UpdateJornadas(Edicion.NumJornadas);
-
-                await _service.UpdateEdicionAsync(Edicion);
-            }
-            return RedirectToPage("./Ediciones");
+            // Leer excel de equipos y cargarlos en la edición
+            await Edicion.ImportEquipos(file);
+            await _service.UpdateEquiposEdicionAsync(id, Edicion);
+            string json = await _service.GetEdicionById(id);
+            Edicion = Edicion.FromJson(JsonNode.Parse(json)!);
+            await Fill();
+            return Page();
         }
+        public async Task<IActionResult> OnPostFaseAsync()
+        {
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                await GetEdicion(EdicionName);
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                await GetEdicion(EdicionName);
 
-        public async Task<IActionResult> OnPostUpdateEquipos(int id, int numEquipos)
-        {
-            if (id != 0)
+            dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
+            NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
+            await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado);
+            for (int i = 0; i < NumJornadas; i++)
             {
-                var json = await _service.GetEdicionById(id);
-                Edicion = _service.FromJson(json);
+                Edicion.FechasJornadas.Add(new FechaJornada
+                {
+                    Jornada = i + 1,
+                    Fecha = DateTime.Today
+                });
             }
-            int equiActual = Edicion.Equipos.Count();
-            Edicion.UpdateEquipos(numEquipos);
-            int equiNuevo = Edicion.Equipos.Count();
-            var response = new {equiActual, equiNuevo};
-            return new JsonResult(response);
+            await _service.UpdateGruposAsync(Edicion);
+            await Fill();
+            
+            return Page();
         }
-        public async Task<IActionResult> OnPostUpdateJornadas(int id, int numJornadas)
+        public async Task<IActionResult> OnPostGuardarGruposAsync()
         {
-            if (id != 0)
+            var grupos = Edicion.Grupos;
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                await GetEdicion(EdicionName);
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                await GetEdicion(EdicionName);
+
+            Edicion.Grupos = grupos;
+
+            await _service.UpdateGruposAsync(Edicion);
+            await GetEdicion(Edicion.Nombre);
+            await Fill();
+            return Page();
+        }
+        public async Task<IActionResult> OnPostDeleteEquipoAsync(int id)
+        {
+            await _service.DeleteEquipoAsync(id);
+            await GetEdicion(Edicion.Nombre);
+            await Fill();
+            return Page();
+        }
+        public async Task<IActionResult> OnPostGenerarJornadasAsync()
+        {
+            var fechas = Edicion.FechasJornadas;
+            await GetEdicion(Edicion.Nombre);
+            for (int i = 0; i < NumJornadas; i++)
             {
-                var json = await _service.GetEdicionById(id);
-                Edicion = _service.FromJson(json);
+                Edicion.FechasJornadas.Add(new FechaJornada
+                {
+                    Jornada = i + 1,
+                    Fecha = DateTime.Today
+                });
             }
-            int jorActual = Edicion.FechasJornadas.Count();
-            Edicion.UpdateJornadas(numJornadas);
-            int jorNuevo = Edicion.FechasJornadas.Count();
-            var response = new { jorActual, jorNuevo };
-            return new JsonResult(response);
+            await Fill();
+
+            return Page();
+        }
+        public async Task<IActionResult> OnPostGenerarPartidosAsync()
+        {
+            var jornadas = Edicion.FechasJornadas;
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                await GetEdicion(EdicionName);
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                await GetEdicion(EdicionName);
+
+            Edicion.FechasJornadas = jornadas;
+
+            // lo primero guardar las jornadas
+            await _service.UpdateJornadasAsync(Edicion);
+            int numEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
+            foreach (EdicionGrupo grupo in Edicion.Grupos)
+                await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
+            await Fill();
+
+            return Page();
+        }
+        public async Task<IActionResult> OnPostGuardarPartidosAsync()
+        {
+            var grupos = Edicion.Grupos;
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                await GetEdicion(EdicionName);
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                await GetEdicion(EdicionName);
+            for (int i= 0; i < Edicion.Grupos.Count;i++)
+                Edicion.Grupos[i].Partidos = grupos[i].Partidos;
+
+            foreach(var grupo in Edicion.Grupos)
+                await _service.UpdatePartidosAsync(grupo);
+
+            await GetEdicion(Edicion.Nombre);
+            await Fill();
+            return Page();
+
         }
     }
 }

@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace VoleyPlaya.Repository
 {
-    public class VoleyPlayaDbContext : DbContext
+    public class VoleyPlayaDbContext : IdentityDbContext
     {
         private readonly IConfiguration _configuration;
 
@@ -18,6 +20,7 @@ namespace VoleyPlaya.Repository
         public DbSet<Equipo> Equipos { get; set; }
         public DbSet<Partido> Partidos { get; set; }
         public DbSet<ParcialPartido> Parciales { get; set; }
+        public DbSet<EdicionGrupo> EdicionGrupos { get; set; }
 
         public VoleyPlayaDbContext(DbContextOptions<VoleyPlayaDbContext> options, IConfiguration configuration)
             : base(options)
@@ -27,10 +30,11 @@ namespace VoleyPlaya.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connString = _configuration.GetConnectionString("DatabaseConnection");
             optionsBuilder
                 .EnableSensitiveDataLogging()
-                .UseSqlServer(connString);
+                .UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"),
+                x => x.MigrationsAssembly("VoleyPlaya.GestionWeb"))
+            ;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -84,12 +88,12 @@ namespace VoleyPlaya.Repository
                 entity.HasOne(d => d.Edicion)
                     .WithMany(p => p.Equipos)
                     .HasForeignKey("EdicionId")
-                    //.OnDelete(DeleteBehavior.ClientSetNull)
                     .OnDelete(DeleteBehavior.ClientCascade)
                     .HasConstraintName("FK_dbo.Equipo_dbo.Edicion_Id");
             });
             modelBuilder.Entity<Edicion>(entity =>
             {
+                entity.HasKey(e => e.Id);
                 entity.HasIndex(e => new { e.Nombre })
                     .HasDatabaseName("IX_Edicion")
                     .IsUnique();
@@ -116,6 +120,21 @@ namespace VoleyPlaya.Repository
                 entity.Navigation(e => e.Competicion).AutoInclude();
                 entity.Navigation(e => e.Categoria).AutoInclude();
                 entity.Navigation(e => e.Jornadas).AutoInclude();
+                entity.Navigation(e => e.Grupos).AutoInclude();
+                entity.Navigation(e => e.Equipos).AutoInclude();
+            });
+            modelBuilder.Entity<EdicionGrupo>(entity =>
+            {
+                entity.HasIndex(e => new { e.EdicionId, e.Nombre })
+                    .HasDatabaseName("IX_EdicionGrupo")
+                    .IsUnique();
+                entity.HasOne(d => d.Edicion)
+                    .WithMany(p => p.Grupos)
+                    .HasForeignKey("EdicionId")
+                    .OnDelete(DeleteBehavior.ClientCascade)
+                    .HasConstraintName("Fk_dbo.EdicionGrupoEdicion_Id");
+
+                //entity.Navigation(e => e.Edicion).AutoInclude();
                 entity.Navigation(e => e.Equipos).AutoInclude();
                 entity.Navigation(e => e.Partidos).AutoInclude();
             });
@@ -124,20 +143,26 @@ namespace VoleyPlaya.Repository
                 entity.HasIndex(e => new { e.EdicionId, e.Numero })
                     .HasDatabaseName("IX_Jornada")
                     .IsUnique();
+                entity.HasOne(j => j.Edicion)
+                    .WithMany(e => e.Jornadas)
+                    .HasForeignKey("EdicionId")
+                    .OnDelete(DeleteBehavior.ClientCascade)
+                    .HasConstraintName("Fk_dbo.EdicionJornada_Id");
+                //entity.Navigation(e => e.Edicion).AutoInclude();
             }
             );
             modelBuilder.Entity<Partido>(entity =>
             {
-                entity.HasIndex(e => new { e.Nombre })
+                entity.HasIndex(e => new {e.Nombre })
                     .HasDatabaseName("IX_Partido")
                     .IsUnique();
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
                 entity.Property(e => e.UpdatedBy).HasMaxLength(256);
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-                entity.HasOne(d => d.Edicion)
+                entity.HasOne(d => d.Grupo)
                       .WithMany(p => p.Partidos)
-                      .HasForeignKey("PartidoId")
+                      .HasForeignKey("GrupoId")
                       //.OnDelete(DeleteBehavior.ClientSetNull)
                       .OnDelete(DeleteBehavior.ClientCascade)
                       .HasConstraintName("FK_dbo.PartidoEdicion_Id");
@@ -155,10 +180,10 @@ namespace VoleyPlaya.Repository
             });
             modelBuilder.Entity<ParcialPartido>(entity =>
             {
-                entity.HasKey(e => new { e.PartidoId, e.Nombre});
-                entity.HasIndex(e => new { e.PartidoId, e.Nombre })
-                    .HasDatabaseName("IX_ParcialPartido")
-                    .IsUnique();
+                //entity.HasKey(e => new { e.PartidoId, e.Nombre});
+                //entity.HasIndex(e => new { e.PartidoId, e.Nombre })
+                //    .HasDatabaseName("IX_ParcialPartido")
+                //    .IsUnique();
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
                 entity.Property(e => e.UpdatedBy).HasMaxLength(256);

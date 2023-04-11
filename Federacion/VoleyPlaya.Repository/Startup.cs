@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using System;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace VoleyPlaya.Repository
 {
@@ -18,8 +20,18 @@ namespace VoleyPlaya.Repository
     {
         public static void AddRepositoryStartup(this IServiceCollection services)
         {
+            // Add framework services.
+            services.AddDbContext<VoleyPlayaDbContext>(
+                options => options.ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
+            );
+
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             // configure DI for DBContext
             services.AddDbContext<VoleyPlayaDbContext>();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             // configure DI for Repositories
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
@@ -30,6 +42,7 @@ namespace VoleyPlaya.Repository
             services.AddScoped<IPartidoRepository, PartidoRepository>();
             services.AddScoped<ITemporadaRepository, TemporadaRepository>();
             services.AddScoped<IJornadaRepository, JornadaRepository>();
+            services.AddScoped<IEdicionGrupoRepository, EdicionGrupoRepository>();
 
             // configure DI for UnitOfWork
             services.AddScoped<IVoleyPlayaUnitOfWork, VoleyPlayaUnitOfWork>();

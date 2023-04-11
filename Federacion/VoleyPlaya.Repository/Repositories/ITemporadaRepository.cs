@@ -30,7 +30,7 @@ namespace VoleyPlaya.Repository.Repositories
 
         public async Task<Temporada> CheckAddUpdate(string nombre)
         {
-            var dto = await FindAsync(c => c.Nombre.Equals(nombre));
+            var dto = await GetByNameAsync(nombre);
             if (dto == null)
                 return await AddAsyn(new Temporada { Nombre = nombre });
             return dto;

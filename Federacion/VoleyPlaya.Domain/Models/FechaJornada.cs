@@ -21,7 +21,7 @@ namespace VoleyPlaya.Domain.Models
             Jornada = jornada;
             Fecha = DateTime.Now.AddDays(7);
         }
-
+        public int Id { get; set; }
         public int Jornada { get; set; }
         public DateTime Fecha { get; set; }
 
@@ -29,6 +29,7 @@ namespace VoleyPlaya.Domain.Models
         {
             FechaJornada fechaJornada = new FechaJornada()
             {
+                Id = jornada["Id"]!.GetValue<int>(),
                 Jornada = jornada["Numero"]!.GetValue<int>(),
                 Fecha = jornada["Fecha"]!.GetValue<DateTime>()
             };

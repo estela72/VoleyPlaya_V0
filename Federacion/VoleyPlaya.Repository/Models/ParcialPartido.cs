@@ -11,7 +11,7 @@ namespace VoleyPlaya.Repository.Models
 {
     public class ParcialPartido : Entity
     {
-        int _partidoId;
+        //int _partidoId;
         Partido _partido;
         int? _resultadoLocal;
         int? _resultadoVisitante;
@@ -24,7 +24,7 @@ namespace VoleyPlaya.Repository.Models
         {
             _partido = partido;
         }
-        public int PartidoId { get => _partidoId; set => _partidoId = value; }
+        //public int PartidoId { get => _partidoId; set => _partidoId = value; }
         public Partido Partido { get => _partido; set => _partido = value; }
         public int? ResultadoLocal { get => _resultadoLocal; set => _resultadoLocal = value; }
         public int? ResultadoVisitante { get => _resultadoVisitante; set => _resultadoVisitante = value; }

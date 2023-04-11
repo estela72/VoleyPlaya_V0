@@ -29,6 +29,7 @@ namespace VoleyPlaya.Repository.Repositories
 
         public async Task<Categoria> CheckAddUpdate(string nombre)
         {
+            if (string.IsNullOrEmpty(nombre)) return null;
             var dto = await FindAsync(c => c.Nombre.Equals(nombre));
             if (dto == null) 
                 return await AddAsyn(new Categoria { Nombre = nombre }); 
