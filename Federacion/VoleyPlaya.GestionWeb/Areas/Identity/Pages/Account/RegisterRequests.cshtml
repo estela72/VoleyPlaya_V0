@@ -1,0 +1,36 @@
+﻿@page
+@model RegisterRequestsModel
+
+<h1>Solicitudes de registro</h1>
+
+@if (Model.Requests.Count == 0)
+{
+    <p>No hay solicitudes de registro pendientes.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre y Apellidos</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Requests)
+            {
+                <tr>
+                    <td>@user.NormalizedUserName</td>
+                    <td>@user.Email</td>
+                    <td class="md-2">
+                        <form method="post">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit">Confirmar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
