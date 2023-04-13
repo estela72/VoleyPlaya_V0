@@ -49,15 +49,29 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.Development.json" />
+	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\Images\logo_fvbpa.png" />
 	  <None Remove="Resources\Raw\calendarios.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.Development.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="appsettings.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="akgul.Maui.DataGrid" Version="2.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="IronXL.Excel" Version="2023.2.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
@@ -65,8 +79,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\CompeticionesPage.xaml.cs">
-	    <DependentUpon>CompeticionesPage.xaml</DependentUpon>
+	  <ProjectReference Include="..\VoleyPlaya.Repository\VoleyPlaya.Repository.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\EdicionPage.xaml.cs">
+	    <DependentUpon>EdicionPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\EdicionesPage.xaml.cs">
+	    <DependentUpon>EdicionesPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\PartidosPage.xaml.cs">
 	    <DependentUpon>PartidosPage.xaml</DependentUpon>
@@ -83,10 +104,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\CompeticionesPage.xaml">
+	  <MauiXaml Update="Views\EdicionesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CompeticionPage.xaml">
+	  <MauiXaml Update="Views\EdicionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ConfiguracionPage.xaml">

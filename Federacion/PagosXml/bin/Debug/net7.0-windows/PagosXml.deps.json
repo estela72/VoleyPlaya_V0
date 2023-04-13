@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "PagosXml/1.0.0": {
+        "dependencies": {
+          "Microsoft.XmlSerializer.Generator": "7.0.0"
+        },
+        "runtime": {
+          "PagosXml.dll": {}
+        }
+      },
+      "Microsoft.XmlSerializer.Generator/7.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/dotnet-Microsoft.XmlSerializer.Generator.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PagosXml/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.XmlSerializer.Generator/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sRBmjGZxttqpmh48nBAJ+EVJfwvmRPlvu7HqwGY6C/MR/w6mPzRAFaIIrV1gvbMlT2FXmanxTjXvxO1aC4j0zg==",
+      "path": "microsoft.xmlserializer.generator/7.0.0",
+      "hashPath": "microsoft.xmlserializer.generator.7.0.0.nupkg.sha512"
+    }
+  }
+}

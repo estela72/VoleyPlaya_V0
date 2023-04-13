@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using VoleyPlaya.Models;
+using Models;
 
 namespace VoleyPlaya.ViewModels
 {
-    internal class ConfiguracionViewModel : ObservableObject
+    public class ConfiguracionViewModel : ObservableObject
     {
         public ICommand TablasCalendariosCommand { get; private set; }
 

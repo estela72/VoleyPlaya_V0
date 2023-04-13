@@ -1,0 +1,68 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.EquiposModel
+@{
+}
+@Html.AntiForgeryToken()
+<form method="post">
+    @Html.HiddenFor(m=>@Model.EdicionId)
+    <div class="card">
+        <div class="card-header h2">Lista de equipos</div>
+        <div class="card-body p-2">
+            <div class="row">
+                <div class="col-md-5 m-1">
+                    <table class="table table-stripped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Posición</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Equipos.Count / 2; i++)
+                            {
+                                <tr>
+                                    <td align="center">
+                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
+                                            <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Posicion, new{@class="form-control"})</td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-5 m-1">
+                    <table class="table table-stripped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Posición</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = Model.Equipos.Count / 2; i < Model.Equipos.Count; i++)
+                            {
+                                <tr>
+                                    <td align="center">
+                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Posicion, new{@class="form-control"})</td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary" asp-page-handler="Guardar" value="Guardar cambios" />
+        </div>
+    </div>
+</form>

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace VoleyPlaya.ViewModels
 {
-    internal class TablasCalendariosViewModel : ObservableObject, IQueryAttributable
+    public class TablasCalendariosViewModel : ObservableObject, IQueryAttributable
     {
         public ObservableCollection<ViewModels.TablaCalendarioViewModel> AllTablasCalendarios { get; }
         public ICommand NewCommand { get; }

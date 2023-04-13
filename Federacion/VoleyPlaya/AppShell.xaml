@@ -14,7 +14,7 @@
             />
         <ShellContent
             Title="Competiciones"
-            ContentTemplate="{DataTemplate views:CompeticionesPage}"
+            ContentTemplate="{DataTemplate views:EdicionesPage}"
             Icon="{OnPlatform 'logo_fvpba.png'}" 
             />
     </TabBar>

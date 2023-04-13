@@ -38,23 +38,23 @@ build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Resources.Style
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
 
-[D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/CompeticionesPage.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Views.CompeticionesPage.xaml
-build_metadata.AdditionalFiles.TargetPath = Views\CompeticionesPage.xaml
-build_metadata.AdditionalFiles.RelativePath = Views\CompeticionesPage.xaml
-
-[D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/CompeticionPage.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Views.CompeticionPage.xaml
-build_metadata.AdditionalFiles.TargetPath = Views\CompeticionPage.xaml
-build_metadata.AdditionalFiles.RelativePath = Views\CompeticionPage.xaml
-
 [D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/ConfiguracionPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Views.ConfiguracionPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\ConfiguracionPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ConfiguracionPage.xaml
+
+[D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/EdicionesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Views.EdicionesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\EdicionesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\EdicionesPage.xaml
+
+[D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/EdicionPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = VoleyPlaya.Views.EdicionPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\EdicionPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\EdicionPage.xaml
 
 [D:/srcRepository/Proyectos Estela/Federacion/VoleyPlaya/Views/MainPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

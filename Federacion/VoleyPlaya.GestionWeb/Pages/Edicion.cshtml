@@ -1,0 +1,461 @@
+﻿@page 
+@model VoleyPlaya.GestionWeb.Pages.EdicionModel
+@{
+}
+@{
+    var pasoActual = Model.PasoActual; // Variable para el paso actual del usuario
+}
+
+<!-- Contenido HTML de la página -->
+<h1>Crear o actualizar una competición</h1>
+<!-- Pasos de la guía -->
+<div class="guia-pasos">
+    <!-- Paso 1: Crear competición -->
+    <div class="guia-paso @((pasoActual >= 1) ? "completado" : "")">
+        <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseCompeticion"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
+        <h2>Competición</h2>
+        <form method="post" asp-page-handler="Competicion">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m=>Model.Edicion.Id)
+            <div class="card collapse" id="collapseCompeticion">
+                <div class="card-body">
+                    <div style="max-width: 600px; ">
+                        <div class="form-group row m-1">
+                            <label class="col-sm-4 col-form-label">Temporada</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" asp-for="@Model.Edicion.Temporada" />
+                            </div>
+                        </div>
+                        <div class="form-group row m-1">
+                            <label class="col-sm-4 col-form-label">Lugar</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" asp-for="@Model.Edicion.Lugar" />
+                          </div>
+                        </div>
+                        <div class="form-group row m-1">
+                            <label class="col-sm-4 col-form-label">Competición</label>
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m=>Model.Edicion.Competicion, Model.Competiciones, new{@class="form-control"})
+                            </div>
+                        </div>
+                        <div class="form-group row m-1">
+                            <label class="col-sm-4 col-form-label">Categoría</label>
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m=>Model.Edicion.Categoria, Model.Categorias, new{@class="form-control"})
+                            </div>
+                        </div>
+                        <div class="form-group row m-1">
+                            <label class="col-sm-4 col-form-label">Género</label>
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m=>Model.Edicion.Genero, Model.Generos, new{@class="form-control"})
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Guardar competición" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Paso 2: Añadir equipos -->
+    <div class="guia-paso @((pasoActual >= 2) ? "completado" : "")">
+        <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseEquipos"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
+        <h2>Equipos</h2>
+        <form method="post" enctype="multipart/form-data" asp-page-handler="Equipos" asp-route-id="@Model.Edicion.Id">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m=>Model.Edicion.Id)
+            @Html.HiddenFor(m=>Model.Edicion.Nombre)
+            @Html.HiddenFor(m=>Model.EdicionName)
+            <div class="card collapse" id="collapseEquipos">
+                <div class="card-body">
+                    <h3>@Model.Edicion.Equipos.Count equipos registrados</h3>
+                    <p>El fichero excel debe contener 2 columnas, con cabecera. Las columnas son Posicion y Nombre</p>
+                    <p>Se insertarán los nuevos equipos y se borrarán aquellos que no estén en el excel</p>
+                    <input type="file" name="file" />
+                </div>
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary" value="Importar equipos desde excel" />
+                    @if (Model.Edicion.Equipos.Count > 0)
+                    {
+                        <button class="btn btn-primary" asp-page="./Equipos" asp-route-id="@Model.Edicion.Id">Ver equipos</button>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Paso 3: Añadir fase de grupos -->
+    <div class="guia-paso @((pasoActual >= 3) ? "completado" : "")">
+        <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseFaseGrupos"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
+        <h2>Fase de grupos</h2>
+        <form method="post" asp-page-handler="Fase">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m=>Model.Edicion.Id)
+            @Html.HiddenFor(m=>Model.Edicion.Nombre)
+            @Html.HiddenFor(m=>Model.EdicionName)
+            @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+            @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Nombre)
+            }
+            @if (Model.Edicion.Grupos.Count == 0)
+            {
+                <div class="card collapse" id="collapseFaseGrupos">
+                    <div class="card-body">
+                        <div class="col">
+                            <div class="btn-group" data-toggle="buttons">
+                                @if (Model.TipoCalendarios != null)
+                                {
+                                    @foreach (var opcion in Model.TipoCalendarios)
+                                    {
+                                        <label class="btn btn-secondary m-2">
+                                            @Html.RadioButtonFor(m => m.TipoCalendarioSeleccionado, opcion.Text, new { @class = "form-check-input" })
+                                            @opcion.Text
+                                        </label>
+                                        <br />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Generar grupos"/>
+                    </div>
+                </div>
+            }
+        </form>
+        <form method="post" asp-page-handler="GuardarGrupos">
+            @Html.HiddenFor(m=>Model.Edicion.Id)
+            @Html.HiddenFor(m=>Model.Edicion.Nombre)
+            @Html.HiddenFor(m=>Model.EdicionName)
+            @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+            @Html.HiddenFor(m=>Model.Edicion.NumJornadas)
+            @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Nombre)
+            }
+            @for (int i = 0; i < Model.Edicion.Grupos.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Name)
+                @for (int j = 0; j < Model.Edicion.Grupos[i].Equipos.Count; j++)
+                {
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Id)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Nombre)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Posicion)
+                }
+                @for (int j = 0; j < Model.Edicion.Grupos[i].Partidos.Count; j++)
+                {
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Id)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].NumPartido)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Label)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].FechaHora)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Pista)
+                }
+            }
+            @for (int i = 0; i < Model.Edicion.FechasJornadas.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.FechasJornadas[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.FechasJornadas[i].Jornada)
+                @Html.HiddenFor(m=>Model.Edicion.FechasJornadas[i].Fecha)
+            }
+            <div class="card collapse" id="collapseFaseGrupos">
+                <div class="card-body">
+                    @if (Model.Edicion.Grupos.Count > 0)
+                    {
+                        <div class="row">
+                            @for(int i=0; i < Model.Edicion.Grupos.Count/2; i++)
+                            {
+                                <div class="col m-1" style="background-color:lightgray">
+                                    <table class="table table-responsive-md">
+                                        <thead>
+                                            <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                            <tr>
+                                                <th>Orden</th>
+                                                <th>Equipo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int j = 0; j < Model.Edicion.Grupos[i].Equipos.OrderBy(e => e.Posicion).Count(); j++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.EditorFor(m =>Model.Edicion.Grupos[i].Equipos[j].Posicion, new {@class="col-sm-1"})
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Equipos[j].Nombre, Model.ListaEquipos,"Seleccionar equipo", new{@class="form-control"})
+                                                    </td>
+                                                    <td align="center">
+                                                        @Html.AntiForgeryToken()
+                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            @for (int i = Model.Edicion.Grupos.Count / 2; i < Model.Edicion.Grupos.Count; i++)
+                            {
+                                <div class="col m-1" style="background-color:lightgray">
+                                    <table class="table table-responsive-md">
+                                        <thead>
+                                            <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                            <tr>
+                                                <th>Orden</th>
+                                                <th>Equipo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int j = 0; j < Model.Edicion.Grupos[i].Equipos.OrderBy(e => e.Posicion).Count(); j++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.EditorFor(m =>Model.Edicion.Grupos[i].Equipos[j].Posicion, new {@class="col-sm-1"})
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Equipos[j].Nombre, Model.ListaEquipos, "Seleccionar equipo", new{@class="form-control"})
+                                                    </td>
+                                                    <td align="center">
+                                                        @Html.AntiForgeryToken()
+                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    @if (Model.Edicion.Grupos.Count > 0)
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" class="btn btn-primary" value="Guardar grupos" />
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Paso 4: Establecer vueltas, jornadas y partidos para cada grupo de la fase de grupos -->
+    <div class="guia-paso @((pasoActual >= 4) ? "completado" : "")">
+        <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapsePartidosFG"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
+        <h2>Partidos fase de grupos</h2>
+        <form method="post" asp-page-handler="PartidosFaseGrupos">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m=>Model.Edicion.Id)
+            @Html.HiddenFor(m=>Model.Edicion.Nombre)
+            @Html.HiddenFor(m=>Model.EdicionName)
+            @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+            @Html.HiddenFor(m=>Model.Edicion.NumJornadas)
+            @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Nombre)
+            }
+            @for (int i = 0; i < Model.Edicion.Grupos.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Id)
+                @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Name)
+                @for (int j = 0; j < Model.Edicion.Grupos[i].Equipos.Count; j++)
+                {
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Id)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Nombre)
+                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Posicion)
+                }
+            }
+            <div class="card collapse" id="collapsePartidosFG">
+                <div class="card-body">
+                    <div class="row">
+                        @if (Model.Edicion.FechasJornadas.Count > 0)
+                        {
+                            <div class="col" style="max-width: 600px;">
+                                <div class="col m-1" style="background-color:lightgray">
+                                    <table class="table table-responsive-md">
+                                        <thead>
+                                            <h3>Fechas de juego</h3>
+                                            <tr>
+                                                <th>Jornada</th>
+                                                <th>Fecha</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.Edicion.FechasJornadas.Count; i++)
+                                            {
+                                                var fila = "fila" + i;
+                                                <tr id="@fila">
+                                                    <td>
+                                                        @Html.EditorFor(m=>Model.Edicion.FechasJornadas[i].Jornada, new {@class="col-sm-1 inputJornada"})
+                                                    </td>
+                                                    <td>
+                                                        <input type="date" asp-for="@Model.Edicion.FechasJornadas[i].Fecha" class="form-control inputFecha"/>
+                                                    </td>
+                                                    @if (i > 0)
+                                                    {
+                                                        <td align="center">
+                                                            <i class="fas fa-copy iconoCopia"></i>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        @if (Model.Edicion.FechasJornadas.Count == 0)
+                        {
+                            <input type="submit" class="btn btn-primary" value="Generar jornadas" asp-page-handler="GenerarJornadas" />
+                        }
+                        else
+                        {
+                            <input type="submit" class="btn btn-primary" value="Generar Partidos" asp-page-handler="GenerarPartidos" />                            
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="card collapse" id="collapsePartidosFG">
+                <div class="card-body">
+                    <div class="row">
+                        @if (Model.Edicion.Grupos.Count > 0 && Model.Edicion.Grupos.First().Equipos.Count>0)
+                        {
+                            <div class="row">
+                                @for (int i = 0; i < Model.Edicion.Grupos.Count / 2; i++)
+                                {
+                                    <div class="col m-1" style="background-color:lightgray">
+                                        <table class="table table-responsive-md">
+                                            <thead>
+                                                <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                                <tr>
+                                                    <th>Jornada</th>
+                                                    <th>Nº Partido</th>
+                                                    <th>Local</th>
+                                                    <th>Visitante</th>
+                                                    <th>Fecha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int j = 0; j < Model.Edicion.Grupos[i].Partidos.Count; j++)
+                                                {
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].NumPartido)
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Jornada)
+                                                    var listaEquipos = new SelectList(Model.Edicion.Grupos[i].Equipos.Select(e=>e.Nombre));
+                                                    <tr>
+                                                        <td>
+                                                            @Html.EditorFor(m =>Model.Edicion.Grupos[i].Partidos[j].Jornada, new {@class="col-sm-1"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m =>Model.Edicion.Grupos[i].Partidos[j].Label, new {@class="col-sm-1"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Partidos[j].Local, listaEquipos,"Seleccionar equipo", new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo", new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].FechaHora, new{@class="form-control"})
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row">
+                                @for (int i = Model.Edicion.Grupos.Count / 2; i < Model.Edicion.Grupos.Count; i++)
+                                {
+                                    <div class="col m-1" style="background-color:lightgray">
+                                        <table class="table table-responsive-md">
+                                            <thead>
+                                                <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                                <tr>
+                                                    <th>Jornada</th>
+                                                    <th>Nº Partido</th>
+                                                    <th>Local</th>
+                                                    <th>Visitante</th>
+                                                    <th>Fecha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int j = 0; j < Model.Edicion.Grupos[i].Partidos.Count; j++)
+                                                {
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].NumPartido)
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Jornada)
+                                                    var listaEquipos = new SelectList(Model.Edicion.Grupos[i].Equipos.Select(e => e.Nombre));
+                                                    <tr>
+                                                        <td>
+                                                            @Html.EditorFor(m =>Model.Edicion.Grupos[i].Partidos[j].Jornada, new {@class="col-sm-1"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m =>Model.Edicion.Grupos[i].Partidos[j].Label, new {@class="col-sm-1"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Partidos[j].Local, listaEquipos,"Seleccionar equipo", new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.DropDownListFor(m=>Model.Edicion.Grupos[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo", new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].FechaHora, new{@class="form-control"})
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Guardar Partidos" asp-page-handler="GuardarPartidos" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleCard() {
+        var card = document.querySelector('.card'); // Seleccionar la tarjeta
+        card.classList.toggle('card-hidden'); // Agregar o quitar la clase para ocultar/mostrar la tarjeta
+    };
+    // Obtén todos los iconos de copia
+    var iconosCopia = document.getElementsByClassName("iconoCopia");
+
+    // Agrega un evento de clic a cada icono de copia
+    for (var i = 0; i < iconosCopia.length; i++) {
+        iconosCopia[i].addEventListener("click", function () {
+            // Obtiene el elemento tr padre del icono de copia
+            var filaActual = this.parentElement.parentElement;
+            // Obtiene el elemento tr anterior
+            var filaAnterior = filaActual.previousElementSibling;
+            // Verifica si hay una fila anterior
+            if (filaAnterior) {
+                // Obtiene el valor de la fecha de la fila anterior
+                var fechaAnterior = filaAnterior.querySelector(".inputFecha").value;
+                // Obtiene el input de fecha de la fila actual
+                var inputFechaActual = filaActual.querySelector(".inputFecha");
+                // Copia el valor de la fecha anterior al input de fecha actual
+                inputFechaActual.value = fechaAnterior;
+            }
+        });
+    }
+</script>
