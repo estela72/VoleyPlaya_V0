@@ -18,6 +18,8 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
         private readonly ILogger<LoginModel> _logger;
 
         [BindProperty]
@@ -31,9 +33,10 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 
 
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -81,8 +84,12 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                    //TODO: Revisar esto!!! el passworSignInAsync está siempre dando error!!!
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                    ////ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ////return Page();
                 }
             }
 

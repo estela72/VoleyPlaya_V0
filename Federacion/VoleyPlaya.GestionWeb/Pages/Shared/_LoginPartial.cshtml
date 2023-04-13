@@ -7,6 +7,15 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        @if (User.IsInRole(eRoles.Admin.ToString()))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/RegisterRequests">
+                    Solicitudes
+                    <span class="badge text-bg-secondary">@PendingRequests</span>
+                </a>
+            </li>
+        }
         <li class="nav-item">
             <a  class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @User.Identity?.Name!</a>
         </li>
@@ -18,11 +27,6 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/RegisterRequests">Solicitudes
-                <span class="badge text-bg-secondary">@PendingRequests</span>
-            </a>
-        </li>
         <li class="nav-item">
             <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Registro</a>
         </li>

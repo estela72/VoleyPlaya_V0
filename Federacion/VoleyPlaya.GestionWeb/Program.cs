@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using VoleyPlaya.Domain;
+using VoleyPlaya.GestionWeb.Areas.Identity;
 using VoleyPlaya.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<VoleyPlayaDbContext>();
 
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+
+await builder.Services.AddApplicationRoles();
+await builder.Services.AddAdminUsers();
 
 var app = builder.Build();
 
@@ -44,7 +49,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
@@ -53,3 +58,4 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
