@@ -11,9 +11,9 @@ namespace VoleyPlaya.Repository.Models
 {
     public class Partido:Entity   
     {
-        EdicionGrupo _edicionGrupo;
-        Equipo _local;
-        Equipo _visitante;
+        EdicionGrupo? _edicionGrupo;
+        Equipo? _local;
+        Equipo? _visitante;
         int? _resultadoLocal;
         int? _resultadoVisitante;
         int? _jornada;
@@ -22,7 +22,7 @@ namespace VoleyPlaya.Repository.Models
         string? _pista;
         string? _label;
 
-        ICollection<ParcialPartido> _parciales;
+        ICollection<ParcialPartido>? _parciales;
 
         public Partido()
         {
@@ -39,9 +39,9 @@ namespace VoleyPlaya.Repository.Models
             _visitante = visitante;
         }
 
-        public EdicionGrupo Grupo { get => _edicionGrupo; set => _edicionGrupo = value; }
-        public Equipo Local { get => _local; set => _local = value; }
-        public Equipo Visitante { get => _visitante; set => _visitante = value; }
+        public EdicionGrupo? Grupo { get => _edicionGrupo; set => _edicionGrupo = value; }
+        public Equipo? Local { get => _local; set => _local = value; }
+        public Equipo? Visitante { get => _visitante; set => _visitante = value; }
         public int? ResultadoLocal { get => _resultadoLocal; set => _resultadoLocal = value; }
         public int? ResultadoVisitante { get => _resultadoVisitante; set => _resultadoVisitante = value; }
         public int? Jornada { get => _jornada; set => _jornada = value; }
@@ -49,7 +49,7 @@ namespace VoleyPlaya.Repository.Models
         public DateTime? FechaHora { get => _fechaHora; set => _fechaHora = value; }
         public string? Pista { get => _pista; set => _pista = value; }
         public string? Label { get => _label; set => _label = value; }
-        public List<ParcialPartido> Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
+        public List<ParcialPartido>? Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
 
         public override bool Equals(object obj)
         {

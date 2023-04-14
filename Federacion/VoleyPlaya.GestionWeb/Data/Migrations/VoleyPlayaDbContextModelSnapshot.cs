@@ -414,7 +414,7 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<int?>("EdicionGrupoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EdicionId")
+                    b.Property<int?>("EdicionId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Ganados")
@@ -452,12 +452,10 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     b.HasIndex("EdicionGrupoId");
 
-                    b.HasIndex("EdicionId");
-
-                    b.HasIndex("Nombre")
+                    b.HasIndex("EdicionId", "EdicionGrupoId", "Nombre")
                         .IsUnique()
                         .HasDatabaseName("IX_Equipo")
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .HasFilter("[EdicionId] IS NOT NULL AND [EdicionGrupoId] IS NOT NULL AND [Nombre] IS NOT NULL");
 
                     b.ToTable("Equipos");
                 });
@@ -559,16 +557,16 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("EquipoLocalId")
+                    b.Property<int?>("EquipoLocalId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EquipoVisitanteId")
+                    b.Property<int?>("EquipoVisitanteId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("FechaHora")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GrupoId")
+                    b.Property<int?>("GrupoId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Jornada")
@@ -706,18 +704,21 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.HasOne("VoleyPlaya.Repository.Models.Categoria", "Categoria")
                         .WithMany("Ediciones")
                         .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_dbo.EdicionCategoria_Id");
 
                     b.HasOne("VoleyPlaya.Repository.Models.Competicion", "Competicion")
                         .WithMany("Ediciones")
                         .HasForeignKey("CompeticionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_dbo.EdicionCompeticion_Id");
 
                     b.HasOne("VoleyPlaya.Repository.Models.Temporada", "Temporada")
                         .WithMany("Ediciones")
                         .HasForeignKey("TemporadaId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_dbo.EdicionTemporada_Id");
 
@@ -733,7 +734,7 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.HasOne("VoleyPlaya.Repository.Models.Edicion", "Edicion")
                         .WithMany("Grupos")
                         .HasForeignKey("EdicionId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("Fk_dbo.EdicionGrupoEdicion_Id");
 
@@ -744,13 +745,12 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                 {
                     b.HasOne("VoleyPlaya.Repository.Models.EdicionGrupo", "EdicionGrupo")
                         .WithMany("Equipos")
-                        .HasForeignKey("EdicionGrupoId");
+                        .HasForeignKey("EdicionGrupoId")
+                        .HasConstraintName("FK_dbo.Equipo_dbo.EdicionGrupo_Id");
 
                     b.HasOne("VoleyPlaya.Repository.Models.Edicion", "Edicion")
                         .WithMany("Equipos")
                         .HasForeignKey("EdicionId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired()
                         .HasConstraintName("FK_dbo.Equipo_dbo.Edicion_Id");
 
                     b.Navigation("Edicion");
@@ -763,7 +763,7 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.HasOne("VoleyPlaya.Repository.Models.Edicion", "Edicion")
                         .WithMany("Jornadas")
                         .HasForeignKey("EdicionId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("Fk_dbo.EdicionJornada_Id");
 
@@ -787,20 +787,16 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.HasOne("VoleyPlaya.Repository.Models.Equipo", "Local")
                         .WithMany("Locales")
                         .HasForeignKey("EquipoLocalId")
-                        .IsRequired()
                         .HasConstraintName("FK_dbo.PartidoLocal_Id");
 
                     b.HasOne("VoleyPlaya.Repository.Models.Equipo", "Visitante")
                         .WithMany("Visitantes")
                         .HasForeignKey("EquipoVisitanteId")
-                        .IsRequired()
                         .HasConstraintName("FK_dbo.PartidoVisitante_Id");
 
                     b.HasOne("VoleyPlaya.Repository.Models.EdicionGrupo", "Grupo")
                         .WithMany("Partidos")
                         .HasForeignKey("GrupoId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired()
                         .HasConstraintName("FK_dbo.PartidoEdicion_Id");
 
                     b.Navigation("Grupo");

@@ -29,7 +29,7 @@
                             @Html.DisplayFor(modelItem => item.CategoriaStr)
                             @Html.DisplayFor(modelItem => item.GeneroStr)
                         </td>
-                        @if (item.NumGrupos > 0)
+                        @*@if (item.NumGrupos > 0)
                         {
                             <form asp-page-handler="Grupos" method="post">
                             @foreach (var grupo in item.Grupos)
@@ -39,10 +39,10 @@
                                 </td>
                             }
                             </form>
-                        }
+                        }*@
                         <td>
                             <form asp-page-handler="Delete" method="post">
-                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Nombre"> Editar</a>
+                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Id"> Editar</a>
                                 <button class="btn btn-danger">Borrar</button>
                                 <input type="hidden" name="id" value="@item.Id" />
                                 @*<a class="btn btn-primary" asp-page="./Calendario" asp-route-id="@item.Id">

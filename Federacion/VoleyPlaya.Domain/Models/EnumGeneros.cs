@@ -8,9 +8,9 @@ namespace VoleyPlaya.Domain.Models
 {
     public enum EnumGeneros
     {
-        None,
         Masculino,
         Femenino,
-        Mixto
+        Mixto,
+        None
     }
 }

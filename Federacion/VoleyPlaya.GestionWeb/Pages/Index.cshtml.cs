@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : VPPageModel
     {
         private readonly ILogger<IndexModel> _logger;
 

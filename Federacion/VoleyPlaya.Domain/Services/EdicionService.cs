@@ -19,7 +19,7 @@ namespace VoleyPlaya.Domain.Services
         IEnumerable<Edicion> EdicionesFromJson(string jsonEdiciones);
         EdicionGrupo GetGrupoFromJson(string jsonEdicion);
         Task<string> GetEdicionByName(string id);
-        Task UpdateEdicionAsync(Edicion edicion, string paso);
+        Task UpdateEdicionAsync(Edicion edicion);
         Task<string> GetEdicionById(int id);
         Task DeleteEdicion(string nombre);
         Task DeleteEdicion(int id);
@@ -35,6 +35,7 @@ namespace VoleyPlaya.Domain.Services
         Task UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equipos);
         Task UpdateGruposAsync(Edicion edicion);
         Task UpdateJornadasAsync(Edicion edicion);
+        Task<string> GetTipoCalendarioEdicion(int id);
     }
     public class EdicionService : IEdicionService
     {
@@ -71,10 +72,10 @@ namespace VoleyPlaya.Domain.Services
             return await _service.GetEdicionAsync(id);
         }
 
-        public async Task UpdateEdicionAsync(Edicion edicion, string paso)
+        public async Task UpdateEdicionAsync(Edicion edicion)
         {
             string jsonString = JsonSerializer.Serialize(edicion);
-            await _service.SaveEdicionAsync(jsonString, paso);
+            await _service.SaveEdicionAsync(jsonString);
         }
 
         public async Task<string> GetEdicionById(int id)
@@ -182,6 +183,11 @@ namespace VoleyPlaya.Domain.Services
         public static string GetNombreEdicion(string temporada, string competicion, string categoria, string genero)
         {
             return temporada + "_" + competicion + "_" + categoria + "_" + genero;
+        }
+
+        public Task<string> GetTipoCalendarioEdicion(int id)
+        {
+            return _service.GetTipoCalendarioEdicion(id);
         }
     }
 }

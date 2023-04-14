@@ -5,10 +5,13 @@ using VoleyPlaya.Domain.Services;
 using System.Collections.ObjectModel;
 using System.Text.Json.Nodes;
 using VoleyPlaya.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
+using VoleyPlaya.GestionWeb.Pages;
 
 namespace VoleyPlaya.Gestion.Web.Views.Edicion
 {
-    public class EdicionGrupoModel : PageModel
+    [Authorize(Policy = "CompeticionesOnly")]
+    public class EdicionGrupoModel : VPPageModel
     {
         IEdicionService _service;
         [BindProperty]
