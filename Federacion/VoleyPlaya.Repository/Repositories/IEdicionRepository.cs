@@ -31,6 +31,8 @@ namespace VoleyPlaya.Repository.Repositories
         Task<bool> Remove(string edicionName);
 
         Task<bool> Remove(int id);
+        Task<Edicion> GetFullEdicionAsync(int id);
+        Task<Edicion> GetFullEdicionAsync(string nombre);
     }
     public class EdicionRepository : Repository<Edicion>, IEdicionRepository
     {
@@ -45,9 +47,9 @@ namespace VoleyPlaya.Repository.Repositories
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
             string genero, string tipoCalendario, string lugar)
         {
-            var dto = await FindAsync(c => c.Temporada.Id.Equals(temporadaDto.Id)
-                && c.Competicion.Id.Equals(competicionDto.Id)
-                && c.Categoria.Id.Equals(categoriaDto.Id)
+            var dto = await FindAsync(c => c.Temporada.Nombre.Equals(temporadaDto.Nombre)
+                && c.Competicion.Nombre.Equals(competicionDto.Nombre)
+                && c.Categoria.Nombre.Equals(categoriaDto.Nombre)
                 && c.Genero!.Equals(genero)
                 );
             if (dto == null)
@@ -76,14 +78,33 @@ namespace VoleyPlaya.Repository.Repositories
                 .Include(h => h.Competicion)
                 .Include(h => h.Categoria)
                 .Include(h => h.Grupos)
-                //.ThenInclude(g=>g.Partidos).ThenInclude(p => p.Parciales)
-                //.Include(h => h.Jornadas)
-                //.Include(h => h.Grupos)
-                //.ThenInclude(g=>g.Equipos);
                 ;
             return await ediciones.ToListAsync();
         }
-
+        public async Task<Edicion> GetFullEdicionAsync(int id)
+        {
+            var edicion = await FindIncludingAsync(e => e.Id.Equals(id),
+                e=>e.Temporada, e=>e.Competicion, e=>e.Categoria, e => e.Grupos, e => e.Equipos, e => e.Jornadas);
+            // Cargar las listas de cada grupo
+            foreach (var grupo in edicion.Grupos)
+            {
+                Context.Entry(grupo).Collection(g => g.Equipos).Load();
+                Context.Entry(grupo).Collection(g => g.Partidos).Load();
+            }
+            return edicion;
+        }
+        public async Task<Edicion> GetFullEdicionAsync(string nombre)
+        {
+            var edicion = await FindIncludingAsync(e => e.Nombre.Equals(nombre),
+                e => e.Temporada, e => e.Competicion, e => e.Categoria, e => e.Grupos, e => e.Equipos, e => e.Jornadas);
+            // Cargar las listas de cada grupo
+            foreach (var grupo in edicion.Grupos)
+            {
+                Context.Entry(grupo).Collection(g => g.Equipos).Load();
+                Context.Entry(grupo).Collection(g => g.Partidos).Load();
+            }
+            return edicion;
+        }
         public async Task<bool> Remove(string edicionName)
         {
             var dto = await GetByNameAsync(edicionName);

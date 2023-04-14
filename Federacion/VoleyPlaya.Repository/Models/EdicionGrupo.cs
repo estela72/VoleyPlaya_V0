@@ -15,8 +15,8 @@ namespace VoleyPlaya.Repository.Models
         string _tipo;
 
         Edicion _edicion;
-        HashSet<Equipo> _equipos;
-        HashSet<Partido> _partidos;
+        HashSet<Equipo>? _equipos;
+        HashSet<Partido>? _partidos;
 
         public EdicionGrupo()
         {
@@ -27,12 +27,18 @@ namespace VoleyPlaya.Repository.Models
         //public int NumEquipos { get => _numEquipos; set => _numEquipos = value; }
         public string Tipo { get => _tipo; set => _tipo = value; }
         public virtual Edicion Edicion { get => _edicion; set => _edicion = value; }
-        public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
-        public HashSet<Partido> Partidos { get => _partidos; set => _partidos = value; }
+        public HashSet<Equipo>? Equipos { get => _equipos; set => _equipos = value; }
+        public HashSet<Partido>? Partidos { get => _partidos; set => _partidos = value; }
 
         internal void AddEquipo(Equipo equipoDto)
         {
-            _equipos.Add(equipoDto);
+            if (_equipos.Contains(equipoDto))
+            {
+                var equi = _equipos.Single(e => e.GetHashCode().Equals(equipoDto.GetHashCode()));
+                equi = equipoDto;
+            }
+            else
+                _equipos.Add(equipoDto);
         }
 
         internal void AddPartido(Partido partidoDto)

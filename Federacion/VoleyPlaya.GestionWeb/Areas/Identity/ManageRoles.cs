@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Hosting;
 
 using VoleyPlaya.Domain.Services;
@@ -58,7 +59,6 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
                     await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Resultados.ToString());
                 }
             }
-
         }
 
         public static async Task AddApplicationRoles(this IServiceCollection services)
@@ -70,7 +70,18 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
                     await CreateRole(roleManager, rol.ToString());
             }
         }
-
+        public static async Task AddPolicies(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                    policy.RequireRole(eRoles.Admin.ToString()));
+                options.AddPolicy("CompeticionesOnly", policy =>
+                    policy.RequireRole(eRoles.Competiciones.ToString()));
+                options.AddPolicy("ResultadosOnly", policy =>
+                    policy.RequireRole(eRoles.Resultados.ToString()));
+            });
+        }
         // Crear un nuevo rol
         public static async Task CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
         {

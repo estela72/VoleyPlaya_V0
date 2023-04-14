@@ -8,7 +8,7 @@ using VoleyPlaya.Domain.Services;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    public class EquiposModel : PageModel
+    public class EquiposModel : VPPageModel
     {
         IEdicionService _service;
         [BindProperty]

@@ -8,12 +8,15 @@ namespace VoleyPlaya.Domain.Models
 {
     public enum EnumCategorias
     {
-        None,
         Senior,
         Sub21,
         Sub19,
         Sub17,
+        Cadete,
+        Infantil,
         Alevin,
-        Benjamin
+        Benjamin,
+        Minibenjamin,
+        None
     }
 }

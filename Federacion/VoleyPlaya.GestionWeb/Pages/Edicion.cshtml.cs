@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,10 +8,12 @@ using System.Text.Json.Nodes;
 
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
+using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    public class EdicionModel : PageModel
+    [Authorize(Policy = "CompeticionesOnly")]
+    public class EdicionModel : VPPageModel
     {
         IEdicionService _service;
 
@@ -40,6 +43,7 @@ namespace VoleyPlaya.GestionWeb.Pages
         [BindProperty]
         public int NumJornadas { get; set; }
 
+
         public EdicionModel (IEdicionService service)
         {
             _service = service;
@@ -48,7 +52,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
             PasoActual = 1;
         }
-        public async Task<IActionResult> OnGetAsync(string? id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
@@ -56,53 +60,147 @@ namespace VoleyPlaya.GestionWeb.Pages
                 await Fill();
                 return Page();
             }
-            EdicionName = id;
-
-            await GetEdicion(id);
-            await Fill();
-
-            if (Edicion == null)
+            try
             {
-                return NotFound();
+                await GetEdicion(id);
+                await Fill();
+
+                if (Edicion == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception x)
+            {
+                ErrorMessage = "Error cargando la competición: "+x.Message;
             }
             return Page();
         }
-        private async Task GetEdicion(string? id)
+        private async Task GetEdicion(int? id)
         {
-            var jsonEdicion = await _service.GetEdicionByName(id);
-            Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+            Arguments.Check(new object[] { id });
+            try
+            {
+                var jsonEdicion = await _service.GetEdicionById(id.Value);
+                Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+            }
+            catch(Exception x)
+            {
+                throw new Exception("No se puede obtener la competición con id " + id);
+            }
+        }
+        private async Task GetEdicion(string nombre)
+        {
+            try
+            {
+                Arguments.Check(new object[] { nombre });
+                var jsonEdicion = await _service.GetEdicionByName(nombre);
+                Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+            }
+            catch (Exception x)
+            {
+                throw new Exception("No se puede obtener la competición con nombre " + nombre);
+            }
         }
         private async Task Fill()
-        { 
-            if (Edicion.Id != 0)
-                PasoActual = 1;
-            if (Edicion.Equipos.Count > 0)
-                PasoActual = 2;
-            if (Edicion.Grupos!.Count > 0)
-                PasoActual = 3;
-            if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count>0)
-                PasoActual = 4;
+        {
+            try
+            {
+                if (Edicion.Id != 0)
+                    PasoActual = 1;
+                if (Edicion.Equipos.Count > 0)
+                    PasoActual = 2;
+                if (Edicion.Grupos!.Count > 0)
+                    PasoActual = 3;
+                if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count > 0)
+                    PasoActual = 4;
 
-            ListaEquipos = new SelectList(Edicion.Equipos.OrderBy(e => e.Nombre).Select(e => e.Nombre).ToList());
-            TipoCalendarios = new SelectList(await TablaCalendario.LoadTipos());
-            if (string.IsNullOrEmpty(Edicion.TipoCalendario))
-                TipoCalendarioSeleccionado = TipoCalendarios.First().Text;
-            else
-                TipoCalendarioSeleccionado = Edicion.TipoCalendario;
-            EdicionName = Edicion.Nombre;
-            if (Edicion.Grupos.Count > 0)
-            {
-                int maxEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
-                NumVueltas = await TablaCalendario.NumVueltasPosibles(maxEquipos);
-                NumJornadas = await TablaCalendario.NumJornadas(maxEquipos, NumVueltas);
+                ListaEquipos = new SelectList(Edicion.Equipos.OrderBy(e => e.Nombre).Select(e => e.Nombre).ToList());
+                TipoCalendarios = new SelectList(await TablaCalendario.LoadTipos());
+                if (string.IsNullOrEmpty(Edicion.TipoCalendario))
+                    TipoCalendarioSeleccionado = TipoCalendarios.First().Text;
+                else
+                    TipoCalendarioSeleccionado = Edicion.TipoCalendario;
+                EdicionName = Edicion.Nombre;
+                if (Edicion.Grupos.Count > 0)
+                {
+                    int maxEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
+                    NumVueltas = await TablaCalendario.NumVueltasPosibles(maxEquipos);
+                    NumJornadas = await TablaCalendario.NumJornadas(maxEquipos, NumVueltas);
+                }
+                else
+                {
+                    NumVueltas = 0;
+                    NumJornadas = 0;
+                }
+                if (NumJornadas > 0 && Edicion.FechasJornadas.Count == 0)
+                {
+                    for (int i = 0; i < NumJornadas; i++)
+                    {
+                        Edicion.FechasJornadas.Add(new FechaJornada
+                        {
+                            Jornada = i + 1,
+                            Fecha = DateTime.Today
+                        });
+                    }
+                }
             }
-            else
+            catch(Exception x)
             {
-                NumVueltas = 0;
-                NumJornadas = 0;
+                throw new Exception("No se pueden completar los datos de la competición");
             }
-            if (NumJornadas>0 && Edicion.FechasJornadas.Count==0)
+        }
+        public async Task<IActionResult> OnPostCompeticionAsync()
+        {
+            try
             {
+                await _service.UpdateEdicionAsync(Edicion);
+                EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
+                await GetEdicion(EdicionName);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los datos generales de la competición: " + x.Message;
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostEquiposAsync(IFormFile file, int id)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    // Manejar el caso en que no se seleccionó ningún archivo
+                    ModelState.AddModelError("file", "Por favor selecciona un archivo Excel.");
+                    return Page();
+                }
+
+                // Leer excel de equipos y cargarlos en la edición
+                await Edicion.ImportEquipos(file);
+                await _service.UpdateEquiposEdicionAsync(id, Edicion);
+
+                await GetEdicion(id);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los equipos de la competición: " + x.Message;
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostFaseAsync()
+        {
+            try
+            {
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                    await GetEdicion(EdicionName);
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                    await GetEdicion(EdicionName);
+
+                dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
+                NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
+                await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado);
                 for (int i = 0; i < NumJornadas; i++)
                 {
                     Edicion.FechasJornadas.Add(new FechaJornada
@@ -111,130 +209,133 @@ namespace VoleyPlaya.GestionWeb.Pages
                         Fecha = DateTime.Today
                     });
                 }
+                await _service.UpdateGruposAsync(Edicion);
+                await Fill();
             }
-        }
-        public async Task<IActionResult> OnPostCompeticionAsync()
-        {
-            await _service.UpdateEdicionAsync(Edicion, "paso1");
-            EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
-            await GetEdicion(EdicionName);
-            await Fill();
-            return Page();
-        }
-        public async Task<IActionResult> OnPostEquiposAsync(IFormFile file, int id)
-        {
-            if (file == null || file.Length == 0)
+            catch (Exception x)
             {
-                // Manejar el caso en que no se seleccionó ningún archivo
-                ModelState.AddModelError("file", "Por favor selecciona un archivo Excel.");
-                return Page();
+                ErrorMessage = "Error generando y guardando los grupos de la competición: " + x.Message;
             }
-
-            // Leer excel de equipos y cargarlos en la edición
-            await Edicion.ImportEquipos(file);
-            await _service.UpdateEquiposEdicionAsync(id, Edicion);
-            string json = await _service.GetEdicionById(id);
-            Edicion = Edicion.FromJson(JsonNode.Parse(json)!);
-            await Fill();
-            return Page();
-        }
-        public async Task<IActionResult> OnPostFaseAsync()
-        {
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                await GetEdicion(EdicionName);
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                await GetEdicion(EdicionName);
-
-            dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
-            NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
-            await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado);
-            for (int i = 0; i < NumJornadas; i++)
-            {
-                Edicion.FechasJornadas.Add(new FechaJornada
-                {
-                    Jornada = i + 1,
-                    Fecha = DateTime.Today
-                });
-            }
-            await _service.UpdateGruposAsync(Edicion);
-            await Fill();
-            
             return Page();
         }
         public async Task<IActionResult> OnPostGuardarGruposAsync()
         {
-            var grupos = Edicion.Grupos;
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                await GetEdicion(EdicionName);
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                await GetEdicion(EdicionName);
+            try
+            {
+                var grupos = Edicion.Grupos;
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                    await GetEdicion(EdicionName);
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                    await GetEdicion(EdicionName);
 
-            Edicion.Grupos = grupos;
+                Edicion.Grupos = grupos;
 
-            await _service.UpdateGruposAsync(Edicion);
-            await GetEdicion(Edicion.Nombre);
-            await Fill();
+                await _service.UpdateGruposAsync(Edicion);
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los grupos de la competición: " + x.Message;
+            }
             return Page();
         }
         public async Task<IActionResult> OnPostDeleteEquipoAsync(int id)
         {
-            await _service.DeleteEquipoAsync(id);
-            await GetEdicion(Edicion.Nombre);
-            await Fill();
+            try
+            {
+                await _service.DeleteEquipoAsync(id);
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error eliminando un equipo de la competición: " + x.Message;
+            }
             return Page();
         }
         public async Task<IActionResult> OnPostGenerarJornadasAsync()
         {
-            var fechas = Edicion.FechasJornadas;
-            await GetEdicion(Edicion.Nombre);
-            for (int i = 0; i < NumJornadas; i++)
+            try
             {
-                Edicion.FechasJornadas.Add(new FechaJornada
+                var fechas = Edicion.FechasJornadas;
+                await GetEdicion(Edicion.Nombre);
+                for (int i = 0; i < NumJornadas; i++)
                 {
-                    Jornada = i + 1,
-                    Fecha = DateTime.Today
-                });
+                    Edicion.FechasJornadas.Add(new FechaJornada
+                    {
+                        Jornada = i + 1,
+                        Fecha = DateTime.Today
+                    });
+                }
+                await Fill();
             }
-            await Fill();
-
+            catch (Exception x)
+            {
+                ErrorMessage = "Error generando las jornadas de la competición: " + x.Message;
+            }
             return Page();
         }
         public async Task<IActionResult> OnPostGenerarPartidosAsync()
         {
-            var jornadas = Edicion.FechasJornadas;
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                await GetEdicion(EdicionName);
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                await GetEdicion(EdicionName);
+            try
+            {
+                var jornadas = Edicion.FechasJornadas;
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                    await GetEdicion(EdicionName);
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                    await GetEdicion(EdicionName);
+                if (Edicion.TipoCalendario == null)
+                    Edicion.TipoCalendario = await GetTipoCalendarioEdicion(Edicion.Id);
 
-            Edicion.FechasJornadas = jornadas;
+                Edicion.FechasJornadas = jornadas;
 
-            // lo primero guardar las jornadas
-            await _service.UpdateJornadasAsync(Edicion);
-            int numEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
-            foreach (EdicionGrupo grupo in Edicion.Grupos)
-                await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
-            await Fill();
-
+                // lo primero guardar las jornadas
+                await _service.UpdateJornadasAsync(Edicion);
+                int numEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
+                foreach (EdicionGrupo grupo in Edicion.Grupos)
+                {
+                    await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
+                    await _service.UpdatePartidosAsync(grupo);
+                }
+                //await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error generando los partidos de la competición: " + x.Message;
+            }
             return Page();
         }
+
+        private async Task<string> GetTipoCalendarioEdicion(int id)
+        {
+            return await _service.GetTipoCalendarioEdicion(id);
+        }
+
         public async Task<IActionResult> OnPostGuardarPartidosAsync()
         {
-            var grupos = Edicion.Grupos;
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                await GetEdicion(EdicionName);
-            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                await GetEdicion(EdicionName);
-            for (int i= 0; i < Edicion.Grupos.Count;i++)
-                Edicion.Grupos[i].Partidos = grupos[i].Partidos;
+            try
+            {
+                var grupos = Edicion.Grupos;
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                    await GetEdicion(EdicionName);
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                    await GetEdicion(EdicionName);
+                for (int i = 0; i < Edicion.Grupos.Count; i++)
+                    Edicion.Grupos[i].Partidos = grupos[i].Partidos;
 
-            foreach(var grupo in Edicion.Grupos)
-                await _service.UpdatePartidosAsync(grupo);
+                foreach (var grupo in Edicion.Grupos)
+                    await _service.UpdatePartidosAsync(grupo);
 
-            await GetEdicion(Edicion.Nombre);
-            await Fill();
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los partidos de la competición: " + x.Message;
+            }
             return Page();
-
         }
     }
 }

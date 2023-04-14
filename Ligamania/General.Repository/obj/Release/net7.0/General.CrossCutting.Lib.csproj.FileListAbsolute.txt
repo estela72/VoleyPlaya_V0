@@ -1,0 +1,14 @@
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Release\net7.0\General.CrossCutting.Lib.deps.json
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Release\net7.0\General.CrossCutting.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Release\net7.0\General.CrossCutting.Lib.pdb
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\bin\Release\net7.0\General.CrossCutting.Lib.xml
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.csproj.AssemblyReference.cache
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.GeneratedMSBuildEditorConfig.editorconfig
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.AssemblyInfoInputs.cache
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.AssemblyInfo.cs
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.csproj.CoreCompileInputs.cache
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\refint\General.CrossCutting.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.xml
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\General.CrossCutting.Lib.pdb
+D:\srcRepository\Proyectos Estela\Ligamania\General.Repository\obj\Release\net7.0\ref\General.CrossCutting.Lib.dll

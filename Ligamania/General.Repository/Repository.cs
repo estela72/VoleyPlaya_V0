@@ -72,6 +72,8 @@ namespace General.CrossCutting.Lib
         private DbSet<T> _dbSet;
         private readonly ILogger _logger;
         protected ILogger Logger { get => _logger ?? throw new ArgumentNullException(nameof(_logger)); }
+        
+        protected DbContext Context { get { return _dbContext; } }
 
         protected DbSet<T> DbSet
         {
@@ -256,16 +258,37 @@ namespace General.CrossCutting.Lib
             return queryable;
         }
 
-        public async Task<T> FindIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
+
+        //public Task<T> FindIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        public async Task<T> FindIncludingAsync(Expression<Func<T, bool>> predicado, params Expression<Func<T, object>>[] propiedadesIncluidas)
         {
-            var entity = await FindAsync(match).ConfigureAwait(false);
-            if (entity == null) return null;
-            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+            var entity = _dbContext.Set<T>().AsQueryable();
+
+            // Aplicar el predicado de búsqueda
+            entity = entity.Where(predicado).AsQueryable<T>();
+
+            // Incluir propiedades de navegación
+            foreach (var propiedad in propiedadesIncluidas)
             {
-                await _dbContext.Entry(entity).Reference(includeProperty).LoadAsync().ConfigureAwait(false);
+                entity = entity.Include(propiedad);
             }
-            return entity;
+
+            return await entity.SingleOrDefaultAsync();
         }
+
+        //public async Task<T> FindIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
+        //{
+        //    var entity = await FindAsync(match).ConfigureAwait(false);
+        //    if (entity == null) return null;
+        //    foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+        //    {
+        //        await _dbContext.Entry(entity).Reference(includeProperty).LoadAsync().ConfigureAwait(false);
+        //    }
+        //    return entity;
+        //}
 
         public async Task<IQueryable<T>> FindAllQueryableIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
         {

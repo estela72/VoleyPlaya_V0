@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    public class PrivacyModel : PageModel
+    public class PrivacyModel : VPPageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
 

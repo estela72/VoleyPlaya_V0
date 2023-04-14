@@ -7,7 +7,7 @@ namespace VoleyPlaya.GestionWeb.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
+    public class ErrorModel : VPPageModel
     {
         public string? RequestId { get; set; }
 

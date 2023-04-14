@@ -9,6 +9,12 @@ using VoleyPlaya.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var config = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.{environment}.json")
+    .Build();
+
 // Add services
 builder.Services.AddDomainStartup();
 
@@ -27,6 +33,7 @@ builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 await builder.Services.AddApplicationRoles();
 await builder.Services.AddAdminUsers();
+await builder.Services.AddPolicies();
 
 var app = builder.Build();
 

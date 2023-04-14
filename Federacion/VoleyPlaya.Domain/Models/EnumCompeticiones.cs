@@ -14,12 +14,12 @@ namespace VoleyPlaya.Domain.Models
         { 
             get
             {
-                if (!_competiciones.ContainsKey(0)) _competiciones.Add(0, "None");
+                if (!_competiciones.ContainsKey(0)) _competiciones.Add(0, "Juegos Deportivos");
                 if (!_competiciones.ContainsKey(1)) _competiciones.Add(1, "Circuito Regional Asturiano");
-                if (!_competiciones.ContainsKey(2)) _competiciones.Add(2, "Juegos Deportivos");
-                if (!_competiciones.ContainsKey(3)) _competiciones.Add(3, "Circuito Nacional");
-                if (!_competiciones.ContainsKey(4)) _competiciones.Add(4, "Copa Principado");
-                if (!_competiciones.ContainsKey(5)) _competiciones.Add(5, "Rey de la Pista");
+                if (!_competiciones.ContainsKey(2)) _competiciones.Add(2, "Rey de la Pista");
+                if (!_competiciones.ContainsKey(3)) _competiciones.Add(3, "Copa Principado");
+                if (!_competiciones.ContainsKey(4)) _competiciones.Add(4, "Circuito Nacional");
+                if (!_competiciones.ContainsKey(5)) _competiciones.Add(5, "None");
                 return _competiciones;
             }
         }
