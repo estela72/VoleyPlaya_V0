@@ -9,6 +9,16 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Repository.Models
 {
+    public class ParcialPartidoVis
+    {
+        public int ResultadoLocal { get; set; }
+        public int ResultadoVisitante { get; set; }
+        public ParcialPartidoVis(ParcialPartido parcial)
+        {
+            ResultadoLocal = parcial.ResultadoLocal.Value;
+            ResultadoVisitante = parcial.ResultadoVisitante.Value;
+        }
+    }
     public class ParcialPartido : Entity
     {
         //int _partidoId;

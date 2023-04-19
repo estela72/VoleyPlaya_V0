@@ -33,6 +33,8 @@ namespace VoleyPlaya.Repository.Repositories
         Task<bool> Remove(int id);
         Task<Edicion> GetFullEdicionAsync(int id);
         Task<Edicion> GetFullEdicionAsync(string nombre);
+        Task<Edicion> GetBasicAsync(int id);
+
     }
     public class EdicionRepository : Repository<Edicion>, IEdicionRepository
     {
@@ -69,7 +71,12 @@ namespace VoleyPlaya.Repository.Repositories
             }
             return dto;
         }
-
+        public async Task<Edicion> GetBasicAsync(int id)
+        {
+            var edicion = await FindIncludingAsync(e => e.Id.Equals(id),
+                e => e.Temporada, e => e.Competicion, e => e.Categoria);
+            return edicion;
+        }
         public async Task<IEnumerable<Edicion>> GetFullAsync()
         {
             IQueryable<Edicion> ediciones = await GetAllQueryableAsync();

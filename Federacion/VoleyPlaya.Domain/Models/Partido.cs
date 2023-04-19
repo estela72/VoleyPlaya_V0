@@ -43,6 +43,25 @@ namespace VoleyPlaya.Domain.Models
 
             return partido;
         }
+        internal static Partido FromJsonVis(JsonNode jsonPartido)
+        {
+            Partido partido = new()
+            {
+                Id = jsonPartido["Id"]!.GetValue<int>()!,
+                FechaHora = jsonPartido["FechaHora"]!.GetValue<DateTime>()!,
+                Jornada = jsonPartido["Jornada"]!.GetValue<int>()!,
+                Local = jsonPartido["Local"]!.GetValue<string>()!,
+                NumPartido = jsonPartido["NumPartido"]!.GetValue<int>()!,
+                Pista = jsonPartido["Pista"]!.GetValue<string>()!,
+                Visitante = jsonPartido["Visitante"]!.GetValue<string>()!,
+                Label = jsonPartido["Label"]!.GetValue<string>()!,
+                Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!,
+            };
+            partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
+            partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
+
+            return partido;
+        }
         private static string EquipoFromJson(JsonNode jsonNode)
         {
             return jsonNode["Nombre"].GetValue<string>()!;

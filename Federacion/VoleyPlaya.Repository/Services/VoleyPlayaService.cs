@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Org.BouncyCastle.Utilities.Collections;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -6,10 +8,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Markup;
-
 using VoleyPlaya.Repository.Models;
+
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VoleyPlaya.Repository.Services
 {
@@ -17,7 +21,7 @@ namespace VoleyPlaya.Repository.Services
     {
         private IVoleyPlayaUnitOfWork _voleyPlayaUoW;
         public VoleyPlayaService(IVoleyPlayaUnitOfWork unitOfWork) => _voleyPlayaUoW= unitOfWork;
-        JsonSerializerOptions Options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
+        JsonSerializerOptions Options = new() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
 
         public async Task<bool> DeleteEdicionAsync(string edicionName)
         {
@@ -60,7 +64,11 @@ namespace VoleyPlaya.Repository.Services
             var json = JsonSerializer.Serialize<Edicion>(dto, Options);
             return json;
         }
-
+        public async Task<string> GetBasicEdicionAsync(int id)
+        {
+            var dto = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(id);
+            return JsonSerializer.Serialize<Edicion>(dto, Options);
+        }
         public string GetEdicion(string edicionName)
         {
             var dto = _voleyPlayaUoW.EdicionRepository.GetByName(edicionName);
@@ -337,6 +345,36 @@ namespace VoleyPlaya.Repository.Services
         {
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
             return edicionDto?.TipoCalendario;
+        }
+        public async Task<string> GetAllGruposAsync(int? edicionId)
+        {
+            var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.FindAllAsync(g => g.EdicionId.Equals(edicionId));
+            return JsonSerializer.Serialize<List<EdicionGrupo>>(grupos.ToList(), Options);
+        }
+
+        public async Task<string> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected)
+        {
+            if (grupoSelected != 0)
+            {
+                var partidosG = await _voleyPlayaUoW.PartidoRepository.FindAllAsync(p=>p.Grupo.Id.Equals(grupoSelected));
+                var part = partidosG.Select(p => new PartidoVis(p)).ToList();
+                var json = JsonSerializer.Serialize<List<PartidoVis>>(part);
+                return json;
+            }
+            var partidos = await _voleyPlayaUoW.PartidoRepository.FindAllAsync(p=>p.Grupo.Edicion.Id.Equals(edicionSelected));
+            var partis = partidos.Select(p => new PartidoVis(p)).ToList();
+            var json2 = JsonSerializer.Serialize<List<PartidoVis>>(partis);
+            return json2;
+        }
+        public async Task<string> GetBasicAsync(int id)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(id);
+            return JsonSerializer.Serialize<Edicion>(edicion, Options);
+        }
+        public async Task<string> GetBasicGrupoAsync(int id)
+        {
+            var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.GetBasicAsync(id);
+            return JsonSerializer.Serialize<EdicionGrupo>(grupo, Options);
         }
     }
 }

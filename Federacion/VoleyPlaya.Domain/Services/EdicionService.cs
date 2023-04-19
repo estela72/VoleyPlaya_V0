@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+using NPOI.POIFS.Crypt.Dsig;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,11 +43,16 @@ namespace VoleyPlaya.Domain.Services
         Task UpdateGruposAsync(Edicion edicion);
         Task UpdateJornadasAsync(Edicion edicion);
         Task<string> GetTipoCalendarioEdicion(int id);
+        Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId);
+        Task<List<Partido>> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected);
+        Task<List<SelectionItem>> GetListaEdiciones();
+        Task<List<SelectionItem>> GetListaGrupos(int edicionId);
+        Task<dynamic> ExportarCalendarioAsync(int competicionId, int grupoId);
     }
     public class EdicionService : IEdicionService
     {
         IVoleyPlayaService _service;
-        public EdicionService(IVoleyPlayaService service) 
+        public EdicionService(IVoleyPlayaService service)
         {
             _service = service;
         }
@@ -188,6 +200,59 @@ namespace VoleyPlaya.Domain.Services
         public Task<string> GetTipoCalendarioEdicion(int id)
         {
             return _service.GetTipoCalendarioEdicion(id);
+        }
+
+        public async Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId)
+        {
+            List<EdicionGrupo> list = new List<EdicionGrupo>();
+            var json = await _service.GetAllGruposAsync(edicionId);
+            JsonNode jsonNode = JsonNode.Parse(json);
+            JsonArray jsonArray = jsonNode.AsArray();
+            foreach (var jsGrupo in jsonArray)
+                list.Add(EdicionGrupo.FromJson(jsGrupo));
+            return list;
+        }
+
+        public async Task<List<Partido>> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected)
+        {
+            List<Partido> partidos = new List<Partido>();
+            if (edicionSelected == 0) return partidos;
+            var json = await _service.GetPartidosFiltradosAsync(edicionSelected, grupoSelected);
+            JsonArray jsonArray = JsonNode.Parse(json!)!.AsArray();
+            foreach (var p in jsonArray)
+                partidos.Add(Partido.FromJsonVis(p));
+            return partidos.OrderBy(p => p.Jornada).ThenBy(p => p.Label).ThenBy(p => p.FechaHora).ToList();
+        }
+
+        public async Task<List<SelectionItem>> GetListaEdiciones()
+        {
+            var json = await _service.GetAllEdicionesAsync();
+            var ediciones = EdicionesFromJson(json);
+            return ediciones.Select(e => new SelectionItem { Id = e.Id, Item = e.Alias }).ToList();
+        }
+
+        public async Task<List<SelectionItem>> GetListaGrupos(int edicionId)
+        {
+            var grupos = await GetAllGruposAsync(edicionId);
+            return grupos.Select(g => new SelectionItem { Id = g.Id, Item = g.Name }).ToList();
+        }
+
+        public async Task<dynamic> ExportarCalendarioAsync(int competicionId, int grupoId)
+        {
+            var jsonEd = await _service.GetBasicEdicionAsync(competicionId);
+            var edicion = Edicion.FromJson(JsonNode.Parse(jsonEd)!, false);
+
+            var json = await _service.GetBasicGrupoAsync(grupoId);
+            var grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
+
+            var partidos = await GetPartidosFiltradosAsync(competicionId, grupoId);
+
+            // Descargar el archivo de Excel en el navegador del usuario
+            dynamic miObjetoDynamic = new System.Dynamic.ExpandoObject();
+            miObjetoDynamic.edicion = edicion;
+            miObjetoDynamic.grupo = grupo;
+            miObjetoDynamic.partidos = partidos;
+            return miObjetoDynamic;
         }
     }
 }

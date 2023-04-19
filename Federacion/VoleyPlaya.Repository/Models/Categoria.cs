@@ -10,13 +10,13 @@ namespace VoleyPlaya.Repository.Models
 {
     public class Categoria:Entity
     {
-        IEnumerable<Edicion> _ediciones;
+        HashSet<Edicion> _ediciones;
 
         public Categoria()
         {
-            _ediciones = new List<Edicion>();
+            _ediciones = new HashSet<Edicion>();
         }
 
-        public IEnumerable<Edicion> Ediciones { get => _ediciones; set => _ediciones = value; }
+        public HashSet<Edicion> Ediciones { get => _ediciones; set => _ediciones = value; }
     }
 }
