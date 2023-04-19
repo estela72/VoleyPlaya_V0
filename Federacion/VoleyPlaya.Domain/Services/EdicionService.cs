@@ -48,6 +48,7 @@ namespace VoleyPlaya.Domain.Services
         Task<List<SelectionItem>> GetListaEdiciones();
         Task<List<SelectionItem>> GetListaGrupos(int edicionId);
         Task<dynamic> ExportarCalendarioAsync(int competicionId, int grupoId);
+        Task UpdatePartidosClasificacionAsync(int grupoSelected, List<Partido> partidos);
     }
     public class EdicionService : IEdicionService
     {
@@ -108,7 +109,7 @@ namespace VoleyPlaya.Domain.Services
         public async Task UpdatePartidosAsync(EdicionGrupo grupo)
         {
             string jsonString = JsonSerializer.Serialize(grupo);
-            await _service.UpdatePartidosAsync(jsonString);
+            await _service.UpdateGrupoPartidosAsync(jsonString);
         }
 
         public async Task<string> GetGrupoAsync(int id)
@@ -124,10 +125,45 @@ namespace VoleyPlaya.Domain.Services
             {
                 var local = grupo.Equipos.First(e => e.Nombre.Equals(partido.Local));
                 var visitante = grupo.Equipos.First(e => e.Nombre.Equals(partido.Visitante));
-                await local.SetLocal(partido);
-                await visitante.SetVisitante(partido);
                 partido.Resultado.Local = partido.Resultado.Sets.Count(s => s.Local > s.Visitante);
                 partido.Resultado.Visitante = partido.Resultado.Sets.Count(s => s.Visitante > s.Local);
+                local.Jugados++;
+                visitante.Jugados++;
+                if (partido.Resultado.Local > partido.Resultado.Visitante) 
+                { 
+                    local.Ganados++; 
+                    local.Puntos += 2;
+                    visitante.Perdidos++;
+                    visitante.Puntos += 1;
+                }
+                else if (partido.Resultado.Local < partido.Resultado.Visitante) 
+                {
+                    visitante.Ganados++;
+                    visitante.Puntos += 2;
+                    local.Perdidos++; 
+                    local.Puntos+= 1; 
+                }
+                local.PuntosFavor += partido.Resultado.Set1.Local;
+                local.PuntosFavor += partido.Resultado.Set2.Local;
+                local.PuntosFavor += partido.Resultado.Set3.Local;
+
+                local.PuntosContra += partido.Resultado.Set1.Visitante;
+                local.PuntosContra += partido.Resultado.Set2.Visitante;
+                local.PuntosContra += partido.Resultado.Set3.Visitante;
+
+                if (local.PuntosContra != 0)
+                   local.Coeficiente = local.PuntosFavor * 1.0 / local.PuntosContra * 1.0;
+
+                visitante.PuntosFavor += partido.Resultado.Set1.Visitante;
+                visitante.PuntosFavor += partido.Resultado.Set2.Visitante;
+                visitante.PuntosFavor += partido.Resultado.Set3.Visitante;
+
+                visitante.PuntosContra += partido.Resultado.Set1.Local;
+                visitante.PuntosContra += partido.Resultado.Set2.Local;
+                visitante.PuntosContra += partido.Resultado.Set3.Local;
+
+                if (visitante.PuntosContra != 0)
+                    visitante.Coeficiente = visitante.PuntosFavor * 1.0 / visitante.PuntosContra * 1.0;
             }
         }
         public async Task<EdicionGrupo> UpdateGrupoAsync(EdicionGrupo grupo)
@@ -138,7 +174,7 @@ namespace VoleyPlaya.Domain.Services
 
             await grupo.GenerarPartidosAsync(gr.Edicion.TipoCalendario, gr.Edicion.FechasJornadas, gr.Equipos);
             string json = JsonSerializer.Serialize(grupo);
-            await _service.UpdatePartidosAsync(json);
+            await _service.UpdateGrupoPartidosAsync(json);
 
             return grupo;
         }
@@ -253,6 +289,15 @@ namespace VoleyPlaya.Domain.Services
             miObjetoDynamic.grupo = grupo;
             miObjetoDynamic.partidos = partidos;
             return miObjetoDynamic;
+        }
+
+        public async Task UpdatePartidosClasificacionAsync(int grupoSelected, List<Partido> partidos)
+        {
+            string jsonString = JsonSerializer.Serialize(partidos);
+            var json = await _service.UpdateResultadosPartidosAsync(grupoSelected, jsonString);
+            var grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
+            await UpdateClasificacion(grupo);
+            await UpdateEquipsGrupoAsync(grupoSelected, grupo.Equipos);
         }
     }
 }

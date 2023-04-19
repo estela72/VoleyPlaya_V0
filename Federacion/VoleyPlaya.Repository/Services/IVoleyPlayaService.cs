@@ -18,7 +18,7 @@ namespace VoleyPlaya.Repository.Services
         string GetEdicion(string name);
         Task<string> GetEdicionAsync(int id);
         Task<string> GetBasicEdicionAsync(int id);
-        Task UpdatePartidosAsync(string jsonString);
+        Task UpdateGrupoPartidosAsync(string jsonString);
         Task<string> GetGrupoAsync(int id);
         Task UpdateEquiposAsync(int idGrupo, string jsonEquipos);
         Task DeleteGrupoAsync(int id);
@@ -34,5 +34,7 @@ namespace VoleyPlaya.Repository.Services
         Task<string> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected);
         Task<string> GetBasicAsync(int id);
         Task<string> GetBasicGrupoAsync(int grupoId);
+        Task<string> GetGrupoWithEquiposYPartidosAsync(int grupoId);
+        Task<string> UpdateResultadosPartidosAsync(int idGrupo, string jsonString);
     }
 }
