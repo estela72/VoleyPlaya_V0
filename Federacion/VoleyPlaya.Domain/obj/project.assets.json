@@ -2154,7 +2154,8 @@
           "Microsoft.EntityFrameworkCore.Abstractions": "7.0.4",
           "Microsoft.EntityFrameworkCore.Analyzers": "7.0.4",
           "Microsoft.EntityFrameworkCore.Relational": "7.0.4",
-          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.4"
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.4",
+          "NPOI": "2.6.0"
         },
         "compile": {
           "bin/placeholder/VoleyPlaya.Repository.dll": {}

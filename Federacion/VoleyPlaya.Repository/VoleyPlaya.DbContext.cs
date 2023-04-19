@@ -166,6 +166,8 @@ namespace VoleyPlaya.Repository
                       .HasForeignKey("EquipoVisitanteId")
                       .HasConstraintName("FK_dbo.PartidoVisitante_Id");
                 entity.Navigation(p => p.Parciales).AutoInclude();
+                entity.Navigation(p => p.Local).AutoInclude();
+                entity.Navigation(p => p.Visitante).AutoInclude();
             });
             modelBuilder.Entity<ParcialPartido>(entity =>
             {

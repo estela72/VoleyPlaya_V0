@@ -14,6 +14,11 @@ using VoleyPlaya.Repository.Services;
 
 namespace VoleyPlaya.Domain.Models
 {
+    public class SelectionItem
+    {
+        public int Id { get; set; }
+        public string Item { get; set; }
+    }
     public class Edicion : IDomainDto
     {
         public int Id { get; set; }
@@ -37,6 +42,7 @@ namespace VoleyPlaya.Domain.Models
 
         public string CategoriaStr { get => Enum.GetName(typeof(EnumCategorias), Categoria); }
         public string GeneroStr { get => Enum.GetName(typeof(EnumGeneros), Genero); }
+        public string Alias { get { return Competicion + " " + CategoriaStr + " " + GeneroStr; } }
 
         public List<Equipo> EquiposToAdd;
         public List<Equipo> EquiposToRemove;
@@ -80,7 +86,9 @@ namespace VoleyPlaya.Domain.Models
         }
         private static string NombreFromJson(JsonNode jsonNode)
         {
-            return jsonNode["Nombre"]!.GetValue<string>();
+            if (jsonNode !=null)
+                return jsonNode["Nombre"]!.GetValue<string>();
+            return "";
         }
         
         private static List<FechaJornada> JornadasFromJson(JsonArray jsonJornadas)
@@ -339,7 +347,7 @@ namespace VoleyPlaya.Domain.Models
             }
             return "La importación del archivo Excel se completó con éxito.";
         }
-
+        
         public async Task<bool> GenerarFaseGruposAsync(string calendario)
         {
             TipoCalendario = calendario;
@@ -392,5 +400,6 @@ namespace VoleyPlaya.Domain.Models
             char c = Convert.ToChar(Grupos.Max(g => g.Name));
             //Grupos.Add(NuevoGrupo(numEquiposGrupo, ref c));
         }
+
     }
 }

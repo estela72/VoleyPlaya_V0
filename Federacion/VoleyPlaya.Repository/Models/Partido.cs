@@ -9,7 +9,42 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Repository.Models
 {
-    public class Partido:Entity   
+    public class PartidoVis
+    {
+        public string Local { get; set; }
+        public string Visitante { get; set; }
+        public int Jornada { get; set; }
+        public string Label { get; set; }
+        public int ResultadoLocal { get; set; }
+        public int ResultadoVisitante { get; set; }
+        public DateTime FechaHora { get; set; }
+        public string Pista { get; set; }
+        public int Id { get; set; }
+        public int NumPartido { get; set; }
+        public int LocalId { get; set; }
+        public int VisitanteId { get; set; }
+        public int GrupoId { get; set; }
+        public List<ParcialPartidoVis> Parciales { get; set; }
+
+        public PartidoVis(Partido partido)
+        {
+            Local = partido.Local.Nombre;
+            Visitante = partido.Visitante.Nombre;
+            Jornada = partido.Jornada.Value;
+            Label = partido.Label;
+            ResultadoLocal = partido.ResultadoLocal.Value;
+            ResultadoVisitante = partido.ResultadoVisitante.Value;
+            FechaHora = partido.FechaHora.Value;
+            Pista = partido.Pista;
+            Id = partido.Id;
+            NumPartido = partido.NumPartido.Value;
+            LocalId = partido.Local.Id;
+            VisitanteId = partido.Visitante.Id;
+            GrupoId = partido.Grupo.Id;
+            Parciales = partido.Parciales.Select(p => new ParcialPartidoVis(p)).ToList();
+        }
+    }
+    public class Partido : Entity   
     {
         EdicionGrupo? _edicionGrupo;
         Equipo? _local;
@@ -22,14 +57,14 @@ namespace VoleyPlaya.Repository.Models
         string? _pista;
         string? _label;
 
-        ICollection<ParcialPartido>? _parciales;
+        HashSet<ParcialPartido>? _parciales;
 
         public Partido()
         {
             _edicionGrupo = new EdicionGrupo();
             _local = new Equipo();
             _visitante = new Equipo();
-            _parciales = new List<ParcialPartido>();
+            _parciales = new HashSet<ParcialPartido>();
         }
 
         public Partido(EdicionGrupo edicionGrupo, Equipo local, Equipo visitante):this()
@@ -49,7 +84,7 @@ namespace VoleyPlaya.Repository.Models
         public DateTime? FechaHora { get => _fechaHora; set => _fechaHora = value; }
         public string? Pista { get => _pista; set => _pista = value; }
         public string? Label { get => _label; set => _label = value; }
-        public List<ParcialPartido>? Parciales { get => (List<ParcialPartido>)_parciales; set => _parciales = value; }
+        public HashSet<ParcialPartido>? Parciales { get => _parciales; set => _parciales = value; }
 
         public override bool Equals(object obj)
         {

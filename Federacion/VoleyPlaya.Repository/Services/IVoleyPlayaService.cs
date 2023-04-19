@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Repository.Models;
+
 namespace VoleyPlaya.Repository.Services
 {
     public interface IVoleyPlayaService
@@ -15,6 +17,7 @@ namespace VoleyPlaya.Repository.Services
         Task<string> GetEdicionAsync(string name);
         string GetEdicion(string name);
         Task<string> GetEdicionAsync(int id);
+        Task<string> GetBasicEdicionAsync(int id);
         Task UpdatePartidosAsync(string jsonString);
         Task<string> GetGrupoAsync(int id);
         Task UpdateEquiposAsync(int idGrupo, string jsonEquipos);
@@ -27,5 +30,9 @@ namespace VoleyPlaya.Repository.Services
         Task UpdateJornadasAsync(int id, string json);
         Task UpdateTipoCalendarioEdicionAsync(int id, string tipoCalendario);
         Task<string> GetTipoCalendarioEdicion(int id);
+        Task<string> GetAllGruposAsync(int? edicionId);
+        Task<string> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected);
+        Task<string> GetBasicAsync(int id);
+        Task<string> GetBasicGrupoAsync(int grupoId);
     }
 }
