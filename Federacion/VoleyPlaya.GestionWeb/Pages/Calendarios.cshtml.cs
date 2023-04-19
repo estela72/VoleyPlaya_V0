@@ -18,11 +18,11 @@ using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    public class CalendariosModel : PageModel
+    public class CalendariosModel : VPPageModel
     {
         IEdicionService _service;
 
-        public string ErrorMessage { get; set; }
+        //public string ErrorMessage { get; set; }
 
         [BindProperty]
         public int EdicionSelected { get; set; }

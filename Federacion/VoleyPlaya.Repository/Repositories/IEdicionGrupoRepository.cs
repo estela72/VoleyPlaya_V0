@@ -18,6 +18,7 @@ namespace VoleyPlaya.Repository.Repositories
         Task<EdicionGrupo> CheckAddUpdate(Edicion edicionDto, string nombre, /*int numEquipos,*/ string tipo);
         Task<EdicionGrupo> GetBasicAsync(int id);
         Task<EdicionGrupo> GetWithPartidosAsync(int id);
+        Task<EdicionGrupo> GetWithEquiposYPartidosAsync(int id);
     }
     public class EdicionGrupoRepository : Repository<EdicionGrupo>, IEdicionGrupoRepository
     {
@@ -53,6 +54,13 @@ namespace VoleyPlaya.Repository.Repositories
         public async Task<EdicionGrupo> GetBasicAsync(int id)
         {
             return await GetByIdAsync(id);
+        }
+
+        public async Task<EdicionGrupo> GetWithEquiposYPartidosAsync(int id)
+        {
+            var grupo = await FindIncludingAsync(g => g.Id.Equals(id),
+                 e => e.Partidos, e=>e.Equipos);
+            return grupo;
         }
 
         public async Task<EdicionGrupo> GetWithPartidosAsync(int id)
