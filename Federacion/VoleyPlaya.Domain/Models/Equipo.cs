@@ -92,42 +92,6 @@ namespace VoleyPlaya.Domain.Models
             return Task.CompletedTask;
         }
 
-        //internal Task SetLocal(Partido partido)
-        //{
-        //    _jugados++;
-        //    if (partido.Resultado.Local > partido.Resultado.Visitante) { _ganados++; _puntos += 2; }
-        //    else if (partido.Resultado.Local < partido.Resultado.Visitante) { _perdidos++; _puntos += 1; }
-        //    _puntosFavor += partido.Resultado.Set1.Local;
-        //    _puntosFavor += partido.Resultado.Set2.Local;
-        //    _puntosFavor += partido.Resultado.Set3.Local;
-
-        //    _puntosContra += partido.Resultado.Set1.Visitante;
-        //    _puntosContra += partido.Resultado.Set2.Visitante;
-        //    _puntosContra += partido.Resultado.Set3.Visitante;
-
-        //    if (_puntosContra != 0)
-        //        _coeficiente = _puntosFavor*1.0 / _puntosContra*1.0;
-
-        //    return Task.CompletedTask;
-        //}
-        //internal Task SetVisitante(Partido partido)
-        //{
-        //    //_jugados++;
-        //    if (partido.Resultado.Local < partido.Resultado.Visitante) { _ganados++; _puntos += 2; }
-        //    else if (partido.Resultado.Local > partido.Resultado.Visitante) { _perdidos++; _puntos += 1; }
-        //    _puntosFavor += partido.Resultado.Set1.Visitante;
-        //    _puntosFavor += partido.Resultado.Set2.Visitante;
-        //    _puntosFavor += partido.Resultado.Set3.Visitante;
-
-        //    _puntosContra += partido.Resultado.Set1.Local;
-        //    _puntosContra += partido.Resultado.Set2.Local;
-        //    _puntosContra += partido.Resultado.Set3.Local;
-
-        //    if (_puntosContra != 0)
-        //        _coeficiente = _puntosFavor * 1.0 / _puntosContra * 1.0;
-        //    return Task.CompletedTask;
-        //}
-
         public static bool operator ==(Equipo left, Equipo right)
         {
             return EqualityComparer<Equipo>.Default.Equals(left, right);

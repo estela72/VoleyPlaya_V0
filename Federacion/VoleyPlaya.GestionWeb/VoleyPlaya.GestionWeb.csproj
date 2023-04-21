@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Resultados.cshtml.cs\**" />
+    <Content Remove="Pages\Resultados.cshtml.cs\**" />
+    <EmbeddedResource Remove="Pages\Resultados.cshtml.cs\**" />
+    <None Remove="Pages\Resultados.cshtml.cs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.2.3" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.4" />
@@ -18,6 +25,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +37,6 @@
       <CopyToOutputDirectory></CopyToOutputDirectory>
       <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\Account\Manage\" />
   </ItemGroup>
 
 </Project>

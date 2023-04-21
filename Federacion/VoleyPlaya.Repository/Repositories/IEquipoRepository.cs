@@ -17,9 +17,9 @@ namespace VoleyPlaya.Repository.Repositories
 {
     public interface IEquipoRepository : IRepository<Equipo>
     {
-        Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
+        Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
                     double coeficiente, int puntos);
-        Task CheckAddUpdate(Edicion edicionDto, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos);
+        Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos);
         Task RemoveEquipos(int numEquipos, EdicionGrupo edicionGrupo);
     }
     public class EquipoRepository : Repository<Equipo>, IEquipoRepository
@@ -32,12 +32,14 @@ namespace VoleyPlaya.Repository.Repositories
         {
         }
 
-        public async Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int posicion, string nombre, int jugados, int ganados, int perdidos, 
+        public async Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, 
             int puntosFavor, int puntosContra, double coeficiente, int puntos)
         {
             if (nombre.Equals(string.Empty)) return null;
-            var dto = await FindAsync(c => c.Nombre.Equals(nombre) && c.EdicionGrupo.Id.Equals(edicionGrupoDto.Id)) ?? 
-                await FindAsync(c => c.Nombre.Equals(nombre) && c.Edicion.Id.Equals(edicionGrupoDto.Edicion.Id));
+            Equipo dto = null;
+            if (idEquipo == 0)
+                dto = await GetByIdAsync(idEquipo);
+
             if (dto == null)
                 return await AddAsyn(new Equipo(edicionGrupoDto)
                 { 
@@ -70,10 +72,13 @@ namespace VoleyPlaya.Repository.Repositories
             }
         }
 
-        public async Task CheckAddUpdate(Edicion edicionDto, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos)
+        public async Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos)
         {
             if (nombre.Equals(string.Empty)) return;
-            var dto = await FindAsync(c => c.Nombre.Equals(nombre) && c.Edicion.Id.Equals(edicionDto.Id)) ?? await FindAsync(c => c.OrdenCalendario.Equals(posicion) && c.Edicion.Id.Equals(edicionDto.Id));
+            Equipo dto = null;
+            if (idEquipo != 0)
+                dto = await GetByIdAsync(idEquipo);
+
             if (dto == null)
                 await AddAsyn(new Equipo
                 {

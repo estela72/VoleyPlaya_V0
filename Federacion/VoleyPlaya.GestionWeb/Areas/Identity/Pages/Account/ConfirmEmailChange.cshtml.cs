@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using VoleyPlaya.GestionWeb.Pages;
 
 using System.Text;
 
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class ConfirmEmailChangeModel : PageModel
+    public class ConfirmEmailChangeModel : VPPageModel
     {
         [TempData]
         public string? StatusMessage { get; set; }

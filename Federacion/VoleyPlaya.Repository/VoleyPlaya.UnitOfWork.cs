@@ -71,6 +71,6 @@ namespace VoleyPlaya.Repository
             JornadaRepository = jornadaRepository;
             EdicionGrupoRepository = edicionGrupoRepository;
         }
-
+        
     }
 }

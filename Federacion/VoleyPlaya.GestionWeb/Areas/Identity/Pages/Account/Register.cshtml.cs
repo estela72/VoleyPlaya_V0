@@ -3,26 +3,31 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
+
+using General.CrossCutting.Lib;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using VoleyPlaya.GestionWeb.Pages;
+
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 { 
-    public class RegisterModel : PageModel
+    public class RegisterModel : VPPageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailService emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -92,8 +97,11 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirmación de email",
-                        $"Por favor, confirme su cuenta siguiendo este enlace: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirmación de email",
+                    //    $"Por favor, confirme su cuenta siguiendo este enlace: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
+
+                    //await _emailSender.Send(Input.Email, "Confirmación de email", 
+                    //    $"Por favor, confirme su cuenta siguiendo este enlace: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

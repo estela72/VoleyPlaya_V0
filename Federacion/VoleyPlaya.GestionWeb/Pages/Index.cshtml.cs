@@ -1,20 +1,52 @@
-ï»¿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace VoleyPlaya.GestionWeb.Pages
+using VoleyPlaya.Domain.Services;
+using System.Collections.ObjectModel;
+using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Authorization;
+using VoleyPlaya.GestionWeb.Pages;
+
+namespace VoleyPlaya.Gestion.Web.Views.Edicion
 {
-    public class IndexModel : VPPageModel
+    [Authorize(Policy = "CompeticionesOnly")]
+    public class EdicionesModel : VPPageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        IEdicionService _service;
+        [BindProperty]
+        public IList<VoleyPlaya.Domain.Models.Edicion> Ediciones { get; set; } = default!;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public EdicionesModel(IEdicionService service) 
         {
-            _logger = logger;
+            _service = service;
         }
-
-        public void OnGet()
+        public async Task OnGetAsync()
         {
+            try
+            {
+                var jsonEdiciones = await _service.GetAllAsync();
+                var ediciones = _service.EdicionesFromJson(jsonEdiciones);
+                Ediciones = new ObservableCollection<VoleyPlaya.Domain.Models.Edicion>(ediciones.ToList());
+            }
+            catch(Exception ex)
+            {
+                ErrorMessage = "Error cargando las competiciones.";
+            }
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(int? id)
+        {
+            if (id==null)
+                return Page();
+            try
+            {
+                await _service.DeleteEdicion(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "Error borrando la competición.";
+            }
 
+            return RedirectToPage("Ediciones");
         }
     }
 }

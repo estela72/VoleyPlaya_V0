@@ -8,10 +8,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
+using VoleyPlaya.GestionWeb.Pages;
+
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class ResetPasswordModel : PageModel
+    public class ResetPasswordModel : VPPageModel
     {
         [BindProperty]
         public InputModel Input { get; set; } = default!;

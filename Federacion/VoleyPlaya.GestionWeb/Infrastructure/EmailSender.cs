@@ -24,10 +24,10 @@
         {
             try
             {
-                string smtpServer = _configuration["EmailSettings:SmtpServer"];
+                string smtpServer = _configuration["EmailSettings:SmtpServer"]!;
                 int smtpPort = Convert.ToInt32(_configuration["EmailSettings:SmtpPort"]);
-                string smtpUsername = _configuration["EmailSettings:SmtpUsername"];
-                string smtpPassword = _configuration["EmailSettings:SmtpPassword"];
+                string smtpUsername = _configuration["EmailSettings:SmtpUsername"]!;
+                string smtpPassword = _configuration["EmailSettings:SmtpPassword"]!;
 
                 using (SmtpClient client = new SmtpClient(smtpServer, smtpPort))
                 {

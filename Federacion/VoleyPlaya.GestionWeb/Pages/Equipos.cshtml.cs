@@ -10,15 +10,24 @@ namespace VoleyPlaya.GestionWeb.Pages
 {
     public class EquiposModel : VPPageModel
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         IEdicionService _service;
         [BindProperty]
         public List<Equipo> Equipos { get; set; }
         [BindProperty]
         public int EdicionId { get; set; }
-        public EquiposModel(IEdicionService service)
+
+        [BindProperty]
+        public string NuevoEquipo { get; set; }
+
+        public string UrlEdicion { get; set; }
+        
+        public EquiposModel(IEdicionService service, IHttpContextAccessor httpContextAccessor)
         {
             _service = service;
+            _httpContextAccessor = httpContextAccessor;
         }
+        
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
@@ -29,6 +38,8 @@ namespace VoleyPlaya.GestionWeb.Pages
 
             if (!await GetEdicion(id.Value))
                 return NotFound();
+
+            UrlEdicion = _httpContextAccessor.HttpContext?.Request.Headers["Referer"].ToString();
 
             return Page();
         }
@@ -62,6 +73,17 @@ namespace VoleyPlaya.GestionWeb.Pages
             if (!await GetEdicion(EdicionId))
                 return NotFound();
 
+            return Page();
+        }
+        public async Task<IActionResult> OnPostNuevoEquipoAsync()
+        {
+            if (string.IsNullOrEmpty(NuevoEquipo) || EdicionId == 0)
+            {
+                ErrorMessage = "Se necesita el nombre del equipo para poder crearlo";
+            }
+            await _service.AddEquipo(EdicionId, NuevoEquipo);
+            if (!await GetEdicion(EdicionId))
+                return NotFound();
             return Page();
         }
     }

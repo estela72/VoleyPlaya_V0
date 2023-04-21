@@ -56,7 +56,7 @@ namespace VoleyPlaya.Repository
                 VoleyPlayaDbContext dbContext = serviceProvider.GetRequiredService<VoleyPlayaDbContext>();
                 //dbContext.Database.EnsureDeleted();
                 //dbContext.Database.EnsureCreated();
-                dbContext.Database.Migrate();
+                //dbContext.Database.Migrate();
             }
         }
     }

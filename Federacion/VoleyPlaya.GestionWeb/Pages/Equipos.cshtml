@@ -1,12 +1,22 @@
 ﻿@page
 @model VoleyPlaya.GestionWeb.Pages.EquiposModel
 @{
+    // Obtener la URL de la página anterior
 }
+@if (!string.IsNullOrEmpty(Model.UrlEdicion))
+{
+    <p><a href="@Model.UrlEdicion">Volver a la competición</a></p>
+}
+
 @Html.AntiForgeryToken()
+
+
 <form method="post">
     @Html.HiddenFor(m=>@Model.EdicionId)
     <div class="card">
-        <div class="card-header h2">Lista de equipos</div>
+        <div class="card-header">
+            <h2>Lista de equipos</h2>
+        </div>
         <div class="card-body p-2">
             <div class="row">
                 <div class="col-md-5 m-1">
@@ -23,6 +33,7 @@
                             {
                                 <tr>
                                     <td align="center">
+                                        @Html.HiddenFor(m=>Model.Equipos[i].Id)
                                         <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
                                             <i class="fas fa-trash"></i> 
                                         </button>
@@ -48,6 +59,7 @@
                             {
                                 <tr>
                                     <td align="center">
+                                        @Html.HiddenFor(m=>Model.Equipos[i].Id)
                                         <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -63,6 +75,23 @@
         </div>
         <div class="card-footer">
             <input type="submit" class="btn btn-primary" asp-page-handler="Guardar" value="Guardar cambios" />
+        </div>
+    </div>
+</form>
+<form method="post">
+    @Html.HiddenFor(m=>@Model.EdicionId)
+    <div class="card">
+        <div class="card-header h2">Nuevo equipo</div>
+        <div class="card-body p-2">
+            <div class="form-group row m-1">
+                <label class="col-sm-4 col-form-label">Nombre del equipo</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" asp-for="@Model.NuevoEquipo" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary" asp-page-handler="NuevoEquipo" value="+" />
         </div>
     </div>
 </form>
