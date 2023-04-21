@@ -1,48 +1,50 @@
-﻿@*@page "{handler?}"*@
-@page
-@model IndexModel
+﻿@page "{handler?}"
+@model VoleyPlaya.Gestion.Web.Views.Edicion.EdicionesModel
 @{
-    ViewData["Title"] = "Home page";
-    //@functions {
-    //    public string Message { get; set; } = "Initial Request";
-    //    public void OnGet()
-    //    {
-    //    }
-    //    public void OnPost()
-    //    {
-    //        Message = "Form Posted";
-    //    }
-    //    public void OnPostDelete()
-    //    {
-    //        Message = "Delete handler fired";
-    //    }
-    //    public void OnPostEdit(int id)
-    //    {
-    //        Message = "Edit handler fired";
-    //    }
-    //    public void OnPostView(int id)
-    //    {
-    //        Message = $"View handler fired for {id}";
-    //    }
-    //}
-}
 
-@*<div class="row">
-    <div class="col-lg-1">
-        <form asp-page-handler="edit" method="post">
-            <button class="btn btn-default">Edit</button>
-        </form>
+}
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
     </div>
-    <div class="col-lg-1">
-        <form asp-page-handler="delete" method="post">
-            <button class="btn btn-default">Delete</button>
-        </form>
+}
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <label class="col-11 alert-info align-content-start">Competiciones</label>
+            <a class="col-1 btn btn-primary align-content-end" asp-page="./Edicion" asp-route-id="">+</a>
+        </div>
     </div>
-    <div class="col-lg-1">
-        <form asp-page-handler="view" method="post">
-            <button class="btn btn-default">View</button>
-            <input type="hidden" name="id" value="3" />
-        </form>
+    <div class="card-body">
+        <table class="table table-borderless table-striped table-hover">
+            <tbody>
+                @foreach (var item in Model.Ediciones)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Temporada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lugar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Competicion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoriaStr)
+                            @Html.DisplayFor(modelItem => item.GeneroStr)
+                        </td>
+                        <td>
+                            <form asp-page-handler="Delete" method="post">
+                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Id"> Editar</a>
+                                <button class="btn btn-danger">Borrar</button>
+                                <input type="hidden" name="id" value="@item.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-<h3 class="clearfix">@Model.Message</h3>*@

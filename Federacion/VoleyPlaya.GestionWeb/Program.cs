@@ -1,10 +1,15 @@
+
+using General.CrossCutting.Lib;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using VoleyPlaya.Domain;
 using VoleyPlaya.GestionWeb.Areas.Identity;
+using VoleyPlaya.GestionWeb.Infrastructure;
 using VoleyPlaya.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,23 +22,51 @@ var config = new ConfigurationBuilder()
 
 // Add services
 builder.Services.AddDomainStartup();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Configura Identity
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    // Configura la validación del nombre de usuario
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._@+´";
-    options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedAccount = true;
-})
+builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<VoleyPlayaDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789-._@+ ´";
+    options.User.AllowedUserNameCharacters = options.User.AllowedUserNameCharacters + "áéíóúÁÉÍÓÚ";
+    options.User.RequireUniqueEmail = false;
+    options.SignIn.RequireConfirmedAccount = true;
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 await builder.Services.AddApplicationRoles();
 await builder.Services.AddAdminUsers();
 await builder.Services.AddPolicies();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -58,11 +91,14 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapDefaultControllerRoute();
-    endpoints.MapRazorPages();
-});
+app.MapRazorPages();
+
+//app.UseEndpoints(endpoints =>
+//{
+//    //endpoints.MapDefaultControllerRoute();
+//    endpoints.MapRazorPages();
+//});
+
 
 app.Run();
 

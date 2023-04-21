@@ -244,13 +244,34 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             try
             {
-                await _service.DeleteEquipoAsync(id);
-                await GetEdicion(Edicion.Nombre);
-                await Fill();
+                var str = await _service.DeleteEquipoAsync(id);
+                ErrorMessage = str;
             }
             catch (Exception x)
             {
                 ErrorMessage = "Error eliminando un equipo de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostDeleteGrupoAsync(int id)
+        {
+            try
+            {
+                await _service.DeleteGrupoAsync(id);
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error eliminando un equipo de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
             }
             return Page();
         }
@@ -326,7 +347,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                     Edicion.Grupos[i].Partidos = grupos[i].Partidos;
 
                 foreach (var grupo in Edicion.Grupos)
-                    await _service.UpdatePartidosAsync(grupo);
+                    await _service.UpdateDatosPartidosAsync(grupo);
 
                 await GetEdicion(Edicion.Nombre);
                 await Fill();

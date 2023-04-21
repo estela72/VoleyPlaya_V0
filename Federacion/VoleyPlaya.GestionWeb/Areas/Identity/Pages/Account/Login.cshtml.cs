@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using VoleyPlaya.GestionWeb.Pages;
+
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : VPPageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;

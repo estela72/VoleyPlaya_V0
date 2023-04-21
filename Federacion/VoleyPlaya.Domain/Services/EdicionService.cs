@@ -31,12 +31,13 @@ namespace VoleyPlaya.Domain.Services
         Task DeleteEdicion(string nombre);
         Task DeleteEdicion(int id);
         Task UpdatePartidosAsync(EdicionGrupo edicion);
+        Task UpdateDatosPartidosAsync(EdicionGrupo grupo);
         Task<string> GetGrupoAsync(int value);
         Task<EdicionGrupo> UpdateGrupoAsync(EdicionGrupo grupo);
         Task UpdateEquipsGrupoAsync(int idGrupo, IList<Equipo> equipos);
         Task UpdateClasificacion(EdicionGrupo grupo);
         Task DeleteGrupoAsync(int id);
-        Task DeleteEquipoAsync(int equipoId);
+        Task<string> DeleteEquipoAsync(int equipoId);
         Task DeletePartidoAsync(int partidoId);
         Task UpdateEquiposEdicionAsync(int edicionId, Edicion edicion);
         Task UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equipos);
@@ -49,6 +50,7 @@ namespace VoleyPlaya.Domain.Services
         Task<List<SelectionItem>> GetListaGrupos(int edicionId);
         Task<dynamic> ExportarCalendarioAsync(int competicionId, int grupoId);
         Task UpdatePartidosClasificacionAsync(int grupoSelected, List<Partido> partidos);
+        Task AddEquipo(int edicionId,string nuevoEquipo);
     }
     public class EdicionService : IEdicionService
     {
@@ -110,6 +112,11 @@ namespace VoleyPlaya.Domain.Services
         {
             string jsonString = JsonSerializer.Serialize(grupo);
             await _service.UpdateGrupoPartidosAsync(jsonString);
+        }
+        public async Task UpdateDatosPartidosAsync(EdicionGrupo grupo)
+        {
+            string jsonString = JsonSerializer.Serialize(grupo);
+            await _service.UpdateDatosPartidosAsync(jsonString);
         }
 
         public async Task<string> GetGrupoAsync(int id)
@@ -189,9 +196,9 @@ namespace VoleyPlaya.Domain.Services
             await _service.DeleteGrupoAsync(id);
         }
 
-        public async Task DeleteEquipoAsync(int equipoId)
+        public async Task<string> DeleteEquipoAsync(int equipoId)
         {
-            await _service.DeleteEquipoAsync(equipoId);
+            return await _service.DeleteEquipoAsync(equipoId);
         }
 
         public async Task DeletePartidoAsync(int partidoId)
@@ -298,6 +305,11 @@ namespace VoleyPlaya.Domain.Services
             var grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
             await UpdateClasificacion(grupo);
             await UpdateEquipsGrupoAsync(grupoSelected, grupo.Equipos);
+        }
+
+        public async Task AddEquipo(int edicionId, string nuevoEquipo)
+        {
+            await _service.AddEquipo(edicionId, nuevoEquipo);
         }
     }
 }

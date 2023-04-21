@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using VoleyPlaya.GestionWeb.Pages;
 
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class LogoutModel : PageModel
+    public class LogoutModel : VPPageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;

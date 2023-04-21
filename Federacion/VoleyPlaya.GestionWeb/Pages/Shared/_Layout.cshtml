@@ -26,7 +26,7 @@
                         @if (User.IsInRole(eRoles.Competiciones.ToString()))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Ediciones">Competiciones</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Index">Competiciones</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
@@ -47,11 +47,14 @@
     <div class="container-fluid">
         <main role="main" class="pb-3">
             <!-- Mostrar el mensaje de error en la vista Razor -->
-            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            @if (Model.GetType() == typeof(VPPageModel))
             {
-                <div class="alert alert-danger">
-                    @Model.ErrorMessage
-                </div>
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @Model.ErrorMessage
+                    </div>
+                }
             }
             @RenderBody()
         </main>

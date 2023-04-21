@@ -9,10 +9,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 
+using VoleyPlaya.GestionWeb.Pages;
+
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class ResendEmailConfirmationModel : PageModel
+    public class ResendEmailConfirmationModel : VPPageModel
     {
         [BindProperty]
         public InputModel Input { get; set; } = default!;

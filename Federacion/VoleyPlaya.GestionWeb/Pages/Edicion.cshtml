@@ -6,7 +6,12 @@
     var pasoActual = Model.PasoActual; // Variable para el paso actual del usuario
 }
 
-<!-- Contenido HTML de la página -->
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}<!-- Contenido HTML de la página -->
 <h1>Crear o actualizar una competición</h1>
 <!-- Pasos de la guía -->
 <div class="guia-pasos">
@@ -166,12 +171,17 @@
                     @if (Model.Edicion.Grupos.Count > 0)
                     {
                         <div class="row">
+                            <label class="m-2 h2">Calendario: @Model.TipoCalendarioSeleccionado</label>
                             @for(int i=0; i < Model.Edicion.Grupos.Count/2; i++)
                             {
                                 <div class="col m-1" style="background-color:lightgray">
                                     <table class="table table-responsive-md">
                                         <thead>
                                             <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger" asp-page-handler="DeleteGrupo" asp-route-id="@Model.Edicion.Grupos[i].Id">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                             <tr>
                                                 <th>Orden</th>
                                                 <th>Equipo</th>
@@ -207,6 +217,10 @@
                                     <table class="table table-responsive-md">
                                         <thead>
                                             <h3>Grupo @Model.Edicion.Grupos[i].Name</h3>
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger" asp-page-handler="DeleteGrupo" asp-route-id="@Model.Edicion.Grupos[i].Id">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                             <tr>
                                                 <th>Orden</th>
                                                 <th>Equipo</th>
@@ -346,11 +360,13 @@
                                                     <th>Local</th>
                                                     <th>Visitante</th>
                                                     <th>Fecha</th>
+                                                    <th>Pista</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @for (int j = 0; j < Model.Edicion.Grupos[i].Partidos.Count; j++)
                                                 {
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Id)
                                                     @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].NumPartido)
                                                     @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Jornada)
                                                     var listaEquipos = new SelectList(Model.Edicion.Grupos[i].Equipos.Select(e=>e.Nombre));
@@ -369,6 +385,9 @@
                                                         </td>
                                                         <td>
                                                             @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].FechaHora, new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].Pista, new{@class="form-control"})
                                                         </td>
                                                     </tr>
                                                 }
@@ -390,11 +409,13 @@
                                                     <th>Local</th>
                                                     <th>Visitante</th>
                                                     <th>Fecha</th>
+                                                    <th>Pista</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @for (int j = 0; j < Model.Edicion.Grupos[i].Partidos.Count; j++)
                                                 {
+                                                    @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Id)
                                                     @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].NumPartido)
                                                     @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Partidos[j].Jornada)
                                                     var listaEquipos = new SelectList(Model.Edicion.Grupos[i].Equipos.Select(e => e.Nombre));
@@ -413,6 +434,9 @@
                                                         </td>
                                                         <td>
                                                             @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].FechaHora, new{@class="form-control"})
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m=>Model.Edicion.Grupos[i].Partidos[j].Pista, new{@class="form-control"})
                                                         </td>
                                                     </tr>
                                                 }

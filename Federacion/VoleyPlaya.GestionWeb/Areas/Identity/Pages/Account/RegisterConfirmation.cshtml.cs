@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 
 using VoleyPlaya.GestionWeb.Infrastructure;
+using VoleyPlaya.GestionWeb.Pages;
 
 namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterConfirmationModel : PageModel
+    public class RegisterConfirmationModel : VPPageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -57,7 +58,7 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 
             Email = email;
             // If the email sender is a no-op, display the confirm link in the page
-            DisplayConfirmAccountLink = _sender is EmailSender;
+            DisplayConfirmAccountLink = false;// _sender is EmailSender;
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);

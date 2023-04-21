@@ -125,6 +125,7 @@ namespace VoleyPlaya.Repository.Services
         {
             foreach (var equipo in equipos)
             {
+                int id = equipos!["Id"]!.GetValue<int>();
                 int posicion = equipo!["Posicion"]!.GetValue<int>()!;
                 string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
                 int jugados = equipo["Jugados"]!.GetValue<int>()!;
@@ -134,7 +135,7 @@ namespace VoleyPlaya.Repository.Services
                 int puntosContra = equipo["PuntosContra"]!.GetValue<int>()!;
                 double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
-                var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
+                var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
                     coeficiente, puntos);
             }
         }
@@ -142,6 +143,7 @@ namespace VoleyPlaya.Repository.Services
         {
             foreach (var equipo in equipos)
             {
+                int id = equipo!["Id"]!.GetValue<int>();
                 int posicion = equipo!["Posicion"]!.GetValue<int>()!;
                 string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
                 int jugados = equipo["Jugados"]!.GetValue<int>()!;
@@ -151,7 +153,7 @@ namespace VoleyPlaya.Repository.Services
                 int puntosContra = equipo["PuntosContra"]!.GetValue<int>()!;
                 double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
-                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicionDto, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
+                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicionDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
                     coeficiente, puntos);
             }
         }
@@ -208,6 +210,19 @@ namespace VoleyPlaya.Repository.Services
                 await _voleyPlayaUoW.SaveMauiChangesAsync();
             }
         }
+        public async Task UpdateDatosPartidosAsync(string json)
+        {
+            JsonNode edicionNode = JsonNode.Parse(json)!;
+            var id = edicionNode["Id"]!.GetValue<int>();
+            EdicionGrupo edicionGrupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(id);
+            if (edicionGrupoDto != null)
+            {
+                JsonArray partidos = edicionNode["Partidos"]!.AsArray();
+                await UpdatePartidos(edicionGrupoDto, partidos);
+                await _voleyPlayaUoW.SaveMauiChangesAsync();
+            }
+        }
+
         public async Task<string> UpdateResultadosPartidosAsync(int idGrupo, string json)
         {
             JsonNode grupoNode = JsonNode.Parse(json)!;
@@ -313,7 +328,7 @@ namespace VoleyPlaya.Repository.Services
             var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(idGrupo);
             JsonNode jsonGrupo = JsonNode.Parse(jsonEquipos)!;
             JsonArray equipos = jsonGrupo!.AsArray();
-            await SaveEquiposAsync(grupoDto, equipos/*, grupoDto.NumEquipos*/);
+            await SaveEquiposAsync(grupoDto, equipos);
             await _voleyPlayaUoW.SaveMauiChangesAsync();
         }
 
@@ -354,10 +369,18 @@ namespace VoleyPlaya.Repository.Services
 
             await _voleyPlayaUoW.EdicionGrupoRepository.DeleteAsync(id);
         }
-        public async Task DeleteEquipoAsync(int id)
+        public async Task<string> DeleteEquipoAsync(int id)
         {
-            await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
-            await _voleyPlayaUoW.SaveMauiChangesAsync();
+            try
+            {
+                bool deleted = await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
+                var str = (await _voleyPlayaUoW.SaveMauiChangesAsync() == -1) ? "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido" : "";
+                return str;
+            }
+            catch(Exception x)
+            {
+                return "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
+            }
         }
         public async Task DeletePartidoAsync(int partidoId)
         {
@@ -410,6 +433,12 @@ namespace VoleyPlaya.Repository.Services
         {
             var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.GetWithEquiposYPartidosAsync(grupoId);
             return JsonSerializer.Serialize<EdicionGrupo>(grupo, Options);
+        }
+        public async Task AddEquipo(int edicionId, string equipo)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(edicionId);
+            await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0);
+            await _voleyPlayaUoW.SaveMauiChangesAsync();
         }
     }
 }
