@@ -1,1 +1,0 @@
-D:\srcRepository\Proyectos Estela\Federacion\VoleyPlaya\VoleyPlaya.csproj;x64
