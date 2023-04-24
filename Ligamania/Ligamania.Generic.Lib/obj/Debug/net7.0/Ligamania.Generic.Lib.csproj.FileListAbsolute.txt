@@ -1,0 +1,12 @@
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\bin\Debug\net7.0\Ligamania.Generic.Lib.deps.json
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\bin\Debug\net7.0\Ligamania.Generic.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\bin\Debug\net7.0\Ligamania.Generic.Lib.pdb
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.csproj.AssemblyReference.cache
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.GeneratedMSBuildEditorConfig.editorconfig
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.AssemblyInfoInputs.cache
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.AssemblyInfo.cs
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.csproj.CoreCompileInputs.cache
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\refint\Ligamania.Generic.Lib.dll
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\Ligamania.Generic.Lib.pdb
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Generic.Lib\obj\Debug\net7.0\ref\Ligamania.Generic.Lib.dll
