@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VoleyPlaya.ViewModels"
+             x:Class="VoleyPlaya.Views.TablasCalendariosPage"
+             Title="Tablas de calendarios"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <ContentPage.BindingContext>
+        <viewModels:TablasCalendariosViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Add an item to the toolbar -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding NewCommand}" IconImageSource="{FontImage Glyph='+', Color=White, Size=22}" />
+    </ContentPage.ToolbarItems>
+
+    <!-- Display competiciones in a list -->
+    <CollectionView x:Name="tablasCalendariosCollection"
+                        ItemsSource="{Binding AllTablasCalendarios}"
+                        Margin="20"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding SelectCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
+
+        <!-- Designate how the collection of items are laid out -->
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+        </CollectionView.ItemsLayout>
+
+        <!-- Define the appearance of each item in the list -->
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <HorizontalStackLayout Padding="2">
+                    
+                </HorizontalStackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

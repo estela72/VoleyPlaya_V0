@@ -1,0 +1,51 @@
+﻿@page
+@model RegisterRequestsModel
+
+<h1>Solicitudes de registro</h1>
+
+@if (Model.Users.Where(u=>!u.User.EmailConfirmed).Count() == 0)
+{
+    <p>No hay solicitudes de registro pendientes.</p>
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre y Apellidos</th>
+            <th>Email</th>
+            <th>Permisos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+            @for(int u = 0; u < Model.Users.Count; u++)
+            {
+                <tr>
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" value="@Model.Users[u].User.Id" />
+                        <td>@Model.Users[u].User.NormalizedUserName</td>
+                        <td>@Model.Users[u].User.Email</td>
+                        <td>
+                            @for (int i = 0; i < Model.RolesDisponibles.Count; i++)
+                            {
+                                <div>
+                                    <label>
+                                    <input type="checkbox" name="RolesSeleccionados" value="@Model.RolesDisponibles[i]"
+                                        @(Model.Users[u].RolesAsignados.Contains(Model.RolesDisponibles[i]) ? "checked" : "")>
+                                        @Model.RolesDisponibles[i]
+                                    </label>
+                                </div>
+                            }
+                        </td>
+                        <td class="md-2">
+                            @{
+                                var accion = "Actualizar";
+                                if (!Model.Users[u].User.EmailConfirmed){ accion = "Confirmar"; }
+                            }
+                            <button class="btn btn-primary" type="submit">@accion</button>
+                        </td>
+                    </form>
+                </tr>
+            }
+    </tbody>
+</table>

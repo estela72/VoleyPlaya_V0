@@ -1,0 +1,160 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.CalendariosModel
+@{
+}
+<h1>Calendario de Competición</h1>
+<div class="card">
+    <form method="get">
+        <div class="card-header">
+            <h2>Filtros</h2>
+            <div style="max-width: 600px; ">
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@m.EdicionSelected, @Model.Ediciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Grupo</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@m.GrupoSelected, @Model.Grupos, "Seleccione un grupo", new{@class="form-control", id = "grupo", name="grupo"})
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="card">
+    <form method="post" asp-page-handler="Exportar">
+        @Html.AntiForgeryToken();
+        @Html.HiddenFor(m=>Model.EdicionSelected)
+        @Html.HiddenFor(m=>Model.GrupoSelected)
+        <div class="card-body">
+            @if (Model.Partidos != null)
+            {
+                <table id="partidos" class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th>J</th>
+                            <th>Partido</th>
+                            <th>Fecha y hora</th>
+                            <th>Local</th>
+                            <th>Res local</th>
+                            <th>Res visitante</th>
+                            <th>Visitante</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los calendarios filtrados en función de los filtros seleccionados -->
+                        @foreach (var partido in Model.Partidos)
+                        {
+                            <tr>
+                                <td>@partido.Jornada</td>
+                                <td>@partido.Label</td>
+                                <td>@partido.FechaHora</td>
+                                <td>@partido.Local</td>
+                                <td>@partido.Resultado.Local</td>
+                                <td>@partido.Resultado.Visitante</td>
+                                <td>@partido.Visitante</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary" id="exportar" name="exportar">Exportar a Excel</button>
+        </div>
+    </form>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Manejar el evento change en el select de competiciones
+            $("#competicion-select").change(function () {
+                // Obtener el valor seleccionado de la competición
+                var competicionId = $(this).val();
+
+                // Realizar una llamada AJAX para obtener la lista de grupos correspondientes
+                $.ajax({
+                    url: '/Calendarios/?handler=Grupos', // URL del método de acción en el controlador que obtiene la lista de grupos
+                    type: 'GET',
+                    data: { competicionId: competicionId }, // Pasar el ID de la competición seleccionada como parámetro
+                    success: function (data) {
+                        // Limpiar la lista de grupos actual
+                        $("#grupo").empty();
+
+                        // Agregar los nuevos grupos a la lista
+                        $.each(data, function (index, grupo) {
+                            $("#grupo").append($('<option></option>').val(grupo.value).text(grupo.text));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Manejar errores de la llamada AJAX si es necesario
+                        alert(error);
+                    }
+                });
+            });
+        });
+        //$(document).ready(function(){
+        //    // Manejar el evento click del botón exportar
+        //    $("#exportar").click(function(){
+        //        var competicionId = $("#competicion-select").val();
+        //        var grupoId = $("#grupo").val();
+        //        // Realizar una llamada AJAX para obtener la lista de grupos correspondientes
+        //        $.ajax({
+        //            type: "GET",
+        //            url: '/Calendarios/?handler=Exportar', //call your controller and action
+        //            data: { competicionId: competicionId, grupoId: grupoId },
+        //            contentType: "application/json; charset=utf-8",
+        //            dataType: "json",
+        //        }).done(function (data) {
+
+        //            //get the file name for download
+        //            if (data.fileName != "") {
+        //                //use window.location.href for redirect to download action for download the file
+        //                $.ajax({
+        //                    type: "GET",
+        //                    url: '/Calendarios/?handler=Download', //call your controller and action
+        //                    data: { fileName: data.fileName},
+        //                    contentType: "application/json; charset=utf-8",
+        //                    dataType: "json",
+        //                    success: function(data) {
+        //                        var downloadLink = document.createElement("a");
+        //                        downloadLink.href = window.URL.createObjectURL(new Blob([data]));
+        //                        downloadLink.download = "calendario.xlsx";
+        //                        document.body.appendChild(downloadLink);
+        //                        downloadLink.click();
+        //                        document.body.removeChild(downloadLink);
+        //                        alert('Downloaded');
+        //                    }
+        //                });
+        //            }
+        //        });
+        //        //$.ajax({
+        //        //    url: '/Calendarios/?handler=Exportar', // URL del método de acción en el controlador que obtiene la lista de grupos
+        //        //    type: 'GET',
+        //        //    data: { competicionId: competicionId, grupoId: grupoId }, // Pasar el ID de la competición seleccionada como parámetro
+        //        //    //success: function (data) {
+        //        //    //    //// Crear un enlace de descarga en el cliente
+        //        //    //    //var downloadLink = document.createElement("a");
+        //        //    //    //downloadLink.href = window.URL.createObjectURL(new Blob([data]));
+        //        //    //    //downloadLink.download = "calendario.xlsx";
+        //        //    //    //document.body.appendChild(downloadLink);
+        //        //    //    //downloadLink.click();
+        //        //    //    //document.body.removeChild(downloadLink);
+        //        //    //}, 
+        //        //    error: function (xhr, status, error) {
+        //        //        // Manejar errores de la llamada AJAX si es necesario
+        //        //        alert(xhr.responseText);
+        //        //    }
+        //        //});
+        //    });
+        //});
+    </script>
+}

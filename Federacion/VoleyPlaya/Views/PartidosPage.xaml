@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VoleyPlaya.ViewModels"
+             x:Class="VoleyPlaya.Views.PartidosPage"
+             Title="Partidos">
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+             Command="{Binding RefreshCommand}">
+        <ScrollView HorizontalScrollBarVisibility="Default" VerticalScrollBarVisibility="Default">
+            <StackLayout>
+                <Border Padding="10,10,10,10" Margin="5">
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <Label x:Name="CompeticionPicker"  VerticalTextAlignment="Center" FontSize="24" TextColor="Blue" Padding="2"
+                                Text="{Binding Competicion.Nombre}"/>
+                        <Label x:Name="CategoriaPicker"   FontSize="24" TextColor="Blue" Padding="2"
+                                Text="{Binding Competicion.Categoria}"/>
+                        <Label x:Name="GeneroPicker"  FontSize="24" TextColor="Blue" Padding="2"
+                                Text="{Binding Competicion.Genero}"/>
+                        <Label x:Name="GrupoLabel" VerticalTextAlignment="Center" FontSize="24" TextColor="Blue" Padding="2"
+                                Text="Grupo" />
+                        <Label x:Name="GrupoEntry" FontSize="24" TextColor="Blue" Padding="2"
+                                Text="{Binding Competicion.Grupo}"/>
+                    </StackLayout>
+                </Border>
+                <Border Padding="10,10,10,10" Margin="5">
+                    <VerticalStackLayout>
+                        <Label Text="Calendario" FontSize="18" TextColor="Blue" Padding="5"/>
+                        <CollectionView ItemsSource="{Binding Partidos}">
+                            <CollectionView.Header>
+                                <Grid ColumnDefinitions="70,120,250,70,100,100,80,80,80,100" ColumnSpacing="10"  Padding="0,5,5,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Text="Nº partido" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="Fecha" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="Hora" Grid.Column="2" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="Pista" Grid.Column="3" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="Local" Grid.Column="4" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="Visitante" Grid.Column="5" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="1º Set" Grid.Column="6" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="2º Set" Grid.Column="7" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="3º Set" Grid.Column="8" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Resultado" Grid.Column="9" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Grid>
+                            </CollectionView.Header>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="70,120,250,70,100,100,80,80,80,100" ColumnSpacing="10" Padding="0,5,5,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <Label Text="{Binding NumPartido}" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <DatePicker Grid.Column="1" Date="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy}'}" HorizontalOptions="Start" 
+                                                    VerticalOptions="Center" />
+                                        <TimePicker Time="{Binding Hora}" Grid.Column="2"  
+                                                    HorizontalOptions="Center" VerticalOptions="Center"
+                                                    Format="HH:mm"/>
+                                        <Entry Text="{Binding Pista}" Grid.Column="3"  HorizontalOptions="Start" VerticalOptions="Center" 
+                                                Placeholder="Pista" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Local}" Grid.Column="4" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Visitante}" Grid.Column="5"  HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <HorizontalStackLayout Grid.Column="6" HorizontalOptions="Start" VerticalOptions="Center">
+                                            <Entry Text="{Binding Resultado.Set1.Local}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                            <Entry Text="{Binding Resultado.Set1.Visitante}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="7" HorizontalOptions="Start" VerticalOptions="Center">
+                                            <Entry Text="{Binding Resultado.Set2.Local}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                            <Entry Text="{Binding Resultado.Set2.Visitante}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="8" HorizontalOptions="Start" VerticalOptions="Center">
+                                            <Entry Text="{Binding Resultado.Set3.Local}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                            <Entry Text="{Binding Resultado.Set3.Visitante}" TextChanged="ResultadoParcial_Changed"></Entry>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="9" HorizontalOptions="Start" VerticalOptions="Center" BackgroundColor="Beige">
+                                            <Entry Text="{Binding Resultado.Local, Mode=TwoWay}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
+                                            <Entry Text="{Binding Resultado.Visitante, Mode=TwoWay}" HorizontalTextAlignment="Center" IsReadOnly="True"></Entry>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+                <Border Padding="10,10,10,10" Margin="5">
+                    <Grid ColumnDefinitions="*" ColumnSpacing="4">
+                        <Button Text="Actualizar partidos y clasificación"
+                                Command="{Binding SaveCommand}"/>
+                    </Grid>
+                </Border>
+                <Border Padding="10,10,10,10" Margin="5">
+                    <VerticalStackLayout>
+                        <Label Text="Clasificación" FontSize="18" TextColor="Blue" Padding="10,10,10,10" Margin="5"/>
+                        <CollectionView ItemsSource="{Binding EquiposOrdered}" Margin="5">
+                            <CollectionView.Header>
+                                <Grid ColumnDefinitions="100,60,80,60,60,60,80,80" ColumnSpacing="10"  Padding="0,5,5,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <Label Text="Equipo" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Puntos" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Coef." Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Jugados" Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Ganados" Grid.Column="4" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Perdidos" Grid.Column="5" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="P.Favor" Grid.Column="6" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="P.Contra" Grid.Column="7" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Grid>
+                            </CollectionView.Header>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="100,60,80,60,60,60,80,80" ColumnSpacing="10" Padding="0,5,5,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35" />
+                                        </Grid.RowDefinitions>
+                                        <Label Text="{Binding Nombre}" Grid.Column="0"  HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Puntos}" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Coeficiente, StringFormat='{0:F3}'}" Grid.Column="2"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Jugados}" Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Ganados}" Grid.Column="4"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Perdidos}" Grid.Column="5"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding PuntosFavor}" Grid.Column="6" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding PuntosContra}" Grid.Column="7"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

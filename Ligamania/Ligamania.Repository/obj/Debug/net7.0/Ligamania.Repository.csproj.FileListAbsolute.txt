@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.csproj.AssemblyReference.cache
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.AssemblyInfoInputs.cache
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.AssemblyInfo.cs
+D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.csproj.CoreCompileInputs.cache
+>>>>>>> be4bb0965a2e256dbd1d5297a870ef704d755cc6
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\Ligamania.Repository.deps.json
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\Ligamania.Repository.dll
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\Ligamania.Repository.pdb
@@ -6,11 +14,14 @@ D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\General.CrossCutting.Lib.pdb
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\General.CrossCutting.Lib.xml
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\bin\Debug\net7.0\Ligamania.Generic.Lib.pdb
+<<<<<<< HEAD
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.csproj.AssemblyReference.cache
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.GeneratedMSBuildEditorConfig.editorconfig
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.AssemblyInfoInputs.cache
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.AssemblyInfo.cs
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.csproj.CoreCompileInputs.cache
+=======
+>>>>>>> be4bb0965a2e256dbd1d5297a870ef704d755cc6
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.csproj.CopyComplete
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\Ligamania.Repository.dll
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Repository\obj\Debug\net7.0\refint\Ligamania.Repository.dll
