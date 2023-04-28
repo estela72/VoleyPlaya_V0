@@ -31,7 +31,7 @@
 </div>
 <div class="card">
     <form method="post" asp-page-handler="Exportar">
-        @Html.AntiForgeryToken();
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(m=>Model.EdicionSelected)
         @Html.HiddenFor(m=>Model.GrupoSelected)
         <div class="card-body">
@@ -56,7 +56,7 @@
                             <tr>
                                 <td>@partido.Jornada</td>
                                 <td>@partido.Label</td>
-                                <td>@partido.FechaHora</td>
+                                <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
                                 <td>@partido.Local</td>
                                 <td>@partido.Resultado.Local</td>
                                 <td>@partido.Resultado.Visitante</td>

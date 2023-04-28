@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -404,7 +405,6 @@ namespace VoleyPlaya.Repository.Services
             var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.FindAllAsync(g => g.EdicionId.Equals(edicionId));
             return JsonSerializer.Serialize<List<EdicionGrupo>>(grupos.ToList(), Options);
         }
-
         public async Task<string> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected)
         {
             if (grupoSelected != 0)
@@ -439,6 +439,37 @@ namespace VoleyPlaya.Repository.Services
             var edicion = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(edicionId);
             await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0);
             await _voleyPlayaUoW.SaveMauiChangesAsync();
+        }
+        public async Task<string> GetAllCompeticionesAsync()
+        {
+            var dtos = await _voleyPlayaUoW.CompeticionRepository.GetAllAsync();
+            var competiciones = dtos.Select(e => new { Id = e.Id, Nombre = e.Nombre }).ToList();
+            return JsonSerializer.Serialize(competiciones, Options);
+        }
+        public async Task<string> GetAllCategoriasByEdicionAsync(int idCompeticion)
+        {
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Competicion.Id.Equals(idCompeticion), e=>e.Categoria);
+            var categorias = ediciones.Select(e => new { Id = e.Categoria.Id, Nombre = e.Categoria.Nombre }).ToList();
+            return JsonSerializer.Serialize(categorias, Options);
+        }
+
+        public async Task<string> GetAllGenerosAsync(int idCompeticion, int idCategoria)
+        {
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllAsync(e => e.Competicion.Id.Equals(idCompeticion)&&e.Categoria.Id.Equals(idCategoria));
+            var generos = ediciones.Select(e => new { Id = e.Genero, Nombre = e.Genero}).ToList();
+            return JsonSerializer.Serialize(generos, Options);
+        }
+
+        public async Task<string> GetAllGruposAsync(int idCompeticion, int idCategoria, string genero)
+        {
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero), e=>e.Grupos);
+            var grupos = ediciones.SelectMany(e=>e.Grupos).Select(g => new { Id = g.Id, Nombre = g.Nombre }).ToList();
+            return JsonSerializer.Serialize(grupos, Options);
+        }
+        public async Task<string> GetClasificacionesAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
+        {
+            var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.GetWithEquiposAsync(competicionSelected, categoriaSelected, generoSelected, grupoSelected);
+            return JsonSerializer.Serialize<List<EdicionGrupo>>(grupos, Options);
         }
     }
 }

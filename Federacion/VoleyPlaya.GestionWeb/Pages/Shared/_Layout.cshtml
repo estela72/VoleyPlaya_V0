@@ -28,14 +28,17 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Index">Competiciones</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
-                            </li>
                         }
                         @if (User.IsInRole(eRoles.Resultados.ToString()))
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Resultados">Resultados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Clasificaciones">Clasificaciones</a>
                             </li>
                         }
                     </ul>

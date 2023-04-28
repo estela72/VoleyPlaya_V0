@@ -17,6 +17,7 @@ namespace VoleyPlaya.Domain.Models
         public int Id { get; set; }
         public int Jornada { get; set; }
         public int NumPartido { get; set; }
+        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy HH:mm}")]
         public DateTime FechaHora { get; set; }
         public string Pista { get; set; }
         public string Local { get; set; }

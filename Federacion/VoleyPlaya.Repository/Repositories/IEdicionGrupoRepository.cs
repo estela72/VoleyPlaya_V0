@@ -19,6 +19,7 @@ namespace VoleyPlaya.Repository.Repositories
         Task<EdicionGrupo> GetBasicAsync(int id);
         Task<EdicionGrupo> GetWithPartidosAsync(int id);
         Task<EdicionGrupo> GetWithEquiposYPartidosAsync(int id);
+        Task<List<EdicionGrupo>> GetWithEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
     }
     public class EdicionGrupoRepository : Repository<EdicionGrupo>, IEdicionGrupoRepository
     {
@@ -54,6 +55,17 @@ namespace VoleyPlaya.Repository.Repositories
         public async Task<EdicionGrupo> GetBasicAsync(int id)
         {
             return await GetByIdAsync(id);
+        }
+
+        public async Task<List<EdicionGrupo>> GetWithEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
+        {
+            var grupos = await FindAllIncludingAsync(g => g.Edicion.Competicion.Id.Equals(competicionSelected)
+                && g.Edicion.Categoria.Id.Equals(categoriaSelected)
+                && g.Edicion.Genero.Equals(generoSelected),
+                g => g.Equipos);
+            if (grupoSelected != null)
+                grupos = grupos.Where(g => g.Id.Equals(int.Parse(grupoSelected))).ToList();
+            return grupos.ToList();
         }
 
         public async Task<EdicionGrupo> GetWithEquiposYPartidosAsync(int id)

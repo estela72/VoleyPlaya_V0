@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,6 +9,7 @@ using VoleyPlaya.Domain.Services;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
+    [Authorize(Policy = "CompeticionesOnly")]
     public class EquiposModel : VPPageModel
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
