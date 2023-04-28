@@ -46,11 +46,16 @@ namespace VoleyPlaya.Domain.Services
         Task<string> GetTipoCalendarioEdicion(int id);
         Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId);
         Task<List<Partido>> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected);
-        Task<List<SelectionItem>> GetListaEdiciones();
+        Task<List<SelectionItem>> GetListaCompeticiones();
         Task<List<SelectionItem>> GetListaGrupos(int edicionId);
         Task<dynamic> ExportarCalendarioAsync(int competicionId, int grupoId);
         Task UpdatePartidosClasificacionAsync(int grupoSelected, List<Partido> partidos);
         Task AddEquipo(int edicionId,string nuevoEquipo);
+        Task<List<SelectionItem>> GetListaCategorias(int idCompeticion);
+        Task<List<SelectionItem>> GetListaGeneros(int idCompeticion, int idCategoria);
+        Task<List<SelectionItem>> GetListaGrupos(int idCompeticion, int idCategoria, string idGenero);
+        Task<List<SelectionItem>> GetListaEdiciones();
+        Task<List<EdicionGrupo>> GetClasificacionEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
     }
     public class EdicionService : IEdicionService
     {
@@ -267,13 +272,7 @@ namespace VoleyPlaya.Domain.Services
             return partidos.OrderBy(p => p.Jornada).ThenBy(p => p.Label).ThenBy(p => p.FechaHora).ToList();
         }
 
-        public async Task<List<SelectionItem>> GetListaEdiciones()
-        {
-            var json = await _service.GetAllEdicionesAsync();
-            var ediciones = EdicionesFromJson(json);
-            return ediciones.Select(e => new SelectionItem { Id = e.Id, Item = e.Alias }).ToList();
-        }
-
+        
         public async Task<List<SelectionItem>> GetListaGrupos(int edicionId)
         {
             var grupos = await GetAllGruposAsync(edicionId);
@@ -300,7 +299,7 @@ namespace VoleyPlaya.Domain.Services
 
         public async Task UpdatePartidosClasificacionAsync(int grupoSelected, List<Partido> partidos)
         {
-            string jsonString = JsonSerializer.Serialize(partidos);
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(partidos);
             var json = await _service.UpdateResultadosPartidosAsync(grupoSelected, jsonString);
             var grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
             await UpdateClasificacion(grupo);
@@ -310,6 +309,71 @@ namespace VoleyPlaya.Domain.Services
         public async Task AddEquipo(int edicionId, string nuevoEquipo)
         {
             await _service.AddEquipo(edicionId, nuevoEquipo);
+        }
+        public async Task<List<SelectionItem>> GetCompeticiones()
+        {
+            var json = await _service.GetAllEdicionesAsync();
+            var ediciones = EdicionesFromJson(json);
+            return ediciones.Select(e => new SelectionItem { Id = e.Id, Item = e.Alias }).ToList();
+        }
+        public async Task<List<SelectionItem>> GetListaEdiciones()
+        {
+            var json = await _service.GetAllEdicionesAsync();
+            var ediciones = EdicionesFromJson(json);
+            return ediciones.Select(e => new SelectionItem { Id = e.Id, Item = e.Alias }).ToList();
+        }
+        public async Task<List<SelectionItem>> GetListaCompeticiones()
+        {
+            var json = await _service.GetAllCompeticionesAsync();
+            JsonNode node = JsonNode.Parse(json)!;
+            JsonArray competiciones = node!.AsArray();
+            List<SelectionItem> lista = new List<SelectionItem>();
+            foreach (var cat in competiciones)
+                lista.Add(new SelectionItem { Id = cat["Id"]!.GetValue<int>(), Item = cat["Nombre"]!.GetValue<string>() });
+            return lista;
+        }
+        public async Task<List<SelectionItem>> GetListaCategorias(int idCompeticion)
+        {
+            var json = await _service.GetAllCategoriasByEdicionAsync(idCompeticion);
+            JsonNode node = JsonNode.Parse(json)!;
+            JsonArray categorias = node!.AsArray();
+            List<SelectionItem> lista = new List<SelectionItem>();
+            foreach (var cat in categorias)
+                lista.Add(new SelectionItem { Id = cat["Id"]!.GetValue<int>(), Item = cat["Nombre"]!.GetValue<string>() });
+            return lista;
+        }
+        public async Task<List<SelectionItem>> GetListaGeneros(int idCompeticion, int idCategoria)
+        {
+            var json = await _service.GetAllGenerosAsync(idCompeticion, idCategoria);
+            JsonNode node = JsonNode.Parse(json)!;
+            JsonArray generos = node!.AsArray();
+            List<SelectionItem> lista = new List<SelectionItem>();
+            int id = 0;
+            foreach (var cat in generos)
+                lista.Add(new SelectionItem { Id = id++, Item = cat["Nombre"]!.GetValue<string>() });
+            return lista;
+        }
+
+        public async Task<List<SelectionItem>> GetListaGrupos(int idCompeticion, int idCategoria, string genero)
+        {
+            var json = await _service.GetAllGruposAsync(idCompeticion, idCategoria, genero);
+            JsonNode node = JsonNode.Parse(json)!;
+            JsonArray grupos = node!.AsArray();
+            List<SelectionItem> lista = new List<SelectionItem>();
+            foreach (var cat in grupos)
+                lista.Add(new SelectionItem { Id = cat["Id"]!.GetValue<int>(), Item = cat["Nombre"]!.GetValue<string>() });
+            return lista;
+        }
+
+        public async Task<List<EdicionGrupo>> GetClasificacionEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
+        {
+            List<EdicionGrupo> list = new List<EdicionGrupo>();
+            string json = await _service.GetClasificacionesAsync(competicionSelected, categoriaSelected, generoSelected, grupoSelected);
+            JsonNode jsonNode = JsonNode.Parse(json);
+            JsonArray jsonArray = jsonNode.AsArray();
+            foreach (var jsGrupo in jsonArray)
+                list.Add(EdicionGrupo.FromJson(jsGrupo));
+            return list;
         }
     }
 }

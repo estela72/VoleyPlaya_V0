@@ -82,8 +82,8 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
             await _userManager.UpdateAsync(user);
             try
             {
-                await _emailService.Send(user.Email, "Confirmación de registro",
-                    $"Tu registro ha sido validado por un administrador. Ya puedes utilizar la aplicación.");
+                await _emailService.Send(user.Email, "[Federación de Voleibol de Asturias] Confirmación de registro",
+                    $"Tu registro en la aplicación de Voley Playa ha sido validado. Ya puedes utilizar la aplicación.");
             }
             catch { }
 
