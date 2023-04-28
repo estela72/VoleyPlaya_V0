@@ -441,6 +441,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<int?>("PuntosFavor")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("Retirado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");

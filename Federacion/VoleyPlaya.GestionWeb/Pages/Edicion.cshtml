@@ -199,8 +199,15 @@
                                                     </td>
                                                     <td align="center">
                                                         @Html.AntiForgeryToken()
-                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id">
+                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id"
+                                                                data-placement="right"
+                                                                title="Borra equipo. Solo si no hay partidos generados">
                                                             <i class="fas fa-trash"></i>
+                                                        </button>
+                                                        <button type="submit" class="btn btn-info" asp-page-handler="RetirarEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id"
+                                                                data-placement="right"
+                                                                title="Equipo retirado. Actualiza clasificación">
+                                                            <i class="fas fa-download"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -238,10 +245,17 @@
                                                     </td>
                                                     <td align="center">
                                                         @Html.AntiForgeryToken()
-                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id">
+                                                        <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id"
+                                                                data-placement="right"
+                                                                title="Borra equipo. Solo si no hay partidos generados">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                    </td>
+                                                        <button type="submit" class="btn btn-info" asp-page-handler="RetirarEquipo" asp-route-id="@Model.Edicion.Grupos[i].Equipos[j].Id"
+                                                                data-placement="right"
+                                                                title="Equipo retirado. Actualiza clasificación">
+                                                            <i class="fas fa-download"></i>
+                                                        </button>
+                                                        </td>
                                                 </tr>
                                             }
                                         </tbody>

@@ -24,6 +24,8 @@ namespace VoleyPlaya.Domain.Models
         public string Visitante { get; set; }
         public Resultado Resultado { get; set; }
         public string Label { get; set; }
+        public bool NoPresentadoLocal { get; set; }
+        public bool NoPresentadoVisitante { get; set; }
 
         internal static Partido FromJson(JsonNode jsonPartido)
         {
@@ -37,7 +39,7 @@ namespace VoleyPlaya.Domain.Models
                 Pista = jsonPartido["Pista"]!.GetValue<string>()!,
                 Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!,
                 Visitante = EquipoFromJson(jsonPartido["Visitante"]!)!,
-                Label = jsonPartido["Label"]!.GetValue<string>()!,
+                Label = jsonPartido["Label"]!.GetValue<string>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
@@ -56,7 +58,7 @@ namespace VoleyPlaya.Domain.Models
                 Pista = jsonPartido["Pista"]!.GetValue<string>()!,
                 Visitante = jsonPartido["Visitante"]!.GetValue<string>()!,
                 Label = jsonPartido["Label"]!.GetValue<string>()!,
-                Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!,
+                Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();

@@ -56,6 +56,7 @@ namespace VoleyPlaya.Domain.Services
         Task<List<SelectionItem>> GetListaGrupos(int idCompeticion, int idCategoria, string idGenero);
         Task<List<SelectionItem>> GetListaEdiciones();
         Task<List<EdicionGrupo>> GetClasificacionEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
+        Task<string> RetirarEquipoASync(int id);
     }
     public class EdicionService : IEdicionService
     {
@@ -137,47 +138,52 @@ namespace VoleyPlaya.Domain.Services
             {
                 var local = grupo.Equipos.First(e => e.Nombre.Equals(partido.Local));
                 var visitante = grupo.Equipos.First(e => e.Nombre.Equals(partido.Visitante));
-                partido.Resultado.Local = partido.Resultado.Sets.Count(s => s.Local > s.Visitante);
-                partido.Resultado.Visitante = partido.Resultado.Sets.Count(s => s.Visitante > s.Local);
-                local.Jugados++;
-                visitante.Jugados++;
-                if (partido.Resultado.Local > partido.Resultado.Visitante) 
-                { 
-                    local.Ganados++; 
-                    local.Puntos += 2;
-                    visitante.Perdidos++;
-                    visitante.Puntos += 1;
-                }
-                else if (partido.Resultado.Local < partido.Resultado.Visitante) 
-                {
-                    visitante.Ganados++;
-                    visitante.Puntos += 2;
-                    local.Perdidos++; 
-                    local.Puntos+= 1; 
-                }
-                local.PuntosFavor += partido.Resultado.Set1.Local;
-                local.PuntosFavor += partido.Resultado.Set2.Local;
-                local.PuntosFavor += partido.Resultado.Set3.Local;
-
-                local.PuntosContra += partido.Resultado.Set1.Visitante;
-                local.PuntosContra += partido.Resultado.Set2.Visitante;
-                local.PuntosContra += partido.Resultado.Set3.Visitante;
-
-                if (local.PuntosContra != 0)
-                   local.Coeficiente = local.PuntosFavor * 1.0 / local.PuntosContra * 1.0;
-
-                visitante.PuntosFavor += partido.Resultado.Set1.Visitante;
-                visitante.PuntosFavor += partido.Resultado.Set2.Visitante;
-                visitante.PuntosFavor += partido.Resultado.Set3.Visitante;
-
-                visitante.PuntosContra += partido.Resultado.Set1.Local;
-                visitante.PuntosContra += partido.Resultado.Set2.Local;
-                visitante.PuntosContra += partido.Resultado.Set3.Local;
-
-                if (visitante.PuntosContra != 0)
-                    visitante.Coeficiente = visitante.PuntosFavor * 1.0 / visitante.PuntosContra * 1.0;
+                ActualizarResultadoPartido(partido, local, visitante);
             }
         }
+        private void ActualizarResultadoPartido(Partido partido, Equipo local, Equipo visitante)
+        {
+            partido.Resultado.Local = partido.Resultado.Sets.Count(s => s.Local > s.Visitante);
+            partido.Resultado.Visitante = partido.Resultado.Sets.Count(s => s.Visitante > s.Local);
+            local.Jugados++;
+            visitante.Jugados++;
+            if (partido.Resultado.Local > partido.Resultado.Visitante)
+            {
+                local.Ganados++;
+                local.Puntos += 2;
+                visitante.Perdidos++;
+                visitante.Puntos += 1;
+            }
+            else if (partido.Resultado.Local < partido.Resultado.Visitante)
+            {
+                visitante.Ganados++;
+                visitante.Puntos += 2;
+                local.Perdidos++;
+                local.Puntos += 1;
+            }
+            local.PuntosFavor += partido.Resultado.Set1.Local;
+            local.PuntosFavor += partido.Resultado.Set2.Local;
+            local.PuntosFavor += partido.Resultado.Set3.Local;
+
+            local.PuntosContra += partido.Resultado.Set1.Visitante;
+            local.PuntosContra += partido.Resultado.Set2.Visitante;
+            local.PuntosContra += partido.Resultado.Set3.Visitante;
+
+            if (local.PuntosContra != 0)
+                local.Coeficiente = local.PuntosFavor * 1.0 / local.PuntosContra * 1.0;
+
+            visitante.PuntosFavor += partido.Resultado.Set1.Visitante;
+            visitante.PuntosFavor += partido.Resultado.Set2.Visitante;
+            visitante.PuntosFavor += partido.Resultado.Set3.Visitante;
+
+            visitante.PuntosContra += partido.Resultado.Set1.Local;
+            visitante.PuntosContra += partido.Resultado.Set2.Local;
+            visitante.PuntosContra += partido.Resultado.Set3.Local;
+
+            if (visitante.PuntosContra != 0)
+                visitante.Coeficiente = visitante.PuntosFavor * 1.0 / visitante.PuntosContra * 1.0;
+        }
+
         public async Task<EdicionGrupo> UpdateGrupoAsync(EdicionGrupo grupo)
         {
             var jsonGrupo = await GetGrupoAsync(grupo.Id);
@@ -374,6 +380,16 @@ namespace VoleyPlaya.Domain.Services
             foreach (var jsGrupo in jsonArray)
                 list.Add(EdicionGrupo.FromJson(jsGrupo));
             return list;
+        }
+
+        public async Task<string> RetirarEquipoASync(int id)
+        {
+            var jsonGrupo = await _service.RetirarEquipoAsync(id);
+            // me devuelve el grupo para poder actualizar la clasificación
+            var grupo = GetGrupoFromJson(jsonGrupo);
+            await UpdateClasificacion(grupo);
+            await UpdatePartidosAsync(grupo);
+            return "Equipo retirado";
         }
     }
 }

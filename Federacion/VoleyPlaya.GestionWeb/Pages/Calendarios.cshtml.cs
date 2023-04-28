@@ -24,8 +24,6 @@ namespace VoleyPlaya.GestionWeb.Pages
     {
         IEdicionService _service;
 
-        //public string ErrorMessage { get; set; }
-
         [BindProperty]
         public int EdicionSelected { get; set; }
 
@@ -86,29 +84,36 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             competicionId = EdicionSelected;
             grupoId = GrupoSelected;
-
-            // Exportar a excel el calendario seleccionado
-            var data = await _service.ExportarCalendarioAsync(competicionId, grupoId);
-
-            // Obtén la ruta del directorio personal del usuario
-            string personalFolder = Environment.CurrentDirectory;
-            // Nombre del fichero
-            string fName = $"Calendario_" + data.edicion.Nombre + "Grupo" + data.grupo.Name + ".xlsx";
-            // Concatena el nombre de la carpeta "Descargas" en la ruta
-            string fileName = System.IO.Path.Combine(personalFolder, fName);
-            // Nombre de la hoja
-            string sheetName = "calendario";
-
-            // Escribir el libro de Excel en un MemoryStream
-            using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            try
             {
-                IWorkbook workbook = GenerarExcelFile(fileName, sheetName, data.partidos, data.edicion, data.grupo);
-                workbook.Write(fs, true);
-                workbook.Close();
+                // Exportar a excel el calendario seleccionado
+                var data = await _service.ExportarCalendarioAsync(competicionId, grupoId);
+
+                // Obtén la ruta del directorio personal del usuario
+                string personalFolder = Environment.CurrentDirectory;
+                // Nombre del fichero
+                string fName = $"Calendario_" + data.edicion.Nombre + "Grupo" + data.grupo.Name + ".xlsx";
+                // Concatena el nombre de la carpeta "Descargas" en la ruta
+                string fileName = System.IO.Path.Combine(personalFolder, fName);
+                // Nombre de la hoja
+                string sheetName = "calendario";
+
+                // Escribir el libro de Excel en un MemoryStream
+                using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                {
+                    IWorkbook workbook = GenerarExcelFile(fileName, sheetName, data.partidos, data.edicion, data.grupo);
+                    workbook.Write(fs, true);
+                    workbook.Close();
+                }
+                byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
+                System.IO.File.Delete(fileName);
+                return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fName);
             }
-            byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
-            System.IO.File.Delete(fileName);
-            return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fName);
+            catch (Exception x)
+            {
+                ErrorMessage= "Se ha producido un error: "+x.Message;
+                return Page();
+            }
         }
 
         private IWorkbook GenerarExcelFile(string fileName, string sheetName, List<Partido> partidos, Edicion edicion, EdicionGrupo grupo)

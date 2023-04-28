@@ -258,6 +258,24 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
+        public async Task<IActionResult> OnPostRetirarEquipoAsync(int id)
+        {
+            try
+            {
+                var str = await _service.RetirarEquipoASync(id);
+                ErrorMessage = str;
+            }
+            catch(Exception x)
+            {
+                ErrorMessage = "Error retirando un equipo de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
         public async Task<IActionResult> OnPostDeleteGrupoAsync(int id)
         {
             try

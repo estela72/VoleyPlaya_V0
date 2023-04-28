@@ -82,10 +82,14 @@ namespace VoleyPlaya.GestionWeb.Pages
         }
         public async Task<IActionResult> OnPostGuardarAsync()
         {
-            //if (!ModelState.IsValid)
-            //    return Page();
-
-            await _service.UpdatePartidosClasificacionAsync(GrupoSelected, Partidos);
+            try
+            {
+                await _service.UpdatePartidosClasificacionAsync(GrupoSelected, Partidos);
+            }
+            catch(Exception x)
+            {
+                ErrorMessage = "Se ha producido un error: "+x.Message;
+            }
             await GetLists();
             return Page();
         }
