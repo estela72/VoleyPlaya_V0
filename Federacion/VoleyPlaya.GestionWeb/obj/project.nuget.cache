@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "lC/mLrqi6TTtMxVlVtVG8L9JewC9jkRUp0NEsfcW5s8a1j1lRK6zxS7rXeptg4l0d2SGkG/8WzQLNsq910CKeQ==",
+  "dgSpecHash": "sINoLNUu7omB0OB78+MREGQSuY521OuGmYE+mV90b/g0Yp2OCiVOOWdBdVtPpxYzXRp4WWs1sLrVNq5pUi5Jlg==",
   "success": true,
   "projectFilePath": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\VoleyPlaya.GestionWeb.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\egonz\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\egonz\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\bootstrap\\5.2.3\\bootstrap.5.2.3.nupkg.sha512",

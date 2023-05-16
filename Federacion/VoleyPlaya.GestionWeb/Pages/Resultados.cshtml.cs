@@ -22,71 +22,55 @@ namespace VoleyPlaya.GestionWeb.Pages
     [Authorize(Policy = "ResultadosOnly")]
     public class ResultadosModel : VPPageModel
     {
-        IEdicionService _service;
 
         [BindProperty]
-        public int EdicionSelected { get; set; }
+        public List<Partido> Partidos { get; set; }
 
-        public SelectList Ediciones { get; set; } = default!;
-
-        [BindProperty]
-        public int GrupoSelected { get; set; }
-
-        public SelectList Grupos { get; set; } = default!;
-
-        [BindProperty]
-        public List<Partido> Partidos { get; set; }        
-
-        public ResultadosModel(IEdicionService service)
+        public ResultadosModel(IEdicionService service) : base(service)
         {
-            _service = service;
-            Ediciones = new SelectList(new List<Edicion>(), "Id", "Item");
             Grupos = new SelectList(new List<EdicionGrupo>(), "Id", "Item");
         }
-        public async Task OnGetAsync(int EdicionSelected, int GrupoSelected)
+        public async Task OnGetAsync(int? competicion, int? categoria, string genero, int? grupo)
         {
-            this.EdicionSelected = EdicionSelected;
-            this.GrupoSelected = GrupoSelected;
-            await GetLists();
+            CompeticionSelected = competicion is not null and > 0 ? competicion.ToString() : null;
+            CategoriaSelected = categoria is not null and > 0 ? categoria.ToString() : null;
+            GeneroSelected = genero;
+            GrupoSelected = grupo is not null and > 0 ? grupo.ToString() : null;
+
+            Competiciones = await GetCompeticiones();
+            Categorias = await GetCategorias();
+            Generos = await GetGeneros();
+            Grupos = await GetGrupos();
+
             await GetPartidosAsync();
-        }
-
-        private async Task GetLists()
-        {
-            await GetListaEdiciones();
-            await GetListaGrupos();
-        }
-
-        private async Task GetListaGrupos()
-        {
-            var grupos = await _service.GetListaGrupos(EdicionSelected);
-            Grupos = new SelectList(grupos, "Id", "Item", GrupoSelected);
-        }
-
-        private async Task GetListaEdiciones()
-        {
-            var ediciones = await _service.GetListaEdiciones();
-            Ediciones = new SelectList(ediciones, "Id", "Item", EdicionSelected);
         }
 
         public async Task GetPartidosAsync()
         {
-
-            Partidos = await _service.GetPartidosFiltradosAsync(EdicionSelected, GrupoSelected);
+            if (CompeticionSelected == null || CategoriaSelected == null || string.IsNullOrEmpty(GeneroSelected) || GeneroSelected.Equals("0") || GrupoSelected == null)
+                return;
+            Partidos = await _service.GetPartidosFiltradosAsync(int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, int.Parse(GrupoSelected));
         }
-        public async Task<IActionResult> OnGetGruposAsync(int competicionId)
+        public async Task<IActionResult> OnPostGuardarAsync(int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {
-            EdicionSelected = competicionId;
-            await GetListaGrupos();
-            return new JsonResult(Grupos);
-        }
-        public async Task<IActionResult> OnPostGuardarAsync()
-        {
-            //if (!ModelState.IsValid)
-            //    return Page();
+            try
+            {
+                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
+                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
+                GeneroSelected = generoId;
+                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
 
-            await _service.UpdatePartidosClasificacionAsync(GrupoSelected, Partidos);
-            await GetLists();
+                await _service.UpdatePartidosClasificacionAsync(Partidos);
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Se ha producido un error: " + x.Message;
+            }
+            Competiciones = await GetCompeticiones();
+            Categorias = await GetCategorias();
+            Generos = await GetGeneros();
+            Grupos = await GetGrupos();
+            await GetPartidosAsync();
             return Page();
         }
     }

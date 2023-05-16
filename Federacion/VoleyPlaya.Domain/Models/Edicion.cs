@@ -360,7 +360,8 @@ namespace VoleyPlaya.Domain.Models
             char c = 'A';
             for (int i = 0; i < numGrupos; i++)
             {
-                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, ref c);
+                string nombre = VoleyPlayaService.GetGroupName(i+1);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre); //NuevoGrupo(numEquiposGrupo, ref c);
                 Grupos.Add(grupo);
             }
             // Repartir los equipos en los diferentes grupos.
@@ -393,7 +394,20 @@ namespace VoleyPlaya.Domain.Models
             
             return grupo;
         }
+        private EdicionGrupo NuevoGrupo(int numEquiposGrupo, string nombre)
+        {
+            var grupo = new EdicionGrupo()
+            {
+                //Edicion = this,
+                Equipos = new List<Equipo>(),
+                Name = nombre,
+                NumEquipos = numEquiposGrupo,
+                TipoGrupo = EnumTipoGrupo.Liga,
+                Partidos = new List<Partido>()
+            };
 
+            return grupo;
+        }
         [Obsolete]
         public async Task GenerarGrupoAsync(int numEquiposGrupo)
         {

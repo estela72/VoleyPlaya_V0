@@ -13,7 +13,6 @@ namespace VoleyPlaya.GestionWeb.Pages
     public class EquiposModel : VPPageModel
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        IEdicionService _service;
         [BindProperty]
         public List<Equipo> Equipos { get; set; }
         [BindProperty]
@@ -24,9 +23,8 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         public string UrlEdicion { get; set; }
         
-        public EquiposModel(IEdicionService service, IHttpContextAccessor httpContextAccessor)
+        public EquiposModel(IEdicionService service, IHttpContextAccessor httpContextAccessor):base(service)
         {
-            _service = service;
             _httpContextAccessor = httpContextAccessor;
         }
         
@@ -47,12 +45,12 @@ namespace VoleyPlaya.GestionWeb.Pages
         }
         private async Task<bool> GetEdicion(int id)
         {
-            var jsonEdicion = await _service.GetEdicionById(id);
-            if (jsonEdicion == null)
+            var edicion = await _service.GetEdicionById(id);
+            if (edicion == null)
             {
                 return false;
             }
-            Equipos = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!).Equipos;
+            Equipos = edicion.Equipos;
             EdicionId = id;
             return true;
         }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -12,6 +13,8 @@ namespace VoleyPlaya.Repository.Models
     public class PartidoVis
     {
         public string Local { get; set; }
+        public bool RetiradoLocal { get; set; }
+        public bool RetiradoVisitante { get; set; }
         public string Visitante { get; set; }
         public int Jornada { get; set; }
         public string Label { get; set; }
@@ -24,6 +27,10 @@ namespace VoleyPlaya.Repository.Models
         public int LocalId { get; set; }
         public int VisitanteId { get; set; }
         public int GrupoId { get; set; }
+        public string Competicion { get; set; }
+        public string Categoria { get; set; }
+        public string Genero { get; set; }
+        public string Grupo { get; set; }
         public List<ParcialPartidoVis> Parciales { get; set; }
 
         public PartidoVis(Partido partido)
@@ -42,6 +49,12 @@ namespace VoleyPlaya.Repository.Models
             VisitanteId = partido.Visitante.Id;
             GrupoId = partido.Grupo.Id;
             Parciales = partido.Parciales.Select(p => new ParcialPartidoVis(p)).ToList();
+            RetiradoLocal = partido.Local.Retirado != null ? partido.Local.Retirado.Value:false;
+            RetiradoVisitante = partido.Visitante.Retirado!=null ? partido.Visitante.Retirado.Value:false;
+            Competicion = partido.Grupo.Edicion.Competicion.Nombre;
+            Categoria = partido.Grupo.Edicion.Categoria.Nombre;
+            Genero = partido.Grupo.Edicion.Genero;
+            Grupo = partido.Grupo.Nombre;
         }
     }
     public class Partido : Entity   
@@ -85,6 +98,10 @@ namespace VoleyPlaya.Repository.Models
         public string? Pista { get => _pista; set => _pista = value; }
         public string? Label { get => _label; set => _label = value; }
         public HashSet<ParcialPartido>? Parciales { get => _parciales; set => _parciales = value; }
+        [NotMapped]
+        public bool RetiradoLocal { get { return _local == null||_local.Retirado==null ? false : _local!.Retirado.Value; } }
+        [NotMapped]
+        public bool RetiradoVisitante { get { return _visitante == null||_visitante.Retirado==null ? false : _visitante!.Retirado.Value; } }
 
         public override bool Equals(object obj)
         {

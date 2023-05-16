@@ -86,7 +86,7 @@ namespace VoleyPlaya.Repository.Repositories
                 .Include(h => h.Categoria)
                 .Include(h => h.Grupos)
                 ;
-            return await ediciones.ToListAsync();
+            return await ediciones.AsSplitQuery().ToListAsync();
         }
         public async Task<Edicion> GetFullEdicionAsync(int id)
         {

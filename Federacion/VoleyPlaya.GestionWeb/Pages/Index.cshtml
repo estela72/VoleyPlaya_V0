@@ -1,5 +1,5 @@
-﻿@page "{handler?}"
-@model VoleyPlaya.Gestion.Web.Views.Edicion.EdicionesModel
+﻿@page 
+@model VoleyPlaya.Gestion.Web.Views.Edicion.IndexModel
 @{
 
 }
@@ -12,39 +12,10 @@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <label class="col-11 alert-info align-content-start">Competiciones</label>
-            <a class="col-1 btn btn-primary align-content-end" asp-page="./Edicion" asp-route-id="">+</a>
+            
         </div>
     </div>
     <div class="card-body">
-        <table class="table table-borderless table-striped table-hover">
-            <tbody>
-                @foreach (var item in Model.Ediciones)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Temporada)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Lugar)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Competicion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoriaStr)
-                            @Html.DisplayFor(modelItem => item.GeneroStr)
-                        </td>
-                        <td>
-                            <form asp-page-handler="Delete" method="post">
-                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Id"> Editar</a>
-                                <button class="btn btn-danger">Borrar</button>
-                                <input type="hidden" name="id" value="@item.Id" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
     </div>
 </div>

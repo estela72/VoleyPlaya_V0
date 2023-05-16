@@ -19,13 +19,11 @@ namespace VoleyPlaya.Repository
     public static class StartupExtension
     {
         public static void AddRepositoryStartup(this IServiceCollection services)
-        {
+        { 
             // Add framework services.
             services.AddDbContext<VoleyPlayaDbContext>(
                 options => options.ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
             );
-
-
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             // configure DI for DBContext
@@ -56,7 +54,7 @@ namespace VoleyPlaya.Repository
                 VoleyPlayaDbContext dbContext = serviceProvider.GetRequiredService<VoleyPlayaDbContext>();
                 //dbContext.Database.EnsureDeleted();
                 //dbContext.Database.EnsureCreated();
-                //dbContext.Database.Migrate();
+                dbContext.Database.Migrate();
             }
         }
     }

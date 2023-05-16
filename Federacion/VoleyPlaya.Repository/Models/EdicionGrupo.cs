@@ -24,7 +24,6 @@ namespace VoleyPlaya.Repository.Models
             _partidos = new HashSet<Partido>();
         }
 
-        //public int NumEquipos { get => _numEquipos; set => _numEquipos = value; }
         public string Tipo { get => _tipo; set => _tipo = value; }
         public virtual Edicion Edicion { get => _edicion; set => _edicion = value; }
         public HashSet<Equipo>? Equipos { get => _equipos; set => _equipos = value; }

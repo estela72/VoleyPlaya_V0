@@ -20,6 +20,7 @@ namespace VoleyPlaya.Repository.Models
         int? _puntosContra;
         double? _coeficiente;
         int? _puntos;
+        bool? _retirado;
 
         HashSet<Partido>? _locales;
         HashSet<Partido>? _visitantes;
@@ -52,6 +53,7 @@ namespace VoleyPlaya.Repository.Models
         public int? PuntosContra { get => _puntosContra; set => _puntosContra = value; }
         public double? Coeficiente { get => _coeficiente; set => _coeficiente = value; }
         public int? Puntos { get => _puntos; set => _puntos = value; }
+        public bool? Retirado { get => _retirado; set => _retirado = value; }
         public HashSet<Partido>? Locales { get => _locales; set => _locales = value; }
         public HashSet<Partido>? Visitantes { get => _visitantes; set => _visitantes = value; }
     }

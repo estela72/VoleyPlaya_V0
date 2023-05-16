@@ -1,4 +1,6 @@
 
+using AutoMapper;
+
 using General.CrossCutting.Lib;
 
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +25,9 @@ var config = new ConfigurationBuilder()
 // Add services
 builder.Services.AddDomainStartup();
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+// Add Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Configura Identity
 builder.Services.AddDefaultIdentity<IdentityUser>()
@@ -54,7 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
 
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -66,7 +71,8 @@ await builder.Services.AddApplicationRoles();
 await builder.Services.AddAdminUsers();
 await builder.Services.AddPolicies();
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+        ;
 
 var app = builder.Build();
 
@@ -92,13 +98,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
-//app.UseEndpoints(endpoints =>
-//{
-//    //endpoints.MapDefaultControllerRoute();
-//    endpoints.MapRazorPages();
-//});
-
 
 app.Run();
 

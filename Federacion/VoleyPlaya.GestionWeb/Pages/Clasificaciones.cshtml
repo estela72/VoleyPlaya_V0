@@ -65,6 +65,11 @@
             </div>
         </div>
     </form>
+    <div class="col" style="max-width: 600px;">
+        <div class="retirado">
+            <p>Equipo Retirado</p>
+        </div>
+    </div>
 </div>
 @if (Model.Clasificaciones != null)
 {
@@ -80,7 +85,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-borderless table-striped table-hover">
+                <table class="table table-borderless table-striped table-hover partidos">
                     <thead>
                         <tr>
                             <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
@@ -96,9 +101,10 @@
                     <tbody>
                         @foreach (var equipo in grupo.Equipos.OrderByDescending(e=>e.Puntos).ThenByDescending(e=>e.Coeficiente))
                         {
-                            <tr>
-
-                                <td>
+                            var clase = "";
+                            if (equipo.Retirado) clase = "retirado";
+                            <tr class="@clase">
+                                <td class="@clase">
                                     @Html.DisplayFor(modelItem =>  equipo.Nombre)
                                 </td>
                                 <td>

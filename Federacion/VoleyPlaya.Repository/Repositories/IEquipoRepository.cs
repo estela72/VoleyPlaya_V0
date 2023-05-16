@@ -37,7 +37,7 @@ namespace VoleyPlaya.Repository.Repositories
         {
             if (nombre.Equals(string.Empty)) return null;
             Equipo dto = null;
-            if (idEquipo == 0)
+            if (idEquipo != 0)
                 dto = await GetByIdAsync(idEquipo);
 
             if (dto == null)
@@ -53,7 +53,8 @@ namespace VoleyPlaya.Repository.Repositories
                     PuntosFavor = puntosFavor,
                     OrdenCalendario = posicion,
                     Edicion = edicionGrupoDto.Edicion,
-                    EdicionGrupo = edicionGrupoDto
+                    EdicionGrupo = edicionGrupoDto,
+                    Retirado=false
                 });
             else
             {
@@ -74,7 +75,7 @@ namespace VoleyPlaya.Repository.Repositories
 
         public async Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos)
         {
-            if (nombre.Equals(string.Empty)) return;
+            if (string.IsNullOrEmpty(nombre)) return;
             Equipo dto = null;
             if (idEquipo != 0)
                 dto = await GetByIdAsync(idEquipo);

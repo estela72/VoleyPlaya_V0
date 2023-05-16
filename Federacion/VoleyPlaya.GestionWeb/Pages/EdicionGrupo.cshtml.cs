@@ -13,17 +13,14 @@ namespace VoleyPlaya.Gestion.Web.Views.Edicion
     [Authorize(Policy = "CompeticionesOnly")]
     public class EdicionGrupoModel : VPPageModel
     {
-        IEdicionService _service;
         [BindProperty]
         public EdicionGrupo Grupo { get; set; } = default!;
-        public EdicionGrupoModel(IEdicionService service)
+        public EdicionGrupoModel(IEdicionService service):base(service)
         {
-            _service = service;
         }
         public async Task OnGetAsync(int? id)
         {
-            var json = await _service.GetGrupoAsync(id.Value);
-            Grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
+            Grupo = await _service.GetGrupoAsync(id.Value);
             Grupo.UpdateEquipos(Grupo.NumEquipos);
         }
         // Generar partidos
@@ -38,8 +35,7 @@ namespace VoleyPlaya.Gestion.Web.Views.Edicion
             {
                 await _service.UpdateGrupoAsync(Grupo);
             }
-            var json = await _service.GetGrupoAsync(Grupo.Id);
-            Grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
+            Grupo = await _service.GetGrupoAsync(Grupo.Id);
             Grupo.UpdateEquipos(Grupo.NumEquipos);
             return Page();
         }
@@ -60,15 +56,13 @@ namespace VoleyPlaya.Gestion.Web.Views.Edicion
                 await _service.UpdateClasificacion(Grupo);
                 await _service.UpdatePartidosAsync(Grupo);
             }
-            var json = await _service.GetGrupoAsync(Grupo!.Id);
-            Grupo = EdicionGrupo.FromJson(JsonNode.Parse(json)!);
+            Grupo = await _service.GetGrupoAsync(Grupo!.Id);
             return Page();
         }
         public async Task<IActionResult> OnGetDeletePartido(int partidoId, int groupId)
         {
             await _service.DeletePartidoAsync(partidoId);
-            var jsonEdicion = await _service.GetGrupoAsync(groupId);
-            Grupo = EdicionGrupo.FromJson(JsonNode.Parse(jsonEdicion)!);
+            Grupo = await _service.GetGrupoAsync(groupId);
 
             if (Grupo == null)
             {
