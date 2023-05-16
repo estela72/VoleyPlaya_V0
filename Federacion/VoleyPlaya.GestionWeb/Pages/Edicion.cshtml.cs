@@ -279,7 +279,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             catch (Exception x)
             {
-                ErrorMessage = "Error eliminando un equipo de la competición: " + x.Message;
+                ErrorMessage = "Error eliminando un grupo de la competición: " + x.Message;
             }
             finally
             {

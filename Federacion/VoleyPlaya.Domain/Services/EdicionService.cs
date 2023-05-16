@@ -138,7 +138,8 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task UpdateDatosPartidosAsync(EdicionGrupo grupo)
         {
-            string jsonString = JsonSerializer.Serialize(grupo);
+            JsonSerializerOptions options = new() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
+            string jsonString = JsonSerializer.Serialize(grupo, options);
             await _service.UpdateDatosPartidosAsync(jsonString);
         }
 

@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page "{handler?}"
 @model VoleyPlaya.GestionWeb.Pages.EdicionModel
 @{
 }
@@ -312,7 +312,7 @@
         <div class="guia-paso @((pasoActual >= 4) ? "completado" : "")">
             <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapsePartidosFG"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
             <h2>Partidos fase de grupos</h2>
-            <form method="post" asp-page-handler="PartidosFaseGrupos">
+            <form method="post">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m=>Model.Edicion.Id)
                 @Html.HiddenFor(m=>Model.Edicion.Nombre)
@@ -389,8 +389,6 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <form method="post" asp-page-handler="GuardarPartidos">
                 <div class="card collapse" id="collapsePartidosFG">
                     <div class="card-body">
                         @if (Model.Edicion.Grupos.Count > 0 && Model.Edicion.Grupos.First().Equipos.Count > 0)
@@ -458,7 +456,7 @@
                         }
                     </div>
                     <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" value="Guardar Partidos"/>
+                        <input type="submit" class="btn btn-primary" value="Guardar Partidos" asp-page-handler="GuardarPartidos" />
                     </div>
                 </div>
             </form>
