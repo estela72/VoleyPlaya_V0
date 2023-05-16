@@ -21,6 +21,8 @@ body {
   margin-bottom: 60px;
 }
 
+
+
 /* Estilo para los pasos de la guía */
 .guia-paso {
     margin-bottom: 10px;
@@ -57,4 +59,29 @@ body {
 .toggle-icon {
     cursor: pointer;
     color: blue;
+}
+
+/*table {
+    table-layout: fixed;
+}*/
+
+/*#tablaPartidos th td {
+    width: 30px;
+    overflow: auto;*/
+    /*border: 1px solid;*/
+/*}*/
+
+.smallCell {
+    width: 10%;
+}
+
+.retirado{
+    background-color: lightgray;
+}
+table.partidos td {
+}
+.retirado
+{
+    background-color: lightgray;
+    color: red;
 }

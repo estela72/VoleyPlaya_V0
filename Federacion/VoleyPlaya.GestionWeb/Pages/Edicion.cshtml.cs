@@ -15,8 +15,6 @@ namespace VoleyPlaya.GestionWeb.Pages
     [Authorize(Policy = "CompeticionesOnly")]
     public class EdicionModel : VPPageModel
     {
-        IEdicionService _service;
-
         [BindProperty]
         public string EdicionName { get; set; }
 
@@ -44,9 +42,8 @@ namespace VoleyPlaya.GestionWeb.Pages
         public int NumJornadas { get; set; }
 
 
-        public EdicionModel (IEdicionService service)
+        public EdicionModel (IEdicionService service) : base(service)
         {
-            _service = service;
             Competiciones = new SelectList(EnumCompeticiones.Competiciones.Values);
             Categorias = new SelectList(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
@@ -81,8 +78,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             Arguments.Check(new object[] { id });
             try
             {
-                var jsonEdicion = await _service.GetEdicionById(id.Value);
-                Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+                Edicion = await _service.GetEdicionByIdAsync(id.Value);
             }
             catch(Exception x)
             {
@@ -94,8 +90,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             try
             {
                 Arguments.Check(new object[] { nombre });
-                var jsonEdicion = await _service.GetEdicionByName(nombre);
-                Edicion = Edicion.FromJson(JsonNode.Parse(jsonEdicion)!);
+                Edicion = await _service.GetEdicionByName(nombre);
             }
             catch (Exception x)
             {
@@ -337,7 +332,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
                     await _service.UpdatePartidosAsync(grupo);
                 }
-                //await GetEdicion(Edicion.Nombre);
+                await GetEdicion(Edicion.Nombre);
                 await Fill();
             }
             catch (Exception x)

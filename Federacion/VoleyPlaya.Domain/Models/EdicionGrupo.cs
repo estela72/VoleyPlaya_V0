@@ -28,9 +28,6 @@ namespace VoleyPlaya.Domain.Models
         [Display(Name = "Nº Equipos")]
         public int NumEquipos { get; set; }
         public List<Equipo> Equipos { get; set; }
-        [Obsolete]
-        [BindNever]
-        public List<Equipo> EquiposOrderedByPos { get { return Equipos.OrderBy(e => e.Posicion).ToList(); } }
 
         [BindNever] 
         public List<Equipo> EquiposOrdered { get { return Equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente).ToList(); } }
@@ -42,28 +39,12 @@ namespace VoleyPlaya.Domain.Models
         [Obsolete]
         public string TipoGrupoStr { get { return Enum.GetName(typeof(EnumTipoGrupo), TipoGrupo); } }
 
-        [Obsolete]
-        public override bool Equals(object? obj)
-        {
-            return base.Equals(obj);
-        }
-
-        [Obsolete]
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        [Obsolete]
-        public override string? ToString()
-        {
-            return base.ToString();
-        }
         public async Task GenerarPartidosAsync(string tipoCalendario, List<FechaJornada> jornadas, List<Equipo> equipos)
         {
-            var tabla = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(tipoCalendario)).FirstOrDefault();
+            var tablaOriginal = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(tipoCalendario)).FirstOrDefault();
+            var numequi = Equipos.Count;
+            var tabla = await TablaCalendario.LoadCalendario(numequi, tablaOriginal.NumVueltas);
 
-            //var tabla = await TablaCalendario.LoadCalendario(numEquipos, numVueltas);
             if (tabla == null) return;
             var numPartido = 1;
             foreach (var vuelta in tabla.Vueltas)

@@ -2,6 +2,7 @@
 @model VoleyPlaya.GestionWeb.Pages.EquiposModel
 @{
     // Obtener la URL de la página anterior
+    var indice = 1;
 }
 @if (!string.IsNullOrEmpty(Model.UrlEdicion))
 {
@@ -19,54 +20,76 @@
         </div>
         <div class="card-body p-2">
             <div class="row">
-                <div class="col-md-5 m-1">
+                <div class="col m-1">
                     <table class="table table-stripped">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Posición</th>
+                                <th></th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (int i = 0; i < Model.Equipos.Count / 2; i++)
                             {
-                                <tr>
+                                var clase = "";
+                                var enabled = "";
+                                @if (Model.Equipos[i].Retirado) { clase = "retirado"; enabled = "disabled"; }
+                                <tr class="@clase" @enabled>
                                     <td align="center">
                                         @Html.HiddenFor(m=>Model.Equipos[i].Id)
                                         <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
                                             <i class="fas fa-trash"></i> 
                                         </button>
                                     </td>
-                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Posicion, new{@class="form-control"})</td>
-                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                    <td>@indice</td>
+                                    @if (Model.Equipos[i].Retirado)
+                                    {
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })</td>
+                                }
+                                    else
+                                    {
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                    }
                                 </tr>
+                                indice = @indice + 1;
                             }
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-5 m-1">
+                <div class="col m-1">
                     <table class="table table-stripped">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Posición</th>
+                                <th></th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (int i = Model.Equipos.Count / 2; i < Model.Equipos.Count; i++)
                             {
-                                <tr>
+                                var clase = "";
+                                var enabled = "";
+                                @if (Model.Equipos[i].Retirado) { clase = "retirado"; enabled = "disabled"; }
+                                <tr class="@clase" @enabled>
                                     <td align="center">
                                         @Html.HiddenFor(m=>Model.Equipos[i].Id)
                                         <button type="submit" class="btn btn-danger" asp-page-handler="DeleteEquipo" asp-route-id="@Model.Equipos[@i].Id">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
-                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Posicion, new{@class="form-control"})</td>
-                                    <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                    <td>@indice</td>
+                                    @if (Model.Equipos[i].Retirado)
+                                    {
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
+                                    }
                                 </tr>
+                                indice = @indice + 1;
                             }
                         </tbody>
                     </table>

@@ -10,29 +10,29 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
-                name: "GrupoId",
-                table: "Partidos",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+            //migrationBuilder.AlterColumn<int>(
+            //    name: "GrupoId",
+            //    table: "Partidos",
+            //    type: "int",
+            //    nullable: true,
+            //    oldClrType: typeof(int),
+            //    oldType: "int");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "EquipoVisitanteId",
-                table: "Partidos",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+            //migrationBuilder.AlterColumn<int>(
+            //    name: "EquipoVisitanteId",
+            //    table: "Partidos",
+            //    type: "int",
+            //    nullable: true,
+            //    oldClrType: typeof(int),
+            //    oldType: "int");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "EquipoLocalId",
-                table: "Partidos",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+            //migrationBuilder.AlterColumn<int>(
+            //    name: "EquipoLocalId",
+            //    table: "Partidos",
+            //    type: "int",
+            //    nullable: true,
+            //    oldClrType: typeof(int),
+            //    oldType: "int");
         }
 
         /// <inheritdoc />

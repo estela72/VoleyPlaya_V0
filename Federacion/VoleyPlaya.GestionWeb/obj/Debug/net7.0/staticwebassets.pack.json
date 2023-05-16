@@ -233,6 +233,66 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_CUA(1).png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_CUA(1).png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_CUA.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_CUA.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_HOR(1).png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_HOR(1).png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_HOR.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_HOR.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_REC(1).png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_REC(1).png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FAzul_REC.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FAzul_REC.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FBlanco_CUA(1).png",
+      "PackagePath": "staticwebassets\\img\\Logo_FBlanco_CUA(1).png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FBlanco_CUA.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FBlanco_CUA.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FBlanco_HOR.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FBlanco_HOR.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_FBlanco_REC.png",
+      "PackagePath": "staticwebassets\\img\\Logo_FBlanco_REC.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_CUA.png",
+      "PackagePath": "staticwebassets\\img\\Logo_sinfondo_CUA.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_REC.png",
+      "PackagePath": "staticwebassets\\img\\Logo_sinfondo_REC.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_oscuro_CUA.png",
+      "PackagePath": "staticwebassets\\img\\Logo_sinfondo_oscuro_CUA.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_oscuro_HOR.png",
+      "PackagePath": "staticwebassets\\img\\Logo_sinfondo_oscuro_HOR.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_oscuro_REC.png",
+      "PackagePath": "staticwebassets\\img\\Logo_sinfondo_oscuro_REC.png"
+    },
+    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\js\\edicion.js",
       "PackagePath": "staticwebassets\\js\\edicion.js"
     },

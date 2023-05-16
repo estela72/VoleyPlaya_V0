@@ -276,7 +276,7 @@ namespace General.CrossCutting.Lib
                 entity = entity.Include(propiedad);
             }
 
-            return await entity.SingleOrDefaultAsync();
+            return await entity.AsSplitQuery().SingleOrDefaultAsync();
         }
 
         //public async Task<T> FindIncludingAsync(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)

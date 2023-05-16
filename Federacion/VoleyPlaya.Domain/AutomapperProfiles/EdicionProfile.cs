@@ -19,7 +19,7 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
                 .ForMember(dest => dest.CategoriaStr, opt => opt.MapFrom(src => src.Categoria.Nombre))
                 .ForMember(dest => dest.NumEquipos, opt => opt.MapFrom(src => src.Equipos.Count))
                 .ForMember(dest => dest.NumJornadas, opt => opt.MapFrom(src => src.Jornadas.Count))
-                .ForMember(dest => dest.Fecha, opt=>opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.TipoCalendario, opt=>opt.MapFrom(src => src.TipoCalendario))
                 .ReverseMap();
         }
     }
