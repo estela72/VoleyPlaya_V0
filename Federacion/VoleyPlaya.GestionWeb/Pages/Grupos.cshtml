@@ -1,0 +1,87 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.GruposModel
+@*@if (!string.IsNullOrEmpty(Model.UrlEdicion))
+{
+    <p><a href="@Model.UrlEdicion">Volver a la competición</a></p>
+}*@
+
+<h1>Composición de Grupos</h1>
+<div class="card">
+    <form method="get">
+        <div class="card-header">
+            <h2>Filtros</h2>
+            <div style="max-width: 600px; ">
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Categoría</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCategorias)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                        @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                        @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Género</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectGeneros)
+                        {
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                        @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                        @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col" style="max-width: 600px;">
+        <div class="retirado">
+            <p>Equipo Retirado</p>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <form method="post" asp-page-handler="Exportar" asp-route-competicionId="@Model.CompeticionSelected" , asp-route-categoriaId="@Model.CategoriaSelected" , asp-route-generoId="@Model.GeneroSelected">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m=>Model.CompeticionSelected)
+        @Html.HiddenFor(m=>Model.CategoriaSelected)
+        @Html.HiddenFor(m=>Model.GeneroSelected)
+        <div class="card-header">
+            <button type="submit" class="btn btn-primary m-2" id="exportar" name="exportar">Exportar a Excel</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+    <script>
+        function applyFilter() {
+            var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
+            var competicion = $("#competicion-select").val();
+            var categoria = $("#categoria-select").val();
+            var genero = $("#genero-select").val();
+            var grupo = $("#grupo-select").val();
+            url += '?competicion=' + competicion; // agregar el filtro de categoría a la URL
+            url += '&categoria=' + categoria; // agregar el filtro de categoría a la URL
+            url += '&genero=' + genero; // agregar el filtro de categoría a la URL
+            url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
+            window.location.href = url; // recargar la página con la URL actualizada
+        }
+    </script>
+}
