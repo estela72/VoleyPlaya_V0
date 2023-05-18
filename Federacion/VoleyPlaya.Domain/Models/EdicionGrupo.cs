@@ -43,6 +43,8 @@ namespace VoleyPlaya.Domain.Models
         {
             var tablaOriginal = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(tipoCalendario)).FirstOrDefault();
             var numequi = Equipos.Count;
+            if (tablaOriginal == null)
+                tablaOriginal = await TablaCalendario.LoadCalendario(numequi, 1);
             var tabla = await TablaCalendario.LoadCalendario(numequi, tablaOriginal.NumVueltas);
 
             if (tabla == null) return;

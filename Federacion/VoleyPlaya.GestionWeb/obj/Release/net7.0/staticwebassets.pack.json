@@ -229,6 +229,18 @@
       "PackagePath": "staticwebassets\\datatable\\js\\datatable.min.js"
     },
     {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVPJuegosDeportivos.xlsx",
+      "PackagePath": "staticwebassets\\excel\\actaVPJuegosDeportivos.xlsx"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",
+      "PackagePath": "staticwebassets\\excel\\rellenaActas.xlsm"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\temporal.xlsx",
+      "PackagePath": "staticwebassets\\excel\\temporal.xlsx"
+    },
+    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

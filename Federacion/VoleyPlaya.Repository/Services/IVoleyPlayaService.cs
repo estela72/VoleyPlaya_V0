@@ -42,6 +42,8 @@ namespace VoleyPlaya.Repository.Services
         Task<string> GetAllCategoriasByEdicionAsync(int idCompeticion);
         Task<string> GetAllGenerosAsync(int idCompeticion, int idCategoria);
         Task<string> GetAllGruposAsync(int idCompeticion, int idCategoria, string genero);
+        Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(int idCompeticion, int idCategoria, string genero);
+
         Task<List<EdicionGrupo>> GetClasificacionesAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
         Task<EdicionGrupo> RetirarEquipoAsync(int id);
         Task<List<Partido>> GetPartidosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);

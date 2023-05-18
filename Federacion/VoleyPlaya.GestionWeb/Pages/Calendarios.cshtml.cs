@@ -21,7 +21,7 @@ using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    [Authorize(Policy = "ResultadosOnly")]
+    [Authorize(Policy = "EquiposOnly")]
     public class CalendariosModel : VPPageModel
     {
         public List<Partido> Partidos { get; set; }        
@@ -196,7 +196,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                     ErrorMessage = "Se debe indicar, al menos, la competición";
                     return Page();
                 }
-                CompeticionSelected = competicionId.ToString(); ;
+                CompeticionSelected = competicionId.ToString();
                 int categoria = categoriaId != null ? categoriaId.Value : 0;
                 int grupo = grupoId != null ? grupoId.Value : 0;
                 List<Partido> partidos = new List<Partido>();
@@ -209,27 +209,34 @@ namespace VoleyPlaya.GestionWeb.Pages
 
                     for (int row = 1; row <= sheet.LastRowNum; row++)
                     {
-                        IRow excelRow = sheet.GetRow(row); // Obtén la fila actual
-
-                        if (excelRow != null)
+                        try
                         {
-                            int id = Convert.ToInt32(excelRow.GetCell(0)?.ToString()); // Obtén el valor de la primera columna
-                            //DateTime hora = Convert.ToDateTime(excelRow.GetCell(8)?.ToString()); // Obtén el valor de la segunda columna
-                            DateTime hora = new DateTime(1989, 1, 1, 10, 0, 0);
-                            if (excelRow.GetCell(8).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(8)))
+                            IRow excelRow = sheet.GetRow(row); // Obtén la fila actual
+
+                            if (excelRow != null)
                             {
-                                hora = excelRow.GetCell(8).DateCellValue;
+                                int id = Convert.ToInt32(excelRow.GetCell(0)?.ToString()); // Obtén el valor de la primera columna
+                                                                                           //DateTime hora = Convert.ToDateTime(excelRow.GetCell(8)?.ToString()); // Obtén el valor de la segunda columna
+                                DateTime hora = new DateTime(1989, 1, 1, 10, 0, 0);
+                                if (excelRow.GetCell(8).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(8)))
+                                {
+                                    hora = excelRow.GetCell(8).DateCellValue;
+                                }
+                                else
+                                    hora = Convert.ToDateTime(excelRow.GetCell(8).ToString());
+
+                                string pista = "";
+                                if (excelRow.GetCell(9).CellType == CellType.Numeric)
+                                    pista = excelRow.GetCell(9)?.ToString();
+                                else if (excelRow.GetCell(9).CellType == CellType.String)
+                                    pista = excelRow.GetCell(9).StringCellValue;
+
+                                partidos.Add(new Partido { Id = id, FechaHora = hora, Pista = pista });
                             }
-                            else
-                                hora = Convert.ToDateTime(excelRow.GetCell(8).ToString());
-
-                            string pista = "";
-                            if (excelRow.GetCell(9).CellType == CellType.Numeric)
-                                pista = excelRow.GetCell(9)?.ToString();
-                            else if (excelRow.GetCell(9).CellType == CellType.String)
-                                pista = excelRow.GetCell(9).StringCellValue;
-
-                            partidos.Add(new Partido { Id = id, FechaHora = hora, Pista = pista });
+                        }
+                        catch(Exception x)
+                        {
+                            ErrorMessage += "Error al actualizar la fila " + row + "\n\r";
                         }
                     }
                 }
@@ -239,7 +246,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             catch (Exception x)
             {
-                ErrorMessage = "Se ha producido un error: " + x.Message;
+                ErrorMessage += "Se ha producido un error: " + x.Message;
                 return Page();
             }
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,6 +32,7 @@ namespace VoleyPlaya.Domain.Models
         public string Label { get; set; }
         public bool RetiradoLocal { get; set; }
         public bool RetiradoVisitante { get; set; }
+        public string Lugar { get; set; }
 
         internal static Partido FromJson(JsonNode jsonPartido)
         {
@@ -45,7 +48,8 @@ namespace VoleyPlaya.Domain.Models
                 Visitante = EquipoFromJson(jsonPartido["Visitante"]!)!,
                 Label = jsonPartido["Label"]!.GetValue<string>()!,
                 RetiradoLocal = jsonPartido["RetiradoLocal"]!.GetValue<bool>()!,
-                RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!
+                RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!,
+                Lugar = jsonPartido["Lugar"]!.GetValue<string>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
@@ -66,7 +70,8 @@ namespace VoleyPlaya.Domain.Models
                 Label = jsonPartido["Label"]!.GetValue<string>()!,
                 Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!,
                 RetiradoLocal = jsonPartido["RetiradoLocal"]!.GetValue<bool>()!,
-                RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!
+                RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!,
+                Lugar = jsonPartido["Lugar"]!.GetValue<string>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();

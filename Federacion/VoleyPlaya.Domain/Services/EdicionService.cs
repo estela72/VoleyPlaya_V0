@@ -21,6 +21,8 @@ using VoleyPlaya.Repository.Services;
 
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+using EdicionGrupo = VoleyPlaya.Domain.Models.EdicionGrupo;
+
 namespace VoleyPlaya.Domain.Services
 {
     public interface IEdicionService
@@ -63,6 +65,7 @@ namespace VoleyPlaya.Domain.Services
         Task<string> RetirarEquipoASync(int id);
         Task<List<Partido>> GetPartidosFiltradosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task<string> UpdatePartidosFromExcelAsync(List<Partido> partidos);
+        Task<List<EdicionGrupo>> GetAllGruposAsync(int v, int categoria, string generoSelected);
     }
     public class EdicionService : IEdicionService
     {
@@ -279,10 +282,6 @@ namespace VoleyPlaya.Domain.Services
         {
             List<EdicionGrupo> list = new List<EdicionGrupo>();
             var gruposDto = await _service.GetAllGruposAsync(edicionId);
-            //JsonNode jsonNode = JsonNode.Parse(json);
-            //JsonArray jsonArray = jsonNode.AsArray();
-            //foreach (var jsGrupo in jsonArray)
-            //    list.Add(EdicionGrupo.FromJson(jsGrupo));
             list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
             return list;
         }
@@ -430,6 +429,14 @@ namespace VoleyPlaya.Domain.Services
             var lista = _mapper.Map<List<VoleyPlaya.Repository.Models.Partido>>(partidos);
             string msg = await _service.UpdatePartidosFromExcelAsync(lista);
             return msg;
+        }
+
+        public async Task<List<EdicionGrupo>> GetAllGruposAsync(int competicion, int categoria, string genero)
+        {
+            List<EdicionGrupo> list = new List<EdicionGrupo>();
+            var gruposDto = await _service.GetAllGruposFiltradosAsync(competicion,categoria,genero);
+            list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
+            return list;
         }
     }
 }

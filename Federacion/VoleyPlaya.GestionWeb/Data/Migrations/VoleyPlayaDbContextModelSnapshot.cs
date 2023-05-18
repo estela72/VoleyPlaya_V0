@@ -321,6 +321,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<string>("Lugar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ModeloCompeticion")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(450)");
 
@@ -427,6 +430,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("OrdenCalendario")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrdenEntrada")
                         .HasColumnType("int");
 
                     b.Property<int?>("Perdidos")

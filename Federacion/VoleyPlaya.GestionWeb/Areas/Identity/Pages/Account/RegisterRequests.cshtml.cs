@@ -45,7 +45,6 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync()
         {
-
             // Obtén la lista de usuarios 
             await ObtenerListaUsuarios();
             return Page();
@@ -53,7 +52,7 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
 
         private async Task ObtenerListaUsuarios()
         {
-            var users = _userManager.Users.OrderByDescending(u => u.EmailConfirmed).ToList();
+            var users = _userManager.Users.OrderBy(u => u.EmailConfirmed).ToList();
             Users = new List<UserInfo>();
             foreach (var user in users)
             {

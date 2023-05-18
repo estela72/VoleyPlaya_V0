@@ -21,6 +21,7 @@ namespace VoleyPlaya.Repository.Models
         double? _coeficiente;
         int? _puntos;
         bool? _retirado;
+        int? _ordenEntrada;
 
         HashSet<Partido>? _locales;
         HashSet<Partido>? _visitantes;
@@ -46,6 +47,7 @@ namespace VoleyPlaya.Repository.Models
         public Edicion? Edicion { get => _edicion; set => _edicion = value; }
         public EdicionGrupo? EdicionGrupo { get => _edicionGrupo; set => _edicionGrupo = value; }
         public int? OrdenCalendario { get => _ordenCalendario; set => _ordenCalendario = value; }
+        public int? OrdenEntrada { get => _ordenEntrada; set => _ordenEntrada = value; }
         public int? Jugados { get => _jugados; set => _jugados = value; }
         public int? Ganados { get => _ganados; set => _ganados = value; }
         public int? Perdidos { get => _perdidos; set => _perdidos = value; }

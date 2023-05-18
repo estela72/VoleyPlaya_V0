@@ -1,8 +1,12 @@
 ﻿
+using MathNet.Numerics.LinearAlgebra.Solvers;
+using MathNet.Numerics.Optimization.TrustRegion;
+
 using Microsoft.AspNetCore.Http;
 
 using Newtonsoft.Json;
 
+using NPOI.SS.Formula.Eval;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -47,6 +51,8 @@ namespace VoleyPlaya.Domain.Models
         public List<Equipo> EquiposToAdd;
         public List<Equipo> EquiposToRemove;
 
+        public EnumModeloCompeticion ModeloCompeticion { get; set; }
+        public string ModeloCompeticionStr { get => Enum.GetName(typeof(EnumModeloCompeticion), ModeloCompeticion); }
 
         public Edicion()
         {
@@ -62,6 +68,7 @@ namespace VoleyPlaya.Domain.Models
             TipoCalendario = string.Empty;
             Grupos = new List<EdicionGrupo>();
             Equipos = new List<Equipo>();
+            ModeloCompeticion = EnumModeloCompeticion.Circuito;
         }
         public static Edicion FromJson(JsonNode jsonEdicion, bool mapGrupos=true)
         {
@@ -82,6 +89,8 @@ namespace VoleyPlaya.Domain.Models
             edicion.NumJornadas = edicion.FechasJornadas.Count();
             edicion.Lugar = jsonEdicion["Lugar"]!.GetValue<string>();
             edicion.TipoCalendario = jsonEdicion["TipoCalendario"]!.GetValue<string>();
+            Enum.TryParse(NombreFromJson(jsonEdicion["ModeloCompeticion"]!), out EnumModeloCompeticion modeloCompeticion);
+            edicion.ModeloCompeticion = modeloCompeticion;
             return edicion;
         }
         private static string NombreFromJson(JsonNode jsonNode)
@@ -324,12 +333,12 @@ namespace VoleyPlaya.Domain.Models
                         // Si el equipo no existe en la base de datos, agregarlo a la lista de nuevos equipos
                         if (equipoExistente == null)
                         {
-                            nuevosEquipos.Add(new Equipo { Posicion = posicion, Nombre = nombre });
+                            nuevosEquipos.Add(new Equipo { OrdenEntrada = posicion, Nombre = nombre });
                         }
                         // Si el equipo existe en la base de datos, actualizar su nombre
                         else
                         {
-                            equipoExistente.Posicion = posicion;
+                            equipoExistente.OrdenEntrada = posicion;
                         }
                     }
                 }
@@ -347,9 +356,161 @@ namespace VoleyPlaya.Domain.Models
             }
             return "La importación del archivo Excel se completó con éxito.";
         }
-        
+
         public async Task<bool> GenerarFaseGruposAsync(string calendario)
         {
+            TipoCalendario = calendario;
+
+            if (ModeloCompeticion.Equals(EnumModeloCompeticion.JuegosDeportivos))
+                return await GenerarFaseGruposJuegosDeportivosAsync(calendario);
+            else
+                return await GenerarFaseGruposCircuitoAsync(calendario);
+        }
+
+        private async Task<bool> GenerarFaseGruposCircuitoAsync(string calendario)
+        {
+            if (Equipos.Count > 24) return false;
+
+            if (Equipos.Count <= 7)
+                return await GenerarGrupoCircuitoUnicoAsync(calendario);
+            else if (Equipos.Count >= 8 && Equipos.Count <= 12)
+                return await GenerarGrupoCircuito2GruposAsync(calendario);
+            else
+                return await GenerarGrupoCircuito4GruposAsync(calendario);
+            return false;
+        }
+
+        private async Task<bool> GenerarGrupoCircuito4GruposAsync(string calendario)
+        {
+            int numGrupos = 4;
+            var numEquiposGrupo = Equipos.Count / numGrupos;
+            int resto = Math.DivRem(Equipos.Count, 2, out int restoEquipos);
+
+            bool impar = false;
+            if (numEquiposGrupo % 2 != 0) impar = true;
+            
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre);
+                Grupos.Add(grupo);
+            }
+            // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+            int seed = 1; // para ver en qué equipo estoy
+            int idxGrupo = 0; // tenemos 4 grupos: 0, 1, 2, 3
+            int idxFila = 0; // para ver si sumamos o restamos el idxGrupo
+            bool esUltimaFila = false;
+            bool sumaGrupo = true;
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];
+                EdicionGrupo grupo = Grupos[idxGrupo];
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+                seed++; // vamos sumando por cada equipo que añadimos                
+                if (idxFila % 2 == 0) // filas 0, 2, 4
+                {
+                    //idxGrupo++;
+                    if (idxGrupo == 3)
+                    {
+                        idxFila++;
+                        //idxGrupo = 3;
+                        sumaGrupo = false;
+                    }
+                    else
+                    {
+                        if (sumaGrupo) idxGrupo++;
+                        else idxGrupo--;
+                    }
+                }
+                else // filase 1, 3, 5
+                {
+                    //idxGrupo--;
+                    if (idxGrupo == 0)
+                    {
+                        idxFila++;
+                        //idxGrupo = 0;
+                        sumaGrupo = true;
+                    }
+                    else
+                    {
+                        if (sumaGrupo) idxGrupo++;
+                        else idxGrupo--;
+                    }
+                }
+                if (restoEquipos == 0 && idxFila == numEquiposGrupo) esUltimaFila = true;
+                if (restoEquipos != 0 && idxFila == numEquiposGrupo + 1) esUltimaFila = true;
+                if (esUltimaFila)
+                {
+                    idxGrupo = 3;
+                    sumaGrupo = false;
+                }
+            }
+            return true;
+        }
+
+        private async Task<bool> GenerarGrupoCircuito2GruposAsync(string calendario)
+        {
+            int numGrupos = 2;
+            var numEquiposGrupo = Equipos.Count / numGrupos;
+            int resto = Math.DivRem(Equipos.Count, 2, out int restoEquipos);
+
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                int numEqui = numEquiposGrupo;
+                if (restoEquipos > 0) numEqui = numEquiposGrupo + restoEquipos;
+                EdicionGrupo grupo = NuevoGrupo(numEqui, nombre);
+                Grupos.Add(grupo);
+            }
+            // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
+            int idxEquipo = 0;
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+
+            int idxGrupo = 0;
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];                
+                EdicionGrupo grupo = Grupos[idxGrupo]; 
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+                if (idxGrupo == 0) idxGrupo = 1;
+                else idxGrupo = 0;
+
+                if (restoEquipos > 0 && i == equipos.Count - 2)
+                    idxGrupo = 1;
+            }
+            return true;
+        }
+
+        private async Task<bool> GenerarGrupoCircuitoUnicoAsync(string calendario)
+        {
+            int numGrupos = 1;
+            var numEquiposGrupo = Equipos.Count;
+
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre); 
+                Grupos.Add(grupo);
+            }
+            // Meter todos los equipos al único grupo
+            int idxEquipo = 0;
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];
+                EdicionGrupo grupo = Grupos[i % numGrupos]; // Asignación cíclica de equipos a grupos
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+            }
+            return true;
+        }
+
+        private async Task<bool> GenerarFaseGruposJuegosDeportivosAsync(string calendario)
+        { 
             TipoCalendario = calendario;
             var tabla = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(calendario)).FirstOrDefault();
             var numEquiposGrupo = tabla.NumEquipos;
@@ -361,7 +522,7 @@ namespace VoleyPlaya.Domain.Models
             for (int i = 0; i < numGrupos; i++)
             {
                 string nombre = VoleyPlayaService.GetGroupName(i+1);
-                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre); //NuevoGrupo(numEquiposGrupo, ref c);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre);
                 Grupos.Add(grupo);
             }
             // Repartir los equipos en los diferentes grupos.
@@ -398,7 +559,6 @@ namespace VoleyPlaya.Domain.Models
         {
             var grupo = new EdicionGrupo()
             {
-                //Edicion = this,
                 Equipos = new List<Equipo>(),
                 Name = nombre,
                 NumEquipos = numEquiposGrupo,

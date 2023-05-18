@@ -135,6 +135,7 @@ namespace VoleyPlaya.Repository.Services
             {
                 int id = equipo!["Id"]!.GetValue<int>();
                 int posicion = equipo!["Posicion"]!.GetValue<int>()!;
+                int ordenEntrada = equipo!["OrdenEntrada"]!.GetValue<int>();
                 string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
                 int jugados = equipo["Jugados"]!.GetValue<int>()!;
                 int ganados = equipo["Ganados"]!.GetValue<int>()!;
@@ -144,7 +145,7 @@ namespace VoleyPlaya.Repository.Services
                 double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
                 var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
-                    coeficiente, puntos);
+                    coeficiente, puntos, ordenEntrada);
             }
             return true;
         }
@@ -154,6 +155,7 @@ namespace VoleyPlaya.Repository.Services
             {
                 int id = equipo!["Id"]!.GetValue<int>();
                 int posicion = equipo!["Posicion"]!.GetValue<int>()!;
+                int ordenEntrada = equipo!["OrdenEntrada"]!.GetValue<int>();
                 string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
                 int jugados = equipo["Jugados"]!.GetValue<int>()!;
                 int ganados = equipo["Ganados"]!.GetValue<int>()!;
@@ -163,7 +165,7 @@ namespace VoleyPlaya.Repository.Services
                 double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
                 await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicionDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
-                    coeficiente, puntos);
+                    coeficiente, puntos,ordenEntrada);
             }
             return true;
         }
@@ -181,13 +183,15 @@ namespace VoleyPlaya.Repository.Services
             string lugar = edicionNode["Lugar"]!.GetValue<string>();
             string tipoCalendario = "";
             if (edicionNode["tipoCalendario"]!=null) tipoCalendario = edicionNode["TipoCalendario"]!.GetValue<string>();
+            string modeloCompeticion = edicionNode["ModeloCompeticionStr"]!.GetValue<string>();
             Edicion edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
                 dtos.temporadaDto,
                 dtos.competicionDto,
                 dtos.categoriaDto,
                 genero,
                 tipoCalendario,
-                lugar
+                lugar,
+                modeloCompeticion
                 );
             return edicionDto;
         }
@@ -474,7 +478,7 @@ namespace VoleyPlaya.Repository.Services
         public async Task<bool> AddEquipo(int edicionId, string equipo)
         {
             var edicion = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(edicionId);
-            await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0);
+            await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0,0);
             return await _voleyPlayaUoW.SaveEntitiesAsync();
         }
         public async Task<string> GetAllCompeticionesAsync()
@@ -555,6 +559,14 @@ namespace VoleyPlaya.Repository.Services
             if (!await _voleyPlayaUoW.SaveEntitiesAsync())
                 msg = "Se ha producido un error al guardar los partidos";
             return msg;
+        }
+
+        public async Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(int idCompeticion, int idCategoria, string genero)
+        {
+            var edi = await _voleyPlayaUoW.EdicionRepository.FindAsync(e => e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero));
+            var edicion = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edi.Id);
+            var grupos = edicion.Grupos.ToList();
+            return grupos;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace VoleyPlaya.Repository.Models
         string? _lugar;
         string? _genero;
         string? _tipoCalendario;
+        private string? _modeloCompeticion; // Juegos deportivos o Circuito -> indica como es la distribución de equipos en los grupos
 
         HashSet<Jornada> _jornadas;
         HashSet<EdicionGrupo> _grupos;
@@ -48,6 +49,7 @@ namespace VoleyPlaya.Repository.Models
         public HashSet<Jornada> Jornadas{ get => _jornadas; set => _jornadas = value; }
         public HashSet<EdicionGrupo> Grupos { get => _grupos; set => _grupos = value; }
         public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
+        public string? ModeloCompeticion { get => _modeloCompeticion; set => _modeloCompeticion = value; }
 
         internal void AddJornada(Jornada jornadaDto)
         {

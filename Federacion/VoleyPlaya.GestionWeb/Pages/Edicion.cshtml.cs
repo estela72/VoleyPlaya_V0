@@ -24,6 +24,7 @@ namespace VoleyPlaya.GestionWeb.Pages
         public SelectList Categorias { get; set; }
         public SelectList Generos { get; set; }
         public SelectList TipoCalendarios { get; set; }
+        public SelectList ModelosCompeticion { get; set; }
 
         [BindProperty]
         public string TipoCalendarioSeleccionado { get; set; }
@@ -47,6 +48,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             Competiciones = new SelectList(EnumCompeticiones.Competiciones.Values);
             Categorias = new SelectList(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
+            ModelosCompeticion = new SelectList(Enum.GetValues(typeof(EnumModeloCompeticion)).OfType<EnumModeloCompeticion>().ToList());
             PasoActual = 1;
         }
         public async Task<IActionResult> OnGetAsync(int? id)

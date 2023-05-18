@@ -10,7 +10,7 @@ using VoleyPlaya.Domain.Services;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    [Authorize(Policy = "ResultadosOnly")]
+    [Authorize(Policy = "EquiposOnly")]
     public class ClasificacionesModel : VPPageModel
     {
         public List<EdicionGrupo> Clasificaciones { get; set; }

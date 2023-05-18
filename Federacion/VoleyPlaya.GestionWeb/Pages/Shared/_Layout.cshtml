@@ -28,17 +28,26 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Ediciones">Competiciones</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Actas">Generar actas</a>
+                            </li>
                         }
-                        @if (User.IsInRole(eRoles.Resultados.ToString()))
+                        @if (User.IsInRole(eRoles.Equipo.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Resultados">Resultados</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Clasificaciones">Clasificaciones</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Clasificaciones">Clasificaciones</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Grupos">Información</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(eRoles.Arbitro.ToString()))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Resultados">Resultados</a>
                             </li>
                         }
                     </ul>

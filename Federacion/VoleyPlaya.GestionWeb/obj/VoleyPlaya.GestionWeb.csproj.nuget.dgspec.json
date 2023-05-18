@@ -137,6 +137,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.2.4, )"
+            },
             "FontAwesome": {
               "target": "Package",
               "version": "[4.7.0, )"
