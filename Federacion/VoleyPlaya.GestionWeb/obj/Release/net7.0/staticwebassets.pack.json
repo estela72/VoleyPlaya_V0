@@ -237,6 +237,10 @@
       "PackagePath": "staticwebassets\\excel\\calendarios.xlsx"
     },
     {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\logoCircuito.png",
+      "PackagePath": "staticwebassets\\excel\\logoCircuito.png"
+    },
+    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",
       "PackagePath": "staticwebassets\\excel\\rellenaActas.xlsm"
     },

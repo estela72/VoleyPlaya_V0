@@ -14,6 +14,7 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
         {
             CreateMap<VoleyPlaya.Repository.Models.Equipo, VoleyPlaya.Domain.Models.Equipo>()
                 .ForMember(d => d.Posicion, o => o.MapFrom(ori => ori.OrdenCalendario))
+                .ForMember(d => d.OrdenEntrada, o => o.MapFrom(ori => ori.OrdenEntrada))
                 .ReverseMap();
         }
     }

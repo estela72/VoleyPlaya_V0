@@ -12,6 +12,8 @@ namespace VoleyPlaya.Domain.Models
         Sub21,
         Sub19,
         Sub17,
+        Sub15,
+        Sub13,
         Cadete,
         Infantil,
         Alevin,

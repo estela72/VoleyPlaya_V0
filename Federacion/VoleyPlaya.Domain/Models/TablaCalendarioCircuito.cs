@@ -86,9 +86,16 @@ namespace VoleyPlaya.Domain.Models
                 }
             }
             // Guardar en base de datos las tablas
+
             await _service.SaveTablaCalendarios(_mapper.Map<List<VoleyPlaya.Repository.Models.TablaCalendario>>(partidos));
             
         }
+        
+        public async Task<List<PartidoCalendarioCircuito>> GetPartidosByNumGrupo(int numGrupos)
+        {
+            var partidos = await _service.GetCalendarioPartidosCircuitoByNumGrupos(numGrupos);
 
+            return _mapper.Map<List<PartidoCalendarioCircuito>>(partidos);
+        }
     }
 }

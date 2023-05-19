@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vI+03c4J3xwnxKanFB8Zh3BVuog1mmy7xe+J7wCJdzw=",
+  "Hash": "AmnSIP+XV/TkP+I1RclCvzGGSiU70c/IQgyr1vq3L+0=",
   "Source": "VoleyPlaya.GestionWeb",
   "BasePath": "_content/VoleyPlaya.GestionWeb",
   "Mode": "Default",
@@ -2055,6 +2055,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\excel\\calendarios.xlsx"
+    },
+    {
+      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\logoCircuito.png",
+      "SourceId": "VoleyPlaya.GestionWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
+      "BasePath": "_content/VoleyPlaya.GestionWeb",
+      "RelativePath": "excel/logoCircuito.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\excel\\logoCircuito.png"
     },
     {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",

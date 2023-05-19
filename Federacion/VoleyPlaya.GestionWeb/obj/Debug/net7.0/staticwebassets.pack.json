@@ -237,12 +237,20 @@
       "PackagePath": "staticwebassets\\excel\\calendarios.xlsx"
     },
     {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\logoCircuito.png",
+      "PackagePath": "staticwebassets\\excel\\logoCircuito.png"
+    },
+    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",
       "PackagePath": "staticwebassets\\excel\\rellenaActas.xlsm"
     },
     {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\temporal.xlsx",
       "PackagePath": "staticwebassets\\excel\\temporal.xlsx"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\~$calendarios.xlsx",
+      "PackagePath": "staticwebassets\\excel\\~$calendarios.xlsx"
     },
     {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\favicon.ico",

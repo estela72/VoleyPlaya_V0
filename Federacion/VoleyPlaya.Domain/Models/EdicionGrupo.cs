@@ -190,5 +190,11 @@ namespace VoleyPlaya.Domain.Models
                 Equipos.RemoveRange(numEquipos, Equipos.Count - numEquipos);
             NumEquipos = numEquipos;
         }
+
+        internal bool TodosPartidosJugados()
+        {
+            var noJugados = Partidos.Select(p => p.Resultado).Count(r => r.Local == 0 && r.Visitante == 0);
+            return (noJugados == 0);
+        }
     }
 }

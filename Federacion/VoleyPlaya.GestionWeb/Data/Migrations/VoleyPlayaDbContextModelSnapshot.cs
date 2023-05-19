@@ -654,6 +654,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<int>("NumEquipos")
                         .HasColumnType("int");
 
+                    b.Property<int>("NumGrupos")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumPartido")
                         .HasColumnType("int");
 

@@ -13,6 +13,7 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
         public PartidoCalendarioProfile()
         {
             CreateMap<VoleyPlaya.Repository.Models.TablaCalendario, VoleyPlaya.Domain.Models.PartidoCalendarioCircuito>()
+                .ForMember(d=>d.NumGrupos, opt => opt.MapFrom(src => src.NumGrupos))
                 .ReverseMap();
         }
     }

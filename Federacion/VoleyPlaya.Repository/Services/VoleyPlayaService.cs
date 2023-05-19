@@ -224,6 +224,7 @@ namespace VoleyPlaya.Repository.Services
                 await UpdatePartidos(edicionGrupoDto, partidos);
                 return await _voleyPlayaUoW.SaveEntitiesAsync();
             }
+            
             return false;
         }
         public async Task<bool> UpdateDatosPartidosAsync(string json)
@@ -421,10 +422,11 @@ namespace VoleyPlaya.Repository.Services
                 return "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
             }
         }
-        public async Task<bool> DeletePartidoAsync(int partidoId)
+        public async Task<string> DeletePartidoAsync(int partidoId)
         {
             await _voleyPlayaUoW.PartidoRepository.DeleteAsync(partidoId);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return "El partido ha sido borrado";
         }
         public async Task<bool> UpdateTipoCalendarioEdicionAsync(int id, string tipoCalendario)
         {
@@ -594,6 +596,35 @@ namespace VoleyPlaya.Repository.Services
         {
             var partidos = await _voleyPlayaUoW.TablaCalendarioRepository.FindAllAsync(t => t.NumEquipos == numEquipos);
             return partidos.ToList();
+        }
+        public async Task<List<TablaCalendario>> GetCalendarioPartidosCircuitoByNumGrupos(int numGrupos)
+        {
+            var partidos = await _voleyPlayaUoW.TablaCalendarioRepository.FindAllAsync(t => t.NumEquipos == -1 && t.NumGrupos==numGrupos);
+            return partidos.ToList();
+        }
+
+        public async Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int edicionId, string jsonGrupo)
+        {
+            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(edicionId);
+            if (edicionDto == null) return false;
+
+            JsonNode json = JsonNode.Parse(jsonGrupo)!;
+            var id = json["Id"]!.GetValue<int>();
+            if (json["Name"] == null) return false;
+            
+            string nombre = json["Name"]!.GetValue<string>();
+            string tipo = json["TipoGrupoStr"]!.GetValue<string>();
+            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicionDto, nombre, tipo);
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+
+            JsonArray jsonEquipos = json["Equipos"]!.AsArray();
+            await SaveEquiposAsync(grupoDto, jsonEquipos);
+
+            JsonArray partidos = json["Partidos"]!.AsArray();
+            await UpdatePartidos(grupoDto, partidos);
+
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
         }
     }
 }

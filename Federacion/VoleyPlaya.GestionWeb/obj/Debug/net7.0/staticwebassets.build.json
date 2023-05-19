@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WaS5XUPA4FJHzFTtDqe0blnIeriuAxFKhg5MOwEjkCI=",
+  "Hash": "I/XrSkHIw7sjxUWYsRzhhZr4CiJRmgWwgQTkTH6zW+k=",
   "Source": "VoleyPlaya.GestionWeb",
   "BasePath": "_content/VoleyPlaya.GestionWeb",
   "Mode": "Default",
@@ -2023,6 +2023,23 @@
       "OriginalItemSpec": "wwwroot\\datatable\\js\\datatable.min.js"
     },
     {
+      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\~$calendarios.xlsx",
+      "SourceId": "VoleyPlaya.GestionWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
+      "BasePath": "_content/VoleyPlaya.GestionWeb",
+      "RelativePath": "excel/~$calendarios.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\excel\\~$calendarios.xlsx"
+    },
+    {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVPJuegosDeportivos.xlsx",
       "SourceId": "VoleyPlaya.GestionWeb",
       "SourceType": "Discovered",
@@ -2055,6 +2072,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\excel\\calendarios.xlsx"
+    },
+    {
+      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\logoCircuito.png",
+      "SourceId": "VoleyPlaya.GestionWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
+      "BasePath": "_content/VoleyPlaya.GestionWeb",
+      "RelativePath": "excel/logoCircuito.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\excel\\logoCircuito.png"
     },
     {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",
