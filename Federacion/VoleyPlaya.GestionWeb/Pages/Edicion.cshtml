@@ -122,7 +122,7 @@
                         <div class="card-body">
                             <div class="col">
                                 <div class="btn-group" data-toggle="buttons">
-                                    @if (Model.TipoCalendarios != null)
+                                    @if (Model.TipoCalendarios != null && Model.Edicion.ModeloCompeticion == Domain.Models.EnumModeloCompeticion.JuegosDeportivos)
                                     {
                                         @foreach (var opcion in Model.TipoCalendarios)
                                         {
@@ -132,6 +132,14 @@
                                             </label>
                                             <br />
                                         }
+                                    }
+                                    else if (Model.Edicion.ModeloCompeticion == Domain.Models.EnumModeloCompeticion.Circuito)
+                                    {
+                                        <p>Los grupos se generarán en función del número de equipos inscritos</p>
+                                    }
+                                    else if (Model.Edicion.ModeloCompeticion == Domain.Models.EnumModeloCompeticion.Cuadro)
+                                    {
+                                        <p>Pendiente preparar este tipo de competición</p>
                                     }
                                 </div>
                             </div>
@@ -264,6 +272,7 @@
                 @Html.HiddenFor(m=>Model.Edicion.Nombre)
                 @Html.HiddenFor(m=>Model.EdicionName)
                 @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+                @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
                 @Html.HiddenFor(m=>Model.Edicion.NumJornadas)
                 @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
                 {

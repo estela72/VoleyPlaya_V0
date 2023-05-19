@@ -438,6 +438,12 @@ namespace VoleyPlaya.Repository.Services
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
             return edicionDto?.TipoCalendario;
         }
+
+        public async Task<string> GetModeloCompeticionAsync(int id)
+        {
+            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
+            return edicionDto?.ModeloCompeticion;
+        }
         public async Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId)
         {
             var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.FindAllAsync(g => g.EdicionId.Equals(edicionId));
@@ -567,6 +573,27 @@ namespace VoleyPlaya.Repository.Services
             var edicion = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edi.Id);
             var grupos = edicion.Grupos.ToList();
             return grupos;
+        }
+
+        public async Task<bool> SaveTablaCalendarios(List<TablaCalendario> partidos)
+        {
+            foreach(var partido in partidos)
+            {
+                partido.Nombre = "Calendario " + partido.NumEquipos.ToString() + " equipos - Partido "+partido.NumPartido;
+                if (!await _voleyPlayaUoW.TablaCalendarioRepository.ExistsAsync(p => p.Nombre.Equals(partido.Nombre)))
+                    try
+                    {
+                        await _voleyPlayaUoW.TablaCalendarioRepository.CreateAsync(partido);
+                    }
+                    catch(Exception x)
+                    { }
+            }
+            return await _voleyPlayaUoW.SaveEntitiesAsync();
+        }
+        public async Task<List<TablaCalendario>> GetCalendarioPartidosCircuito(int numEquipos)
+        {
+            var partidos = await _voleyPlayaUoW.TablaCalendarioRepository.FindAllAsync(t => t.NumEquipos == numEquipos);
+            return partidos.ToList();
         }
     }
 }

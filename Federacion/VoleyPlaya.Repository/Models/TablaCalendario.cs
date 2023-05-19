@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Repository.Models
 {
-    internal class TablaCalendario : Entity
+    public class TablaCalendario : Entity
     {
         public int NumEquipos { get; set; }
         public int NumPartido { get; set; }
         public string Ronda { get; set; }
         public string Equipo1 { get; set; }
         public string Equipo2 { get; set; }
+        public int Jornada { get; set; }
+        public int NumGrupos { get; set; }
     }
 }

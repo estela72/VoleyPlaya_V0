@@ -3,30 +3,7 @@
 @{
 
 }
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">
-        @Model.ErrorMessage
-    </div>
-}
-<div class="card">
-    <div class="card-header">
-        <h1>Bienvenido a la aplicación para Gestionar el Voley Playa de la Federación Asturiana de Voleibol</h1>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col">
-                <img src="~/img/logo_fazul_cua(1).png" class="align-content-center" width="500" height="500"/>
-            </div>
-            <div class="col">
-                <p>Desde esta aplicación podrás dar de alta las diferentes competiciones, gestionar los grupos, equipos y partidos de cada competición</p>
-                <ul>Está preparada con diferentes roles:
-                    <li>Rol Equipo: quien tenga este rol podrá ver y exportar los calendarios, información de grupos y clasificaciones</li>
-                    <li>Rol Árbitro: quien tenga este rol podrá actualizar los resultados de los partidos, ver y exportar los calendarios</li>
-                    <li>Rol Competición: quien tenga este rol podrá generar competiciones, equipos, grupos y partidos, además de poder realizar las acciones del rol Resultados</li>
-                    <li>Rol Admin: quien tenga este rol podrá gestionar, además de todo lo anterior, los usuarios de la aplicación</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
+<div class="container">
+    <img src="~/img/imagen portada entorno.jpg" class="centered-image"/>
 </div>

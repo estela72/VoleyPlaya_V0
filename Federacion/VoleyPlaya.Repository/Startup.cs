@@ -41,6 +41,7 @@ namespace VoleyPlaya.Repository
             services.AddScoped<ITemporadaRepository, TemporadaRepository>();
             services.AddScoped<IJornadaRepository, JornadaRepository>();
             services.AddScoped<IEdicionGrupoRepository, EdicionGrupoRepository>();
+            services.AddScoped<ITablaCalendarioRepository, TablaCalendarioRepository>();
 
             // configure DI for UnitOfWork
             services.AddScoped<IVoleyPlayaUnitOfWork, VoleyPlayaUnitOfWork>();

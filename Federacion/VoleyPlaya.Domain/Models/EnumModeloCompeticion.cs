@@ -9,6 +9,7 @@ namespace VoleyPlaya.Domain.Models
     public enum EnumModeloCompeticion
     {
         JuegosDeportivos = 0,
-        Circuito = 1
+        Circuito = 1,
+        Cuadro = 2
     }
 }

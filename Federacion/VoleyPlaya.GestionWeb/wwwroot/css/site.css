@@ -85,3 +85,17 @@ table.partidos td {
     background-color: lightgray;
     color: red;
 }
+/*.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}*/
+.text-center {
+    text-align: center;
+}
+
+.centered-image {
+    max-width: 100%;
+    max-height: 100%;
+}

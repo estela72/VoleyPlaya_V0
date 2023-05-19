@@ -49,5 +49,8 @@ namespace VoleyPlaya.Repository.Services
         Task<List<Partido>> GetPartidosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task<int> GetEdicionByIdAsync(int competicion, int categoria, string genero);
         Task<string> UpdatePartidosFromExcelAsync(List<Partido> lista);
+        Task<bool> SaveTablaCalendarios(List<TablaCalendario> partidos);
+        Task<string> GetModeloCompeticionAsync(int id);
+        Task<List<TablaCalendario>> GetCalendarioPartidosCircuito(int numEquipos);
     }
 }

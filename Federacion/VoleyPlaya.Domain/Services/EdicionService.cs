@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 
 using NPOI.POIFS.Crypt.Dsig;
 using NPOI.SS.UserModel;
@@ -66,11 +68,13 @@ namespace VoleyPlaya.Domain.Services
         Task<List<Partido>> GetPartidosFiltradosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task<string> UpdatePartidosFromExcelAsync(List<Partido> partidos);
         Task<List<EdicionGrupo>> GetAllGruposAsync(int v, int categoria, string generoSelected);
+        Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id);
     }
     public class EdicionService : IEdicionService
     {
         IVoleyPlayaService _service;
         IMapper _mapper;
+
         public EdicionService(IVoleyPlayaService service, IMapper mapper)
         {
             _service = service;
@@ -212,7 +216,7 @@ namespace VoleyPlaya.Domain.Services
             var gr = _mapper.Map<EdicionGrupo>(grupo);//EdicionGrupo.FromJson(JsonNode.Parse(jsonGrupo!)!);
             //int numEquipos = grupo.Equipos.Count;
 
-            await grupo.GenerarPartidosAsync(gr.Edicion.TipoCalendario, gr.Edicion.FechasJornadas, gr.Equipos);
+            await grupo.GenerarPartidosAsync(gr.Edicion.ModeloCompeticion, gr.Edicion.TipoCalendario, gr.Edicion.FechasJornadas, gr.Equipos);
             string json = JsonSerializer.Serialize(grupo);
             await _service.UpdateGrupoPartidosAsync(json);
 
@@ -437,6 +441,12 @@ namespace VoleyPlaya.Domain.Services
             var gruposDto = await _service.GetAllGruposFiltradosAsync(competicion,categoria,genero);
             list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
             return list;
+        }
+
+        public async Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id)
+        {
+            string modelo = await _service.GetModeloCompeticionAsync(id);
+            return (EnumModeloCompeticion)Enum.Parse(typeof(EnumModeloCompeticion), modelo);
         }
     }
 }

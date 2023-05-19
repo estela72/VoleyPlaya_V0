@@ -41,15 +41,16 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         [BindProperty]
         public int NumJornadas { get; set; }
+        private readonly IConfiguracionService _configuracionService;
 
-
-        public EdicionModel (IEdicionService service) : base(service)
+        public EdicionModel (IEdicionService service, IConfiguracionService configuracionService) : base(service)
         {
             Competiciones = new SelectList(EnumCompeticiones.Competiciones.Values);
             Categorias = new SelectList(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
             ModelosCompeticion = new SelectList(Enum.GetValues(typeof(EnumModeloCompeticion)).OfType<EnumModeloCompeticion>().ToList());
             PasoActual = 1;
+            _configuracionService = configuracionService;
         }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -194,19 +195,28 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await GetEdicion(EdicionName);
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                     await GetEdicion(EdicionName);
-
-                dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
-                NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
-                await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado);
-                for (int i = 0; i < NumJornadas; i++)
+                if (TipoCalendarioSeleccionado != null)
                 {
-                    Edicion.FechasJornadas.Add(new FechaJornada
-                    {
-                        Jornada = i + 1,
-                        Fecha = DateTime.Today
-                    });
+                    dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
+                    NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
                 }
-                await _service.UpdateGruposAsync(Edicion);
+                else
+                {
+                    TipoCalendarioSeleccionado = "1 vueltas - 5 equipos";
+                    NumJornadas = await TablaCalendario.NumJornadas(5, 1);
+                }
+                if (await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado))
+                {
+                    for (int i = 0; i < NumJornadas; i++)
+                    {
+                        Edicion.FechasJornadas.Add(new FechaJornada
+                        {
+                            Jornada = i + 1,
+                            Fecha = DateTime.Today
+                        });
+                    }
+                    await _service.UpdateGruposAsync(Edicion);
+                }
                 await Fill();
             }
             catch (Exception x)
@@ -321,8 +331,11 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await GetEdicion(EdicionName);
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                     await GetEdicion(EdicionName);
+
                 if (Edicion.TipoCalendario == null)
                     Edicion.TipoCalendario = await GetTipoCalendarioEdicion(Edicion.Id);
+                if (Edicion.ModeloCompeticion == null)
+                    Edicion.ModeloCompeticion = await GetModeloCompeticionEdicion(Edicion.Id);
 
                 Edicion.FechasJornadas = jornadas;
 
@@ -331,7 +344,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 int numEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
                 foreach (EdicionGrupo grupo in Edicion.Grupos)
                 {
-                    await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
+                    await grupo.GenerarPartidosAsync(Edicion.ModeloCompeticion, Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
                     await _service.UpdatePartidosAsync(grupo);
                 }
                 await GetEdicion(Edicion.Nombre);
@@ -342,6 +355,11 @@ namespace VoleyPlaya.GestionWeb.Pages
                 ErrorMessage = "Error generando los partidos de la competición: " + x.Message;
             }
             return Page();
+        }
+
+        private async Task<EnumModeloCompeticion> GetModeloCompeticionEdicion(int id)
+        {
+            return await _service.GetModeloCompeticionAsyn(id);
         }
 
         private async Task<string> GetTipoCalendarioEdicion(int id)

@@ -23,6 +23,8 @@ namespace VoleyPlaya.Domain.Models
         public string Ronda { get; set; }
         public string Equipo1 { get; set; }
         public string Equipo2 { get; set; }
+        public int Jornada { get; set; }
+        public int NumGrupos { get; set; }
     }
     public class TablaCalendarioCircuito
     {
@@ -46,26 +48,37 @@ namespace VoleyPlaya.Domain.Models
                 foreach (ExcelWorksheet sheet in package.Workbook.Worksheets)
                 {
                     var nombre = sheet.Name;
-                    int numequipos = Convert.ToInt32(nombre.Split(' ').First());
-                    for (int i=2; i <= sheet.Dimension.Rows; i++)
+                    int numequipos = -1;
+                    int numgrupos = 1;
+                    if (nombre.Contains("EQUIPOS"))
                     {
-                        //if (sheet.Cells[i,0] == null) break;
+                        numequipos = Convert.ToInt32(nombre.Split(' ').First());
+                    }
+                    else if (nombre.Contains("GRUPOS")) // para cargar cruces y fase final de las competiciones con grupos
+                    {
+                        numgrupos = Convert.ToInt32(nombre.Split(' ').First());
+                    }
+                    for (int i = 2; i <= sheet.Dimension.Rows; i++)
+                    {
                         try
                         {
                             int numPartido = Convert.ToInt32(sheet.Cells[i, 1].Value);
                             string ronda = sheet.Cells[i, 2].Value.ToString();
                             string local = sheet.Cells[i, 3].Value.ToString();
                             string visitante = sheet.Cells[i, 4].Value.ToString();
+                            int jornada = Convert.ToInt32(sheet.Cells[i, 5].Value);
                             partidos.Add(new PartidoCalendarioCircuito
                             {
                                 NumEquipos = numequipos,
                                 NumPartido = numPartido,
                                 Ronda = ronda,
                                 Equipo1 = local,
-                                Equipo2 = visitante
+                                Equipo2 = visitante,
+                                Jornada = jornada,
+                                NumGrupos = numgrupos
                             });
                         }
-                        catch(Exception x)
+                        catch (Exception x)
                         {
 
                         }

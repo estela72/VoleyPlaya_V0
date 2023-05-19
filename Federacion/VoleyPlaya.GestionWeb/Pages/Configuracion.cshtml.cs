@@ -13,11 +13,11 @@ namespace VoleyPlaya.GestionWeb.Pages
     [Authorize(Policy = "AdminOnly")]
     public class ConfiguracionModel : VPPageModel
     {
-        IVoleyPlayaService _serviceVP;
+        IConfiguracionService _serviceConfig;
         IMapper _mapper;
-        public ConfiguracionModel(IVoleyPlayaService service, IMapper mapper) : base()
+        public ConfiguracionModel(IConfiguracionService service, IMapper mapper) : base()
         {
-            _serviceVP = service;
+            _serviceConfig = service;
             _mapper = mapper;
         }
         public async Task OnGetAsyn()
@@ -26,8 +26,9 @@ namespace VoleyPlaya.GestionWeb.Pages
         }
         public async Task OnPostLoadCalendariosAsync()
         {
-            TablaCalendarioCircuito tablas = new TablaCalendarioCircuito(_serviceVP, _mapper);
-            await tablas.LoadAsync();
+            await _serviceConfig.LoadTablasCalendarios();
+            //TablaCalendarioCircuito tablas = new TablaCalendarioCircuito(_serviceVP, _mapper);
+            //await tablas.LoadAsync();
         }
     }
 }

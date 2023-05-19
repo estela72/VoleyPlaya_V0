@@ -21,7 +21,7 @@ using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    [Authorize(Policy = "EquiposOnly")]
+    [AllowAnonymous]
     public class CalendariosModel : VPPageModel
     {
         public List<Partido> Partidos { get; set; }        

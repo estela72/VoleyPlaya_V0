@@ -2731,6 +2731,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "EPPlus": "6.2.4",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "NPOI": "2.6.0",
           "Newtonsoft.Json": "13.0.3",

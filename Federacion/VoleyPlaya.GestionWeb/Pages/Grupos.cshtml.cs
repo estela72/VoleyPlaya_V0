@@ -22,7 +22,7 @@ using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
-    [Authorize(Policy = "EquiposOnly")]
+    [AllowAnonymous]
     public class GruposModel : VPPageModel
     {
         public List<EdicionGrupo> Grupos { get; set; }        
