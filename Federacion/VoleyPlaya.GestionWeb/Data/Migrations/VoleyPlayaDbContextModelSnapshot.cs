@@ -316,15 +316,17 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Genero")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lugar")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ModeloCompeticion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Prueba")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TemporadaId")
@@ -351,7 +353,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasDatabaseName("IX_Edicion")
                         .HasFilter("[Nombre] IS NOT NULL");
 
-                    b.HasIndex("TemporadaId");
+                    b.HasIndex("TemporadaId", "CompeticionId", "CategoriaId", "Genero", "Prueba")
+                        .IsUnique()
+                        .HasDatabaseName("IX_EdicionKey");
 
                     b.ToTable("Ediciones");
                 });

@@ -24,7 +24,7 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
                 .ForMember(d => d.Categoria, o => o.MapFrom(ori => ori.Grupo.Edicion.Categoria.Nombre))
                 .ForMember(d => d.Genero, o => o.MapFrom(ori => ori.Grupo.Edicion.Genero))
                 .ForMember(d => d.Grupo, o => o.MapFrom(ori => ori.Grupo.Nombre))
-                .ForMember(d => d.Lugar, o => o.MapFrom(ori => ori.Grupo.Edicion.Lugar))
+                .ForMember(d => d.Lugar, o => o.MapFrom(ori => ori.Grupo.Edicion.Prueba))
                 .ReverseMap();
 
             CreateMap<VoleyPlaya.Repository.Models.PartidoVis, VoleyPlaya.Domain.Models.Partido>()

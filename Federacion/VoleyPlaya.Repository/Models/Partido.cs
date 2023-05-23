@@ -69,6 +69,7 @@ namespace VoleyPlaya.Repository.Models
         DateTime? _fechaHora;
         string? _pista;
         string? _label;
+        bool _validado = false;
 
         HashSet<ParcialPartido>? _parciales;
 
@@ -102,6 +103,8 @@ namespace VoleyPlaya.Repository.Models
         public bool RetiradoLocal { get { return _local == null||_local.Retirado==null ? false : _local!.Retirado.Value; } }
         [NotMapped]
         public bool RetiradoVisitante { get { return _visitante == null||_visitante.Retirado==null ? false : _visitante!.Retirado.Value; } }
+
+        public bool Validado { get => _validado; set => _validado = value; } 
 
         public override bool Equals(object obj)
         {

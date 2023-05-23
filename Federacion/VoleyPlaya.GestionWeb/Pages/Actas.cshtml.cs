@@ -77,28 +77,57 @@ namespace VoleyPlaya.GestionWeb.Pages
                 GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
                 await GetPartidosAsync();
 
-                var fileName = $"Actas_" + competicionId + " " + categoriaId + " " + generoId + " " + grupoId + ".xlsx";
-                GenerarExcel(Partidos.Count, fileName);
+                var edicion = await _service.GetEdicionAsync(competicionId, categoriaId, generoId);
+                if (edicion.ModeloCompeticion.Equals(EnumModeloCompeticion.JuegosDeportivos))
+                    return await RellenarActasJuegosDeportivos(competicionId, categoriaId, generoId);
+                else if (edicion.ModeloCompeticion.Equals(EnumModeloCompeticion.Circuito))
+                    return await RellenarActasCircuito(competicionId, categoriaId, generoId);
 
-                // Escribir el libro de Excel en un MemoryStream
-                // Obtén la ruta del directorio personal del usuario
-                string personalFolder = Environment.CurrentDirectory;
-
-                byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
-                System.IO.File.Delete(fileName);
-                return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
             catch (Exception x)
             {
                 ErrorMessage = "Se ha producido un error: " + x.Message;
-                return Page();
             }
+            finally
+            {
+                
+            }
+            return Page();
         }
-        public void GenerarExcel(int numeroHojas, string destinationFilePath)
+
+        private async Task<FileContentResult> RellenarActasCircuito(int? competicionId, int? categoriaId, string generoId)
+        {
+            var fileName = $"ActasCircuito_" + competicionId + " " + categoriaId + " " + generoId + ".xlsx";
+            GenerarExcelCircuito(Partidos.Count, fileName);
+
+            // Escribir el libro de Excel en un MemoryStream
+            // Obtén la ruta del directorio personal del usuario
+            string personalFolder = Environment.CurrentDirectory;
+
+            byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
+            System.IO.File.Delete(fileName);
+            return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        
+        private async Task<FileContentResult> RellenarActasJuegosDeportivos(int? competicionId, int? categoriaId, string generoId)
+        {
+            var fileName = $"Actas_" + competicionId + " " + categoriaId + " " + generoId + ".xlsx";
+            GenerarExcelJuegosDeportivos(Partidos.Count, fileName);
+
+            // Escribir el libro de Excel en un MemoryStream
+            // Obtén la ruta del directorio personal del usuario
+            string personalFolder = Environment.CurrentDirectory;
+
+            byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
+            System.IO.File.Delete(fileName);
+            return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        public void GenerarExcelJuegosDeportivos(int numeroHojas, string destinationFilePath)
         {
             // Ruta de destino del archivo Excel
             string filePath = "wwwroot/excel/actaVPJuegosDeportivos.xlsx";
-            //string destinationFilePath = "wwwroot/excel/temporal.xlsx";
 
             System.IO.File.Copy(filePath, destinationFilePath, true);
 
@@ -113,10 +142,38 @@ namespace VoleyPlaya.GestionWeb.Pages
                 {
                     // Crear una nueva hoja en el archivo Excel
                     ExcelWorksheet nuevaHoja = package.Workbook.Worksheets.Add("Acta" + (i + 1), primeraHoja);
-                    RellenarActa(Partidos[i], nuevaHoja);
+                    RellenarActaJD(Partidos[i], nuevaHoja);
 
                     // Ajustar el tamaño de las columnas para que coincidan con la primera hoja
-                    nuevaHoja.Cells.AutoFitColumns();
+                    //nuevaHoja.Cells.AutoFitColumns();
+                }
+
+                // Guardar los cambios en el archivo Excel
+                package.Save();
+            }
+        }
+        private void GenerarExcelCircuito(int numeroHojas, string destinationFilePath)
+        {
+            // Ruta de destino del archivo Excel
+            string filePath = "wwwroot/excel/actaVoleyPlayaCircuito1Set.xlsx";
+
+            System.IO.File.Copy(filePath, destinationFilePath, true);
+
+            // Cargar el archivo Excel existente
+            using (ExcelPackage package = new ExcelPackage(new FileInfo(destinationFilePath)))
+            {
+                // Obtener la primera hoja
+                ExcelWorksheet primeraHoja = package.Workbook.Worksheets[0];
+
+                // Crear copias de la primera hoja según el número de hojas especificado
+                for (int i = 0; i < numeroHojas; i++)
+                {
+                    // Crear una nueva hoja en el archivo Excel
+                    ExcelWorksheet nuevaHoja = package.Workbook.Worksheets.Add("Acta" + (i + 1), primeraHoja);
+                    RellenarActaCircuito(Partidos[i], nuevaHoja);
+
+                    // Ajustar el tamaño de las columnas para que coincidan con la primera hoja
+                    //nuevaHoja.Cells.AutoFitColumns();
                 }
 
                 // Guardar los cambios en el archivo Excel
@@ -124,7 +181,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
         }
 
-        private void RellenarActa(Partido partido, ExcelWorksheet nuevaHoja)
+        private void RellenarActaJD(Partido partido, ExcelWorksheet nuevaHoja)
         {
             nuevaHoja.Cells["B4"].Value = partido.Competicion;
             nuevaHoja.Cells["G4"].Value = partido.Categoria;
@@ -140,5 +197,37 @@ namespace VoleyPlaya.GestionWeb.Pages
 
             nuevaHoja.Cells["F42"].Value = partido.Lugar;
         }
+
+        private void RellenarActaCircuito(Partido partido, ExcelWorksheet nuevaHoja)
+        {
+            nuevaHoja.Cells["A7"].Value = "Asturias      " + partido.Lugar + "            " + partido.Competicion + "            " + partido.Categoria + "             " + partido.Genero;
+            nuevaHoja.Cells["A10"].Value = "Nº de partido: "+partido.Label;
+            nuevaHoja.Cells["G10"].Value = "Pista "+partido.Pista;
+            nuevaHoja.Cells["O10"].Value = "Fecha: "+partido.FechaHora.ToString("dd/MM/yyyy");
+            nuevaHoja.Cells["AA10"].Value = "Hora: "+ partido.FechaHora.ToString("HH:mm");
+            nuevaHoja.Cells["AE10"].Value = "";
+            nuevaHoja.Cells["AH10"].Value = "GRUPO " + partido.Grupo;
+
+            nuevaHoja.Cells["D12"].Value = partido.Local;
+            nuevaHoja.Cells["Z12"].Value = partido.Visitante;
+
+            nuevaHoja.Cells["D30"].Value = partido.Local;
+            nuevaHoja.Cells["R30"].Value = partido.Visitante;
+
+            var locales = partido.Local.Split('-');
+            var visitantes = partido.Visitante.Split('-');
+
+            if (locales.Count() > 1)
+            {
+                nuevaHoja.Cells["D32"].Value = locales[0].Trim();
+                nuevaHoja.Cells["D33"].Value = locales[1].Trim();
+            }
+            if (visitantes.Count() > 1)
+            {
+                nuevaHoja.Cells["Q32"].Value = visitantes[0].Trim();
+                nuevaHoja.Cells["Q33"].Value = visitantes[1].Trim();
+            }
+        }
+
     }
 }

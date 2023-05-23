@@ -63,13 +63,13 @@ namespace VoleyPlaya.Repository.Repositories
                     Genero = genero,
                     TipoCalendario = tipoCalendario,
                     ModeloCompeticion = modeloCompeticion,
-                    Lugar = lugar
+                    Prueba = lugar
                 });
             else
             {
                 dto.Genero = genero;
                 dto.TipoCalendario = tipoCalendario;
-                dto.Lugar = lugar;
+                dto.Prueba = lugar;
                 dto.ModeloCompeticion = modeloCompeticion;
                 dto = await UpdateAsync(dto);
             }

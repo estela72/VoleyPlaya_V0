@@ -11,11 +11,14 @@ namespace VoleyPlaya.Repository.Models
 {
     public class Edicion : Entity
     {
+        int _temporadaId;
+        int _competicionId;
+        int _categoriaId;
         Temporada _temporada;
         Competicion _competicion;
         Categoria _categoria;
-        string? _lugar;
-        string? _genero;
+        string _prueba;
+        string _genero;
         string? _tipoCalendario;
         private string? _modeloCompeticion; // Juegos deportivos o Circuito -> indica como es la distribución de equipos en los grupos
 
@@ -40,12 +43,15 @@ namespace VoleyPlaya.Repository.Models
             _equipos = new HashSet<Equipo>();
         }
 
+        public int TemporadaId { get => _temporadaId; set => _temporadaId = value; }
         public Temporada Temporada { get => _temporada; set => _temporada = value; }
+        public int CompeticionId { get => _competicionId; set => _competicionId = value; }
         public Competicion Competicion { get => _competicion; set => _competicion = value; }
+        public int CategoriaId { get => _categoriaId; set => _categoriaId = value; }
         public Categoria Categoria { get => _categoria; set => _categoria = value; }
-        public string? Genero { get => _genero; set => _genero = value; }
+        public string Genero { get => _genero; set => _genero = value; }
+        public string Prueba { get => _prueba; set => _prueba = value; }
         public string? TipoCalendario { get => _tipoCalendario; set => _tipoCalendario = value; }
-        public string? Lugar { get => _lugar; set => _lugar = value; }
         public HashSet<Jornada> Jornadas{ get => _jornadas; set => _jornadas = value; }
         public HashSet<EdicionGrupo> Grupos { get => _grupos; set => _grupos = value; }
         public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }

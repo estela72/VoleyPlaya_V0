@@ -398,9 +398,6 @@ namespace VoleyPlaya.GestionWeb.Pages
                 await GetEdicion(EdicionName);
             if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                 await GetEdicion(EdicionName);
-            //for (int i = 0; i < Edicion.Grupos.Count; i++)
-            //    Edicion.Grupos[i].Partidos = grupos[i].Partidos;
-
             foreach (var grupo in grupos)
                 await _service.UpdateDatosPartidosAsync(grupo);
         }

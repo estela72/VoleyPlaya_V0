@@ -71,6 +71,7 @@ namespace VoleyPlaya.Domain.Services
         Task<List<EdicionGrupo>> GetAllGruposAsync(int v, int categoria, string generoSelected);
         Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id);
         Task<bool> GenerarFaseFinal(int id);
+        Task<Edicion> GetEdicionAsync(int? competicionId, int? categoriaId, string generoId);
     }
     public class EdicionService : IEdicionService
     {
@@ -466,6 +467,12 @@ namespace VoleyPlaya.Domain.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<Edicion> GetEdicionAsync(int? competicionId, int? categoriaId, string generoId)
+        {
+            var edicion = await _service.GetEdicion(competicionId, categoriaId, generoId);
+            return _mapper.Map<Edicion>(edicion);
         }
     }
 }

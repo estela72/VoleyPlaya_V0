@@ -499,7 +499,8 @@ namespace VoleyPlaya.Repository.Services
         {
             var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Competicion.Id.Equals(idCompeticion), e=>e.Categoria);
             var categorias = ediciones.Select(e => new { Id = e.Categoria.Id, Nombre = e.Categoria.Nombre }).ToList();
-            return JsonSerializer.Serialize(categorias, Options);
+            var cat = categorias.Distinct();
+            return JsonSerializer.Serialize(cat, Options);
         }
 
         public async Task<string> GetAllGenerosAsync(int idCompeticion, int idCategoria)
@@ -625,6 +626,14 @@ namespace VoleyPlaya.Repository.Services
 
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return true;
+        }
+        public async Task<Edicion> GetEdicion(int? competicionId, int? categoriaId, string generoId)
+        {
+            if (competicionId == null || categoriaId == null || string.IsNullOrEmpty(generoId) || generoId.Equals("0"))
+                return null;
+            var edicion = await _voleyPlayaUoW.EdicionRepository.FindAsync(e => e.Competicion.Id.Equals(competicionId)
+                            && e.Categoria.Id.Equals(categoriaId) && e.Genero.Equals(generoId));
+            return edicion;
         }
     }
 }

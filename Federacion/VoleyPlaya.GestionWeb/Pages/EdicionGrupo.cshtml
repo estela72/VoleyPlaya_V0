@@ -13,7 +13,7 @@
         <div class="card-header alert-info">
             <div class="row g-3 m-2">
                 @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Temporada, new{@class="col m-5 h4"})
-                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Lugar, new{@class="col m-5 h4"})
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Prueba, new{@class="col m-5 h4"})
                 @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Competicion, new{@class="col m-5 h4"})
                 @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.CategoriaStr, new{@class="col m-5 h4"})
                 @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.GeneroStr, new{@class="col m-5 h4"})
@@ -101,7 +101,7 @@
                 <div class="col" style="font-size:large">
                     @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Temporada)
                     @Html.DisplayName(" - ")
-                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Lugar)
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Prueba)
                     @Html.DisplayName(" - ")
                     @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Competicion)
                     @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Categoria)
