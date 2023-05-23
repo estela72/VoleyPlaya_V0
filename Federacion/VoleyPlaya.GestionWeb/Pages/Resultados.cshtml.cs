@@ -50,7 +50,10 @@ namespace VoleyPlaya.GestionWeb.Pages
             if (CompeticionSelected == null || CategoriaSelected == null || string.IsNullOrEmpty(GeneroSelected) || GeneroSelected.Equals("0") || GrupoSelected == null)
                 return;
             var allPartidos = await _service.GetPartidosFiltradosAsync(int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, int.Parse(GrupoSelected));
-            Partidos = allPartidos.Where(p => p.FechaHora.Date <= DateTime.Today).ToList();
+            if (allPartidos.Count > 0 && CompeticionSelected == "3")
+                Partidos = allPartidos;
+            else
+                Partidos = allPartidos.Where(p => p.FechaHora.Date == DateTime.Today).ToList();
         }
         public async Task<IActionResult> OnPostGuardarAsync(int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {

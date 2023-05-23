@@ -40,7 +40,7 @@ namespace VoleyPlaya.Domain.Models
         public int NumJornadas { get { return FechasJornadas.Count; }}
         [Display(Name = "Nº de Equipos")]
         public int NumEquipos { get { return Equipos.Count; } }
-        public string Lugar { get; set; }
+        public string Prueba { get; set; }
         public List<EdicionGrupo> Grupos { get; set; }
         public List<FechaJornada> FechasJornadas { get; set; }
         public List<Equipo> Equipos { get; set; }
@@ -67,7 +67,7 @@ namespace VoleyPlaya.Domain.Models
             //NumJornadas = 0;
             FechasJornadas = new List<FechaJornada>();
             Fecha = DateTime.Now;
-            Lugar = string.Empty;
+            Prueba = string.Empty;
             TipoCalendario = string.Empty;
             Grupos = new List<EdicionGrupo>();
             Equipos = new List<Equipo>();
@@ -90,7 +90,7 @@ namespace VoleyPlaya.Domain.Models
             edicion.FechasJornadas = JornadasFromJson(jsonEdicion["Jornadas"]!.AsArray());
             edicion.Equipos = EquiposFromJson(jsonEdicion["Equipos"]!.AsArray());
             //edicion.NumJornadas = edicion.FechasJornadas.Count();
-            edicion.Lugar = jsonEdicion["Lugar"]!.GetValue<string>();
+            edicion.Prueba = jsonEdicion["Lugar"]!.GetValue<string>();
             edicion.TipoCalendario = jsonEdicion["TipoCalendario"]!.GetValue<string>();
             Enum.TryParse(NombreFromJson(jsonEdicion["ModeloCompeticion"]!), out EnumModeloCompeticion modeloCompeticion);
             edicion.ModeloCompeticion = modeloCompeticion;
@@ -518,7 +518,7 @@ namespace VoleyPlaya.Domain.Models
                         NumPartido = par.NumPartido,
                         Local = equipo1,
                         Visitante = equipo2,
-                        Lugar = Lugar,
+                        Lugar = Prueba,
                         Pista = "",
                         RetiradoLocal = false,
                         RetiradoVisitante = false,

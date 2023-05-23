@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "I/XrSkHIw7sjxUWYsRzhhZr4CiJRmgWwgQTkTH6zW+k=",
+  "Hash": "XIvXKuuvM4/0UhHGyw9sYPyXJuwx3GubnNKIOWSeHuk=",
   "Source": "VoleyPlaya.GestionWeb",
   "BasePath": "_content/VoleyPlaya.GestionWeb",
   "Mode": "Default",
@@ -2023,12 +2023,12 @@
       "OriginalItemSpec": "wwwroot\\datatable\\js\\datatable.min.js"
     },
     {
-      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\~$calendarios.xlsx",
+      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVoleyPlayaCircuito1Set.xlsx",
       "SourceId": "VoleyPlaya.GestionWeb",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
       "BasePath": "_content/VoleyPlaya.GestionWeb",
-      "RelativePath": "excel/~$calendarios.xlsx",
+      "RelativePath": "excel/actaVoleyPlayaCircuito1Set.xlsx",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2037,7 +2037,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\excel\\~$calendarios.xlsx"
+      "OriginalItemSpec": "wwwroot\\excel\\actaVoleyPlayaCircuito1Set.xlsx"
     },
     {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVPJuegosDeportivos.xlsx",

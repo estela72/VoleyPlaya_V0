@@ -88,6 +88,19 @@ namespace VoleyPlaya.GestionWeb.Pages
                 }
                 byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
                 System.IO.File.Delete(fileName);
+
+                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
+                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
+                GeneroSelected = generoId;
+                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
+
+                Competiciones = await GetCompeticiones();
+                Categorias = await GetCategorias();
+                Generos = await GetGeneros();
+                Grupos = await GetGrupos();
+
+                await GetPartidosAsync();
+
                 return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fName);
             }
             catch (Exception x)
@@ -241,7 +254,18 @@ namespace VoleyPlaya.GestionWeb.Pages
                     }
                 }
                 await _service.UpdatePartidosFromExcelAsync(partidos);
-                GetPartidosAsync();
+
+                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
+                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
+                GeneroSelected = generoId;
+                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
+
+                Competiciones = await GetCompeticiones();
+                Categorias = await GetCategorias();
+                Generos = await GetGeneros();
+                Grupos = await GetGrupos();
+
+                await GetPartidosAsync();
                 return Page();
             }
             catch (Exception x)

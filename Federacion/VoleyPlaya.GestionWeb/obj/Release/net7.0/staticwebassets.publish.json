@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "AmnSIP+XV/TkP+I1RclCvzGGSiU70c/IQgyr1vq3L+0=",
+  "Hash": "HzjhtAHNDdGfIECUu1R9v3H7vtB1fSb0EDUQGQygWpk=",
   "Source": "VoleyPlaya.GestionWeb",
   "BasePath": "_content/VoleyPlaya.GestionWeb",
   "Mode": "Default",
@@ -2021,6 +2021,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\datatable\\js\\datatable.min.js"
+    },
+    {
+      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVoleyPlayaCircuito1Set.xlsx",
+      "SourceId": "VoleyPlaya.GestionWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
+      "BasePath": "_content/VoleyPlaya.GestionWeb",
+      "RelativePath": "excel/actaVoleyPlayaCircuito1Set.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\excel\\actaVoleyPlayaCircuito1Set.xlsx"
     },
     {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVPJuegosDeportivos.xlsx",

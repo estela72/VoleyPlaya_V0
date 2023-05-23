@@ -110,6 +110,10 @@ namespace VoleyPlaya.Repository
                 entity.HasIndex(e => new { e.Nombre })
                     .HasDatabaseName("IX_Edicion")
                     .IsUnique();
+                entity.HasIndex(e => new { e.TemporadaId, e.CompeticionId, e.CategoriaId, e.Genero, e.Prueba })
+                    .HasDatabaseName("IX_EdicionKey")
+                    .IsUnique();
+
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
                 entity.Property(e => e.UpdatedBy).HasMaxLength(256);
