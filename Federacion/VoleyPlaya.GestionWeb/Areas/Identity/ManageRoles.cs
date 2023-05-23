@@ -8,7 +8,7 @@ using VoleyPlaya.Repository;
 
 namespace VoleyPlaya.GestionWeb.Areas.Identity
 {
-    public enum eRoles { Admin, Competiciones, Resultados};
+    public enum eRoles { Admin, Competiciones, Equipo, Arbitro};
     public class InputUser
     {
         public string Email { get; set; }
@@ -56,7 +56,8 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
                     }
                     await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Admin.ToString());
                     await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Competiciones.ToString());
-                    await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Resultados.ToString());
+                    await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Equipo.ToString());
+                    await AsignarRol(userManager, roleManager, newUser.Id, eRoles.Arbitro.ToString());
                 }
             }
         }
@@ -67,7 +68,8 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
             {
                 RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 foreach (var rol in Enum.GetNames(typeof(eRoles)))
-                    await CreateRole(roleManager, rol.ToString());
+                    if (!await roleManager.RoleExistsAsync(rol.ToString()))
+                        await CreateRole(roleManager, rol.ToString());
             }
         }
         public static async Task AddPolicies(this IServiceCollection services)
@@ -78,8 +80,10 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
                     policy.RequireRole(eRoles.Admin.ToString()));
                 options.AddPolicy("CompeticionesOnly", policy =>
                     policy.RequireRole(eRoles.Competiciones.ToString()));
-                options.AddPolicy("ResultadosOnly", policy =>
-                    policy.RequireRole(eRoles.Resultados.ToString()));
+                options.AddPolicy("EquiposOnly", policy =>
+                    policy.RequireRole(eRoles.Equipo.ToString()));
+                options.AddPolicy("ArbitrosOnly", policy =>
+                    policy.RequireRole(eRoles.Arbitro.ToString()));
             });
         }
         // Crear un nuevo rol

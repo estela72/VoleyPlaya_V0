@@ -22,6 +22,8 @@ namespace VoleyPlaya.Repository
         public DbSet<Partido> Partidos { get; set; }
         public DbSet<ParcialPartido> Parciales { get; set; }
         public DbSet<EdicionGrupo> EdicionGrupos { get; set; }
+        public DbSet<TablaCalendario> Tablas { get; set; }
+
         IHostingEnvironment _environment;
 
         public VoleyPlayaDbContext(DbContextOptions<VoleyPlayaDbContext> options, IConfiguration configuration, IHostingEnvironment environment)
@@ -181,7 +183,13 @@ namespace VoleyPlaya.Repository
                       .OnDelete(DeleteBehavior.ClientCascade)
                       .HasConstraintName("FK_dbo.ParcialPartido_Id");
             });
-
+            modelBuilder.Entity<TablaCalendario>(entity =>
+            {
+                entity.Property(e => e.CreatedBy).HasMaxLength(256);
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).HasMaxLength(256);
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
         }
     }
 }

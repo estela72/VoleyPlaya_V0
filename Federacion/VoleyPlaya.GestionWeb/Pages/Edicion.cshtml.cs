@@ -20,10 +20,15 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         [BindProperty]
         public Edicion Edicion { get; set; }
+        [BindProperty]
+        public List<EdicionGrupo> GruposLiga { get; set; }
+        [BindProperty]
+        public List<EdicionGrupo> GruposFF { get; set; }
         public SelectList Competiciones { get; set; }
         public SelectList Categorias { get; set; }
         public SelectList Generos { get; set; }
         public SelectList TipoCalendarios { get; set; }
+        public SelectList ModelosCompeticion { get; set; }
 
         [BindProperty]
         public string TipoCalendarioSeleccionado { get; set; }
@@ -40,14 +45,16 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         [BindProperty]
         public int NumJornadas { get; set; }
+        private readonly IConfiguracionService _configuracionService;
 
-
-        public EdicionModel (IEdicionService service) : base(service)
+        public EdicionModel (IEdicionService service, IConfiguracionService configuracionService) : base(service)
         {
             Competiciones = new SelectList(EnumCompeticiones.Competiciones.Values);
             Categorias = new SelectList(Enum.GetValues(typeof(EnumCategorias)).OfType<EnumCategorias>().ToList());
             Generos = new SelectList(Enum.GetValues(typeof(EnumGeneros)).OfType<EnumGeneros>().ToList());
+            ModelosCompeticion = new SelectList(Enum.GetValues(typeof(EnumModeloCompeticion)).OfType<EnumModeloCompeticion>().ToList());
             PasoActual = 1;
+            _configuracionService = configuracionService;
         }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -109,6 +116,8 @@ namespace VoleyPlaya.GestionWeb.Pages
                     PasoActual = 3;
                 if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count > 0)
                     PasoActual = 4;
+                if (Edicion.Grupos!.Exists(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)))
+                    PasoActual = 5;
 
                 ListaEquipos = new SelectList(Edicion.Equipos.OrderBy(e => e.Nombre).Select(e => e.Nombre).ToList());
                 TipoCalendarios = new SelectList(await TablaCalendario.LoadTipos());
@@ -139,6 +148,8 @@ namespace VoleyPlaya.GestionWeb.Pages
                         });
                     }
                 }
+                GruposLiga = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
+                GruposFF = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).ToList();
             }
             catch(Exception x)
             {
@@ -192,19 +203,29 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await GetEdicion(EdicionName);
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                     await GetEdicion(EdicionName);
-
-                dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
-                NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
-                await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado);
-                for (int i = 0; i < NumJornadas; i++)
+                if (TipoCalendarioSeleccionado != null)
                 {
-                    Edicion.FechasJornadas.Add(new FechaJornada
-                    {
-                        Jornada = i + 1,
-                        Fecha = DateTime.Today
-                    });
+                    dynamic datos = await TablaCalendario.GetInfoTipo(TipoCalendarioSeleccionado);
+                    NumJornadas = await TablaCalendario.NumJornadas(datos.Equipos, datos.Vueltas);
                 }
-                await _service.UpdateGruposAsync(Edicion);
+                else
+                {
+                    TipoCalendarioSeleccionado = "1 vueltas - 5 equipos";
+                    NumJornadas = await TablaCalendario.NumJornadas(5, 1);
+                }
+                Edicion = await _service.GetEdicionByIdAsync(Edicion.Id);
+                if (await Edicion.GenerarFaseGruposAsync(TipoCalendarioSeleccionado))
+                {
+                    for (int i = 0; i < NumJornadas; i++)
+                    {
+                        Edicion.FechasJornadas.Add(new FechaJornada
+                        {
+                            Jornada = i + 1,
+                            Fecha = DateTime.Today
+                        });
+                    }
+                    await _service.UpdateGruposAsync(Edicion);
+                }
                 await Fill();
             }
             catch (Exception x)
@@ -217,7 +238,7 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             try
             {
-                var grupos = Edicion.Grupos;
+                var grupos = GruposLiga;
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
                     await GetEdicion(EdicionName);
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
@@ -279,7 +300,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             catch (Exception x)
             {
-                ErrorMessage = "Error eliminando un equipo de la competición: " + x.Message;
+                ErrorMessage = "Error eliminando un grupo de la competición: " + x.Message;
             }
             finally
             {
@@ -319,8 +340,11 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await GetEdicion(EdicionName);
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                     await GetEdicion(EdicionName);
+
                 if (Edicion.TipoCalendario == null)
                     Edicion.TipoCalendario = await GetTipoCalendarioEdicion(Edicion.Id);
+                if (Edicion.ModeloCompeticion == null)
+                    Edicion.ModeloCompeticion = await GetModeloCompeticionEdicion(Edicion.Id);
 
                 Edicion.FechasJornadas = jornadas;
 
@@ -329,7 +353,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 int numEquipos = Edicion.Grupos.Max(g => g.Equipos.Count);
                 foreach (EdicionGrupo grupo in Edicion.Grupos)
                 {
-                    await grupo.GenerarPartidosAsync(Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
+                    await grupo.GenerarPartidosAsync(Edicion.ModeloCompeticion, Edicion.TipoCalendario, Edicion.FechasJornadas, grupo.Equipos);
                     await _service.UpdatePartidosAsync(grupo);
                 }
                 await GetEdicion(Edicion.Nombre);
@@ -342,6 +366,11 @@ namespace VoleyPlaya.GestionWeb.Pages
             return Page();
         }
 
+        private async Task<EnumModeloCompeticion> GetModeloCompeticionEdicion(int id)
+        {
+            return await _service.GetModeloCompeticionAsyn(id);
+        }
+
         private async Task<string> GetTipoCalendarioEdicion(int id)
         {
             return await _service.GetTipoCalendarioEdicion(id);
@@ -351,16 +380,7 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             try
             {
-                var grupos = Edicion.Grupos;
-                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                    await GetEdicion(EdicionName);
-                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                    await GetEdicion(EdicionName);
-                for (int i = 0; i < Edicion.Grupos.Count; i++)
-                    Edicion.Grupos[i].Partidos = grupos[i].Partidos;
-
-                foreach (var grupo in Edicion.Grupos)
-                    await _service.UpdateDatosPartidosAsync(grupo);
+                await ActualizarDatosPartidosAsync(GruposLiga);
 
                 await GetEdicion(Edicion.Nombre);
                 await Fill();
@@ -368,6 +388,73 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch (Exception x)
             {
                 ErrorMessage = "Error guardando los partidos de la competición: " + x.Message;
+            }
+            return Page();
+        }
+
+        private async Task ActualizarDatosPartidosAsync(List<EdicionGrupo> grupos)
+        {
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                await GetEdicion(EdicionName);
+            if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                await GetEdicion(EdicionName);
+            //for (int i = 0; i < Edicion.Grupos.Count; i++)
+            //    Edicion.Grupos[i].Partidos = grupos[i].Partidos;
+
+            foreach (var grupo in grupos)
+                await _service.UpdateDatosPartidosAsync(grupo);
+        }
+
+        public async Task<IActionResult> OnPostGenerarFaseFinalAsync()
+        {
+            try
+            {
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
+                    await GetEdicion(EdicionName);
+                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
+                    await GetEdicion(EdicionName);
+
+                if (!await _service.GenerarFaseFinal(Edicion.Id))
+                    ErrorMessage = "Se ha producido un error generando la fase final";
+
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los partidos de la competición: " + x.Message;
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostGuardarPartidosFaseFinalAsync()
+        {
+            try
+            {
+                await ActualizarDatosPartidosAsync(GruposFF);
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error guardando los partidos de la competición: " + x.Message;
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostDeletePartidoAsync(int id)
+        {
+            try
+            {
+                var str = await _service.DeletePartidoAsync(id);
+                ErrorMessage = str;
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error eliminando un partido de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
             }
             return Page();
         }

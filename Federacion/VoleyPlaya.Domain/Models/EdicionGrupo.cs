@@ -10,10 +10,15 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Domain.Services;
+using VoleyPlaya.Repository.Models;
+
 namespace VoleyPlaya.Domain.Models
 {
     public class EdicionGrupo : IDomainDto
     {
+        IConfiguracionService _configService;
+
         public EdicionGrupo()
         {
             Name = "";
@@ -21,7 +26,10 @@ namespace VoleyPlaya.Domain.Models
             Equipos = new List<Equipo>();
             Partidos = new List<Partido>();
         }
-
+        public EdicionGrupo(IConfiguracionService service):this()
+        {
+            _configService = service;
+        }
         public int Id { get; set; }
         [Display(Name = "Grupo")]
         public string Name { get; set; }
@@ -39,10 +47,22 @@ namespace VoleyPlaya.Domain.Models
         [Obsolete]
         public string TipoGrupoStr { get { return Enum.GetName(typeof(EnumTipoGrupo), TipoGrupo); } }
 
-        public async Task GenerarPartidosAsync(string tipoCalendario, List<FechaJornada> jornadas, List<Equipo> equipos)
+        public async Task GenerarPartidosAsync(EnumModeloCompeticion modeloCompeticion, string tipoCalendario, List<FechaJornada> jornadas, List<Equipo> equipos)
         {
+            if (modeloCompeticion.Equals(EnumModeloCompeticion.JuegosDeportivos))
+                await GeneraPartidosJuegosDeportivos(tipoCalendario, jornadas, equipos);
+            else if (modeloCompeticion.Equals(EnumModeloCompeticion.Circuito))
+                await GeneraPartidosJuegosDeportivos(tipoCalendario, jornadas, equipos); 
+            else if (modeloCompeticion.Equals(EnumModeloCompeticion.Cuadro))
+                await GeneraPartidosCircuito(jornadas, equipos);
+        }
+
+        private async Task GeneraPartidosJuegosDeportivos(string tipoCalendario, List<FechaJornada> jornadas, List<Equipo> equipos)
+        { 
             var tablaOriginal = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(tipoCalendario)).FirstOrDefault();
             var numequi = Equipos.Count;
+            if (tablaOriginal == null)
+                tablaOriginal = await TablaCalendario.LoadCalendario(numequi, 1);
             var tabla = await TablaCalendario.LoadCalendario(numequi, tablaOriginal.NumVueltas);
 
             if (tabla == null) return;
@@ -69,7 +89,68 @@ namespace VoleyPlaya.Domain.Models
                 }
             }
         }
-        
+
+        private async Task GeneraPartidosCircuito(List<FechaJornada> jornadas, List<Equipo> equipos)
+        {
+            List<PartidoCalendarioCircuito> partidosCalendario = await _configService.GetTablaCalendario(equipos.Count);
+            foreach(var partido in partidosCalendario)
+            {
+                var fecha = jornadas.Where(j => j.Jornada == partido.Jornada).First().Fecha;
+                fecha = new DateTime(fecha.Year, fecha.Month, fecha.Day, 10, 0, 0);
+                Partido nuevoPartido = new()
+                {
+                    Jornada = partido.Jornada,
+                    Label = Name + partido.NumPartido.ToString(),
+                    NumPartido = partido.NumPartido,
+                    FechaHora = fecha,
+                    Pista = string.Empty,
+                    Local = GetEquipo(partido.Equipo1), 
+                    Visitante = GetEquipo(partido.Equipo2),
+                    Resultado = new Resultado()
+                };
+                if (!Partidos.Exists(p => p.NumPartido == nuevoPartido.NumPartido))
+                    Partidos.Add(nuevoPartido);
+            }
+        }
+
+        private string GetEquipo(string idEquipo)
+        {
+            if (idEquipo.StartsWith("GP")||idEquipo.StartsWith("PP"))
+            {
+                //Hay que obtener el ganador o perdedor del partido indicado en el número
+                var idPartido = idEquipo.Substring(2);
+                var numPartido = Convert.ToInt32(idPartido);
+                var partido = Partidos.Where(p => p.NumPartido.Equals(numPartido)).FirstOrDefault();
+                if (partido.Resultado.Local > 0 || partido.Resultado.Visitante>0) // el partido tiene resultado
+                {
+                    if (idEquipo.StartsWith("GP"))
+                        if (partido.Resultado.Local > partido.Resultado.Visitante)
+                            return partido.Local;
+                        else
+                            return partido.Visitante;
+                    else if (idEquipo.StartsWith("PP"))
+                        if (partido.Resultado.Local > partido.Resultado.Visitante)
+                            return partido.Visitante;
+                        else
+                            return partido.Local;
+                }
+                else
+                {
+                    if (idEquipo.StartsWith("GP"))
+                        return "Ganador partido " + numPartido;
+                    else if (idEquipo.StartsWith("PP"))
+                        return "Perdedor partido " + numPartido;
+                }
+            }
+            else
+            {
+                // hay que obtener el equipo con Seed idEquipo
+                int seed = Convert.ToInt32(idEquipo);
+                return Equipos.Where(e => e.OrdenEntrada.Equals(seed)).First().Nombre;
+            }
+            return "ND";
+        }
+
         public static EdicionGrupo FromJson(JsonNode jsonEdicion)
         {
             EdicionGrupo grupo = new EdicionGrupo();
@@ -108,6 +189,12 @@ namespace VoleyPlaya.Domain.Models
             if (Equipos.Count > numEquipos)
                 Equipos.RemoveRange(numEquipos, Equipos.Count - numEquipos);
             NumEquipos = numEquipos;
+        }
+
+        internal bool TodosPartidosJugados()
+        {
+            var noJugados = Partidos.Select(p => p.Resultado).Count(r => r.Local == 0 && r.Visitante == 0);
+            return (noJugados == 0);
         }
     }
 }

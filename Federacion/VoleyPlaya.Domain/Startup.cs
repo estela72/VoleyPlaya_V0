@@ -16,6 +16,7 @@ namespace VoleyPlaya.Domain
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEdicionService, EdicionService>();
+            services.AddScoped<IConfiguracionService, ConfiguracionService>();
             services.AddRepositoryStartup();
         }
     }

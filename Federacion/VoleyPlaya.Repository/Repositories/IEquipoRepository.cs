@@ -18,8 +18,8 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IEquipoRepository : IRepository<Equipo>
     {
         Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
-                    double coeficiente, int puntos);
-        Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos);
+                    double coeficiente, int puntos, int ordenEntrada);
+        Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada);
         Task RemoveEquipos(int numEquipos, EdicionGrupo edicionGrupo);
     }
     public class EquipoRepository : Repository<Equipo>, IEquipoRepository
@@ -33,7 +33,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, 
-            int puntosFavor, int puntosContra, double coeficiente, int puntos)
+            int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada)
         {
             if (nombre.Equals(string.Empty)) return null;
             Equipo dto = null;
@@ -54,7 +54,8 @@ namespace VoleyPlaya.Repository.Repositories
                     OrdenCalendario = posicion,
                     Edicion = edicionGrupoDto.Edicion,
                     EdicionGrupo = edicionGrupoDto,
-                    Retirado=false
+                    Retirado=false,
+                    OrdenEntrada = ordenEntrada
                 });
             else
             {
@@ -69,11 +70,12 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.PuntosFavor = puntosFavor;
                 dto.Edicion = edicionGrupoDto.Edicion;
                 dto.EdicionGrupo = edicionGrupoDto;
+                dto.OrdenEntrada = ordenEntrada;
                 return await UpdateAsync(dto);
             }
         }
 
-        public async Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos)
+        public async Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada)
         {
             if (string.IsNullOrEmpty(nombre)) return;
             Equipo dto = null;
@@ -92,7 +94,8 @@ namespace VoleyPlaya.Repository.Repositories
                     PuntosContra = puntosContra,
                     PuntosFavor = puntosFavor,
                     OrdenCalendario = posicion,
-                    Edicion = edicionDto
+                    Edicion = edicionDto,
+                    OrdenEntrada = ordenEntrada
                 });
             else
             {
@@ -105,6 +108,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.PuntosContra = puntosContra;
                 dto.PuntosFavor = puntosFavor;
                 dto.OrdenCalendario = posicion;
+                dto.OrdenEntrada = ordenEntrada;
                 await UpdateAsync(dto);
             }
         }

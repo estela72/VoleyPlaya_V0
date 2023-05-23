@@ -9,6 +9,7 @@ using VoleyPlaya.GestionWeb.Pages;
 
 namespace VoleyPlaya.Gestion.Web.Views.Edicion
 {
+    [AllowAnonymous]
     public class IndexModel : VPPageModel
     {
         public IndexModel(IEdicionService service) : base(service)

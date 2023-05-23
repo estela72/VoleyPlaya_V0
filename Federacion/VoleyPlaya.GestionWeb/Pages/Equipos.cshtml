@@ -1,8 +1,6 @@
 ﻿@page
 @model VoleyPlaya.GestionWeb.Pages.EquiposModel
 @{
-    // Obtener la URL de la página anterior
-    var indice = 1;
 }
 @if (!string.IsNullOrEmpty(Model.UrlEdicion))
 {
@@ -25,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th></th>
+                                <th>Orden de Entrada</th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
@@ -42,17 +40,16 @@
                                             <i class="fas fa-trash"></i> 
                                         </button>
                                     </td>
-                                    <td>@indice</td>
+                                    <td>@Model.Equipos[i].OrdenEntrada</td>
                                     @if (Model.Equipos[i].Retirado)
                                     {
-                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })</td>
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control col-4", @disabled = "disabled" } })</td>
                                 }
                                     else
                                     {
                                         <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
                                     }
                                 </tr>
-                                indice = @indice + 1;
                             }
                         </tbody>
                     </table>
@@ -62,7 +59,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th></th>
+                                <th>Orden de Entrada</th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
@@ -79,17 +76,16 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
-                                    <td>@indice</td>
+                                    <td>@Model.Equipos[i].OrdenEntrada</td>
                                     @if (Model.Equipos[i].Retirado)
                                     {
-                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })</td>
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control col-4", @disabled = "disabled" } })</td>
                                     }
                                     else
                                     {
                                         <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
                                     }
                                 </tr>
-                                indice = @indice + 1;
                             }
                         </tbody>
                     </table>

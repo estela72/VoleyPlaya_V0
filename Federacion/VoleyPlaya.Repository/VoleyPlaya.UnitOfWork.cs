@@ -23,6 +23,7 @@ namespace VoleyPlaya.Repository
         ITemporadaRepository TemporadaRepository { get; }
         IJornadaRepository JornadaRepository { get; }
         IEdicionGrupoRepository EdicionGrupoRepository { get; }
+        ITablaCalendarioRepository TablaCalendarioRepository { get; }
     }
 
     public class VoleyPlayaUnitOfWork : UnitOfWork, IVoleyPlayaUnitOfWork
@@ -44,7 +45,7 @@ namespace VoleyPlaya.Repository
 
         public IJornadaRepository JornadaRepository { get; private set; }
         public IEdicionGrupoRepository EdicionGrupoRepository { get; private set; }
-
+        public ITablaCalendarioRepository TablaCalendarioRepository { get; private set; }
         public VoleyPlayaUnitOfWork(IConfiguration configuration
             , VoleyPlayaDbContext context
             , ILoggerFactory loggerFactory
@@ -57,7 +58,7 @@ namespace VoleyPlaya.Repository
             , ITemporadaRepository temporadaRepository
             , IJornadaRepository jornadaRepository
             , IEdicionGrupoRepository edicionGrupoRepository
-
+            , ITablaCalendarioRepository tablaCalendarioRepository
             )
             : base(configuration, context, loggerFactory)
         {
@@ -69,8 +70,7 @@ namespace VoleyPlaya.Repository
             PartidoRepository = partidoRepository;
             TemporadaRepository = temporadaRepository;
             JornadaRepository = jornadaRepository;
-            EdicionGrupoRepository = edicionGrupoRepository;
+            EdicionGrupoRepository = edicionGrupoRepository;            TablaCalendarioRepository = tablaCalendarioRepository;
         }
-        
     }
 }

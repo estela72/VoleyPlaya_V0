@@ -80,6 +80,13 @@
         @Html.HiddenFor(m=>Model.GeneroSelected)
         @Html.HiddenFor(m=>Model.GrupoSelected)
         <div class="card-body">
+            <div class="card-header">
+                @if (Model.Partidos!=null && Model.Partidos.Count > 0)
+                {
+                    <p>Recuerda pulsar el botón Guardar para que los resultados queden registrados</p>
+                    <button type="submit" class="btn btn-primary">Guardar resultados</button>
+                }
+            </div>
             @if (Model.Partidos != null)
             {
                 <table id="partidos" class="table table-striped table-hover">
@@ -170,7 +177,18 @@
             }
         </div>
         <div class="card-footer">
+            @if (Model.Partidos == null)
+            {
+                <h2>Seleccionar Competicion, Categoría, Género y Grupo para cargar los partidos disputados en el día de hoy</h2>
+            }
+            else if (Model.Partidos.Count > 0)
+            {
             <button type="submit" class="btn btn-primary">Guardar resultados</button>
+            }
+            else
+            {
+                <h2>No hay partidos disputados en el día de hoy</h2>
+            }
         </div>
     </form>
 </div>

@@ -23,24 +23,36 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.IsInRole(eRoles.Admin.ToString()))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Configuracion">Configuración</a>
+                            </li>
+                        }
                         @if (User.IsInRole(eRoles.Competiciones.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Ediciones">Competiciones</a>
                             </li>
-                        }
-                        @if (User.IsInRole(eRoles.Resultados.ToString()))
-                        {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Actas">Generar actas</a>
                             </li>
+                        }
+                        @if (User.IsInRole(eRoles.Arbitro.ToString()))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Resultados">Resultados</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-page="/Clasificaciones">Clasificaciones</a>
-                            </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-page="/Calendarios">Calendarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-page="/Clasificaciones">Clasificaciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-page="/Grupos">Información de competiciones</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -48,7 +60,7 @@
         </nav>
     </header>
     <div class="container-fluid">
-        <main role="main" class="pb-3">
+        <main role="main">
             <!-- Mostrar el mensaje de error en la vista Razor -->
             @if (Model.GetType() == typeof(VPPageModel))
             {
@@ -59,8 +71,9 @@
                     </div>
                 }
             }
-            @*<div class="bg-image"
-                 style="background-image: url('img\logo_sinfondo_CUA.png');height: 50vh;"></div>*@
+            <div class="text-center">
+                <h1>Voley Playa - Federación Asturiana de Voleibol</h1>
+            </div>
             @RenderBody()
         </main>
     </div>

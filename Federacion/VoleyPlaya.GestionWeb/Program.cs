@@ -3,11 +3,14 @@ using AutoMapper;
 
 using General.CrossCutting.Lib;
 
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 using VoleyPlaya.Domain;
 using VoleyPlaya.GestionWeb.Areas.Identity;
@@ -25,6 +28,7 @@ var config = new ConfigurationBuilder()
 // Add services
 builder.Services.AddDomainStartup();
 builder.Services.AddScoped<IEmailService, EmailService>();
+//builder.Services.AddScoped<IConfiguracionService, ConfiguracionService>();
 
 // Add Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -59,20 +63,28 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Aumenta el tiempo de espera de la sesión a 60 minutos
+    //options.Cookie.IsEssential = true; // Asegúrate de que la cookie de sesión se envíe incluso si el usuario no ha otorgado su consentimiento explícito
+});
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueCountLimit = int.MaxValue;
+});
 
 await builder.Services.AddApplicationRoles();
 await builder.Services.AddAdminUsers();
 await builder.Services.AddPolicies();
-
-builder.Services.AddRazorPages()
-        ;
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -89,6 +101,7 @@ else
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -96,6 +109,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

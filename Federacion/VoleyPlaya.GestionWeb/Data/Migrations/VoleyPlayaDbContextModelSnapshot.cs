@@ -321,6 +321,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<string>("Lugar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ModeloCompeticion")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(450)");
 
@@ -427,6 +430,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("OrdenCalendario")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrdenEntrada")
                         .HasColumnType("int");
 
                     b.Property<int?>("Perdidos")
@@ -614,6 +620,60 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasFilter("[Nombre] IS NOT NULL");
 
                     b.ToTable("Partidos");
+                });
+
+            modelBuilder.Entity("VoleyPlaya.Repository.Models.TablaCalendario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Equipo1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Equipo2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Jornada")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumEquipos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumGrupos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumPartido")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ronda")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tablas");
                 });
 
             modelBuilder.Entity("VoleyPlaya.Repository.Models.Temporada", b =>

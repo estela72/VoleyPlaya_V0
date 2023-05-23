@@ -1,0 +1,8 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.ConfiguracionModel
+<div class="btn-group-vertical">
+    <form method="post" asp-page-handler="LoadCalendarios">
+        @Html.AntiForgeryToken();
+        <button type="submit" class="btn btn-primary m-2">Cargar calendarios</button>
+    </form>
+</div>

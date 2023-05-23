@@ -229,6 +229,30 @@
       "PackagePath": "staticwebassets\\datatable\\js\\datatable.min.js"
     },
     {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\actaVPJuegosDeportivos.xlsx",
+      "PackagePath": "staticwebassets\\excel\\actaVPJuegosDeportivos.xlsx"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\calendarios.xlsx",
+      "PackagePath": "staticwebassets\\excel\\calendarios.xlsx"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\logoCircuito.png",
+      "PackagePath": "staticwebassets\\excel\\logoCircuito.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\rellenaActas.xlsm",
+      "PackagePath": "staticwebassets\\excel\\rellenaActas.xlsm"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\temporal.xlsx",
+      "PackagePath": "staticwebassets\\excel\\temporal.xlsx"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\excel\\~$calendarios.xlsx",
+      "PackagePath": "staticwebassets\\excel\\~$calendarios.xlsx"
+    },
+    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
@@ -291,6 +315,18 @@
     {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\Logo_sinfondo_oscuro_REC.png",
       "PackagePath": "staticwebassets\\img\\Logo_sinfondo_oscuro_REC.png"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada chicos.jpg",
+      "PackagePath": "staticwebassets\\img\\imagen portada chicos.jpg"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada entorno.jpg",
+      "PackagePath": "staticwebassets\\img\\imagen portada entorno.jpg"
+    },
+    {
+      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada.jpg",
+      "PackagePath": "staticwebassets\\img\\imagen portada.jpg"
     },
     {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\js\\edicion.js",

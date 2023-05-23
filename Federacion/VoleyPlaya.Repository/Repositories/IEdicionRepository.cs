@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Abstractions;
 
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace VoleyPlaya.Repository.Repositories
                 Categoria categoriaDto,
                 string genero,
                 string tipoCalendario,
-                string lugar
+                string lugar,
+                string modeloCompeticion
             );
 
         Task<IEnumerable<Edicion>> GetFullAsync();
@@ -47,7 +49,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
-            string genero, string tipoCalendario, string lugar)
+            string genero, string tipoCalendario, string lugar, string modeloCompeticion)
         {
             var dto = await FindAsync(c => c.Temporada.Nombre.Equals(temporadaDto.Nombre)
                 && c.Competicion.Nombre.Equals(competicionDto.Nombre)
@@ -60,6 +62,7 @@ namespace VoleyPlaya.Repository.Repositories
                     Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, competicionDto.Nombre, categoriaDto.Nombre, genero),
                     Genero = genero,
                     TipoCalendario = tipoCalendario,
+                    ModeloCompeticion = modeloCompeticion,
                     Lugar = lugar
                 });
             else
@@ -67,6 +70,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.Genero = genero;
                 dto.TipoCalendario = tipoCalendario;
                 dto.Lugar = lugar;
+                dto.ModeloCompeticion = modeloCompeticion;
                 dto = await UpdateAsync(dto);
             }
             return dto;

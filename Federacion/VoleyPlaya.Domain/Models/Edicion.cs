@@ -1,14 +1,21 @@
 ﻿
+using MathNet.Numerics.LinearAlgebra.Solvers;
+using MathNet.Numerics.Optimization.TrustRegion;
+
 using Microsoft.AspNetCore.Http;
 
 using Newtonsoft.Json;
 
+using NPOI.SS.Formula.Eval;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Eventing.Reader;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
 
+using VoleyPlaya.Domain.Services;
 using VoleyPlaya.Repository.Models;
 using VoleyPlaya.Repository.Services;
 
@@ -27,12 +34,12 @@ namespace VoleyPlaya.Domain.Models
         public string Competicion { get; set; }
         public EnumCategorias Categoria { get; set; }
         public EnumGeneros Genero { get; set; }
-        [Display(Name ="Nº de Grupos")]
-        public int NumGrupos { get; set; }
+        [Display(Name = "Nº de Grupos")]
+        public int NumGrupos { get { return Grupos.Count; } }
         [Display(Name = "Nº de Jornadas")]
-        public int NumJornadas { get; set; }
+        public int NumJornadas { get { return FechasJornadas.Count; }}
         [Display(Name = "Nº de Equipos")]
-        public int NumEquipos { get; set; }
+        public int NumEquipos { get { return Equipos.Count; } }
         public string Lugar { get; set; }
         public List<EdicionGrupo> Grupos { get; set; }
         public List<FechaJornada> FechasJornadas { get; set; }
@@ -47,6 +54,8 @@ namespace VoleyPlaya.Domain.Models
         public List<Equipo> EquiposToAdd;
         public List<Equipo> EquiposToRemove;
 
+        public EnumModeloCompeticion ModeloCompeticion { get; set; }
+        public string ModeloCompeticionStr { get => Enum.GetName(typeof(EnumModeloCompeticion), ModeloCompeticion); }
 
         public Edicion()
         {
@@ -55,13 +64,14 @@ namespace VoleyPlaya.Domain.Models
             Categoria = EnumCategorias.None;
             Genero = EnumGeneros.None;
             Nombre = "";
-            NumJornadas = 0;
+            //NumJornadas = 0;
             FechasJornadas = new List<FechaJornada>();
             Fecha = DateTime.Now;
             Lugar = string.Empty;
             TipoCalendario = string.Empty;
             Grupos = new List<EdicionGrupo>();
             Equipos = new List<Equipo>();
+            ModeloCompeticion = EnumModeloCompeticion.Circuito;
         }
         public static Edicion FromJson(JsonNode jsonEdicion, bool mapGrupos=true)
         {
@@ -74,14 +84,16 @@ namespace VoleyPlaya.Domain.Models
             Enum.TryParse(jsonEdicion["Genero"]!.GetValue<string>(), out EnumGeneros genero);
             edicion.Genero = genero;
             if (mapGrupos && jsonEdicion["Grupos"]!=null) edicion.Grupos = GruposFromJson(jsonEdicion["Grupos"]!.AsArray());
-            edicion.NumGrupos = edicion.Grupos.Count();
+            //edicion.NumGrupos = edicion.Grupos.Count();
             edicion.Fecha = jsonEdicion["UpdatedDate"]!.GetValue<DateTime>();
             edicion.Nombre = jsonEdicion["Nombre"]!.GetValue<string>();
             edicion.FechasJornadas = JornadasFromJson(jsonEdicion["Jornadas"]!.AsArray());
             edicion.Equipos = EquiposFromJson(jsonEdicion["Equipos"]!.AsArray());
-            edicion.NumJornadas = edicion.FechasJornadas.Count();
+            //edicion.NumJornadas = edicion.FechasJornadas.Count();
             edicion.Lugar = jsonEdicion["Lugar"]!.GetValue<string>();
             edicion.TipoCalendario = jsonEdicion["TipoCalendario"]!.GetValue<string>();
+            Enum.TryParse(NombreFromJson(jsonEdicion["ModeloCompeticion"]!), out EnumModeloCompeticion modeloCompeticion);
+            edicion.ModeloCompeticion = modeloCompeticion;
             return edicion;
         }
         private static string NombreFromJson(JsonNode jsonNode)
@@ -119,7 +131,7 @@ namespace VoleyPlaya.Domain.Models
                 FechasJornadas.Add(new FechaJornada(i + 1));
             if (FechasJornadas.Count > numJornadas)
                 FechasJornadas.RemoveRange(numJornadas, FechasJornadas.Count - numJornadas);
-            NumJornadas = numJornadas;
+            //NumJornadas = numJornadas;
         }
 
         [Obsolete]
@@ -129,7 +141,7 @@ namespace VoleyPlaya.Domain.Models
                 Grupos.Add(new EdicionGrupo());
             if (Grupos.Count > numGrupos)
                 Grupos.RemoveRange(numGrupos, Grupos.Count - numGrupos);
-            NumGrupos = numGrupos ;
+            //NumGrupos = numGrupos ;
         }
         [Obsolete]
         public void UpdateEquipos(int numEquipos)
@@ -138,119 +150,7 @@ namespace VoleyPlaya.Domain.Models
                 Equipos.Add(new Equipo(i + 1, "Equipo " + (i + 1) + " a completar"));
             if (Equipos.Count > numEquipos)
                 Equipos.RemoveRange(numEquipos, Equipos.Count - numEquipos);
-            NumEquipos = Equipos.Count;
-        }
-        [Obsolete]
-        public Edicion GenerarFaseFinal()
-        {
-            int numeroGrupos = NumGrupos;
-            // ordenar cada grupo según los puntos
-            Dictionary<string, List<Equipo>> clasificacion = ClasificarEquipos();
-            List<Equipo> terceros = ClasificarTerceros(clasificacion);
-
-            // Generar partidos de la fase final en función del número de grupos y las reglas de clasificación
-            List<Partido> partidosFaseFinal = new List<Partido>();
-
-            //// Clasificar los equipos por puntos obtenidos en la fase de grupos
-            //List<Equipo> equiposClasificados = new List<Equipo>();
-            //foreach (var grupo in clasificacion.Keys)
-            //{
-            //    List<Equipo> equiposGrupo = clasificacion[grupo];
-            //    equiposClasificados.AddRange(equiposGrupo);
-            //}
-
-            //// Clasificar los equipos por puntos obtenidos en la fase de grupos (en orden descendente)
-            //equiposClasificados.Sort((equipo1, equipo2) => Comparer<double>.Default.Compare(obtenerPuntos(equipo2), obtenerPuntos(equipo1)));
-
-            // Determinar el número de equipos clasificados para la fase final
-            int numeroEquiposClasificados = 0;
-            if (numeroGrupos == 2)
-            {
-                numeroEquiposClasificados = 4;
-                partidosFaseFinal = GenerarPartidosSemifinal(clasificacion);
-            }
-            else if (numeroGrupos == 3 || numeroGrupos==4)
-            {
-                numeroEquiposClasificados = 6; // Los 6 primeros equipos clasificados
-                partidosFaseFinal = GenerarPartidosCuartos(clasificacion, terceros);
-            }
-            else if (numeroGrupos == 4)
-            {
-                numeroEquiposClasificados = 8; // Los 8 primeros equipos clasificados
-            }
-            else if (numeroGrupos == 7)
-            {
-                numeroEquiposClasificados = 10; // Los 10 primeros equipos clasificados
-            }
-            else if (numeroGrupos == 14)
-            {
-                numeroEquiposClasificados = 12; // Los 12 primeros equipos clasificados
-            }
-            else if (numeroGrupos == 26)
-            {
-                numeroEquiposClasificados = 12; // Los 12 primeros equipos clasificados
-            }
-            else if (numeroGrupos == 27)
-            {
-                numeroEquiposClasificados = 10; // Los 10 primeros equipos clasificados
-            }
-
-            //// Generar partidos de la fase final
-            //for (int i = 0; i < numeroEquiposClasificados - 1; i += 2)
-            //{
-            //    Equipo equipo1 = equiposClasificados[i];
-            //    Equipo equipo2 = equiposClasificados[i + 1];
-            //    string partido = $"{equipo1.Nombre} vs {equipo2.Nombre}";
-            //    partidosFaseFinal.Add(partido);
-            //}
-            return this;
-        }
-
-        private List<Partido> GenerarPartidosCuartos(Dictionary<string, List<Equipo>> clasificacion, List<Equipo> terceros)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<Partido> GenerarPartidosSemifinal(Dictionary<string, List<Equipo>> clasificacion)
-        {
-            EdicionGrupo grupo = new EdicionGrupo()
-            {
-                Edicion = this,
-                Name = "Semifinales",
-                NumEquipos = 4,
-                TipoGrupo = EnumTipoGrupo.Semifinal,
-                Equipos = new List<Equipo>(),
-                Partidos = new List<Partido>()
-            };
-            foreach(KeyValuePair<string, List<Equipo>> par in clasificacion)
-            {
-                grupo.Equipos.Add(par.Value[0]); // añado el primero
-                grupo.Equipos.Add(par.Value[1]); // añado el segundo
-            }
-            grupo.Partidos.Add(new Partido
-            {
-                Local = clasificacion["A"].First().Nombre,
-                Visitante = clasificacion["B"].Skip(1).Take(1).First().Nombre
-            });
-            grupo.Partidos.Add(new Partido
-            {
-                Local = clasificacion["B"].First().Nombre,
-                Visitante = clasificacion["A"].Skip(1).Take(1).First().Nombre
-            });
-            Grupos.Add(grupo);
-
-            return grupo.Partidos;
-        }
-
-        private List<Equipo> ClasificarTerceros(Dictionary<string, List<Equipo>> clasificacion)
-        {
-            List<Equipo> terceros = new List<Equipo>();
-            foreach(KeyValuePair<string, List<Equipo>> par in clasificacion)
-            {
-                terceros.Add(par.Value[2]);
-            }
-            terceros.Sort((equipo1, equipo2) => Comparer<double>.Default.Compare(obtenerPuntos(equipo2), obtenerPuntos(equipo1)));
-            return terceros;
+            //NumEquipos = Equipos.Count;
         }
 
         private double obtenerPuntos(Equipo equipo)
@@ -286,14 +186,6 @@ namespace VoleyPlaya.Domain.Models
                 foreach (Equipo equipo in Grupos[i].Equipos)
                     grupos[grupo].Add(equipo);
             }
-            //int numEquipos = Grupos.Select(g=>g.Equipos).Count();
-            //int equiposPorGrupo = numEquipos / NumGrupos;
-            //for (int i = 0; i < numEquipos; i++)
-            //{
-            //    string grupo = $"Grupo {Convert.ToChar('A' + i / equiposPorGrupo)}";
-            //    grupos[grupo].Add(equipos[i]);
-            //}
-
             return grupos;
         }
 
@@ -324,12 +216,12 @@ namespace VoleyPlaya.Domain.Models
                         // Si el equipo no existe en la base de datos, agregarlo a la lista de nuevos equipos
                         if (equipoExistente == null)
                         {
-                            nuevosEquipos.Add(new Equipo { Posicion = posicion, Nombre = nombre });
+                            nuevosEquipos.Add(new Equipo { OrdenEntrada = posicion, Nombre = nombre });
                         }
                         // Si el equipo existe en la base de datos, actualizar su nombre
                         else
                         {
-                            equipoExistente.Posicion = posicion;
+                            equipoExistente.OrdenEntrada = posicion;
                         }
                     }
                 }
@@ -347,9 +239,164 @@ namespace VoleyPlaya.Domain.Models
             }
             return "La importación del archivo Excel se completó con éxito.";
         }
-        
+        // devuelva el numero de jornadas
         public async Task<bool> GenerarFaseGruposAsync(string calendario)
         {
+            TipoCalendario = calendario;
+
+            if (ModeloCompeticion.Equals(EnumModeloCompeticion.JuegosDeportivos))
+                return await GenerarFaseGruposJuegosDeportivosAsync(calendario);
+            else
+                return await GenerarFaseGruposCircuitoAsync(calendario);
+        }
+
+        private async Task<bool> GenerarFaseGruposCircuitoAsync(string calendario)
+        {
+            if (Equipos.Count > 24) return false;
+
+            if (Equipos.Count <= 7)
+                return await GenerarGrupoCircuitoUnicoAsync(calendario);
+            else if (Equipos.Count >= 8 && Equipos.Count <= 12)
+                return await GenerarGrupoCircuito2GruposAsync(calendario);
+            else
+                return await GenerarGrupoCircuito4GruposAsync(calendario);
+            return false;
+        }
+
+        private async Task<bool> GenerarGrupoCircuito4GruposAsync(string calendario)
+        {
+            int numGrupos = 4;
+            var numEquiposGrupo = Equipos.Count / numGrupos;
+            int resto = Math.DivRem(Equipos.Count,4, out int restoEquipos);
+
+            bool impar = false;
+            if (numEquiposGrupo % 2 != 0) impar = true;
+            
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre);
+                Grupos.Add(grupo);
+            }
+            // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+            int seed = 1; // para ver en qué equipo estoy
+            int idxGrupo = 0; // tenemos 4 grupos: 0, 1, 2, 3
+            int idxFila = 0; // para ver si sumamos o restamos el idxGrupo
+            bool esUltimaFila = false;
+            bool sumaGrupo = true;
+            bool noEsFin = false;
+
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];
+                EdicionGrupo grupo = Grupos[idxGrupo];
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+                seed++; // vamos sumando por cada equipo que añadimos
+                if (idxFila % 2 == 0) // filas 0, 2, 4
+                {
+                    //idxGrupo++;
+                    if (idxGrupo == 3)
+                    {
+                        idxFila++;
+                        //idxGrupo = 3;
+                        sumaGrupo = false;
+                    }
+                    else
+                    {
+                        if (sumaGrupo) idxGrupo++;
+                        else idxGrupo--;
+                    }
+                }
+                else // filase 1, 3, 5
+                {
+                    //idxGrupo--;
+                    if (idxGrupo == 0)
+                    {
+                        idxFila++;
+                        //idxGrupo = 0;
+                        sumaGrupo = true;
+                    }
+                    else
+                    {
+                        if (sumaGrupo) idxGrupo++;
+                        else idxGrupo--;
+                    }
+                }
+                if (idxFila == numEquiposGrupo) esUltimaFila = true;
+                if (esUltimaFila&& !noEsFin)
+                {
+                    noEsFin = true;
+                    idxGrupo = 3;
+                    sumaGrupo = false;
+                }
+            }
+
+            return true;
+        }
+
+        private async Task<bool> GenerarGrupoCircuito2GruposAsync(string calendario)
+        {
+            int numGrupos = 2;
+            var numEquiposGrupo = Equipos.Count / numGrupos;
+            int resto = Math.DivRem(Equipos.Count, 2, out int restoEquipos);
+
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                int numEqui = numEquiposGrupo;
+                if (restoEquipos > 0) numEqui = numEquiposGrupo + restoEquipos;
+                EdicionGrupo grupo = NuevoGrupo(numEqui, nombre);
+                Grupos.Add(grupo);
+            }
+            // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
+            int idxEquipo = 0;
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+
+            int idxGrupo = 0;
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];                
+                EdicionGrupo grupo = Grupos[idxGrupo]; 
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+                if (idxGrupo == 0) idxGrupo = 1;
+                else idxGrupo = 0;
+
+                if (restoEquipos > 0 && i == equipos.Count - 2)
+                    idxGrupo = 1;
+            }
+            return true;
+        }
+
+        private async Task<bool> GenerarGrupoCircuitoUnicoAsync(string calendario)
+        {
+            int numGrupos = 1;
+            var numEquiposGrupo = Equipos.Count;
+
+            for (int i = 0; i < numGrupos; i++)
+            {
+                string nombre = VoleyPlayaService.GetGroupName(i + 1);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre); 
+                Grupos.Add(grupo);
+            }
+            // Meter todos los equipos al único grupo
+            int idxEquipo = 0;
+            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+
+            for (int i = 0; i < equipos.Count; i++)
+            {
+                Equipo equipo = equipos[i];
+                EdicionGrupo grupo = Grupos[i % numGrupos]; // Asignación cíclica de equipos a grupos
+                equipo.Posicion = grupo.Equipos.Count + 1;
+                grupo.Equipos.Add(equipo);
+            }
+            return true;
+        }
+
+        private async Task<bool> GenerarFaseGruposJuegosDeportivosAsync(string calendario)
+        { 
             TipoCalendario = calendario;
             var tabla = (await TablaCalendario.LoadCalendarios()).Where(t => t.Tipo.Equals(calendario)).FirstOrDefault();
             var numEquiposGrupo = tabla.NumEquipos;
@@ -357,11 +404,10 @@ namespace VoleyPlaya.Domain.Models
             int numGrupos = Equipos.Count / numEquiposGrupo;
             int resto = Math.DivRem(Equipos.Count, numEquiposGrupo, out int restoEquipos);
 
-            char c = 'A';
             for (int i = 0; i < numGrupos; i++)
             {
                 string nombre = VoleyPlayaService.GetGroupName(i+1);
-                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre); //NuevoGrupo(numEquiposGrupo, ref c);
+                EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre);
                 Grupos.Add(grupo);
             }
             // Repartir los equipos en los diferentes grupos.
@@ -380,25 +426,10 @@ namespace VoleyPlaya.Domain.Models
             return true;
         }
 
-        private EdicionGrupo NuevoGrupo(int numEquiposGrupo, ref char c)
-        {
-            var grupo = new EdicionGrupo()
-            {
-                //Edicion = this,
-                Equipos = new List<Equipo>(),
-                Name = (c++).ToString(),
-                NumEquipos = numEquiposGrupo,
-                TipoGrupo = EnumTipoGrupo.Liga,
-                Partidos = new List<Partido>()
-            };
-            
-            return grupo;
-        }
         private EdicionGrupo NuevoGrupo(int numEquiposGrupo, string nombre)
         {
             var grupo = new EdicionGrupo()
             {
-                //Edicion = this,
                 Equipos = new List<Equipo>(),
                 Name = nombre,
                 NumEquipos = numEquiposGrupo,
@@ -408,12 +439,185 @@ namespace VoleyPlaya.Domain.Models
 
             return grupo;
         }
-        [Obsolete]
-        public async Task GenerarGrupoAsync(int numEquiposGrupo)
+
+        internal async Task<bool> GenerarFaseFinal(TablaCalendarioCircuito calendario)
         {
-            char c = Convert.ToChar(Grupos.Max(g => g.Name));
-            //Grupos.Add(NuevoGrupo(numEquiposGrupo, ref c));
+            //if (ModeloCompeticion.Equals(EnumModeloCompeticion.Circuito))
+                return await GenerarFaseFinalCircuito(calendario);
+
+            return false;
         }
 
+        private async Task<bool> GenerarFaseFinalCircuito(TablaCalendarioCircuito calendario)
+        {
+            // cuantos grupos tiene la edicion -> para poder seleccionar el calendario
+            var numGrupos = Grupos.Where(g=>g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).Count();
+            if (numGrupos != 1 && numGrupos != 2 && numGrupos!=3 && numGrupos != 4)
+                return false;
+
+            // 4: 12 equipos, 3: 5 equipos, 2: 6 equipos, 1: 4 equipos
+            var numEquipos = numGrupos == 4 ? 12 : numGrupos == 3 ? 10 : numGrupos == 2 ? 6 : numGrupos == 1 ? 4 : 0;
+            if (numEquipos == 0)
+                return false;
+            EdicionGrupo grupo;
+            if (Grupos.Exists(g => g.Name.Equals("FF")))
+                grupo = Grupos.First(g => g.Name.Equals("FF"));
+            else
+                grupo = NuevoGrupo(numEquipos, "FF");
+
+            grupo.TipoGrupo = EnumTipoGrupo.Final;
+
+            var partidosCalendario = await calendario.GetPartidosByNumGrupo(numGrupos);
+            int idxPosEquipo = 1;
+            foreach(var par in partidosCalendario)
+            {
+                var equipo1 = GetEquipo(par.Equipo1, grupo);
+                var equipo2 = GetEquipo(par.Equipo2, grupo);
+                var e1 = Equipos.Where(e => e.Nombre.Equals(equipo1)).FirstOrDefault();
+                var e2 = Equipos.Where(e => e.Nombre.Equals(equipo2)).FirstOrDefault();
+                if (e1 != null)
+                {
+                    var ee = grupo.Equipos.FirstOrDefault(e => e.Posicion == idxPosEquipo);
+                    if (ee == null)
+                        grupo.Equipos.Add(e1);
+                    else
+                        ee.Nombre = equipo1;
+                }
+                else grupo.Equipos.Add(new Equipo
+                {
+                    Nombre = equipo1,
+                    Posicion = idxPosEquipo
+                });
+                idxPosEquipo++;
+                if (e2 != null)
+                {
+                    var ee = grupo.Equipos.FirstOrDefault(e => e.Posicion == idxPosEquipo);
+                    if (ee == null)
+                        grupo.Equipos.Add(e2);
+                    else
+                        ee.Nombre = equipo2;
+                }
+                else grupo.Equipos.Add(new Equipo
+                {
+                    Nombre = equipo2,
+                    Posicion = idxPosEquipo
+                });
+                idxPosEquipo++;
+                var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
+                if (partido == null)
+                {
+                    grupo.Partidos.Add(new Partido
+                    {
+                        Categoria = CategoriaStr,
+                        Competicion = Competicion,
+                        FechaHora = DateTime.Today,
+                        Genero = GeneroStr,
+                        Grupo = grupo.Name,
+                        Jornada = par.Jornada,
+                        Label = "P" + par.NumPartido.ToString(),
+                        NumPartido = par.NumPartido,
+                        Local = equipo1,
+                        Visitante = equipo2,
+                        Lugar = Lugar,
+                        Pista = "",
+                        RetiradoLocal = false,
+                        RetiradoVisitante = false,
+                        Resultado = new Resultado()
+                    });
+                }
+                else
+                {
+                    partido.Local = equipo1;
+                    partido.Visitante = equipo2;
+                }
+            }
+
+            var existeGrupo = Grupos.Where(g => g.Name.Equals(grupo.Name)).FirstOrDefault();
+            if (existeGrupo == null)
+                Grupos.Add(grupo);
+            else
+            {
+                Grupos.Remove(existeGrupo);
+                Grupos.Add(grupo);// así lo tenemos siempre actualizado
+            }
+            return true;
+        }
+
+        private string GetEquipo(string equipo, EdicionGrupo grupoFF)
+        {
+            if (char.IsDigit(equipo[0])) // vamos a buscar el equipo en una posición determinada del Grupo indicado
+            {
+                var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
+                var grupoId = Utilities.ObtenerLetras(equipo);
+
+                var grupo = Grupos.Where(g => g.Name.Equals(grupoId)).FirstOrDefault();
+                if (grupo == null) return equipo;
+
+                if (!grupo.TodosPartidosJugados())
+                    return equipo;
+
+                var equi = grupo.Equipos.OrderByDescending(e => e.Puntos)
+                                .ThenByDescending(e => e.Coeficiente)
+                                .Skip(posicion-1)
+                                .FirstOrDefault();
+                if (equi == null) return equipo;
+
+                return equi.Nombre;
+            }
+            else if (equipo[0]=='M')    // hay que buscar el mejor 'n' de los grupos participantes
+            {
+                var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
+                List<Equipo> mejoresPos = new List<Equipo>();
+                foreach (var grupo in Grupos)
+                {
+                    if (!grupo.TodosPartidosJugados())
+                        return equipo;
+                    // me quedo con el mejor del puesto indicado (mejor 4º mejor 3º, etc)
+                    var equi1 = grupo.Equipos.OrderByDescending(e => e.Puntos)
+                        .ThenByDescending(e => e.Coeficiente)
+                        .Skip(posicion - 1)
+                        .FirstOrDefault();
+                    mejoresPos.Add(equi1);
+                }
+                // nos quedamos con el mejor
+                var equi = mejoresPos.OrderByDescending(e => e.Puntos)
+                        .ThenByDescending(e => e.Coeficiente)
+                        .FirstOrDefault();
+                if (equi == null) return equipo;
+
+                return equi.Nombre;
+            }
+            else // vamos a buscar el equipo ganador o perdedor de un partido determinado
+            {
+                var numPartido = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
+                var partido = grupoFF.Partidos.Where(p => p.NumPartido.Equals(numPartido)).FirstOrDefault();
+                if (partido == null) return equipo;
+                if (equipo.StartsWith('G')) // buscamos el ganador
+                    return GetEquipoGanador(partido, equipo);
+                else if (equipo.StartsWith('P'))
+                    return GetEquipoPerdedor(partido, equipo);
+            }
+            return equipo;
+        }
+
+        private string GetEquipoPerdedor(Partido partido, string equipo)
+        {
+            if (partido.Resultado.Local > partido.Resultado.Visitante)
+                return partido.Local;
+            else if (partido.Resultado.Local < partido.Resultado.Visitante)
+                return partido.Visitante;
+            else
+                return equipo;
+        }
+
+        private string GetEquipoGanador(Partido partido, string equipo)
+        {
+            if (partido.Resultado.Local > partido.Resultado.Visitante)
+                return partido.Visitante;
+            else if (partido.Resultado.Local < partido.Resultado.Visitante)
+                return partido.Local;
+            else
+                return equipo;
+        }
     }
 }

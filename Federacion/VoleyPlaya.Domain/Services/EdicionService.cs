@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 
 using NPOI.POIFS.Crypt.Dsig;
 using NPOI.SS.UserModel;
@@ -14,12 +16,15 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Repository.Services;
 
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
+using EdicionGrupo = VoleyPlaya.Domain.Models.EdicionGrupo;
 
 namespace VoleyPlaya.Domain.Services
 {
@@ -42,7 +47,7 @@ namespace VoleyPlaya.Domain.Services
         Task UpdateClasificacion(EdicionGrupo grupo);
         Task DeleteGrupoAsync(int id);
         Task<string> DeleteEquipoAsync(int equipoId);
-        Task DeletePartidoAsync(int partidoId);
+        Task<string> DeletePartidoAsync(int partidoId);
         Task UpdateEquiposEdicionAsync(int edicionId, Edicion edicion);
         Task UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equipos);
         Task UpdateGruposAsync(Edicion edicion);
@@ -63,11 +68,15 @@ namespace VoleyPlaya.Domain.Services
         Task<string> RetirarEquipoASync(int id);
         Task<List<Partido>> GetPartidosFiltradosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task<string> UpdatePartidosFromExcelAsync(List<Partido> partidos);
+        Task<List<EdicionGrupo>> GetAllGruposAsync(int v, int categoria, string generoSelected);
+        Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id);
+        Task<bool> GenerarFaseFinal(int id);
     }
     public class EdicionService : IEdicionService
     {
         IVoleyPlayaService _service;
         IMapper _mapper;
+
         public EdicionService(IVoleyPlayaService service, IMapper mapper)
         {
             _service = service;
@@ -138,7 +147,8 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task UpdateDatosPartidosAsync(EdicionGrupo grupo)
         {
-            string jsonString = JsonSerializer.Serialize(grupo);
+            JsonSerializerOptions options = new() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
+            string jsonString = JsonSerializer.Serialize(grupo, options);
             await _service.UpdateDatosPartidosAsync(jsonString);
         }
 
@@ -163,8 +173,6 @@ namespace VoleyPlaya.Domain.Services
         {
             partido.Resultado.Local = partido.Resultado.Sets.Count(s => s.Local > s.Visitante);
             partido.Resultado.Visitante = partido.Resultado.Sets.Count(s => s.Visitante > s.Local);
-            local.Jugados++;
-            visitante.Jugados++;
             if (partido.Resultado.Local > partido.Resultado.Visitante)
             {
                 local.Ganados++;
@@ -179,6 +187,8 @@ namespace VoleyPlaya.Domain.Services
                 local.Perdidos++;
                 local.Puntos += 1;
             }
+            local.Jugados = local.Ganados + local.Perdidos;
+            visitante.Jugados = visitante.Ganados + visitante.Perdidos;
             local.PuntosFavor += partido.Resultado.Set1.Local;
             local.PuntosFavor += partido.Resultado.Set2.Local;
             local.PuntosFavor += partido.Resultado.Set3.Local;
@@ -204,11 +214,8 @@ namespace VoleyPlaya.Domain.Services
 
         public async Task<EdicionGrupo> UpdateGrupoAsync(EdicionGrupo grupo)
         {
-            //var grupoDto = await GetGrupoAsync(grupo.Id);
-            var gr = _mapper.Map<EdicionGrupo>(grupo);//EdicionGrupo.FromJson(JsonNode.Parse(jsonGrupo!)!);
-            //int numEquipos = grupo.Equipos.Count;
-
-            await grupo.GenerarPartidosAsync(gr.Edicion.TipoCalendario, gr.Edicion.FechasJornadas, gr.Equipos);
+            var gr = _mapper.Map<EdicionGrupo>(grupo);
+            await grupo.GenerarPartidosAsync(gr.Edicion.ModeloCompeticion, gr.Edicion.TipoCalendario, gr.Edicion.FechasJornadas, gr.Equipos);
             string json = JsonSerializer.Serialize(grupo);
             await _service.UpdateGrupoPartidosAsync(json);
 
@@ -230,9 +237,9 @@ namespace VoleyPlaya.Domain.Services
             return await _service.DeleteEquipoAsync(equipoId);
         }
 
-        public async Task DeletePartidoAsync(int partidoId)
+        public async Task<string> DeletePartidoAsync(int partidoId)
         {
-            await _service.DeletePartidoAsync(partidoId);
+            return await _service.DeletePartidoAsync(partidoId);
         }
 
         public async Task UpdateEquiposEdicionAsync(int edicionId, Edicion edicion)
@@ -278,10 +285,6 @@ namespace VoleyPlaya.Domain.Services
         {
             List<EdicionGrupo> list = new List<EdicionGrupo>();
             var gruposDto = await _service.GetAllGruposAsync(edicionId);
-            //JsonNode jsonNode = JsonNode.Parse(json);
-            //JsonArray jsonArray = jsonNode.AsArray();
-            //foreach (var jsGrupo in jsonArray)
-            //    list.Add(EdicionGrupo.FromJson(jsGrupo));
             list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
             return list;
         }
@@ -429,6 +432,40 @@ namespace VoleyPlaya.Domain.Services
             var lista = _mapper.Map<List<VoleyPlaya.Repository.Models.Partido>>(partidos);
             string msg = await _service.UpdatePartidosFromExcelAsync(lista);
             return msg;
+        }
+
+        public async Task<List<EdicionGrupo>> GetAllGruposAsync(int competicion, int categoria, string genero)
+        {
+            List<EdicionGrupo> list = new List<EdicionGrupo>();
+            var gruposDto = await _service.GetAllGruposFiltradosAsync(competicion,categoria,genero);
+            list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
+            return list;
+        }
+
+        public async Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id)
+        {
+            string modelo = await _service.GetModeloCompeticionAsync(id);
+            return (EnumModeloCompeticion)Enum.Parse(typeof(EnumModeloCompeticion), modelo);
+        }
+
+        public async Task<bool> GenerarFaseFinal(int id)
+        {
+            //Generar la fase final para la edición con id=id
+            var edi = await _service.GetEdicionByIdAsync(id);
+            var edicion = _mapper.Map<Edicion>(edi);
+
+            var tablaCalendario = new TablaCalendarioCircuito(_service, _mapper);
+
+            if (await edicion.GenerarFaseFinal(tablaCalendario))
+            {
+                var grupo = edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).FirstOrDefault();
+                if (grupo == null) return false;
+                JsonSerializerOptions options = new() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
+                string jsonString = JsonSerializer.Serialize(grupo, options);
+                await _service.AddUpdateGrupoYPartidosFaseFinalAsync(id, jsonString);
+                return true;
+            }
+            return false;
         }
     }
 }

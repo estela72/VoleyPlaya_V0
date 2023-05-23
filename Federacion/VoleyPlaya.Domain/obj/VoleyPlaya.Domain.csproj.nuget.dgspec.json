@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.2.4, )"
+            },
             "Microsoft.AspNetCore.Mvc.Core": {
               "target": "Package",
               "version": "[2.2.5, )"

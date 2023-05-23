@@ -16,6 +16,7 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
         {
             CreateMap<VoleyPlaya.Repository.Models.EdicionGrupo, VoleyPlaya.Domain.Models.EdicionGrupo>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Nombre))
+                .ForMember(d => d.TipoGrupo, opt => opt.MapFrom(s => s.Tipo))
                 .ReverseMap();
         }
     }

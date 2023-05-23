@@ -20,6 +20,7 @@ namespace VoleyPlaya.Domain.Models
         private double _coeficiente;
         private int _puntos;
         private bool _retirado;
+        private int _ordenEntrada;
 
         public Equipo()
         {
@@ -41,6 +42,7 @@ namespace VoleyPlaya.Domain.Models
         public double Coeficiente { get => _coeficiente; set => _coeficiente = value; }
         public int Puntos { get => _puntos; set => _puntos = value; }
         public bool Retirado { get => _retirado; set => _retirado = value; }
+        public int OrdenEntrada { get => _ordenEntrada; set => _ordenEntrada = value; }
 
         internal static Equipo FromJson(JsonNode equipoJson)
         {
@@ -56,7 +58,8 @@ namespace VoleyPlaya.Domain.Models
                 Puntos = equipoJson["Puntos"]!.GetValue<int>(),
                 PuntosContra = equipoJson["PuntosContra"]!.GetValue<int>(),
                 PuntosFavor = equipoJson["PuntosFavor"]!.GetValue<int>(),
-                Retirado = equipoJson["Retirado"] != null ? equipoJson["Retirado"].GetValue<bool>() : false
+                Retirado = equipoJson["Retirado"] != null ? equipoJson["Retirado"].GetValue<bool>() : false,
+                OrdenEntrada = equipoJson["OrdenEntrada"]!.GetValue<int>()
             };
             return equipo;
         }
