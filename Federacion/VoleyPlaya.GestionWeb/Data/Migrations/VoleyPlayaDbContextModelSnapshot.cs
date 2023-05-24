@@ -423,6 +423,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ClasificacionFinal")
+                        .HasColumnType("int");
+
                     b.Property<double?>("Coeficiente")
                         .HasColumnType("float");
 

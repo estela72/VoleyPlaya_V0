@@ -21,6 +21,7 @@ namespace VoleyPlaya.Repository.Repositories
                     double coeficiente, int puntos, int ordenEntrada);
         Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada);
         Task RemoveEquipos(int numEquipos, EdicionGrupo edicionGrupo);
+        Task<string> UpdateClasificacionFinal(int edicionId, int equipoId, int clasificacionFinal);
     }
     public class EquipoRepository : Repository<Equipo>, IEquipoRepository
     {
@@ -53,7 +54,6 @@ namespace VoleyPlaya.Repository.Repositories
                     PuntosFavor = puntosFavor,
                     OrdenCalendario = posicion,
                     Edicion = edicionGrupoDto.Edicion,
-                    //EdicionGrupo = edicionGrupoDto,
                     Retirado=false,
                     OrdenEntrada = ordenEntrada
                 });
@@ -69,7 +69,6 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.PuntosContra = puntosContra;
                 dto.PuntosFavor = puntosFavor;
                 dto.Edicion = edicionGrupoDto.Edicion;
-                //dto.EdicionGrupo = edicionGrupoDto;
                 dto.OrdenEntrada = ordenEntrada;
                 return await UpdateAsync(dto);
             }
@@ -125,6 +124,20 @@ namespace VoleyPlaya.Repository.Repositories
                 i--;
                 count++;
             }
+        }
+
+        public async Task<string> UpdateClasificacionFinal(int edicionId, int equipoId, int clasificacionFinal)
+        {
+            var equipo = await GetByIdAsync(equipoId);
+            if (equipo == null) return "El equipo no existe";
+
+            var existeclasi = await FindAllAsync(e => e.Edicion.Id.Equals(edicionId) && e.ClasificacionFinal.Equals(clasificacionFinal));
+            if (existeclasi != null && existeclasi.Count>0 && clasificacionFinal!=0) return "Ya existe algún equipo con la clasificación "+clasificacionFinal+"\n";
+            if (existeclasi != null && existeclasi.Count > 0) return "\n";
+
+            equipo.ClasificacionFinal = clasificacionFinal;
+            await UpdateAsync(equipo);
+            return "Clasificación actualizada\n";
         }
     }
 }

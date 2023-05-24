@@ -57,5 +57,6 @@ namespace VoleyPlaya.Repository.Services
         Task<Edicion> GetEdicion(int? competicionId, int? categoriaId, string generoId);
         Task<string> ValidarPartidoAsync(int idPartido, bool activo);
         Task ArreglarGruposEquipos();
+        Task<string> ActualizarClasificacionFinal(int edicionId, List<VoleyPlaya.Repository.Models.Equipo> equipos);
     }
 }

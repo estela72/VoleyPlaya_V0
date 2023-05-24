@@ -45,6 +45,10 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         [BindProperty]
         public int NumJornadas { get; set; }
+
+        [BindProperty]
+        public List<Equipo> EquiposCF { get; set; }
+
         private readonly IConfiguracionService _configuracionService;
 
         public EdicionModel (IEdicionService service, IConfiguracionService configuracionService) : base(service)
@@ -150,6 +154,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 }
                 GruposLiga = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
                 GruposFF = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).ToList();
+                EquiposCF = Edicion.Equipos.OrderBy(e => e.ClasificacionFinal).ToList();
             }
             catch(Exception x)
             {
@@ -161,7 +166,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             try
             {
                 await _service.UpdateEdicionAsync(Edicion);
-                EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
+                EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Prueba, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
                 await GetEdicion(EdicionName);
                 await Fill();
             }
@@ -465,6 +470,24 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch(Exception x)
             {
                 ErrorMessage = "Error eliminando un partido de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostClasificacionFinalAsync()
+        {
+            try
+            {
+                var str = await _service.ActualizarClasificacionFinal(Edicion.Id, EquiposCF);
+                ErrorMessage = str;
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error actualizando la clasificación final: " + x.Message;
             }
             finally
             {

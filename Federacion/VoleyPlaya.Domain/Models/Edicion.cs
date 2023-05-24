@@ -29,10 +29,14 @@ namespace VoleyPlaya.Domain.Models
     public class Edicion : IDomainDto
     {
         public int Id { get; set; }
+        [Required]
         public string Temporada { get; set; }
         public string Nombre { get; set; }
+        [Required]
         public string Competicion { get; set; }
+        [Required]
         public EnumCategorias Categoria { get; set; }
+        [Required]
         public EnumGeneros Genero { get; set; }
         [Display(Name = "Nº de Grupos")]
         public int NumGrupos { get { return Grupos.Count; } }
@@ -40,6 +44,7 @@ namespace VoleyPlaya.Domain.Models
         public int NumJornadas { get { return FechasJornadas.Count; }}
         [Display(Name = "Nº de Equipos")]
         public int NumEquipos { get { return Equipos.Count; } }
+        [Required]
         public string Prueba { get; set; }
         public List<EdicionGrupo> Grupos { get; set; }
         public List<FechaJornada> FechasJornadas { get; set; }

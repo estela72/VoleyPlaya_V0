@@ -50,7 +50,7 @@ namespace VoleyPlaya.Repository.Services
         {
             var dto = await _voleyPlayaUoW.EdicionRepository.GetFullAsync();
             //var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(),Options);
-            return dto.ToList();
+            return dto.OrderByDescending(c=>c.CreatedDate).ToList();
         }
 
         public async Task<Edicion> GetEdicionAsync(string edicionName)
@@ -181,7 +181,7 @@ namespace VoleyPlaya.Repository.Services
         private async Task<Edicion> SaveEdicionAsync(JsonNode edicionNode, dynamic dtos)
         {
             string genero = edicionNode["GeneroStr"]!.GetValue<string>();
-            string lugar = edicionNode["Lugar"]!.GetValue<string>();
+            string prueba = edicionNode["Prueba"]!.GetValue<string>();
             string tipoCalendario = "";
             if (edicionNode["tipoCalendario"]!=null) tipoCalendario = edicionNode["TipoCalendario"]!.GetValue<string>();
             string modeloCompeticion = edicionNode["ModeloCompeticionStr"]!.GetValue<string>();
@@ -191,7 +191,7 @@ namespace VoleyPlaya.Repository.Services
                 dtos.categoriaDto,
                 genero,
                 tipoCalendario,
-                lugar,
+                prueba,
                 modeloCompeticion
                 );
             return edicionDto;
@@ -253,9 +253,9 @@ namespace VoleyPlaya.Repository.Services
             //return JsonSerializer.Serialize<EdicionGrupo>(grupoDto, Options);
             return grupoDto;
         }
-        public static string GetNombreEdicion(string temporada, string competicion, string categoria, string genero)
+        public static string GetNombreEdicion(string temporada, string prueba, string competicion, string categoria, string genero)
         {
-            return temporada + "_" + competicion + "_" + categoria + "_" + genero;
+            return temporada + "_" + prueba + "_" + competicion + "_" + categoria + "_" + genero;
         }
         public static string GetGroupName(int groupNumber)
         {
@@ -677,6 +677,17 @@ namespace VoleyPlaya.Repository.Services
                 }
             }
             await _voleyPlayaUoW.SaveEntitiesAsync();
+        }
+
+        public async Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos)
+        {
+            string str = "";
+            foreach(var equipo in equipos)
+            {
+                str += await _voleyPlayaUoW.EquipoRepository.UpdateClasificacionFinal(edicionId, equipo.Id, equipo.ClasificacionFinal);
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return str;
         }
     }
 }
