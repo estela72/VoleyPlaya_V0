@@ -10,6 +10,8 @@ namespace VoleyPlaya.Repository.Models
 {
     public class Temporada : Entity
     {
+        bool _actual;
+        
         HashSet<Edicion> _ediciones;
 
         public Temporada()
@@ -18,5 +20,6 @@ namespace VoleyPlaya.Repository.Models
         }
 
         public HashSet<Edicion> Ediciones { get => _ediciones; set => _ediciones = value; }
+        public bool Actual { get => _actual; set => _actual = value; }
     }
 }

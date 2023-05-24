@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace VoleyPlaya.Repository.Models
 
         HashSet<Partido>? _locales;
         HashSet<Partido>? _visitantes;
+        HashSet<EdicionGrupo>? _grupos;
+        
 
         int? _edicionId;
         int? _edicionGrupoId;
@@ -33,18 +36,18 @@ namespace VoleyPlaya.Repository.Models
         {
             _locales = new HashSet<Partido>();
             _visitantes = new HashSet<Partido>();
+            _grupos = new HashSet<EdicionGrupo>();
         }
 
-        public Equipo(EdicionGrupo edicionGrupo)
+        public Equipo(EdicionGrupo edicionGrupo):this()
         {
             _edicion = edicionGrupo.Edicion;
             _edicionGrupo = edicionGrupo;
-            _locales = new HashSet<Partido>();
-            _visitantes = new HashSet<Partido>();
         }
         public int? EdicionId { get => _edicionId; set => _edicionId = value; }
         public int? EdicionGrupoId { get => _edicionGrupoId; set => _edicionGrupoId = value; }
         public Edicion? Edicion { get => _edicion; set => _edicion = value; }
+        [NotMapped]
         public EdicionGrupo? EdicionGrupo { get => _edicionGrupo; set => _edicionGrupo = value; }
         public int? OrdenCalendario { get => _ordenCalendario; set => _ordenCalendario = value; }
         public int? OrdenEntrada { get => _ordenEntrada; set => _ordenEntrada = value; }
@@ -58,5 +61,6 @@ namespace VoleyPlaya.Repository.Models
         public bool? Retirado { get => _retirado; set => _retirado = value; }
         public HashSet<Partido>? Locales { get => _locales; set => _locales = value; }
         public HashSet<Partido>? Visitantes { get => _visitantes; set => _visitantes = value; }
+        public HashSet<EdicionGrupo>? Grupos { get => _grupos; set => _grupos = value; }
     }
 }

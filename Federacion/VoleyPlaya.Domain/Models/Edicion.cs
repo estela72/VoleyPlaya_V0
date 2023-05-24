@@ -90,7 +90,7 @@ namespace VoleyPlaya.Domain.Models
             edicion.FechasJornadas = JornadasFromJson(jsonEdicion["Jornadas"]!.AsArray());
             edicion.Equipos = EquiposFromJson(jsonEdicion["Equipos"]!.AsArray());
             //edicion.NumJornadas = edicion.FechasJornadas.Count();
-            edicion.Prueba = jsonEdicion["Lugar"]!.GetValue<string>();
+            edicion.Prueba = jsonEdicion["Prueba"]!.GetValue<string>();
             edicion.TipoCalendario = jsonEdicion["TipoCalendario"]!.GetValue<string>();
             Enum.TryParse(NombreFromJson(jsonEdicion["ModeloCompeticion"]!), out EnumModeloCompeticion modeloCompeticion);
             edicion.ModeloCompeticion = modeloCompeticion;
@@ -468,41 +468,26 @@ namespace VoleyPlaya.Domain.Models
             grupo.TipoGrupo = EnumTipoGrupo.Final;
 
             var partidosCalendario = await calendario.GetPartidosByNumGrupo(numGrupos);
-            int idxPosEquipo = 1;
             foreach(var par in partidosCalendario)
             {
-                var equipo1 = GetEquipo(par.Equipo1, grupo);
-                var equipo2 = GetEquipo(par.Equipo2, grupo);
-                var e1 = Equipos.Where(e => e.Nombre.Equals(equipo1)).FirstOrDefault();
-                var e2 = Equipos.Where(e => e.Nombre.Equals(equipo2)).FirstOrDefault();
-                if (e1 != null)
+                bool asignadoE1;
+                bool asignadoE2;
+                var equipo1 = GetEquipo(par.Equipo1, grupo, out asignadoE1);
+                var equipo2 = GetEquipo(par.Equipo2, grupo, out asignadoE2);
+                if (asignadoE1)
                 {
-                    var ee = grupo.Equipos.FirstOrDefault(e => e.Posicion == idxPosEquipo);
-                    if (ee == null)
+                    var e1 = Equipos.Where(e => e.Nombre.Equals(equipo1)).FirstOrDefault();
+                    var existeE1 = grupo.Equipos.FirstOrDefault(e => e.Nombre.Equals(equipo1));
+                    if (existeE1==null)
                         grupo.Equipos.Add(e1);
-                    else
-                        ee.Nombre = equipo1;
                 }
-                else grupo.Equipos.Add(new Equipo
+                if (asignadoE2)
                 {
-                    Nombre = equipo1,
-                    Posicion = idxPosEquipo
-                });
-                idxPosEquipo++;
-                if (e2 != null)
-                {
-                    var ee = grupo.Equipos.FirstOrDefault(e => e.Posicion == idxPosEquipo);
-                    if (ee == null)
+                    var e2 = Equipos.Where(e => e.Nombre.Equals(equipo2)).FirstOrDefault();
+                    var existeE2 = grupo.Equipos.FirstOrDefault(e => e.Nombre.Equals(equipo2));
+                    if (existeE2 == null)
                         grupo.Equipos.Add(e2);
-                    else
-                        ee.Nombre = equipo2;
                 }
-                else grupo.Equipos.Add(new Equipo
-                {
-                    Nombre = equipo2,
-                    Posicion = idxPosEquipo
-                });
-                idxPosEquipo++;
                 var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
                 if (partido == null)
                 {
@@ -518,17 +503,21 @@ namespace VoleyPlaya.Domain.Models
                         NumPartido = par.NumPartido,
                         Local = equipo1,
                         Visitante = equipo2,
-                        Lugar = Prueba,
+                        Prueba = Prueba,
                         Pista = "",
                         RetiradoLocal = false,
                         RetiradoVisitante = false,
+                        NombreLocal = equipo1,
+                        NombreVisitante = equipo2,
                         Resultado = new Resultado()
-                    });
+                    }) ;
                 }
                 else
                 {
                     partido.Local = equipo1;
                     partido.Visitante = equipo2;
+                    partido.NombreLocal = equipo1;
+                    partido.NombreVisitante = equipo2;
                 }
             }
 
@@ -543,8 +532,9 @@ namespace VoleyPlaya.Domain.Models
             return true;
         }
 
-        private string GetEquipo(string equipo, EdicionGrupo grupoFF)
+        private string GetEquipo(string equipo, EdicionGrupo grupoFF, out bool asignado)
         {
+            asignado = false;
             if (char.IsDigit(equipo[0])) // vamos a buscar el equipo en una posición determinada del Grupo indicado
             {
                 var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
@@ -553,7 +543,7 @@ namespace VoleyPlaya.Domain.Models
                 var grupo = Grupos.Where(g => g.Name.Equals(grupoId)).FirstOrDefault();
                 if (grupo == null) return equipo;
 
-                if (!grupo.TodosPartidosJugados())
+                if (!grupo.TodosPartidosValidados())
                     return equipo;
 
                 var equi = grupo.Equipos.OrderByDescending(e => e.Puntos)
@@ -562,15 +552,17 @@ namespace VoleyPlaya.Domain.Models
                                 .FirstOrDefault();
                 if (equi == null) return equipo;
 
+                asignado = true;
                 return equi.Nombre;
             }
             else if (equipo[0]=='M')    // hay que buscar el mejor 'n' de los grupos participantes
             {
                 var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
                 List<Equipo> mejoresPos = new List<Equipo>();
-                foreach (var grupo in Grupos)
+                var grupos = Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
+                foreach (var grupo in grupos)
                 {
-                    if (!grupo.TodosPartidosJugados())
+                    if (!grupo.TodosPartidosValidados())
                         return equipo;
                     // me quedo con el mejor del puesto indicado (mejor 4º mejor 3º, etc)
                     var equi1 = grupo.Equipos.OrderByDescending(e => e.Puntos)
@@ -585,6 +577,7 @@ namespace VoleyPlaya.Domain.Models
                         .FirstOrDefault();
                 if (equi == null) return equipo;
 
+                asignado = true;
                 return equi.Nombre;
             }
             else // vamos a buscar el equipo ganador o perdedor de un partido determinado
@@ -593,29 +586,43 @@ namespace VoleyPlaya.Domain.Models
                 var partido = grupoFF.Partidos.Where(p => p.NumPartido.Equals(numPartido)).FirstOrDefault();
                 if (partido == null) return equipo;
                 if (equipo.StartsWith('G')) // buscamos el ganador
-                    return GetEquipoGanador(partido, equipo);
+                    return GetEquipoGanador(partido, equipo, out asignado);
                 else if (equipo.StartsWith('P'))
-                    return GetEquipoPerdedor(partido, equipo);
+                    return GetEquipoPerdedor(partido, equipo, out asignado);
             }
             return equipo;
         }
 
-        private string GetEquipoPerdedor(Partido partido, string equipo)
+        private string GetEquipoPerdedor(Partido partido, string equipo, out bool asignado)
         {
+            asignado = false;
             if (partido.Resultado.Local > partido.Resultado.Visitante)
+            {
+                asignado = true;
                 return partido.Local;
+            }
             else if (partido.Resultado.Local < partido.Resultado.Visitante)
+            {
+                asignado = true;
                 return partido.Visitante;
+            }
             else
                 return equipo;
         }
 
-        private string GetEquipoGanador(Partido partido, string equipo)
+        private string GetEquipoGanador(Partido partido, string equipo, out bool asignado)
         {
+            asignado = false;
             if (partido.Resultado.Local > partido.Resultado.Visitante)
+            {
+                asignado = true;
                 return partido.Visitante;
+            }
             else if (partido.Resultado.Local < partido.Resultado.Visitante)
+            {
+                asignado = true;
                 return partido.Local;
+            }
             else
                 return equipo;
         }

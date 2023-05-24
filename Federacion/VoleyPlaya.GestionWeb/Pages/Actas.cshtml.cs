@@ -195,12 +195,12 @@ namespace VoleyPlaya.GestionWeb.Pages
             nuevaHoja.Cells["D9"].Value = partido.Local;
             nuevaHoja.Cells["J9"].Value = partido.Visitante;
 
-            nuevaHoja.Cells["F42"].Value = partido.Lugar;
+            nuevaHoja.Cells["F42"].Value = partido.Prueba;
         }
 
         private void RellenarActaCircuito(Partido partido, ExcelWorksheet nuevaHoja)
         {
-            nuevaHoja.Cells["A7"].Value = "Asturias      " + partido.Lugar + "            " + partido.Competicion + "            " + partido.Categoria + "             " + partido.Genero;
+            nuevaHoja.Cells["A7"].Value = "Asturias      " + partido.Prueba + "            " + partido.Competicion + "            " + partido.Categoria + "             " + partido.Genero;
             nuevaHoja.Cells["A10"].Value = "Nº de partido: "+partido.Label;
             nuevaHoja.Cells["G10"].Value = "Pista "+partido.Pista;
             nuevaHoja.Cells["O10"].Value = "Fecha: "+partido.FechaHora.ToString("dd/MM/yyyy");

@@ -72,6 +72,7 @@ namespace VoleyPlaya.Domain.Services
         Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id);
         Task<bool> GenerarFaseFinal(int id);
         Task<Edicion> GetEdicionAsync(int? competicionId, int? categoriaId, string generoId);
+        Task<string> ValidarPartidoAsync(int idPartido, bool activo);
     }
     public class EdicionService : IEdicionService
     {
@@ -473,6 +474,11 @@ namespace VoleyPlaya.Domain.Services
         {
             var edicion = await _service.GetEdicion(competicionId, categoriaId, generoId);
             return _mapper.Map<Edicion>(edicion);
+        }
+
+        public async Task<string> ValidarPartidoAsync(int idPartido, bool activo)
+        {
+            return await _service.ValidarPartidoAsync(idPartido, activo);
         }
     }
 }

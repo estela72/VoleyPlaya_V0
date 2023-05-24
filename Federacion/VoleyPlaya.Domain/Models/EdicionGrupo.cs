@@ -34,7 +34,7 @@ namespace VoleyPlaya.Domain.Models
         [Display(Name = "Grupo")]
         public string Name { get; set; }
         [Display(Name = "Nº Equipos")]
-        public int NumEquipos { get; set; }
+        public int NumEquipos { get; set; }// { return Equipos.Count; } }
         public List<Equipo> Equipos { get; set; }
 
         [BindNever] 
@@ -191,10 +191,10 @@ namespace VoleyPlaya.Domain.Models
             NumEquipos = numEquipos;
         }
 
-        internal bool TodosPartidosJugados()
+        internal bool TodosPartidosValidados()
         {
-            var noJugados = Partidos.Select(p => p.Resultado).Count(r => r.Local == 0 && r.Visitante == 0);
-            return (noJugados == 0);
+            var noValidados = Partidos.Count(p => !p.Validado);
+            return (noValidados == 0);
         }
     }
 }

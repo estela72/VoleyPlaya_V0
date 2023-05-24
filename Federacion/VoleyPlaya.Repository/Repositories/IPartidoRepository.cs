@@ -18,7 +18,7 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IPartidoRepository:IRepository<Partido>
     {
         Task<Partido> CheckAddUpdate(EdicionGrupo edicionGrupoDto, Equipo localDto, Equipo visitanteDto, 
-            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label);
+            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante);
         Task<List<Partido>> GetListaPartidosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task UpdateHoraYPista(Partido partido);
     }
@@ -33,7 +33,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Partido> CheckAddUpdate(EdicionGrupo edicionGrupoDto, Equipo localDto, Equipo visitanteDto, 
-            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label)
+            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante)
         {
             var dto = await GetByIdAsync(id);
             if (dto == null)
@@ -42,14 +42,22 @@ namespace VoleyPlaya.Repository.Repositories
                     Jornada = jornada,
                     NumPartido = numPartido,
                     FechaHora = fechaHora,
-                    Pista = pista,
-                    Label = label
+                    Pista = pista.Trim(),
+                    Label = label.Trim(),
+                    NombreLocal = nombreLocal.Trim(),
+                    NombreVisitante = nombreVisitante.Trim(),
+                    Validado = validado
                 });
             else
             {
                 dto.FechaHora = fechaHora;
-                dto.Pista = pista;
-                dto.Label = label;
+                dto.Pista = pista.Trim();
+                dto.Label = label.Trim();
+                dto.Local = localDto;
+                dto.Visitante = visitanteDto;
+                dto.NombreLocal = nombreLocal.Trim();
+                dto.NombreVisitante = nombreVisitante.Trim();
+                dto.Validado = validado;
                 return await UpdateAsync(dto);
             }
             return dto;

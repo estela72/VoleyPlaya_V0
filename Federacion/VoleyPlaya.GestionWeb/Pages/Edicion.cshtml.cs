@@ -455,5 +455,23 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
+        public async Task<IActionResult> OnPostValidarPartidoAsync(int idPartido, bool activo)
+        {
+            try
+            {
+                var str = await _service.ValidarPartidoAsync(idPartido, activo);
+                ErrorMessage = str;
+            }
+            catch(Exception x)
+            {
+                ErrorMessage = "Error eliminando un partido de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
     }
 }

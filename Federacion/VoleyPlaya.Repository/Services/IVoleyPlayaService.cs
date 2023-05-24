@@ -55,5 +55,7 @@ namespace VoleyPlaya.Repository.Services
         Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int edicionId, string jsonGrupo);
         Task<List<TablaCalendario>> GetCalendarioPartidosCircuitoByNumGrupos(int numGrupos);
         Task<Edicion> GetEdicion(int? competicionId, int? categoriaId, string generoId);
+        Task<string> ValidarPartidoAsync(int idPartido, bool activo);
+        Task ArreglarGruposEquipos();
     }
 }

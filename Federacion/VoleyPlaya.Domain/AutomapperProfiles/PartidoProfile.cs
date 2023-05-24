@@ -24,7 +24,9 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
                 .ForMember(d => d.Categoria, o => o.MapFrom(ori => ori.Grupo.Edicion.Categoria.Nombre))
                 .ForMember(d => d.Genero, o => o.MapFrom(ori => ori.Grupo.Edicion.Genero))
                 .ForMember(d => d.Grupo, o => o.MapFrom(ori => ori.Grupo.Nombre))
-                .ForMember(d => d.Lugar, o => o.MapFrom(ori => ori.Grupo.Edicion.Prueba))
+                .ForMember(d => d.Prueba, o => o.MapFrom(ori => ori.Grupo.Edicion.Prueba))
+                .ForMember(d => d.NombreLocal, o=>o.MapFrom(ori => ori.NombreLocal))
+                .ForMember(d => d.NombreVisitante, o => o.MapFrom(ori => ori.NombreVisitante))
                 .ReverseMap();
 
             CreateMap<VoleyPlaya.Repository.Models.PartidoVis, VoleyPlaya.Domain.Models.Partido>()
@@ -32,6 +34,8 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
                 .ForMember(d => d.Visitante, o => o.MapFrom(ori => ori.Visitante))
                 .ForMember(d => d.RetiradoLocal, o => o.MapFrom(ori => ori.RetiradoLocal))
                 .ForMember(d => d.RetiradoVisitante, o => o.MapFrom(ori => ori.RetiradoVisitante))
+                .ForMember(d => d.NombreLocal, o => o.MapFrom(ori => ori.NombreLocal))
+                .ForMember(d => d.NombreVisitante, o => o.MapFrom(ori => ori.NombreVisitante))
                 .ForPath(d => d.Resultado.Set1, o => o.MapFrom(ori => ori.Parciales.First()))
                 .ForPath(d => d.Resultado.Set2, o => o.MapFrom(ori => ori.Parciales.Skip(1).First()))
                 .ForPath(d => d.Resultado.Set3, o => o.MapFrom(ori => ori.Parciales.Last()))
