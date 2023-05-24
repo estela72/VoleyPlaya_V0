@@ -32,8 +32,10 @@ namespace VoleyPlaya.Domain.Models
         public string Label { get; set; }
         public bool RetiradoLocal { get; set; }
         public bool RetiradoVisitante { get; set; }
-        public string Lugar { get; set; }
-
+        public string Prueba { get; set; }
+        public bool Validado { get; set; }
+        public string NombreLocal { get; set; }
+        public string NombreVisitante { get; set; }
         internal static Partido FromJson(JsonNode jsonPartido)
         {
             Partido partido = new()
@@ -49,7 +51,10 @@ namespace VoleyPlaya.Domain.Models
                 Label = jsonPartido["Label"]!.GetValue<string>()!,
                 RetiradoLocal = jsonPartido["RetiradoLocal"]!.GetValue<bool>()!,
                 RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!,
-                Lugar = jsonPartido["Lugar"]!.GetValue<string>()!
+                Prueba = jsonPartido["Prueba"]!.GetValue<string>()!,
+                Validado = jsonPartido["Validado"]!.GetValue<bool>()!,
+                NombreLocal = jsonPartido["NombreLocal"]!.GetValue<string>()!,
+                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
@@ -71,7 +76,10 @@ namespace VoleyPlaya.Domain.Models
                 Resultado = Resultado.FromJson(jsonPartido["Parciales"]! as JsonArray)!,
                 RetiradoLocal = jsonPartido["RetiradoLocal"]!.GetValue<bool>()!,
                 RetiradoVisitante = jsonPartido["RetiradoVisitante"]!.GetValue<bool>()!,
-                Lugar = jsonPartido["Lugar"]!.GetValue<string>()!
+                Prueba = jsonPartido["Prueba"]!.GetValue<string>()!,
+                Validado = jsonPartido["Validado"]!.GetValue<bool>()!,
+                NombreLocal = jsonPartido["NombreLocal"]!.GetValue<string>()!,
+                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();

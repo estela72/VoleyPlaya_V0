@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Models\Partido.cs~RF3367deb2.TMP" />
+    <None Remove="Models\Partido.cs~RF35b5bff9.TMP" />
   </ItemGroup>
 
   <ItemGroup>

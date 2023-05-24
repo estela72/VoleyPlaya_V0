@@ -23,7 +23,7 @@ body {
 
 
 
-/* Estilo para los pasos de la guía */
+/* Estilo para los pasos de la guï¿½a */
 .guia-paso {
     margin-bottom: 10px;
     padding: 10px;
@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* Estilo del botón de icono para cambiar el estado de la tarjeta */
+/* Estilo del botï¿½n de icono para cambiar el estado de la tarjeta */
 .toggle-icon {
     cursor: pointer;
     color: blue;
@@ -72,7 +72,9 @@ body {
 /*}*/
 
 .smallCell {
-    width: 10%;
+    /*width: 10%;*/
+    max-width: 3;
+    background-color:yellow;
 }
 
 .retirado{
@@ -98,4 +100,20 @@ table.partidos td {
 .centered-image {
     max-width: 100%;
     max-height: 100%;
+}
+
+.table-fit td,
+.table-fit th {
+    white-space: nowrap;
+    width: 1%;
+}
+.custom-editor {
+    width: 60px;
+}
+.custom-editor-date {
+    width:160px;
+}
+.custom-editor-checkbox {
+    width:25px;
+    height:25px;
 }

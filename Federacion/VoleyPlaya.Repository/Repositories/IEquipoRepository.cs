@@ -53,7 +53,7 @@ namespace VoleyPlaya.Repository.Repositories
                     PuntosFavor = puntosFavor,
                     OrdenCalendario = posicion,
                     Edicion = edicionGrupoDto.Edicion,
-                    EdicionGrupo = edicionGrupoDto,
+                    //EdicionGrupo = edicionGrupoDto,
                     Retirado=false,
                     OrdenEntrada = ordenEntrada
                 });
@@ -69,7 +69,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.PuntosContra = puntosContra;
                 dto.PuntosFavor = puntosFavor;
                 dto.Edicion = edicionGrupoDto.Edicion;
-                dto.EdicionGrupo = edicionGrupoDto;
+                //dto.EdicionGrupo = edicionGrupoDto;
                 dto.OrdenEntrada = ordenEntrada;
                 return await UpdateAsync(dto);
             }
@@ -85,7 +85,7 @@ namespace VoleyPlaya.Repository.Repositories
             if (dto == null)
                 await AddAsyn(new Equipo
                 {
-                    Nombre = nombre,
+                    Nombre = nombre.Trim(),
                     Perdidos = perdidos,
                     Coeficiente = coeficiente,
                     Ganados = ganados,
@@ -99,7 +99,7 @@ namespace VoleyPlaya.Repository.Repositories
                 });
             else
             {
-                dto.Nombre = nombre;
+                dto.Nombre = nombre.Trim();
                 dto.Perdidos = perdidos;
                 dto.Coeficiente = coeficiente;
                 dto.Ganados = ganados;

@@ -32,6 +32,8 @@ namespace VoleyPlaya.Repository.Models
         public string Genero { get; set; }
         public string Grupo { get; set; }
         public List<ParcialPartidoVis> Parciales { get; set; }
+        public string NombreLocal { get; set; }
+        public string NombreVisitante { get; set; }
 
         public PartidoVis(Partido partido)
         {
@@ -55,6 +57,8 @@ namespace VoleyPlaya.Repository.Models
             Categoria = partido.Grupo.Edicion.Categoria.Nombre;
             Genero = partido.Grupo.Edicion.Genero;
             Grupo = partido.Grupo.Nombre;
+            NombreLocal = partido.NombreLocal;
+            NombreVisitante = partido.NombreVisitante;
         }
     }
     public class Partido : Entity   
@@ -70,6 +74,8 @@ namespace VoleyPlaya.Repository.Models
         string? _pista;
         string? _label;
         bool _validado = false;
+        string? _nombreLocal;
+        string? _nombreVisitante;
 
         HashSet<ParcialPartido>? _parciales;
 
@@ -105,7 +111,8 @@ namespace VoleyPlaya.Repository.Models
         public bool RetiradoVisitante { get { return _visitante == null||_visitante.Retirado==null ? false : _visitante!.Retirado.Value; } }
 
         public bool Validado { get => _validado; set => _validado = value; } 
-
+        public string? NombreLocal { get => _nombreLocal; set => _nombreLocal=value; }
+        public string? NombreVisitante { get => _nombreVisitante; set => _nombreVisitante=value; }
         public override bool Equals(object obj)
         {
             return base.Equals(obj);

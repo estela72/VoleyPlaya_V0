@@ -146,6 +146,7 @@ namespace VoleyPlaya.Repository.Services
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
                 var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
                     coeficiente, puntos, ordenEntrada);
+                grupoDto.Equipos.Add(equipoDto);
             }
             return true;
         }
@@ -303,13 +304,30 @@ namespace VoleyPlaya.Repository.Services
                 int numPartido = partido["NumPartido"]!.GetValue<int>()!;
                 DateTime fechaHora = partido["FechaHora"]!.GetValue<DateTime>()!;
                 string pista = partido["Pista"]!=null?partido["Pista"]!.GetValue<string>():string.Empty;
-                string local = partido["Local"]!.GetValue<string>();
-                string visitante = partido["Visitante"]!.GetValue<string>();
+                string local = string.Empty;
+                if (partido["Local"] != null)
+                    local = partido["Local"]!.GetValue<string>();
+                else if (partido["NombreLocal"] != null)
+                    local = partido["NombreLocal"]!.GetValue<string>();
+                string visitante = string.Empty;
+                if (partido["Visitante"] != null)
+                    visitante = partido["Visitante"]!.GetValue<string>();
+                else if (partido["NombreVisitante"] != null)
+                    visitante = partido["NombreVisitante"]!.GetValue<string>();
                 string label = partido["Label"]!=null?partido["Label"]!.GetValue<string>():string.Empty;
+
+                string nombreLocal = local;
+                if (partido["NombreLocal"]!=null)
+                   nombreLocal = partido["NombreLocal"]!.GetValue<string>()!;
+                string nombreVisitante = visitante;
+                if (partido["NombreVisitante"]!=null)
+                    nombreVisitante = partido["NombreVisitante"]!.GetValue<string>()!;
+                bool validado = partido["Validado"]!.GetValue<bool>()!;
+
                 var localDto = grupoDto.Equipos.SingleOrDefault(e=>e.Nombre.Equals(local));
                 var visitanteDto = grupoDto.Equipos.SingleOrDefault(e => e.Nombre.Equals(visitante));
 
-                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(grupoDto, localDto, visitanteDto, id, jornada, numPartido, fechaHora, pista,label);
+                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(grupoDto, localDto, visitanteDto, id, jornada, numPartido, fechaHora, pista,label,validado, nombreLocal, nombreVisitante);
 
                 JsonObject resultado = partido["Resultado"]!.AsObject()!;
                 int resLocal = resultado["Local"]!.GetValue<int>()!;
@@ -634,6 +652,31 @@ namespace VoleyPlaya.Repository.Services
             var edicion = await _voleyPlayaUoW.EdicionRepository.FindAsync(e => e.Competicion.Id.Equals(competicionId)
                             && e.Categoria.Id.Equals(categoriaId) && e.Genero.Equals(generoId));
             return edicion;
+        }
+
+        public async Task<string> ValidarPartidoAsync(int idPartido, bool activo)
+        {
+            var partido = await _voleyPlayaUoW.PartidoRepository.GetByIdAsync(idPartido);
+            partido.Validado = activo;
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return "Partido validado";
+        }
+        public async Task ArreglarGruposEquipos()
+        {
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.GetAllIncludingAsync(e => e.Equipos);
+            foreach (var edicion in ediciones)
+            {
+                foreach (var equipo in edicion.Equipos)
+                {
+                    var idGrupo = equipo.EdicionGrupoId ?? equipo.EdicionGrupoId.Value;
+                    if (idGrupo != 0)
+                    {
+                        var ediGrupo = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(idGrupo);
+                        equipo.Grupos.Add(ediGrupo);
+                    }
+                }
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace VoleyPlaya.Domain.Services
 {
     public interface IConfiguracionService
     {
+        Task ArreglarGruposEquipos();
         Task<int> GetNumJornadas(int numEquipos);
         Task<List<PartidoCalendarioCircuito>> GetTablaCalendario(int numEquipos);
         Task LoadTablasCalendarios();
@@ -24,6 +25,11 @@ namespace VoleyPlaya.Domain.Services
             _vpService = service;
             _mapper = mapper;
             TablasCalendarios = new TablaCalendarioCircuito(_vpService, _mapper);
+        }
+
+        public async Task ArreglarGruposEquipos()
+        {
+            await _vpService.ArreglarGruposEquipos();
         }
 
         public async Task<int> GetNumJornadas(int numEquipos)

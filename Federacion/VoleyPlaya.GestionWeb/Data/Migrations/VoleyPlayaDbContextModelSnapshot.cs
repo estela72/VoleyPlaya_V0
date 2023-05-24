@@ -22,6 +22,21 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EdicionGrupoEquipo", b =>
+                {
+                    b.Property<int>("EquiposId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GruposId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EquiposId", "GruposId");
+
+                    b.HasIndex("GruposId");
+
+                    b.ToTable("EdicionGrupoEquipo");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -463,8 +478,6 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EdicionGrupoId");
-
                     b.HasIndex("EdicionId", "EdicionGrupoId", "Nombre")
                         .IsUnique()
                         .HasDatabaseName("IX_Equipo")
@@ -591,6 +604,12 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("NombreLocal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreVisitante")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("NumPartido")
                         .HasColumnType("int");
 
@@ -609,6 +628,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime");
+
+                    b.Property<bool>("Validado")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -688,6 +710,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Actual")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -713,6 +738,21 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                         .HasFilter("[Nombre] IS NOT NULL");
 
                     b.ToTable("Temporadas");
+                });
+
+            modelBuilder.Entity("EdicionGrupoEquipo", b =>
+                {
+                    b.HasOne("VoleyPlaya.Repository.Models.Equipo", null)
+                        .WithMany()
+                        .HasForeignKey("EquiposId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VoleyPlaya.Repository.Models.EdicionGrupo", null)
+                        .WithMany()
+                        .HasForeignKey("GruposId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -810,19 +850,12 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
             modelBuilder.Entity("VoleyPlaya.Repository.Models.Equipo", b =>
                 {
-                    b.HasOne("VoleyPlaya.Repository.Models.EdicionGrupo", "EdicionGrupo")
-                        .WithMany("Equipos")
-                        .HasForeignKey("EdicionGrupoId")
-                        .HasConstraintName("FK_dbo.Equipo_dbo.EdicionGrupo_Id");
-
                     b.HasOne("VoleyPlaya.Repository.Models.Edicion", "Edicion")
                         .WithMany("Equipos")
                         .HasForeignKey("EdicionId")
                         .HasConstraintName("FK_dbo.Equipo_dbo.Edicion_Id");
 
                     b.Navigation("Edicion");
-
-                    b.Navigation("EdicionGrupo");
                 });
 
             modelBuilder.Entity("VoleyPlaya.Repository.Models.Jornada", b =>
@@ -894,8 +927,6 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
             modelBuilder.Entity("VoleyPlaya.Repository.Models.EdicionGrupo", b =>
                 {
-                    b.Navigation("Equipos");
-
                     b.Navigation("Partidos");
                 });
 

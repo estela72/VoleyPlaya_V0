@@ -99,10 +99,13 @@ namespace VoleyPlaya.Repository
                     .WithMany(p => p.Equipos)
                     .HasForeignKey("EdicionId")
                     .HasConstraintName("FK_dbo.Equipo_dbo.Edicion_Id");
-                entity.HasOne(d => d.EdicionGrupo)
-                    .WithMany(p => p.Equipos)
-                    .HasForeignKey("EdicionGrupoId")
-                    .HasConstraintName("FK_dbo.Equipo_dbo.EdicionGrupo_Id");
+                //entity.HasOne(d => d.EdicionGrupo)
+                //    .WithMany(p => p.Equipos)
+                //    .HasForeignKey("EdicionGrupoId")
+                //    .HasConstraintName("FK_dbo.Equipo_dbo.EdicionGrupo_Id")
+                //    ;
+                entity.HasMany(d => d.Grupos)
+                    .WithMany(p => p.Equipos);
             });
             modelBuilder.Entity<Edicion>(entity =>
             {

@@ -30,5 +30,9 @@ namespace VoleyPlaya.GestionWeb.Pages
             //TablaCalendarioCircuito tablas = new TablaCalendarioCircuito(_serviceVP, _mapper);
             //await tablas.LoadAsync();
         }
+        public async Task OnPostArreglarGruposEquiposAsync()
+        {
+            await _serviceConfig.ArreglarGruposEquipos();
+        }
     }
 }
