@@ -73,6 +73,7 @@ namespace VoleyPlaya.Domain.Services
         Task<bool> GenerarFaseFinal(int id);
         Task<Edicion> GetEdicionAsync(int? competicionId, int? categoriaId, string generoId);
         Task<string> ValidarPartidoAsync(int idPartido, bool activo);
+        Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos);
     }
     public class EdicionService : IEdicionService
     {
@@ -273,9 +274,9 @@ namespace VoleyPlaya.Domain.Services
             await _service.UpdateJornadasAsync(edicion.Id, json);
         }
 
-        public static string GetNombreEdicion(string temporada, string competicion, string categoria, string genero)
+        public static string GetNombreEdicion(string temporada, string prueba, string competicion, string categoria, string genero)
         {
-            return temporada + "_" + competicion + "_" + categoria + "_" + genero;
+            return temporada + "_" + prueba+"_"+ competicion + "_" + categoria + "_" + genero;
         }
 
         public Task<string> GetTipoCalendarioEdicion(int id)
@@ -479,6 +480,12 @@ namespace VoleyPlaya.Domain.Services
         public async Task<string> ValidarPartidoAsync(int idPartido, bool activo)
         {
             return await _service.ValidarPartidoAsync(idPartido, activo);
+        }
+
+        public async Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos)
+        {
+            var equi = _mapper.Map<List<VoleyPlaya.Repository.Models.Equipo>>(equipos);
+            return await _service.ActualizarClasificacionFinal(edicionId, equi);
         }
     }
 }

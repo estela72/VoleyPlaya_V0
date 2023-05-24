@@ -103,7 +103,7 @@
         <!-- Paso 3: Añadir fase de grupos -->
         <div class="guia-paso @((pasoActual >= 3) ? "completado" : "")">
             <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseFaseGrupos"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
-            <h2>Fase de grupos</h2>
+            <h2>Grupos</h2>
             <form method="post" asp-page-handler="Fase">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m=>Model.Edicion.Id)
@@ -268,7 +268,7 @@
         <!-- Paso 4: Establecer vueltas, jornadas y partidos para cada grupo de la fase de grupos -->
         <div class="guia-paso @((pasoActual >= 4) ? "completado" : "")">
             <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapsePartidosFG"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
-            <h2>Partidos fase de grupos</h2>
+            <h2>Fase de grupos</h2>
             <form method="post">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m=>Model.Edicion.Id)
@@ -304,9 +304,9 @@
                             {
                                 <div class="col" style="max-width: 600px;">
                                     <div class="col m-1" style="background-color:lightgray">
+                                        <caption style="caption-side:top;font-size:larger;font-weight:bold">Jornadas y Fechas de Juego</caption>
                                         <table class="table table-responsive-md">
                                             <thead>
-                                                <h3>Fechas de juego</h3>
                                                 <tr>
                                                     <th>Jornada</th>
                                                     <th>Fecha</th>
@@ -357,9 +357,11 @@
                         {
                             @for (int i = 0; i < Model.GruposLiga.Count; i++)
                             {
+                                var grupo = Model.GruposLiga[i];
                                 @Html.HiddenFor(m=>Model.GruposLiga[i].Id)
                                 <div style="background-color:lightgray">
                                     <table class="table table-fit" id="tablaPartidos">
+                                        <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
                                         <thead>
                                             <h3>Grupo @Model.GruposLiga[i].Name</h3>
                                             <tr>
@@ -405,10 +407,10 @@
                                                     </td>
                                                         
                                                     <td>
-                                                        @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Local,new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Local,new { htmlAttributes = new { @class = "custom-editor", @disabled = "disabled" } })
                                                     </td>
                                                     <td>
-                                                        @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor", @disabled = "disabled" } })
                                                     </td>
                                                     <td>
                                                         @Html.DropDownListFor(m=>Model.GruposLiga[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
@@ -437,6 +439,55 @@
                                             }
                                         </tbody>
                                     </table>
+                                    @*Clasificaciones*@
+                                    <table class="table table-borderless table-striped table-hover partidos">
+                                        <caption style="caption-side:top;font-size:larger;font-weight:bold">Clasificación</caption>
+                                        <thead>
+                                            <tr>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Puntos)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Jugados)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Ganados)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Perdidos)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosFavor)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosContra)</td>
+                                                <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Coeficiente)</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var equipo in grupo.Equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente))
+                                            {
+                                                var clase = "";
+                                                if (equipo.Retirado) clase = "retirado";
+                                                <tr class="@clase">
+                                                    <td class="@clase">
+                                                        @Html.DisplayFor(modelItem =>  equipo.Nombre)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.Puntos)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.Jugados)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.Ganados)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.Perdidos)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.PuntosFavor)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.PuntosContra)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem =>  equipo.Coeficiente)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             }
                         }
@@ -450,7 +501,7 @@
         <!-- Paso 5: Establecer partidos fase final -->
         <div class="guia-paso @((pasoActual >= 5) ? "completado" : "")">
             <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseFaseFinal"></i> <!-- Agrega el icono y llama a la función toggleCard() al hacer clic en el icono -->
-            <h2>Partidos fase final</h2>
+            <h2>Fase final</h2>
             <div class="card collapse" id="collapseFaseFinal">
                 <div class="card-header">
                     <form method="post" asp-page-handler="GenerarFaseFinal">
@@ -501,6 +552,7 @@
                                 @Html.HiddenFor(m=>Model.GruposFF[i].Id)
                                 <div style="background-color:lightgray">
                                     <table class="table table-fit" id="tablaPartidos">
+                                        <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
                                         <thead>
                                             <h3>Grupo @Model.GruposFF[i].Name</h3>
                                             <tr>
@@ -548,10 +600,10 @@
                                                     </td>
 
                                                     <td>
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Local,new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Local,new { htmlAttributes = new { @class = "custom-editor", @disabled="disabled" } })
                                                     </td>
                                                     <td>
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor", @disabled="disabled" } })
                                                     </td>
                                                     <td>
                                                         @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].NombreVisitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
@@ -589,6 +641,47 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <!-- Paso 6: Establecer clasificación final -->
+        <div class="guia-paso @((pasoActual >= 6) ? "completado" : "")">
+            <i class="fas fa-eye toggle-icon" data-bs-toggle="collapse" href="#collapseClasiFinal"></i>
+            <h2>Clasificación final</h2>
+            <form method="post" asp-page-handler="ClasificacionFinal">
+                <div class="card collapse" id="collapseClasiFinal">
+                    <div class="card-header">
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m=>Model.Edicion.Id)
+                            @Html.HiddenFor(m=>Model.Edicion.Nombre)
+                            @Html.HiddenFor(m=>Model.EdicionName)
+                            @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+                            @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
+                            <input type="submit" class="btn btn-primary" value="Actualizar Clasificación Final" />
+                    </div>
+                    <div class="card-body" style="background-color:lightgray">
+                        <table class="table table-fit" id="tablaClasiFinal">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Clasificación final</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i=0;i< Model.EquiposCF.Count;i++)
+                                {
+                                    @Html.HiddenFor(m=>Model.EquiposCF[i].Id)
+                                    <tr>
+                                        <td>@Html.DisplayFor(m=>Model.EquiposCF[i].Nombre,new { htmlAttributes = new { @class = "custom-editor" } })</td>
+                                        <td>@Html.EditorFor(m=>Model.EquiposCF[i].ClasificacionFinal,new { htmlAttributes = new { @class = "custom-editor" } })</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Actualizar Clasificación Final" />
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 }

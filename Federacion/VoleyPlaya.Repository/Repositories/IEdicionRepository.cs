@@ -25,7 +25,7 @@ namespace VoleyPlaya.Repository.Repositories
                 Categoria categoriaDto,
                 string genero,
                 string tipoCalendario,
-                string lugar,
+                string prueba,
                 string modeloCompeticion
             );
 
@@ -49,27 +49,28 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
-            string genero, string tipoCalendario, string lugar, string modeloCompeticion)
+            string genero, string tipoCalendario, string prueba, string modeloCompeticion)
         {
             var dto = await FindAsync(c => c.Temporada.Nombre.Equals(temporadaDto.Nombre)
                 && c.Competicion.Nombre.Equals(competicionDto.Nombre)
                 && c.Categoria.Nombre.Equals(categoriaDto.Nombre)
                 && c.Genero!.Equals(genero)
+                && c.Prueba!.Equals(prueba)
                 );
             if (dto == null)
                 return await AddAsyn(new Edicion(temporadaDto, competicionDto, categoriaDto)
                 {
-                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, competicionDto.Nombre, categoriaDto.Nombre, genero),
+                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, prueba, competicionDto.Nombre, categoriaDto.Nombre, genero),
                     Genero = genero,
                     TipoCalendario = tipoCalendario,
                     ModeloCompeticion = modeloCompeticion,
-                    Prueba = lugar
+                    Prueba = prueba
                 });
             else
             {
-                dto.Genero = genero;
+                //dto.Genero = genero;
                 dto.TipoCalendario = tipoCalendario;
-                dto.Prueba = lugar;
+                //dto.Prueba = prueba;
                 dto.ModeloCompeticion = modeloCompeticion;
                 dto = await UpdateAsync(dto);
             }
