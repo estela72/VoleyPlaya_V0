@@ -19,7 +19,7 @@ namespace VoleyPlaya.Repository.Repositories
         Task<EdicionGrupo> GetBasicAsync(int id);
         Task<EdicionGrupo> GetWithPartidosAsync(int id);
         Task<EdicionGrupo> GetWithEquiposYPartidosAsync(int id);
-        Task<List<EdicionGrupo>> GetWithEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
+        Task<List<EdicionGrupo>> GetWithEquiposAsync(string prueba, int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
     }
     public class EdicionGrupoRepository : Repository<EdicionGrupo>, IEdicionGrupoRepository
     {
@@ -57,12 +57,13 @@ namespace VoleyPlaya.Repository.Repositories
             return await GetByIdAsync(id);
         }
 
-        public async Task<List<EdicionGrupo>> GetWithEquiposAsync(int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
+        public async Task<List<EdicionGrupo>> GetWithEquiposAsync(string prueba, int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
         {
-            var grupos = await FindAllIncludingAsync(g => g.Edicion.Competicion.Id.Equals(competicionSelected)
+            var grupos = await FindAllIncludingAsync(g => g.Edicion.Prueba.Equals(prueba)
+                && g.Edicion.Competicion.Id.Equals(competicionSelected)
                 && g.Edicion.Categoria.Id.Equals(categoriaSelected)
                 && g.Edicion.Genero.Equals(generoSelected),
-                g => g.Equipos);
+                g => g.Equipos, g=>g.Partidos);
             if (grupoSelected != null)
                 grupos = grupos.Where(g => g.Id.Equals(int.Parse(grupoSelected))).ToList();
             return grupos.ToList();

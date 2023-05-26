@@ -34,7 +34,8 @@ namespace VoleyPlaya.Repository.Models
         public List<ParcialPartidoVis> Parciales { get; set; }
         public string NombreLocal { get; set; }
         public string NombreVisitante { get; set; }
-
+        public string Ronda { get; set; }
+        public bool ConResultado { get; set; }
         public PartidoVis(Partido partido)
         {
             Local = partido.Local.Nombre;
@@ -59,6 +60,8 @@ namespace VoleyPlaya.Repository.Models
             Grupo = partido.Grupo.Nombre;
             NombreLocal = partido.NombreLocal;
             NombreVisitante = partido.NombreVisitante;
+            Ronda = partido.Ronda;
+            ConResultado = partido.ConResultado;
         }
     }
     public class Partido : Entity   
@@ -76,6 +79,10 @@ namespace VoleyPlaya.Repository.Models
         bool _validado = false;
         string? _nombreLocal;
         string? _nombreVisitante;
+        string _ronda;
+        bool _conResultado = false;
+        string _userResultado = "";
+        string _userValidador = "";
 
         HashSet<ParcialPartido>? _parciales;
 
@@ -113,6 +120,11 @@ namespace VoleyPlaya.Repository.Models
         public bool Validado { get => _validado; set => _validado = value; } 
         public string? NombreLocal { get => _nombreLocal; set => _nombreLocal=value; }
         public string? NombreVisitante { get => _nombreVisitante; set => _nombreVisitante=value; }
+        public string Ronda { get => _ronda; set => _ronda = value; }
+        public bool ConResultado { get => _conResultado; set => _conResultado = value; } 
+        public string UserResultado { get => _userResultado; set => _userResultado = value; } 
+        public string UserValidador { get => _userValidador; set => _userValidador = value; } 
+
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -136,7 +148,7 @@ namespace VoleyPlaya.Repository.Models
                 Visitante = equipoDto;
         }
 
-        internal void AddResultado(int resLocal, int resVisitante, int set1Local, int set1Visitante, int set2Local, int set2Visitante, int set3Local, int set3Visitante)
+        internal void AddResultado(int resLocal, int resVisitante, int set1Local, int set1Visitante, int set2Local, int set2Visitante, int set3Local, int set3Visitante,string user)
         {
             ResultadoLocal = resLocal;
             ResultadoVisitante = resVisitante;
@@ -164,6 +176,9 @@ namespace VoleyPlaya.Repository.Models
                 set3.First().ResultadoLocal = set3Local;
                 set3.First().ResultadoVisitante = set3Visitante;
             }
+            ConResultado = ResultadoLocal != 0 || ResultadoVisitante != 0 ? true : false;
+            if (ConResultado) UserResultado = user;
+
         }
     }
 }

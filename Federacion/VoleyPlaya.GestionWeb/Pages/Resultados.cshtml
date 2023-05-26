@@ -8,13 +8,28 @@
             <div class="card-header">
                 <h2>Filtros</h2>
                 <div style="max-width: 600px; ">
-                    <div class="form-group row m-1">
-                        <label class="col-sm-4 col-form-label">Competición</label>
-                        <div class="col-sm-8">
-                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
-                            @onchange= "applyFilter()" })
-                        </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Prueba</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.PruebaSelected, @Model.Pruebas, "Seleccione una prueba", new{@class="form-control", id = "prueba-select",
+                        @onchange= "applyFilter()" })
                     </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCompeticiones)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @disabled="disabled",@onchange= "applyFilter()" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                        }
+                    </div>
+                </div>
                     <div class="form-group row m-1">
                         <label class="col-sm-4 col-form-label">Categoría</label>
                         <div class="col-sm-8">
@@ -72,7 +87,11 @@
     </div>
 </div>
 <div class="card">
-    <form method="post" asp-page-handler="Guardar" asp-route-competicionId="@Model.CompeticionSelected", asp-route-categoriaId="@Model.CategoriaSelected", asp-route-generoId="@Model.GeneroSelected"
+    <form method="post" asp-page-handler="Guardar"
+                        asp-route-pruebaId="@Model.PruebaSelected"
+                        asp-route-competicionId="@Model.CompeticionSelected"
+                        asp-route-categoriaId="@Model.CategoriaSelected"
+                        asp-route-generoId="@Model.GeneroSelected"
                         asp-route-grupoId="@Model.GrupoSelected">
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m=>Model.CompeticionSelected)
@@ -132,7 +151,7 @@
                                     }
 
                                 </td>
-                                @if (Model.Partidos[i].RetiradoLocal || Model.Partidos[i].RetiradoVisitante)
+                                @if (Model.Partidos[i].RetiradoLocal || Model.Partidos[i].RetiradoVisitante || Model.Partidos[i].ConResultado)
                                 {
                                     <td>
                                         <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Local" disabled/>
@@ -154,7 +173,7 @@
                                 else
                                 {
                                     <td>
-                                        <input type="number" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set1.Local" />
+                                        <input type="number"  class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set1.Local" />
                                         <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" />
                                     </td>
                                     <td>
@@ -179,7 +198,7 @@
         <div class="card-footer">
             @if (Model.Partidos == null)
             {
-                <h2>Seleccionar Competicion, Categoría, Género y Grupo para cargar los partidos disputados en el día de hoy</h2>
+                <h2>Seleccionar Prueba, Competicion, Categoría, Género y Grupo para cargar los partidos disputados en el día de hoy</h2>
             }
             else if (Model.Partidos.Count > 0)
             {
@@ -228,7 +247,7 @@
             });
         });
     </script>
-    <script>
+    @*<script>
         function applyFilter() {
             var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
             var competicion = $("#competicion-select").val();
@@ -241,5 +260,5 @@
             url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
             window.location.href = url; // recargar la página con la URL actualizada
         }
-    </script>
+    </script>*@
 }

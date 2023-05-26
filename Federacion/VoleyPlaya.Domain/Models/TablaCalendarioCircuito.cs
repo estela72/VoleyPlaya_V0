@@ -25,6 +25,7 @@ namespace VoleyPlaya.Domain.Models
         public string Equipo2 { get; set; }
         public int Jornada { get; set; }
         public int NumGrupos { get; set; }
+        public string Nombre { get; set; }
     }
     public class TablaCalendarioCircuito
     {
@@ -75,7 +76,8 @@ namespace VoleyPlaya.Domain.Models
                                 Equipo1 = local,
                                 Equipo2 = visitante,
                                 Jornada = jornada,
-                                NumGrupos = numgrupos
+                                NumGrupos = numgrupos,
+                                Nombre = nombre+"-Partido"+numPartido
                             });
                         }
                         catch (Exception x)

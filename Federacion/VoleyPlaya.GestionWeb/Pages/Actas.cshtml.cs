@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
@@ -35,40 +36,42 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
         }
 
-        public async Task OnGetAsync(int? competicion, int? categoria, string genero, int? grupo)
+        public async Task OnGetAsync(string prueba, int? competicion, int? categoria, string genero, int? grupo)
         {
-            CompeticionSelected = competicion is not null and > 0 ? competicion.ToString() : null;
-            CategoriaSelected = categoria is not null and > 0 ? categoria.ToString() : null;
-            GeneroSelected = genero;
-            GrupoSelected = grupo is not null and > 0 ? grupo.ToString() : null;
-
-            Competiciones = await GetCompeticiones();
-            Categorias = await GetCategorias();
-            Generos = await GetGeneros();
-            Grupos = await GetGrupos();
+            await FilterSelection(prueba, competicion, categoria, genero, grupo);
 
             await GetPartidosAsync();
         }
 
         private async Task GetPartidosAsync()
         {
+            if (PruebaSelected == null || PruebaSelected.Equals("0"))
+                return;
             if (CompeticionSelected == null)
                 return;
             var categoria = 0;
             var grupo = 0;
             int.TryParse(CategoriaSelected, out categoria);
             int.TryParse(GrupoSelected, out grupo);
-            Partidos = await _service.GetPartidosFiltradosAsync(int.Parse(CompeticionSelected), categoria, GeneroSelected, grupo);
+            Partidos = await _service.GetPartidosFiltradosAsync(PruebaSelected, int.Parse(CompeticionSelected), categoria, GeneroSelected, grupo);
         }
-        public async Task<IActionResult> OnPostAsync(int? competicionId, int? categoriaId, string generoId, int? grupoId)
+        public async Task<IActionResult> OnPostAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {
             try
             {
+                if (string.IsNullOrEmpty(pruebaId) || pruebaId.Equals("0"))
+                {
+                    ErrorMessage = "Se debe indicar, al menos, la prueba";
+                    await FilterSelection(pruebaId, competicionId,categoriaId,generoId,grupoId);
+                    return Page();
+                }
                 if (competicionId == null)
                 {
                     ErrorMessage = "Se debe indicar, al menos, la competición";
+                    await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                     return Page();
                 }
+                PruebaSelected = pruebaId;
                 int categoria = categoriaId != null ? categoriaId.Value : 0;
                 int grupo = grupoId != null ? grupoId.Value : 0;
                 CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
@@ -77,7 +80,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
                 await GetPartidosAsync();
 
-                var edicion = await _service.GetEdicionAsync(competicionId, categoriaId, generoId);
+                var edicion = await _service.GetEdicionAsync(pruebaId, competicionId, categoriaId, generoId);
                 if (edicion.ModeloCompeticion.Equals(EnumModeloCompeticion.JuegosDeportivos))
                     return await RellenarActasJuegosDeportivos(competicionId, categoriaId, generoId);
                 else if (edicion.ModeloCompeticion.Equals(EnumModeloCompeticion.Circuito))
@@ -92,12 +95,13 @@ namespace VoleyPlaya.GestionWeb.Pages
             {
                 
             }
+            await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
             return Page();
         }
 
         private async Task<FileContentResult> RellenarActasCircuito(int? competicionId, int? categoriaId, string generoId)
         {
-            var fileName = $"ActasCircuito_" + competicionId + " " + categoriaId + " " + generoId + ".xlsx";
+            var fileName = $"ActasCircuito_"+ PruebaSelected + competicionId + " " + categoriaId + " " + generoId + ".xlsx";
             GenerarExcelCircuito(Partidos.Count, fileName);
 
             // Escribir el libro de Excel en un MemoryStream
@@ -205,7 +209,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             nuevaHoja.Cells["G10"].Value = "Pista "+partido.Pista;
             nuevaHoja.Cells["O10"].Value = "Fecha: "+partido.FechaHora.ToString("dd/MM/yyyy");
             nuevaHoja.Cells["AA10"].Value = "Hora: "+ partido.FechaHora.ToString("HH:mm");
-            nuevaHoja.Cells["AE10"].Value = "";
+            nuevaHoja.Cells["AE10"].Value = partido.Ronda;
             nuevaHoja.Cells["AH10"].Value = "GRUPO " + partido.Grupo;
 
             nuevaHoja.Cells["D12"].Value = partido.Local;

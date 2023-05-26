@@ -579,6 +579,9 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("ConResultado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -625,12 +628,24 @@ namespace VoleyPlaya.GestionWeb.Data.Migrations
                     b.Property<int?>("ResultadoVisitante")
                         .HasColumnType("int");
 
+                    b.Property<string>("Ronda")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("UserResultado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserValidador")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Validado")
                         .HasColumnType("bit");

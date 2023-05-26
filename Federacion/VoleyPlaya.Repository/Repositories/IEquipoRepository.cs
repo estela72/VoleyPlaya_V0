@@ -19,7 +19,8 @@ namespace VoleyPlaya.Repository.Repositories
     {
         Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
                     double coeficiente, int puntos, int ordenEntrada);
-        Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada);
+        Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, 
+            int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada);
         Task RemoveEquipos(int numEquipos, EdicionGrupo edicionGrupo);
         Task<string> UpdateClasificacionFinal(int edicionId, int equipoId, int clasificacionFinal);
     }

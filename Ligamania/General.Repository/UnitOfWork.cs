@@ -21,6 +21,7 @@ namespace General.CrossCutting.Lib
         Task<EntityEntry> GetEntityEntry(Entity entity);
         Task<int> SaveMauiChangesAsync();
         Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default);
+        string GetCurrentUser();
     }
 
     public abstract class UnitOfWork : IUnitOfWork, IDisposable
@@ -52,6 +53,13 @@ namespace General.CrossCutting.Lib
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
 
+        public string GetCurrentUser()
+        {
+            var httpContextAccessor = _context.GetService<IHttpContextAccessor>();
+            var userId = httpContextAccessor.HttpContext?.User
+                                   .FindFirst(ClaimTypes.NameIdentifier).Value;
+            return userId;
+        }
         private Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             try

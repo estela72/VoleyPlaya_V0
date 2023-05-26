@@ -36,6 +36,8 @@ namespace VoleyPlaya.Domain.Models
         public bool Validado { get; set; }
         public string NombreLocal { get; set; }
         public string NombreVisitante { get; set; }
+        public string Ronda { get; set; }
+        public bool ConResultado { get; set; }
         internal static Partido FromJson(JsonNode jsonPartido)
         {
             Partido partido = new()
@@ -54,7 +56,9 @@ namespace VoleyPlaya.Domain.Models
                 Prueba = jsonPartido["Prueba"]!.GetValue<string>()!,
                 Validado = jsonPartido["Validado"]!.GetValue<bool>()!,
                 NombreLocal = jsonPartido["NombreLocal"]!.GetValue<string>()!,
-                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!
+                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!,
+                Ronda = jsonPartido["Ronda"]!.GetValue<string>()!,
+                ConResultado = jsonPartido["ConResultado"]!.GetValue<bool>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();
@@ -79,7 +83,9 @@ namespace VoleyPlaya.Domain.Models
                 Prueba = jsonPartido["Prueba"]!.GetValue<string>()!,
                 Validado = jsonPartido["Validado"]!.GetValue<bool>()!,
                 NombreLocal = jsonPartido["NombreLocal"]!.GetValue<string>()!,
-                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!
+                NombreVisitante = jsonPartido["NombreVisitante"]!.GetValue<string>()!,
+                Ronda = jsonPartido["Ronda"]!.GetValue<string>()!,
+                ConResultado = jsonPartido["ConResultado"]!.GetValue<bool>()!
             };
             partido.Resultado.Local = jsonPartido["ResultadoLocal"]!.GetValue<int>();
             partido.Resultado.Visitante = jsonPartido["ResultadoVisitante"]!.GetValue<int>();

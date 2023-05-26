@@ -82,7 +82,8 @@ namespace VoleyPlaya.Domain.Models
                         Pista = string.Empty,
                         Local = equipos.Where(e => e.Posicion == partido.Local).First().Nombre,
                         Visitante = equipos.Where(e => e.Posicion == partido.Visitante).First().Nombre,
-                        Resultado = new Resultado()
+                        Resultado = new Resultado(),
+                        Ronda = "I"
                     };
                     if (!Partidos.Exists(p => p.NumPartido == nuevoPartido.NumPartido))
                         Partidos.Add(nuevoPartido);
@@ -106,7 +107,8 @@ namespace VoleyPlaya.Domain.Models
                     Pista = string.Empty,
                     Local = GetEquipo(partido.Equipo1), 
                     Visitante = GetEquipo(partido.Equipo2),
-                    Resultado = new Resultado()
+                    Resultado = new Resultado(),
+                    Ronda = partido.Ronda
                 };
                 if (!Partidos.Exists(p => p.NumPartido == nuevoPartido.NumPartido))
                     Partidos.Add(nuevoPartido);

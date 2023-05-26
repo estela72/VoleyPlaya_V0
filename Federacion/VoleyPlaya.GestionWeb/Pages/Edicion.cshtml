@@ -545,7 +545,7 @@
                         @Html.HiddenFor(m=>Model.GruposFF[i].Id)
                     }
                     <div class="card-body">
-                        @if (Model.GruposFF.Count > 0 && Model.GruposFF.First().Equipos.Count > 0)
+                        @if (Model.GruposFF.Count > 0)
                         {
                             @for (int i = 0; i < Model.GruposFF.Count; i++)
                             {
@@ -596,7 +596,14 @@
                                                         @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Pista,new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
-                                                        @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].NombreLocal, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @if (Model.GruposFF[i].Partidos[j].Local == null)
+                                                        {
+                                                            @Html.DisplayFor(m=>Model.GruposFF[i].Partidos[j].NombreLocal)
+                                                        }
+                                                        else 
+                                                        {
+                                                            @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].Local, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        }
                                                     </td>
 
                                                     <td>
@@ -606,7 +613,14 @@
                                                         @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor", @disabled="disabled" } })
                                                     </td>
                                                     <td>
-                                                        @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].NombreVisitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @if (Model.GruposFF[i].Partidos[j].Visitante == null)
+                                                        {
+                                                            @Html.DisplayFor(m=>Model.GruposFF[i].Partidos[j].NombreVisitante)
+                                                        }
+                                                        else 
+                                                        {
+                                                            @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        }
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set1.Local,new { htmlAttributes = new { @class = "custom-editor" } })
