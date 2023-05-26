@@ -36,7 +36,7 @@ namespace VoleyPlaya.Repository.Repositories
         Task<Edicion> GetFullEdicionAsync(int id);
         Task<Edicion> GetFullEdicionAsync(string nombre);
         Task<Edicion> GetBasicAsync(int id);
-
+        Task<List<Edicion>> GetAllPruebasAsync();
     }
     public class EdicionRepository : Repository<Edicion>, IEdicionRepository
     {
@@ -76,6 +76,13 @@ namespace VoleyPlaya.Repository.Repositories
             }
             return dto;
         }
+
+        public async Task<List<Edicion>> GetAllPruebasAsync()
+        {
+            var ediciones = await GetAllAsync();
+            return ediciones.DistinctBy(e => e.Prueba).ToList();
+        }
+
         public async Task<Edicion> GetBasicAsync(int id)
         {
             var edicion = await FindIncludingAsync(e => e.Id.Equals(id),

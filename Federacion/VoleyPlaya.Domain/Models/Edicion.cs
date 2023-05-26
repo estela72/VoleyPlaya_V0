@@ -272,17 +272,24 @@ namespace VoleyPlaya.Domain.Models
         {
             int numGrupos = 4;
             var numEquiposGrupo = Equipos.Count / numGrupos;
-            int resto = Math.DivRem(Equipos.Count,4, out int restoEquipos);
+            int resto = Math.DivRem(Equipos.Count, 4, out int restoEquipos);
 
             bool impar = false;
             if (numEquiposGrupo % 2 != 0) impar = true;
-            
+
             for (int i = 0; i < numGrupos; i++)
             {
                 string nombre = VoleyPlayaService.GetGroupName(i + 1);
                 EdicionGrupo grupo = NuevoGrupo(numEquiposGrupo, nombre);
                 Grupos.Add(grupo);
             }
+            DistribucionEquiposSerpiente(numEquiposGrupo);
+
+            return true;
+        }
+
+        private void DistribucionEquiposSerpiente(int numEquiposGrupo)
+        {
             // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
             var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
             int seed = 1; // para ver en qué equipo estoy
@@ -299,13 +306,12 @@ namespace VoleyPlaya.Domain.Models
                 equipo.Posicion = grupo.Equipos.Count + 1;
                 grupo.Equipos.Add(equipo);
                 seed++; // vamos sumando por cada equipo que añadimos
-                if (idxFila % 2 == 0) // filas 0, 2, 4
+                if (idxFila % 2 == 0 && !noEsFin) // filas 0, 2, 4
                 {
                     //idxGrupo++;
-                    if (idxGrupo == 3)
+                    if (idxGrupo == Grupos.Count-1)
                     {
                         idxFila++;
-                        //idxGrupo = 3;
                         sumaGrupo = false;
                     }
                     else
@@ -320,7 +326,6 @@ namespace VoleyPlaya.Domain.Models
                     if (idxGrupo == 0)
                     {
                         idxFila++;
-                        //idxGrupo = 0;
                         sumaGrupo = true;
                     }
                     else
@@ -330,15 +335,13 @@ namespace VoleyPlaya.Domain.Models
                     }
                 }
                 if (idxFila == numEquiposGrupo) esUltimaFila = true;
-                if (esUltimaFila&& !noEsFin)
+                if (esUltimaFila && !noEsFin)
                 {
                     noEsFin = true;
-                    idxGrupo = 3;
+                    idxGrupo = Grupos.Count-1;
                     sumaGrupo = false;
                 }
             }
-
-            return true;
         }
 
         private async Task<bool> GenerarGrupoCircuito2GruposAsync(string calendario)
@@ -355,23 +358,24 @@ namespace VoleyPlaya.Domain.Models
                 EdicionGrupo grupo = NuevoGrupo(numEqui, nombre);
                 Grupos.Add(grupo);
             }
-            // Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
-            int idxEquipo = 0;
-            var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
+            DistribucionEquiposSerpiente(numEquiposGrupo);
+            //// Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
+            //int idxEquipo = 0;
+            //var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
 
-            int idxGrupo = 0;
-            for (int i = 0; i < equipos.Count; i++)
-            {
-                Equipo equipo = equipos[i];                
-                EdicionGrupo grupo = Grupos[idxGrupo]; 
-                equipo.Posicion = grupo.Equipos.Count + 1;
-                grupo.Equipos.Add(equipo);
-                if (idxGrupo == 0) idxGrupo = 1;
-                else idxGrupo = 0;
+            //int idxGrupo = 0;
+            //for (int i = 0; i < equipos.Count; i++)
+            //{
+            //    Equipo equipo = equipos[i];                
+            //    EdicionGrupo grupo = Grupos[idxGrupo]; 
+            //    equipo.Posicion = grupo.Equipos.Count + 1;
+            //    grupo.Equipos.Add(equipo);
+            //    if (idxGrupo == 0) idxGrupo = 1;
+            //    else idxGrupo = 0;
 
-                if (restoEquipos > 0 && i == equipos.Count - 2)
-                    idxGrupo = 1;
-            }
+            //    if (restoEquipos > 0 && i == equipos.Count - 2)
+            //        idxGrupo = 1;
+            //}
             return true;
         }
 
@@ -514,6 +518,7 @@ namespace VoleyPlaya.Domain.Models
                         RetiradoVisitante = false,
                         NombreLocal = equipo1,
                         NombreVisitante = equipo2,
+                        Ronda = par.Ronda,
                         Resultado = new Resultado()
                     }) ;
                 }
@@ -523,6 +528,7 @@ namespace VoleyPlaya.Domain.Models
                     partido.Visitante = equipo2;
                     partido.NombreLocal = equipo1;
                     partido.NombreVisitante = equipo2;
+                    partido.Ronda = par.Ronda;
                 }
             }
 

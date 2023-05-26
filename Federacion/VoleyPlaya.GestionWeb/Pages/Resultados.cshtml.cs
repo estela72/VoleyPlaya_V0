@@ -30,50 +30,35 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             Grupos = new SelectList(new List<EdicionGrupo>(), "Id", "Item");
         }
-        public async Task OnGetAsync(int? competicion, int? categoria, string genero, int? grupo)
+        public async Task OnGetAsync(string prueba, int? competicion, int? categoria, string genero, int? grupo)
         {
-            CompeticionSelected = competicion is not null and > 0 ? competicion.ToString() : null;
-            CategoriaSelected = categoria is not null and > 0 ? categoria.ToString() : null;
-            GeneroSelected = genero;
-            GrupoSelected = grupo is not null and > 0 ? grupo.ToString() : null;
-
-            Competiciones = await GetCompeticiones();
-            Categorias = await GetCategorias();
-            Generos = await GetGeneros();
-            Grupos = await GetGrupos();
+            await FilterSelection(prueba, competicion, categoria, genero, grupo);
 
             await GetPartidosAsync();
         }
 
         public async Task GetPartidosAsync()
         {
-            if (CompeticionSelected == null || CategoriaSelected == null || string.IsNullOrEmpty(GeneroSelected) || GeneroSelected.Equals("0") || GrupoSelected == null)
+            if (PruebaSelected==null||PruebaSelected.Equals("0") || CompeticionSelected == null || CategoriaSelected == null || string.IsNullOrEmpty(GeneroSelected) || GeneroSelected.Equals("0") || GrupoSelected == null)
                 return;
-            var allPartidos = await _service.GetPartidosFiltradosAsync(int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, int.Parse(GrupoSelected));
+            var allPartidos = await _service.GetPartidosFiltradosAsync(PruebaSelected,int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, int.Parse(GrupoSelected));
             if (allPartidos.Count > 0 && CompeticionSelected == "3")
                 Partidos = allPartidos;
             else
-                Partidos = allPartidos.Where(p => p.FechaHora.Date == DateTime.Today).ToList();
+                Partidos = allPartidos.Where(p => p.FechaHora.Date == DateTime.Today && !p.Validado).ToList();
         }
-        public async Task<IActionResult> OnPostGuardarAsync(int? competicionId, int? categoriaId, string generoId, int? grupoId)
+        public async Task<IActionResult> OnPostGuardarAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {
             try
             {
-                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
-                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
-                GeneroSelected = generoId;
-                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
-
+                await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                 await _service.UpdatePartidosClasificacionAsync(Partidos);
             }
             catch (Exception x)
             {
                 ErrorMessage = "Se ha producido un error: " + x.Message;
             }
-            Competiciones = await GetCompeticiones();
-            Categorias = await GetCategorias();
-            Generos = await GetGeneros();
-            Grupos = await GetGrupos();
+            await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
             await GetPartidosAsync();
             return Page();
         }

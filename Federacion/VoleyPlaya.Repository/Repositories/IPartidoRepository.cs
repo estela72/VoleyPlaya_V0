@@ -18,8 +18,8 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IPartidoRepository:IRepository<Partido>
     {
         Task<Partido> CheckAddUpdate(EdicionGrupo edicionGrupoDto, Equipo localDto, Equipo visitanteDto, 
-            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante);
-        Task<List<Partido>> GetListaPartidosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
+            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante, string ronda);
+        Task<List<Partido>> GetListaPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
         Task UpdateHoraYPista(Partido partido);
     }
     public class PartidoRepository : Repository<Partido>, IPartidoRepository
@@ -33,7 +33,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Partido> CheckAddUpdate(EdicionGrupo edicionGrupoDto, Equipo localDto, Equipo visitanteDto, 
-            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante)
+            int id, int jornada, int numPartido, DateTime fechaHora, string pista, string label, bool validado, string nombreLocal, string nombreVisitante, string ronda)
         {
             var dto = await GetByIdAsync(id);
             if (dto == null)
@@ -46,7 +46,8 @@ namespace VoleyPlaya.Repository.Repositories
                     Label = label.Trim(),
                     NombreLocal = nombreLocal.Trim(),
                     NombreVisitante = nombreVisitante.Trim(),
-                    Validado = validado
+                    Validado = validado,
+                    Ronda = ronda
                 });
             else
             {
@@ -58,15 +59,19 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.NombreLocal = nombreLocal.Trim();
                 dto.NombreVisitante = nombreVisitante.Trim();
                 dto.Validado = validado;
+                dto.Ronda = ronda;
                 return await UpdateAsync(dto);
             }
             return dto;
 
         }
 
-        public async Task<List<Partido>> GetListaPartidosAsync(int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected)
+        public async Task<List<Partido>> GetListaPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected)
         {
-            var partidos = await FindAllIncludingAsync(p => p.Grupo.Edicion.Competicion.Id.Equals(competicionSelected), p=>p.Grupo.Edicion, p=>p.Grupo.Edicion.Competicion, p=>p.Grupo.Edicion.Categoria);
+            var partidos = await FindAllIncludingAsync(p => p.Grupo.Edicion.Prueba.Equals(pruebaSelected), p=>p.Grupo.Edicion, p=>p.Grupo.Edicion.Competicion, p=>p.Grupo.Edicion.Categoria);
+
+            if (competicionSelected > 0)
+                partidos = partidos.Where(p => p.Grupo.Edicion.Competicion.Id.Equals(competicionSelected)).ToList();
             if (categoriaSelected > 0)
                 partidos = partidos.Where(p => p.Grupo.Edicion.Categoria.Id.Equals(categoriaSelected)).ToList();
 

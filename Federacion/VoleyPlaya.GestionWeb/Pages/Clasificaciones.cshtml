@@ -9,10 +9,25 @@
             <h2>Filtros</h2>
             <div style="max-width: 600px; ">
                 <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Prueba</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.PruebaSelected, @Model.Pruebas, "Seleccione una prueba", new{@class="form-control", id = "prueba-select",
+                        @onchange= "applyFilter()" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
                     <label class="col-sm-4 col-form-label">Competición</label>
                     <div class="col-sm-8">
-                        @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
-                                            @onchange= "applyFilter()" })
+                        @if (!Model.SelectCompeticiones)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @disabled="disabled",@onchange= "applyFilter()" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                        }
                     </div>
                 </div>
                 <div class="form-group row m-1">
@@ -134,12 +149,51 @@
                 </table>
             </div>
             <div class="card-footer">
+                <table class ="table table-borderless table-striped table-hover partidos">
+                    <caption>Partidos</caption>
+                    <thead>
+                        <tr>
+                            <th>J</th>
+                            <th>Partido</th>
+                            <th>Fecha y hora</th>
+                            <th>Pista</th>
+                            <th></th>
+                            <th>Local</th>
+                            <th>Res local</th>
+                            <th>Res visitante</th>
+                            <th>Visitante</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los calendarios filtrados en función de los filtros seleccionados -->
+                        @foreach (var partido in grupo.Partidos)
+                        {
+                            var claseLocal = "";
+                            var claseVisit = "";
+                            if (partido.RetiradoLocal) claseLocal = "retirado";
+                            if (partido.RetiradoVisitante) claseVisit = "retirado";
+                            <tr>
+                                <td>@partido.Jornada</td>
+                                <td>@partido.Label</td>
+                                <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@partido.Pista</td>
+                                <td>@partido.Ronda</td>
+                                <td class="@claseLocal">@partido.Local</td>
+                                <td>@partido.Resultado.Local</td>
+                                <td>@partido.Resultado.Visitante</td>
+                                <td class="@claseVisit">@partido.Visitante</td>
+                                <td>(@partido.Resultado.Set1.Local-@partido.Resultado.Set1.Visitante;@partido.Resultado.Set2.Local-@partido.Resultado.Set2.Visitante;@partido.Resultado.Set3.Local-@partido.Resultado.Set3.Visitante)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         }
     </div>
 }
 @section scripts {
-    <script>
+    @*<script>
         function applyFilter() {
             var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
             var competicion = $("#competicion-select").val();
@@ -152,5 +206,5 @@
             url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
             window.location.href = url; // recargar la página con la URL actualizada
         }
-    </script>
+    </script>*@
 }

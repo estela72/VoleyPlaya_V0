@@ -30,17 +30,9 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
         }
 
-        public async Task OnGetAsync(int? competicion, int? categoria, string genero, int? grupo)
+        public async Task OnGetAsync(string prueba, int? competicion, int? categoria, string genero, int? grupo)
         {
-            CompeticionSelected = competicion is not null and > 0 ? competicion.ToString() : null;
-            CategoriaSelected = categoria is not null and > 0 ? categoria.ToString() : null;
-            GeneroSelected = genero;
-            GrupoSelected = grupo is not null and > 0 ? grupo.ToString() : null;
-
-            Competiciones = await GetCompeticiones();
-            Categorias = await GetCategorias();
-            Generos = await GetGeneros();
-            Grupos = await GetGrupos();
+            await FilterSelection(prueba, competicion, categoria, genero, grupo);
 
             await GetPartidosAsync();
         }
@@ -53,22 +45,24 @@ namespace VoleyPlaya.GestionWeb.Pages
             var grupo = 0;
             int.TryParse(CategoriaSelected, out categoria);
             int.TryParse(GrupoSelected, out grupo);
-            Partidos = await _service.GetPartidosFiltradosAsync(int.Parse(CompeticionSelected), categoria, GeneroSelected, grupo);
+            Partidos = await _service.GetPartidosFiltradosAsync(PruebaSelected, int.Parse(CompeticionSelected), categoria, GeneroSelected, grupo);
         }
-        public async Task<IActionResult> OnPostExportarAsync(int? competicionId, int? categoriaId, string generoId, int? grupoId)
+        public async Task<IActionResult> OnPostExportarAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {
             try
             {
-                if (competicionId==null)
+                if (pruebaId == null || competicionId==null)
                 {
                     ErrorMessage = "Se debe indicar, al menos, la competición";
+                    await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
+
                     return Page();
                 }
                 int categoria = categoriaId !=null ? categoriaId.Value:0;
                 int grupo = grupoId !=null? grupoId.Value:0;
 
                 // Exportar a excel el calendario seleccionado
-                var data = await _service.ExportarCalendarioAsync(competicionId.Value, categoria, generoId, grupo);
+                var data = await _service.ExportarCalendarioAsync(pruebaId, competicionId.Value, categoria, generoId, grupo);
 
                 // Obtén la ruta del directorio personal del usuario
                 string personalFolder = Environment.CurrentDirectory;
@@ -89,16 +83,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
                 System.IO.File.Delete(fileName);
 
-                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
-                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
-                GeneroSelected = generoId;
-                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
-
-                Competiciones = await GetCompeticiones();
-                Categorias = await GetCategorias();
-                Generos = await GetGeneros();
-                Grupos = await GetGrupos();
-
+                await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                 await GetPartidosAsync();
 
                 return File(fileByteArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fName);
@@ -106,6 +91,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch (Exception x)
             {
                 ErrorMessage= "Se ha producido un error: "+x.Message;
+                await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                 return Page();
             }
         }
@@ -120,12 +106,14 @@ namespace VoleyPlaya.GestionWeb.Pages
 
             int j = 0;
             row.CreateCell(j++).SetCellValue("Id");
+            row.CreateCell(j++).SetCellValue("Prueba");
             row.CreateCell(j++).SetCellValue("Competición");
             row.CreateCell(j++).SetCellValue("Categoria");
             row.CreateCell(j++).SetCellValue("Género");
             row.CreateCell(j++).SetCellValue("Grupo");
             row.CreateCell(j++).SetCellValue("Jornada");
             row.CreateCell(j++).SetCellValue("Nº Partido");
+            row.CreateCell(j++).SetCellValue("Ronda");
             row.CreateCell(j++).SetCellValue("Fecha");
             row.CreateCell(j++).SetCellValue("Hora");
             row.CreateCell(j++).SetCellValue("Pista");
@@ -143,12 +131,14 @@ namespace VoleyPlaya.GestionWeb.Pages
                 row = sheet.CreateRow(i);
                 j = 0;
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Id);
+                row.CreateCell(j++).SetCellValue(partidos[i - 1].Prueba);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Competicion);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Categoria);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Genero);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Grupo);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Jornada);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Label);
+                row.CreateCell(j++).SetCellValue(partidos[i - 1].Ronda);
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].FechaHora.ToString("dd/MM/yyyy"));
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].FechaHora.ToString("HH:mm"));
                 row.CreateCell(j++).SetCellValue(partidos[i - 1].Pista);
@@ -193,7 +183,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
 
         }
-        public async Task<IActionResult> OnPostImportarAsync(IFormFile file, int? competicionId, int? categoriaId, string generoId, int? grupoId)
+        public async Task<IActionResult> OnPostImportarAsync(IFormFile file, string pruebaId, int? competicionId, int? categoriaId, string generoId, int? grupoId)
         {
             try
             {
@@ -204,9 +194,17 @@ namespace VoleyPlaya.GestionWeb.Pages
                     return Page();
                 }
 
+                if (pruebaId==null || pruebaId.Equals("0"))
+                {
+                    ErrorMessage = "Se debe indicar, al menos, la competición";
+                    FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
+                    return Page();
+                }
+
                 if (competicionId == null)
                 {
                     ErrorMessage = "Se debe indicar, al menos, la competición";
+                    FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                     return Page();
                 }
                 CompeticionSelected = competicionId.ToString();
@@ -231,18 +229,18 @@ namespace VoleyPlaya.GestionWeb.Pages
                                 int id = Convert.ToInt32(excelRow.GetCell(0)?.ToString()); // Obtén el valor de la primera columna
                                                                                            //DateTime hora = Convert.ToDateTime(excelRow.GetCell(8)?.ToString()); // Obtén el valor de la segunda columna
                                 DateTime hora = new DateTime(1989, 1, 1, 10, 0, 0);
-                                if (excelRow.GetCell(8).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(8)))
+                                if (excelRow.GetCell(10).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(10)))
                                 {
-                                    hora = excelRow.GetCell(8).DateCellValue;
+                                    hora = excelRow.GetCell(10).DateCellValue;
                                 }
                                 else
-                                    hora = Convert.ToDateTime(excelRow.GetCell(8).ToString());
+                                    hora = Convert.ToDateTime(excelRow.GetCell(10).ToString());
 
                                 string pista = "";
-                                if (excelRow.GetCell(9).CellType == CellType.Numeric)
-                                    pista = excelRow.GetCell(9)?.ToString();
-                                else if (excelRow.GetCell(9).CellType == CellType.String)
-                                    pista = excelRow.GetCell(9).StringCellValue;
+                                if (excelRow.GetCell(11).CellType == CellType.Numeric)
+                                    pista = excelRow.GetCell(11)?.ToString();
+                                else if (excelRow.GetCell(11).CellType == CellType.String)
+                                    pista = excelRow.GetCell(11).StringCellValue;
 
                                 partidos.Add(new Partido { Id = id, FechaHora = hora, Pista = pista });
                             }
@@ -255,15 +253,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 }
                 await _service.UpdatePartidosFromExcelAsync(partidos);
 
-                CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
-                CategoriaSelected = categoriaId is not null and > 0 ? categoriaId.ToString() : null;
-                GeneroSelected = generoId;
-                GrupoSelected = grupoId is not null and > 0 ? grupoId.ToString() : null;
-
-                Competiciones = await GetCompeticiones();
-                Categorias = await GetCategorias();
-                Generos = await GetGeneros();
-                Grupos = await GetGrupos();
+                await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
 
                 await GetPartidosAsync();
                 return Page();
@@ -271,6 +261,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch (Exception x)
             {
                 ErrorMessage += "Se ha producido un error: " + x.Message;
+                FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                 return Page();
             }
         }

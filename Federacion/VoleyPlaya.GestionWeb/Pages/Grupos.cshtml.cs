@@ -31,17 +31,9 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
         }
 
-        public async Task<IActionResult> OnGetAsync(int? competicion, int? categoria, string genero)
+        public async Task<IActionResult> OnGetAsync(string prueba, int? competicion, int? categoria, string genero)
         {
-            CompeticionSelected = competicion is not null and > 0 ? competicion.ToString() : null;
-            CategoriaSelected = categoria is not null and > 0 ? categoria.ToString() : null;
-            GeneroSelected = genero;
-
-            Competiciones = await GetCompeticiones();
-            Categorias = await GetCategorias();
-            Generos = await GetGeneros();
-
-            if (competicion == null || categoria == null || categoria==0 || genero == null || genero=="0") return Page();
+            await FilterSelection(prueba, competicion, categoria, genero, 0);
 
             await GetGruposAsync();
             return Page();
@@ -49,20 +41,29 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         private async Task GetGruposAsync()
         {
+            if (string.IsNullOrEmpty(PruebaSelected) || PruebaSelected.Equals("0"))
+                return;
             if (CompeticionSelected == null)
                 return;
             var categoria = 0;
             var grupo = 0;
             int.TryParse(CategoriaSelected, out categoria);
-            Grupos = await _service.GetAllGruposAsync(int.Parse(CompeticionSelected), categoria, GeneroSelected);
+            Grupos = await _service.GetAllGruposAsync(PruebaSelected,int.Parse(CompeticionSelected), categoria, GeneroSelected);
         }
-        public async Task<IActionResult> OnPostExportarAsync(int? competicionId, int? categoriaId, string generoId)
+        public async Task<IActionResult> OnPostExportarAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId)
         {
             try
             {
+                if (pruebaId == null)
+                {
+                    ErrorMessage = "Se debe indicar, al menos, la prueba";
+                    await FilterSelection(pruebaId, competicionId, categoriaId, generoId, 0);
+                    return Page();
+                }
                 if (competicionId==null)
                 {
                     ErrorMessage = "Se debe indicar, al menos, la competición";
+                    await FilterSelection(pruebaId, competicionId, categoriaId, generoId, 0);
                     return Page();
                 }
                 int categoria = categoriaId !=null ? categoriaId.Value:0;
@@ -101,7 +102,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
         }
 
-        private IWorkbook GenerarExcelFile(string fileName, string sheetName, string competicion, string categoria)//, Edicion edicion, EdicionGrupo grupo)
+        private IWorkbook GenerarExcelFile(string fileName, string sheetName, string competicion, string categoria)
         {
             // Crear un nuevo libro de Excel
             IWorkbook workbook = new XSSFWorkbook();
