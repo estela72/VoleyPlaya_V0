@@ -718,6 +718,19 @@ namespace VoleyPlaya.Repository.Services
             var pruebas = dtos.Select(e => new { Id = e.Id, Nombre = e.Prueba }).ToList();
             return JsonSerializer.Serialize(pruebas, Options);
         }
-        
+        public async Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo)
+        {
+            var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g => g.Id.Equals(id), g => g.Partidos);
+            foreach (var partido in grupo.Partidos)
+            {
+                if (string.IsNullOrEmpty(partido.Pista) || (!string.IsNullOrEmpty(partido.Pista) && sobreescribirPistasGrupo))
+                {
+                    partido.Pista = pistaGrupo;
+                    await _voleyPlayaUoW.PartidoRepository.UpdateAsync(partido);
+                }
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return "Pistas actualizadas";
+        }
     }
 }

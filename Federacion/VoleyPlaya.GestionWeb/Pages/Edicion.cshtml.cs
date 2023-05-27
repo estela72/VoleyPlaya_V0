@@ -49,6 +49,10 @@ namespace VoleyPlaya.GestionWeb.Pages
         [BindProperty]
         public List<Equipo> EquiposCF { get; set; }
 
+        [BindProperty]
+        public string PistaGrupo { get; set; }
+        [BindProperty]
+        public bool SobreescribirPistasGrupo { get; set; }
         private readonly IConfiguracionService _configuracionService;
 
         public EdicionModel (IEdicionService service, IConfiguracionService configuracionService) : base(service)
@@ -496,5 +500,67 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
+        public async Task<IActionResult> OnPostAsignarPistaGrupoAsync(int id, string pista, bool sobreescribir)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(pista))
+                {
+                    ErrorMessage = "Se debe asignar una pista válida";
+                    await GetEdicion(Edicion.Nombre);
+                    await Fill();
+                    return Page();
+                }
+                var str = await _service.ActualizarPistaGrupo(id, pista, sobreescribir);
+                ErrorMessage = str;
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error actualizando la clasificación final: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostAdd10Minutes(int id)
+        {
+            try
+            {
+                //var str = await _service.ActualizarPistaGrupo(id, PistaGrupo, SobreescribirPistasGrupo);
+                //ErrorMessage = str;
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error actualizando la clasificación final: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPostAdd60Minutes(int id)
+        {
+            try
+            {
+                //var str = await _service.ActualizarPistaGrupo(id, PistaGrupo, SobreescribirPistasGrupo);
+                //ErrorMessage = str;
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error actualizando la clasificación final: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
+
     }
 }

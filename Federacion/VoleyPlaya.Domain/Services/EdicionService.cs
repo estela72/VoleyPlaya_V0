@@ -75,6 +75,7 @@ namespace VoleyPlaya.Domain.Services
         Task<Edicion> GetEdicionAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId);
         Task<string> ValidarPartidoAsync(int idPartido, bool activo);
         Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos);
+        Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo);
     }
     public class EdicionService : IEdicionService
     {
@@ -486,6 +487,11 @@ namespace VoleyPlaya.Domain.Services
         {
             var equi = _mapper.Map<List<VoleyPlaya.Repository.Models.Equipo>>(equipos);
             return await _service.ActualizarClasificacionFinal(edicionId, equi);
+        }
+
+        public async Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo)
+        {
+            return await _service.ActualizarPistaGrupo(id, pistaGrupo, sobreescribirPistasGrupo);
         }
     }
 }
