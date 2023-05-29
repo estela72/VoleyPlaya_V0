@@ -112,17 +112,6 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             try
             {
-                if (Edicion.Id != 0)
-                    PasoActual = 1;
-                if (Edicion.Equipos.Count > 0)
-                    PasoActual = 2;
-                if (Edicion.Grupos!.Count > 0)
-                    PasoActual = 3;
-                if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count > 0)
-                    PasoActual = 4;
-                if (Edicion.Grupos!.Exists(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)))
-                    PasoActual = 5;
-
                 ListaEquipos = new SelectList(Edicion.Equipos.OrderBy(e => e.Nombre).Select(e => e.Nombre).ToList());
                 TipoCalendarios = new SelectList(await TablaCalendario.LoadTipos());
                 if (string.IsNullOrEmpty(Edicion.TipoCalendario))
@@ -155,8 +144,20 @@ namespace VoleyPlaya.GestionWeb.Pages
                 GruposLiga = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
                 GruposFF = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).ToList();
                 EquiposCF = Edicion.Equipos.OrderBy(e => e.ClasificacionFinal).ToList();
+
+                if (Edicion.Id != 0)
+                    PasoActual = 1;
+                if (Edicion.Equipos.Count > 0)
+                    PasoActual = 2;
+                if (Edicion.Grupos!.Count > 0)
+                    PasoActual = 3;
+                if (Edicion.Grupos!.Count > 0 && Edicion.Grupos.First().Partidos.Count > 0)
+                    PasoActual = 4;
+                if (Edicion.Grupos!.Exists(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)))
+                    PasoActual = 5;
+
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 throw new Exception("No se pueden completar los datos de la competición");
             }
@@ -406,7 +407,23 @@ namespace VoleyPlaya.GestionWeb.Pages
             foreach (var grupo in grupos)
                 await _service.UpdateDatosPartidosAsync(grupo);
         }
-
+        public async Task<IActionResult> OnPostActualizarClasificacionAsync()
+        {
+            try
+            {
+                await _service.UpdateClasificacionGrupos(Edicion.Id);
+            }
+            catch(Exception x)
+            {
+                ErrorMessage = "Ha habido un error actualizando la clasificación de los grupos";
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
         public async Task<IActionResult> OnPostGenerarFaseFinalAsync()
         {
             try

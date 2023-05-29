@@ -75,6 +75,8 @@ namespace VoleyPlaya.Domain.Services
         Task<Edicion> GetEdicionAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId);
         Task<string> ValidarPartidoAsync(int idPartido, bool activo);
         Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos);
+        Task<string> UpdateClasificacionGrupos(int edicionId);
+
     }
     public class EdicionService : IEdicionService
     {
@@ -329,8 +331,11 @@ namespace VoleyPlaya.Domain.Services
             string jsonString = System.Text.Json.JsonSerializer.Serialize(partidos);
             var grupoDto = await _service.UpdateResultadosPartidosAsync(jsonString);
             var grupo = _mapper.Map<EdicionGrupo>(grupoDto);//EdicionGrupo.FromJson(JsonNode.Parse(json)!);
-            await UpdateClasificacion(grupo);
-            await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
+            if (grupo.TipoGrupo.Equals(EnumTipoGrupo.Liga))
+            {
+                await UpdateClasificacion(grupo);
+                await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
+            }
         }
 
         public async Task AddEquipo(int edicionId, string nuevoEquipo)
@@ -486,6 +491,17 @@ namespace VoleyPlaya.Domain.Services
         {
             var equi = _mapper.Map<List<VoleyPlaya.Repository.Models.Equipo>>(equipos);
             return await _service.ActualizarClasificacionFinal(edicionId, equi);
+        }
+        public async Task<string> UpdateClasificacionGrupos(int edicionId)
+        {
+            var edicion = await _service.GetEdicionByIdAsync(edicionId);
+            var edi = _mapper.Map<Edicion>(edicion);
+            foreach (var grupo in edi.Grupos.Where(g=>g.TipoGrupo.Equals(EnumTipoGrupo.Liga)))
+            {
+                await UpdateClasificacion(grupo);
+                await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
+            }
+            return "Clasificación grupos actualizada";
         }
     }
 }

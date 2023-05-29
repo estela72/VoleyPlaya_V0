@@ -31,6 +31,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 return;
 
             Clasificaciones = await _service.GetClasificacionEquiposAsync(PruebaSelected, int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, GrupoSelected);
+            Clasificaciones = Clasificaciones.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
         }
     }
 }
