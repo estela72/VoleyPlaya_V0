@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HzjhtAHNDdGfIECUu1R9v3H7vtB1fSb0EDUQGQygWpk=",
+  "Hash": "n7Jd7PH8WG2uXEPeda8bcfJlVTZBuX6vLwH5XwN20eI=",
   "Source": "VoleyPlaya.GestionWeb",
   "BasePath": "_content/VoleyPlaya.GestionWeb",
   "Mode": "Default",
@@ -2140,40 +2140,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
-    },
-    {
-      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada chicos.jpg",
-      "SourceId": "VoleyPlaya.GestionWeb",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
-      "BasePath": "_content/VoleyPlaya.GestionWeb",
-      "RelativePath": "img/imagen portada chicos.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\imagen portada chicos.jpg"
-    },
-    {
-      "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada entorno.jpg",
-      "SourceId": "VoleyPlaya.GestionWeb",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\",
-      "BasePath": "_content/VoleyPlaya.GestionWeb",
-      "RelativePath": "img/imagen portada entorno.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\imagen portada entorno.jpg"
     },
     {
       "Identity": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada.jpg",

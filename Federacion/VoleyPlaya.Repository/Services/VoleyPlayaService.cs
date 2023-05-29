@@ -255,8 +255,7 @@ namespace VoleyPlaya.Repository.Services
             int grupoId = await UpdateResultadoPartidos(partidos);
             await _voleyPlayaUoW.SaveEntitiesAsync();
 
-            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(grupoId);
-            //return JsonSerializer.Serialize<EdicionGrupo>(grupoDto, Options);
+            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g=>g.Id.Equals(grupoId), g=>g.Equipos, g=>g.Partidos);
             return grupoDto;
         }
         public static string GetNombreEdicion(string temporada, string prueba, string competicion, string categoria, string genero)
@@ -310,11 +309,13 @@ namespace VoleyPlaya.Repository.Services
                 int numPartido = partido["NumPartido"]!.GetValue<int>()!;
                 DateTime fechaHora = partido["FechaHora"]!.GetValue<DateTime>()!;
                 string pista = partido["Pista"]!=null?partido["Pista"]!.GetValue<string>():string.Empty;
+
                 string local = string.Empty;
                 if (partido["Local"] != null)
                     local = partido["Local"]!.GetValue<string>();
                 else if (partido["NombreLocal"] != null)
                     local = partido["NombreLocal"]!.GetValue<string>();
+
                 string visitante = string.Empty;
                 if (partido["Visitante"] != null)
                     visitante = partido["Visitante"]!.GetValue<string>();
@@ -356,10 +357,7 @@ namespace VoleyPlaya.Repository.Services
                 partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante,user);
 
                 grupoDto!.AddPartido(partidoDto);
-
-                //await _voleyPlayaUoW.PartidoRepository.UpdateAsync(partidoDto);
             }
-            //await _voleyPlayaUoW.EdicionGrupoRepository.UpdateAsync(grupoDto);
         }
         private async Task<int> UpdateResultadoPartidos(JsonArray partidos)
         {
@@ -373,6 +371,8 @@ namespace VoleyPlaya.Repository.Services
                 JsonObject resultado = partido["Resultado"]!.AsObject()!;
                 int resLocal = resultado["Local"]!.GetValue<int>()!;
                 int resVisitante = resultado["Visitante"]!.GetValue<int>();
+                if (partidoDto.ConResultado || partidoDto.Validado || (resLocal == 0 && resVisitante == 0))
+                    continue;
 
                 JsonObject set1 = resultado["Set1"]!.AsObject()!;
                 int set1Local = set1["Local"]!.GetValue<int>();
@@ -383,8 +383,8 @@ namespace VoleyPlaya.Repository.Services
                 JsonObject set3 = resultado["Set3"]!.AsObject()!;
                 int set3Local = set3["Local"]!.GetValue<int>();
                 int set3Visitante = set3["Visitante"]!.GetValue<int>();
+
                 partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante, user);
-                //await _voleyPlayaUoW.PartidoRepository.UpdateAsync(partidoDto);
             }
             return grupoId;
         }
