@@ -527,7 +527,8 @@
                         }
                     </div>
                     <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" value="Guardar Partidos" asp-page-handler="GuardarPartidos" />
+                        <input type="submit" class="btn btn-primary m-2" value="Guardar Partidos" asp-page-handler="GuardarPartidos" />
+                        <input type="submit" class="btn btn-primary m-2" value="Actualizar Clasificacion Grupos" asp-page-handler="ActualizarClasificacion" />
                     </div>
                 </div>
             </form>
@@ -607,9 +608,7 @@
                                             {
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Id)
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].NumPartido)
-                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Jornada)
-                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Local)
-                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Visitante)
+                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Ronda)
                                                 var listaEquipos = new SelectList(Model.GruposFF[i].Equipos.Select(e => e.Nombre.Trim()).ToList());
                                                 var clase = "";
                                                 @if (Model.GruposFF[i].Partidos[j].RetiradoLocal || Model.GruposFF[i].Partidos[j].RetiradoVisitante)
@@ -636,7 +635,8 @@
                                                         }
                                                         else 
                                                         {
-                                                            @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].Local, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                            @Html.DropDownListFor(m=>@m.GruposFF[@i].Partidos[@j].Local, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                            @*<select asp-for="@Model.GruposFF[@i].Partidos[@j].Local" asp-items="@listaEquipos" class="custom-editor"><option>Seleccionar un equipo</option></select>*@
                                                         }
                                                     </td>
 
@@ -653,7 +653,8 @@
                                                         }
                                                         else 
                                                         {
-                                                            @Html.DropDownListFor(m=>Model.GruposFF[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                            @Html.DropDownListFor(m=>@m.GruposFF[@i].Partidos[@j].Visitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                            @*<select asp-for="@Model.GruposFF[@i].Partidos[@j].Visitante" asp-items="@listaEquipos" class="custom-editor"><option>Seleccionar un equipo</option></select>*@
                                                         }
                                                     </td>
                                                     <td>
@@ -665,11 +666,9 @@
                                                         @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set3.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
-                                                        @Html.AntiForgeryToken()
                                                         @Html.CheckBoxFor(m=>Model.GruposFF[i].Partidos[j].Validado, new { @class = "custom-editor-checkbox validar-chkbox", data_id=@Model.GruposFF[i].Partidos[j].Id})
                                                     </td>
                                                     <td>
-                                                        @Html.AntiForgeryToken()
                                                         <button type="submit" class="btn btn-danger m-1" asp-page-handler="DeletePartido" asp-route-id="@Model.GruposFF[i].Partidos[j].Id"
                                                                                                         data-placement="right"
                                                                                                         title="Borrar partido">

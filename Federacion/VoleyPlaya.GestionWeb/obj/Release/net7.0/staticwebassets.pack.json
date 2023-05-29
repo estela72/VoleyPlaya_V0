@@ -317,14 +317,6 @@
       "PackagePath": "staticwebassets\\img\\Logo_sinfondo_oscuro_REC.png"
     },
     {
-      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada chicos.jpg",
-      "PackagePath": "staticwebassets\\img\\imagen portada chicos.jpg"
-    },
-    {
-      "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada entorno.jpg",
-      "PackagePath": "staticwebassets\\img\\imagen portada entorno.jpg"
-    },
-    {
       "Id": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\wwwroot\\img\\imagen portada.jpg",
       "PackagePath": "staticwebassets\\img\\imagen portada.jpg"
     },

@@ -479,6 +479,8 @@ namespace VoleyPlaya.Domain.Models
             var partidosCalendario = await calendario.GetPartidosByNumGrupo(numGrupos);
             foreach(var par in partidosCalendario)
             {
+                var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
+                if (partido.ConResultado && partido.Validado) continue;
                 bool asignadoE1;
                 bool asignadoE2;
                 var equipo1 = GetEquipo(par.Equipo1, grupo, out asignadoE1);
@@ -497,7 +499,6 @@ namespace VoleyPlaya.Domain.Models
                     if (existeE2 == null)
                         grupo.Equipos.Add(e2);
                 }
-                var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
                 if (partido == null)
                 {
                     grupo.Partidos.Add(new Partido
@@ -610,12 +611,12 @@ namespace VoleyPlaya.Domain.Models
             if (partido.Resultado.Local > partido.Resultado.Visitante)
             {
                 asignado = true;
-                return partido.Local;
+                return partido.Visitante;
             }
             else if (partido.Resultado.Local < partido.Resultado.Visitante)
             {
                 asignado = true;
-                return partido.Visitante;
+                return partido.Local;
             }
             else
                 return equipo;
@@ -627,12 +628,12 @@ namespace VoleyPlaya.Domain.Models
             if (partido.Resultado.Local > partido.Resultado.Visitante)
             {
                 asignado = true;
-                return partido.Visitante;
+                return partido.Local;
             }
             else if (partido.Resultado.Local < partido.Resultado.Visitante)
             {
                 asignado = true;
-                return partido.Local;
+                return partido.Visitante;
             }
             else
                 return equipo;
