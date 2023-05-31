@@ -361,7 +361,7 @@
                                 @Html.HiddenFor(m=>Model.GruposLiga[i].Id)
                                 <div style="background-color:lightgray">
                                     <h3>Grupo @Model.GruposLiga[i].Name</h3>
-                                    <div class="offset-2 m-2 p-2" style="max-width: 800px;border:double">
+                                    <!--<div class="offset-2 m-2 p-2" style="max-width: 800px;border:double">
                                         <div class="row form-group">
                                             <label class="col-sm-4 col-form-label">Pista a asignar a todo el grupo: </label>
                                             <div class="col-sm-2">
@@ -379,15 +379,16 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <table class="table table-fit" id="tablaPartidos">
                                         <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
                                         <thead>
                                             <tr>
                                                 <th>Jornada</th>
                                                 <th>Nº Partido</th>
+                                                <th>Ronda</th>
                                                 <th>Fecha</th>
-                                                <th></th>
+                                                <!--<th></th>-->
                                                 <th>Pista</th>
                                                 <th>Local</th>
                                                 <th colspan="2">Resultado</th>
@@ -418,11 +419,14 @@
                                                         @Html.EditorFor(m =>Model.GruposLiga[i].Partidos[j].Label, new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
-                                                        @*@Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].FechaHora, new { htmlAttributes = new { @class = "custom-editor-date fechaPartido" } })*@
-                                                        <input type="datetime" asp-for="@Model.GruposLiga[i].Partidos[j].FechaHora" class="custom-editor-date fechaPartido" />
+                                                        @Html.DisplayFor(m =>Model.GruposLiga[i].Partidos[j].Ronda, new { htmlAttributes = new { @class = "custom-editor" } })
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].FechaHora, new { htmlAttributes = new { @class = "custom-editor-date fechaPartido" } })
+                                                        <!--<input type="datetime" asp-for="@Model.GruposLiga[i].Partidos[j].FechaHora" class="custom-editor-date fechaPartido" />-->
 
                                                     </td>
-                                                        @if (j != 0)
+                                                       <!-- @if (j != 0)
                                                         {
                                                         <td>
                                                             <label>+20 minutos</label>
@@ -432,7 +436,7 @@
                                                         </td>
                                                         }
                                                         else
-                                                        {<td></td>}
+                                                        {<td></td>}-->
                                                     <td>
                                                         @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Pista,new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
@@ -473,7 +477,6 @@
                                             }
                                         </tbody>
                                     </table>
-                                    @*Clasificaciones*@
                                     <table class="table table-borderless table-striped table-hover partidos">
                                         <caption style="caption-side:top;font-size:larger;font-weight:bold">Clasificación</caption>
                                         <thead>
@@ -546,9 +549,21 @@
                         @Html.HiddenFor(m=>Model.EdicionName)
                         @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
                         @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
-                        <input type="submit" class="btn btn-primary" value="Generar/Actualizar Fase Final" />
+                        <div class="row form-group">
+                            <label class="col-sm-2 col-form-label">Fecha y hora del primer partido: </label>
+                            <div class="col-sm-2">
+                                <input type="datetime-local" class="form-control" asp-for="@Model.FechaFaseFinal" />
+                            </div>
+                            <label class="col-sm-2 col-form-label">Intervalo entre partidos (en minutos)</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" asp-for="@Model.IntervaloMinutosFaseFinal" />
+                            </div>
+
+                            <input type="submit" class="btn btn-primary" value="Generar/Actualizar Fase Final" />
+                        </div>
                     </form>
                 </div>
+
                 <form method="post" asp-page-handler="GuardarPartidosFaseFinal">
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m=>Model.Edicion.Id)
@@ -593,6 +608,7 @@
                                             <tr>
                                                 <th>Jornada</th>
                                                 <th>Nº Partido</th>
+                                                <th>Ronda</th>
                                                 <th>Fecha</th>
                                                 <th>Pista</th>
                                                 <th>Local</th>
@@ -608,7 +624,6 @@
                                             {
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Id)
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].NumPartido)
-                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Ronda)
                                                 var listaEquipos = new SelectList(Model.GruposFF[i].Equipos.Select(e => e.Nombre.Trim()).ToList());
                                                 var clase = "";
                                                 @if (Model.GruposFF[i].Partidos[j].RetiradoLocal || Model.GruposFF[i].Partidos[j].RetiradoVisitante)
@@ -621,6 +636,9 @@
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m =>Model.GruposFF[i].Partidos[j].Label, new { htmlAttributes = new { @class = "custom-editor" } })
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m =>Model.GruposFF[i].Partidos[j].Ronda, new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].FechaHora, new { htmlAttributes = new { @class = "custom-editor-date" } })

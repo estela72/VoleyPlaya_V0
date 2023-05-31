@@ -107,6 +107,7 @@
                         <tr>
                             <th>Competición</th>
                             <th>J</th>
+                            <th>Ronda</th>
                             <th>Partido</th>
                             <th>Fecha y hora</th>
                             <th>Pista</th>
@@ -128,13 +129,14 @@
                             <tr>
                                 <td>@partido.Competicion @partido.Categoria @partido.Genero Grupo @partido.Grupo</td>
                                 <td>@partido.Jornada</td>
+                                <td>@partido.Ronda</td>
                                 <td>@partido.Label</td>
                                 <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
                                 <td>@partido.Pista</td>
-                                <td class="@claseLocal">@partido.Local</td>
+                                <td class="@claseLocal">@partido.NombreLocal</td>
                                 <td>@partido.Resultado.Local</td>
                                 <td>@partido.Resultado.Visitante</td>
-                                <td class="@claseVisit">@partido.Visitante</td>
+                                <td class="@claseVisit">@partido.NombreVisitante</td>
                                 <td>(@partido.Resultado.Set1.Local-@partido.Resultado.Set1.Visitante;@partido.Resultado.Set2.Local-@partido.Resultado.Set2.Visitante;@partido.Resultado.Set3.Local-@partido.Resultado.Set3.Visitante)</td>
                             </tr>
                         }

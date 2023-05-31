@@ -53,6 +53,12 @@ namespace VoleyPlaya.GestionWeb.Pages
         public string PistaGrupo { get; set; }
         [BindProperty]
         public bool SobreescribirPistasGrupo { get; set; }
+
+        [BindProperty]
+        public DateTime FechaFaseFinal { get; set; } = DateTime.Today;
+        [BindProperty]
+        public int IntervaloMinutosFaseFinal { get; set; } = 20;
+
         private readonly IConfiguracionService _configuracionService;
 
         public EdicionModel (IEdicionService service, IConfiguracionService configuracionService) : base(service)
@@ -437,7 +443,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
                     await GetEdicion(EdicionName);
 
-                if (!await _service.GenerarFaseFinal(Edicion.Id))
+                if (!await _service.GenerarFaseFinal(Edicion.Id, FechaFaseFinal, IntervaloMinutosFaseFinal))
                     ErrorMessage = "Se ha producido un error generando la fase final";
 
                 await GetEdicion(Edicion.Nombre);

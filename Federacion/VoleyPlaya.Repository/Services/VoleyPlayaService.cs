@@ -603,9 +603,13 @@ namespace VoleyPlaya.Repository.Services
         public async Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(string prueba, int idCompeticion, int idCategoria, string genero)
         {
             var edi = await _voleyPlayaUoW.EdicionRepository.FindAsync(e => e.Prueba.Equals(prueba) && e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero));
-            var edicion = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edi.Id);
-            var grupos = edicion.Grupos.ToList();
-            return grupos;
+            if (edi != null)
+            {
+                var edicion = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edi.Id);
+                var grupos = edicion.Grupos.ToList();
+                return grupos;
+            }
+            return null;
         }
 
         public async Task<bool> SaveTablaCalendarios(List<TablaCalendario> partidos)

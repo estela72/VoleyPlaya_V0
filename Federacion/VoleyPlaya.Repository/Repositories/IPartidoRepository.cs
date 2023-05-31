@@ -88,7 +88,7 @@ namespace VoleyPlaya.Repository.Repositories
         {
             var part = await GetByIdAsync(partido.Id);
             if (part == null) return;
-            part.FechaHora = new DateTime(part.FechaHora.Value.Year, part.FechaHora.Value.Month, part.FechaHora.Value.Day, partido.FechaHora.Value.Hour, partido.FechaHora.Value.Minute,0);
+            part.FechaHora = new DateTime(partido.FechaHora.Value.Year, partido.FechaHora.Value.Month, partido.FechaHora.Value.Day, partido.FechaHora.Value.Hour, partido.FechaHora.Value.Minute,0);
             part.Pista = partido.Pista;
             await UpdateAsync(part);
         }

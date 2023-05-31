@@ -71,16 +71,12 @@ namespace VoleyPlaya.Domain.Services
         Task<string> UpdatePartidosFromExcelAsync(List<Partido> partidos);
         Task<List<EdicionGrupo>> GetAllGruposAsync(string prueba, int competicion, int categoria, string generoSelected);
         Task<EnumModeloCompeticion> GetModeloCompeticionAsyn(int id);
-        Task<bool> GenerarFaseFinal(int id);
+        Task<bool> GenerarFaseFinal(int id, DateTime fechaFaseFinal, int intervaloMin);
         Task<Edicion> GetEdicionAsync(string pruebaId, int? competicionId, int? categoriaId, string generoId);
         Task<string> ValidarPartidoAsync(int idPartido, bool activo);
         Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos);
-<<<<<<< HEAD
         Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo);
-=======
         Task<string> UpdateClasificacionGrupos(int edicionId);
-
->>>>>>> origin/develop
     }
     public class EdicionService : IEdicionService
     {
@@ -460,7 +456,7 @@ namespace VoleyPlaya.Domain.Services
             return (EnumModeloCompeticion)Enum.Parse(typeof(EnumModeloCompeticion), modelo);
         }
 
-        public async Task<bool> GenerarFaseFinal(int id)
+        public async Task<bool> GenerarFaseFinal(int id, DateTime fechaFaseFinal, int intervaloMin)
         {
             //Generar la fase final para la edición con id=id
             var edi = await _service.GetEdicionByIdAsync(id);
@@ -468,7 +464,7 @@ namespace VoleyPlaya.Domain.Services
 
             var tablaCalendario = new TablaCalendarioCircuito(_service, _mapper);
 
-            if (await edicion.GenerarFaseFinal(tablaCalendario))
+            if (await edicion.GenerarFaseFinal(tablaCalendario, fechaFaseFinal, intervaloMin))
             {
                 var grupo = edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).FirstOrDefault();
                 if (grupo == null) return false;
@@ -496,12 +492,11 @@ namespace VoleyPlaya.Domain.Services
             var equi = _mapper.Map<List<VoleyPlaya.Repository.Models.Equipo>>(equipos);
             return await _service.ActualizarClasificacionFinal(edicionId, equi);
         }
-<<<<<<< HEAD
 
         public async Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo)
         {
             return await _service.ActualizarPistaGrupo(id, pistaGrupo, sobreescribirPistasGrupo);
-=======
+        }
         public async Task<string> UpdateClasificacionGrupos(int edicionId)
         {
             var edicion = await _service.GetEdicionByIdAsync(edicionId);
@@ -512,7 +507,6 @@ namespace VoleyPlaya.Domain.Services
                 await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
             }
             return "Clasificación grupos actualizada";
->>>>>>> origin/develop
         }
     }
 }
