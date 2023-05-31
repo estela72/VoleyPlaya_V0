@@ -449,23 +449,23 @@ namespace VoleyPlaya.Domain.Models
             return grupo;
         }
 
-        internal async Task<bool> GenerarFaseFinal(TablaCalendarioCircuito calendario)
+        internal async Task<bool> GenerarFaseFinal(TablaCalendarioCircuito calendario, DateTime fechaFaseFinal, int intervaloMin)
         {
             //if (ModeloCompeticion.Equals(EnumModeloCompeticion.Circuito))
-                return await GenerarFaseFinalCircuito(calendario);
+                return await GenerarFaseFinalCircuito(calendario, fechaFaseFinal, intervaloMin);
 
             return false;
         }
 
-        private async Task<bool> GenerarFaseFinalCircuito(TablaCalendarioCircuito calendario)
+        private async Task<bool> GenerarFaseFinalCircuito(TablaCalendarioCircuito calendario, DateTime fechaFaseFinal, int intervaloMin)
         {
             // cuantos grupos tiene la edicion -> para poder seleccionar el calendario
             var numGrupos = Grupos.Where(g=>g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).Count();
-            if (numGrupos != 1 && numGrupos != 2 && numGrupos!=3 && numGrupos != 4)
+            if (numGrupos != 1 && numGrupos != 2 && numGrupos!=3 && numGrupos != 4 && numGrupos != 5 && numGrupos != 6 && numGrupos != 14 && numGrupos!=28 && numGrupos!=34)
                 return false;
 
             // 4: 12 equipos, 3: 5 equipos, 2: 6 equipos, 1: 4 equipos
-            var numEquipos = numGrupos == 4 ? 12 : numGrupos == 3 ? 10 : numGrupos == 2 ? 6 : numGrupos == 1 ? 4 : 0;
+            var numEquipos = numGrupos == 34 ? 170 : numGrupos == 28 ? 140 : numGrupos == 14 ? 70 : numGrupos == 6 ? 34 : numGrupos==5 ? 25 : numGrupos == 4 ? 12 : numGrupos == 3 ? 10 : numGrupos == 2 ? 6 : numGrupos == 1 ? 4 : 0;
             if (numEquipos == 0)
                 return false;
             EdicionGrupo grupo;
@@ -477,10 +477,11 @@ namespace VoleyPlaya.Domain.Models
             grupo.TipoGrupo = EnumTipoGrupo.Final;
 
             var partidosCalendario = await calendario.GetPartidosByNumGrupo(numGrupos);
-            foreach(var par in partidosCalendario)
+            DateTime fechaHora = fechaFaseFinal;
+            foreach (var par in partidosCalendario)
             {
                 var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
-                if (partido.ConResultado && partido.Validado) continue;
+                if (partido!=null && partido.ConResultado && partido.Validado) continue;
                 bool asignadoE1;
                 bool asignadoE2;
                 var equipo1 = GetEquipo(par.Equipo1, grupo, out asignadoE1);
@@ -505,7 +506,7 @@ namespace VoleyPlaya.Domain.Models
                     {
                         Categoria = CategoriaStr,
                         Competicion = Competicion,
-                        FechaHora = DateTime.Today,
+                        FechaHora = fechaHora,
                         Genero = GeneroStr,
                         Grupo = grupo.Name,
                         Jornada = par.Jornada,
@@ -525,12 +526,14 @@ namespace VoleyPlaya.Domain.Models
                 }
                 else
                 {
+                    partido.FechaHora = fechaHora;
                     partido.Local = equipo1;
                     partido.Visitante = equipo2;
                     partido.NombreLocal = equipo1;
                     partido.NombreVisitante = equipo2;
                     partido.Ronda = par.Ronda;
                 }
+                fechaHora = fechaHora.AddMinutes(intervaloMin);
             }
 
             var existeGrupo = Grupos.Where(g => g.Name.Equals(grupo.Name)).FirstOrDefault();
@@ -547,7 +550,38 @@ namespace VoleyPlaya.Domain.Models
         private string GetEquipo(string equipo, EdicionGrupo grupoFF, out bool asignado)
         {
             asignado = false;
-            if (char.IsDigit(equipo[0])) // vamos a buscar el equipo en una posición determinada del Grupo indicado
+            if (Utilities.EsMejorPuesto(equipo))
+            {
+                // 1M4 -> obtener el primer mejor 4º, 2M4 -> obtener el 2º mejor 4º
+                // Obtener todos los 4º de cada grupo
+                // Obtener el mejor de esos 4º o el 2º mejor de esos 4º
+
+                var puesto = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
+                var posicion = Convert.ToInt32(Utilities.ObtenerDigitosAlFinal(equipo));
+                List<Equipo> mejoresPos = new List<Equipo>();
+                var grupos = Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
+                foreach (var grupo in grupos)
+                {
+                    if (!grupo.TodosPartidosValidados())
+                        return equipo;
+                    // me quedo con el mejor del puesto indicado (mejor 4º mejor 3º, etc)
+                    var equi1 = grupo.Equipos.OrderByDescending(e => e.Puntos)
+                        .ThenByDescending(e => e.Coeficiente)
+                        .Skip(posicion - 1)
+                        .FirstOrDefault();
+                    mejoresPos.Add(equi1);
+                }
+                // nos quedamos con el 'puesto' mejor
+                var equi = mejoresPos.OrderByDescending(e => e.Puntos)
+                        .ThenByDescending(e => e.Coeficiente)
+                        .Skip(puesto-1)
+                        .FirstOrDefault();
+                if (equi == null) return equipo;
+
+                asignado = true;
+                return equi.Nombre;
+            }
+            else if (char.IsDigit(equipo[0])) // vamos a buscar el equipo en una posición determinada del Grupo indicado
             {
                 var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
                 var grupoId = Utilities.ObtenerLetras(equipo);
@@ -567,32 +601,7 @@ namespace VoleyPlaya.Domain.Models
                 asignado = true;
                 return equi.Nombre;
             }
-            else if (equipo[0]=='M')    // hay que buscar el mejor 'n' de los grupos participantes
-            {
-                var posicion = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
-                List<Equipo> mejoresPos = new List<Equipo>();
-                var grupos = Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
-                foreach (var grupo in grupos)
-                {
-                    if (!grupo.TodosPartidosValidados())
-                        return equipo;
-                    // me quedo con el mejor del puesto indicado (mejor 4º mejor 3º, etc)
-                    var equi1 = grupo.Equipos.OrderByDescending(e => e.Puntos)
-                        .ThenByDescending(e => e.Coeficiente)
-                        .Skip(posicion - 1)
-                        .FirstOrDefault();
-                    mejoresPos.Add(equi1);
-                }
-                // nos quedamos con el mejor
-                var equi = mejoresPos.OrderByDescending(e => e.Puntos)
-                        .ThenByDescending(e => e.Coeficiente)
-                        .FirstOrDefault();
-                if (equi == null) return equipo;
-
-                asignado = true;
-                return equi.Nombre;
-            }
-            else // vamos a buscar el equipo ganador o perdedor de un partido determinado
+            else if (equipo.StartsWith('G')||equipo.StartsWith('P'))// vamos a buscar el equipo ganador o perdedor de un partido determinado
             {
                 var numPartido = Convert.ToInt32(Utilities.ObtenerDigitosContinuos(equipo));
                 var partido = grupoFF.Partidos.Where(p => p.NumPartido.Equals(numPartido)).FirstOrDefault();

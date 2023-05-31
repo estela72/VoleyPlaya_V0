@@ -41,9 +41,7 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         private async Task GetGruposAsync()
         {
-            if (string.IsNullOrEmpty(PruebaSelected) || PruebaSelected.Equals("0"))
-                return;
-            if (CompeticionSelected == null)
+            if (string.IsNullOrEmpty(PruebaSelected) || PruebaSelected.Equals("0") || CompeticionSelected==null||CategoriaSelected==null||GeneroSelected==null||GeneroSelected=="0")
                 return;
             var categoria = 0;
             var grupo = 0;
@@ -66,6 +64,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                     await FilterSelection(pruebaId, competicionId, categoriaId, generoId, 0);
                     return Page();
                 }
+                PruebaSelected = pruebaId;
                 int categoria = categoriaId !=null ? categoriaId.Value:0;
                 CompeticionSelected = competicionId is not null and > 0 ? competicionId.ToString() : null;
                 CategoriaSelected = categoriaId is not null and > 0 ? categoria.ToString() : null;

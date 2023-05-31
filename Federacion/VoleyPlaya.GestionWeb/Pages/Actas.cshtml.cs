@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
+using VoleyPlaya.GestionWeb.Data.Migrations;
 using VoleyPlaya.GestionWeb.Infrastructure;
 
 using ICell = NPOI.SS.UserModel.ICell;
@@ -188,16 +189,22 @@ namespace VoleyPlaya.GestionWeb.Pages
         private void RellenarActaJD(Partido partido, ExcelWorksheet nuevaHoja)
         {
             nuevaHoja.Cells["B4"].Value = partido.Competicion;
-            nuevaHoja.Cells["G4"].Value = partido.Categoria;
+            nuevaHoja.Cells["F4"].Value = partido.Categoria;
             nuevaHoja.Cells["J4"].Value = partido.Genero;
             nuevaHoja.Cells["P4"].Value = partido.Grupo;
             nuevaHoja.Cells["E6"].Value = partido.FechaHora.ToString("dd/MM/yyyy");
             nuevaHoja.Cells["H6"].Value = partido.FechaHora.ToString("HH:mm");
             nuevaHoja.Cells["J6"].Value = partido.Pista;
             nuevaHoja.Cells["L6"].Value = partido.Label;
+            nuevaHoja.Cells["P6"].Value = partido.Ronda;
 
             nuevaHoja.Cells["D9"].Value = partido.Local;
             nuevaHoja.Cells["J9"].Value = partido.Visitante;
+
+            if (partido.Local==null)
+                nuevaHoja.Cells["E10"].Value = "("+partido.NombreLocal+")";
+            if (partido.Visitante == null)
+                nuevaHoja.Cells["K10"].Value = "("+partido.NombreVisitante+")";
 
             nuevaHoja.Cells["F42"].Value = partido.Prueba;
         }

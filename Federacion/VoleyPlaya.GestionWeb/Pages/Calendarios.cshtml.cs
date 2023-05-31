@@ -218,6 +218,18 @@ namespace VoleyPlaya.GestionWeb.Pages
                     ISheet sheet = workbook.GetSheetAt(0); // Obtén la primera hoja de cálculo
                                                            // Obtener los datos existentes en la base de datos
 
+                    int colId = 0;
+                    int colFecha = 9;
+                    int colHora = 10;
+                    int colPista = 11;
+                    int numeroColumnas = sheet.GetRow(0).PhysicalNumberOfCells;
+                    if (numeroColumnas <= 10)
+                    {
+                        colId = 0;
+                        colFecha = 5;
+                        colHora = 6;
+                        colPista = 7;
+                    }
                     for (int row = 1; row <= sheet.LastRowNum; row++)
                     {
                         try
@@ -226,23 +238,33 @@ namespace VoleyPlaya.GestionWeb.Pages
 
                             if (excelRow != null)
                             {
-                                int id = Convert.ToInt32(excelRow.GetCell(0)?.ToString()); // Obtén el valor de la primera columna
-                                                                                           //DateTime hora = Convert.ToDateTime(excelRow.GetCell(8)?.ToString()); // Obtén el valor de la segunda columna
-                                DateTime hora = new DateTime(1989, 1, 1, 10, 0, 0);
-                                if (excelRow.GetCell(10).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(10)))
+                                int id = Convert.ToInt32(excelRow.GetCell(colId)?.ToString()); // Obtén el valor de la primera columna
+                                                                                               //DateTime hora = Convert.ToDateTime(excelRow.GetCell(8)?.ToString()); // Obtén el valor de la segunda columna
+                                DateTime fecha = new DateTime(1989, 1, 1);
+                                if (excelRow.GetCell(colFecha).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(colFecha)))
                                 {
-                                    hora = excelRow.GetCell(10).DateCellValue;
+                                    fecha = excelRow.GetCell(colFecha).DateCellValue;
                                 }
                                 else
-                                    hora = Convert.ToDateTime(excelRow.GetCell(10).ToString());
+                                    fecha = Convert.ToDateTime(excelRow.GetCell(colFecha).ToString());
+
+                                DateTime hora = new DateTime(1989, 1, 1, 10, 0, 0);
+                                if (excelRow.GetCell(colHora).CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(excelRow.GetCell(colHora)))
+                                {
+                                    hora = excelRow.GetCell(colHora).DateCellValue;
+                                }
+                                else
+                                    hora = Convert.ToDateTime(excelRow.GetCell(colHora).ToString());
 
                                 string pista = "";
-                                if (excelRow.GetCell(11).CellType == CellType.Numeric)
-                                    pista = excelRow.GetCell(11)?.ToString();
-                                else if (excelRow.GetCell(11).CellType == CellType.String)
-                                    pista = excelRow.GetCell(11).StringCellValue;
+                                if (excelRow.GetCell(colPista).CellType == CellType.Numeric)
+                                    pista = excelRow.GetCell(colPista)?.ToString();
+                                else if (excelRow.GetCell(colPista).CellType == CellType.String)
+                                    pista = excelRow.GetCell(colPista).StringCellValue;
 
-                                partidos.Add(new Partido { Id = id, FechaHora = hora, Pista = pista });
+                                DateTime fechaHora = new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, 0);
+
+                                partidos.Add(new Partido { Id = id, FechaHora = fechaHora, Pista = pista });
                             }
                         }
                         catch(Exception x)

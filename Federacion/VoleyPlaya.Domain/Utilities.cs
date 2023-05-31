@@ -6,13 +6,30 @@ namespace VoleyPlaya.Domain
     {
         public static string ObtenerDigitosContinuos(string cadena)
         {
-            string patron = @"\d+"; // Expresión regular para buscar dígitos continuos
-            MatchCollection coincidencias = Regex.Matches(cadena, patron);
+            string patron = @"\d+"; // Expresión regular para buscar dígitos continuos hasta encontrar una letra
+            Match match = Regex.Match(cadena, patron);
 
-            string digitos = "";
-            foreach (Match coincidencia in coincidencias)
+            if (match.Success)
             {
-                digitos += coincidencia.Value;
+                return match.Value;
+            }
+            return string.Empty;
+        }
+        public static bool EsMejorPuesto(string cadena)
+        {
+            string patron = @"\dM\d";
+
+            return Regex.IsMatch(cadena, patron);
+        }
+        public static string ObtenerDigitosAlFinal(string cadena)
+        {
+            string digitos = null;
+            int i = cadena.Length - 1;
+
+            while (i >= 0 && char.IsDigit(cadena[i]))
+            {
+                digitos = cadena[i] + digitos;
+                i--;
             }
 
             return digitos;
