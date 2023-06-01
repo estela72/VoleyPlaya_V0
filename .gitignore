@@ -49,3 +49,6 @@
 /Ligamania/General.Repository/obj/General.CrossCutting.Lib.csproj.nuget.dgspec.json
 /Ligamania/General.Repository/obj/Debug/net7.0/General.CrossCutting.Lib.GeneratedMSBuildEditorConfig.editorconfig
 /Ligamania/General.Repository/obj/Debug/net7.0/General.CrossCutting.Lib.assets.cache
+/.vs
+/Ejemplos/Notes/bin
+/Ejemplos/Notes/obj
