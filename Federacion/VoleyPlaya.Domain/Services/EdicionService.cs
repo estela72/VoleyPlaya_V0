@@ -184,16 +184,17 @@ namespace VoleyPlaya.Domain.Services
                 local.Ganados++;
                 local.Puntos += 2;
                 visitante.Perdidos++;
-                visitante.Puntos += 1;
+                visitante.Puntos += visitante.Retirado ? 0 : 1;
             }
             else if (partido.Resultado.Local < partido.Resultado.Visitante)
             {
                 visitante.Ganados++;
                 visitante.Puntos += 2;
                 local.Perdidos++;
-                local.Puntos += 1;
+                local.Puntos += local.Retirado ? 0 : 1;
             }
             local.Jugados = local.Ganados + local.Perdidos;
+
             visitante.Jugados = visitante.Ganados + visitante.Perdidos;
             local.PuntosFavor += partido.Resultado.Set1.Local;
             local.PuntosFavor += partido.Resultado.Set2.Local;

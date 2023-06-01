@@ -560,22 +560,30 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.EquipoRepository.UpdateAsync(equipo);
             // buscar todos los partidos donde jugo este equipo y dejar el resultado como 0-0
             var partidos = await _voleyPlayaUoW.PartidoRepository.FindAllAsync(p => p.Local.Id.Equals(id) || p.Visitante.Id.Equals(id));
-            foreach(var partido in partidos)
+            foreach (var partido in partidos)
             {
-                partido.ResultadoLocal = 0;
-                partido.ResultadoVisitante = 0;
+                bool retiLocal = partido.Local.Id.Equals(id) ? true : false;
+                partido.ResultadoLocal = retiLocal ? 0 : 1;
+                partido.ResultadoVisitante = retiLocal ? 1 : 0;
                 foreach (var parcial in partido.Parciales)
                 {
                     var resPar = await _voleyPlayaUoW.ParcialPartidoRepository.GetByIdAsync(parcial.Id);
-                    resPar.ResultadoLocal = resPar.ResultadoVisitante = 0;
+                    if (parcial.Nombre.Equals("Set1"))
+                    {
+                        resPar.ResultadoLocal = retiLocal ? 0 : 21;
+                        resPar.ResultadoVisitante = retiLocal ? 21 : 0;
+                    }
+                    else
+                    { resPar.ResultadoLocal = resPar.ResultadoVisitante = 0; }
                     await _voleyPlayaUoW.ParcialPartidoRepository.UpdateAsync(resPar);
                 }
                 await _voleyPlayaUoW.PartidoRepository.UpdateAsync(partido);
             }
             // actualizar la clasificacion (desde dominio)
             await _voleyPlayaUoW.SaveEntitiesAsync();
-            var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(equipo.EdicionGrupoId.Value);
+            var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(e => e.Id.Equals(equipo.EdicionGrupoId.Value), e => e.Equipos, e => e.Partidos);
             return grupo;// JsonSerializer.Serialize<EdicionGrupo>(grupo, Options);
+
         }
 
         public async Task<List<Partido>> GetPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected)
