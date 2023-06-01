@@ -52,3 +52,11 @@
 /.vs
 /Ejemplos/Notes/bin
 /Ejemplos/Notes/obj
+/Federacion/.vs
+/Federacion/PagosXml/obj
+/Federacion/PagosXml/.vs
+/Federacion/VoleyPlaya/obj
+/Federacion/VoleyPlaya.Domain/obj
+/Federacion/VoleyPlaya.GestionWeb/obj
+/Federacion/VoleyPlaya.GestionWeb/bin
+/Federacion/VoleyPlaya.Repository/obj
