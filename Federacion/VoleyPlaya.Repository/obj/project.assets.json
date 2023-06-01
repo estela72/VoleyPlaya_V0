@@ -72,22 +72,6 @@
           }
         }
       },
-      "MailKit/3.5.0": {
-        "type": "package",
-        "dependencies": {
-          "MimeKit": "3.5.0"
-        },
-        "compile": {
-          "lib/net6.0/MailKit.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/MailKit.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      },
       "MathNet.Numerics.Signed/4.15.0": {
         "type": "package",
         "compile": {
@@ -148,39 +132,6 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
-      },
-      "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "2.2.0",
-          "System.Text.Encodings.Web": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Features/2.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Primitives": "2.2.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll": {
-            "related": ".xml"
-          }
-        }
       },
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore/7.0.4": {
         "type": "package",
@@ -837,25 +788,6 @@
           "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
             "assetType": "runtime",
             "rid": "win"
-          }
-        }
-      },
-      "MimeKit/3.5.0": {
-        "type": "package",
-        "dependencies": {
-          "Portable.BouncyCastle": "1.9.0",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0",
-          "System.Security.Cryptography.Pkcs": "6.0.0",
-          "System.Text.Encoding.CodePages": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/MimeKit.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/MimeKit.dll": {
-            "related": ".pdb;.xml"
           }
         }
       },
@@ -1520,13 +1452,7 @@
       },
       "General.CrossCutting.Lib/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "MailKit": "3.5.0",
-          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.4",
-          "MimeKit": "3.5.0"
-        },
+        "framework": "Unsupported,Version=v0.0",
         "compile": {
           "bin/placeholder/General.CrossCutting.Lib.dll": {}
         },
@@ -1625,36 +1551,6 @@
         "logo.png"
       ]
     },
-    "MailKit/3.5.0": {
-      "sha512": "7tvc+Um6JWOgvAv4I7DhPEDbHVaRH06m1ECZoJw2n9cyBcCZbyZy4AhVhTxGjM/vFYogh+UDboOnn7xd7WRV1Q==",
-      "type": "package",
-      "path": "mailkit/3.5.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "icons/mailkit-50.png",
-        "lib/net462/MailKit.dll",
-        "lib/net462/MailKit.pdb",
-        "lib/net462/MailKit.xml",
-        "lib/net47/MailKit.dll",
-        "lib/net47/MailKit.pdb",
-        "lib/net47/MailKit.xml",
-        "lib/net48/MailKit.dll",
-        "lib/net48/MailKit.pdb",
-        "lib/net48/MailKit.xml",
-        "lib/net6.0/MailKit.dll",
-        "lib/net6.0/MailKit.pdb",
-        "lib/net6.0/MailKit.xml",
-        "lib/netstandard2.0/MailKit.dll",
-        "lib/netstandard2.0/MailKit.pdb",
-        "lib/netstandard2.0/MailKit.xml",
-        "lib/netstandard2.1/MailKit.dll",
-        "lib/netstandard2.1/MailKit.pdb",
-        "lib/netstandard2.1/MailKit.xml",
-        "mailkit.3.5.0.nupkg.sha512",
-        "mailkit.nuspec"
-      ]
-    },
     "MathNet.Numerics.Signed/4.15.0": {
       "sha512": "LFjukMRatkg9dgRM7U/gM4uKgaWAX7E0lt3fsVDTPdtBIVuh7uPlksDie290br1/tv1a4Ar/Bz9ywCPSL8PhHg==",
       "type": "package",
@@ -1726,32 +1622,6 @@
         "lib/net7.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.xml",
         "microsoft.aspnetcore.diagnostics.entityframeworkcore.7.0.4.nupkg.sha512",
         "microsoft.aspnetcore.diagnostics.entityframeworkcore.nuspec"
-      ]
-    },
-    "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
-      "sha512": "Nxs7Z1q3f1STfLYKJSVXCs1iBl+Ya6E8o4Oy1bCxJ/rNI44E/0f6tbsrVqAWfB7jlnJfyaAtIalBVxPKUPQb4Q==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.http.abstractions/2.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Abstractions.xml",
-        "microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
-        "microsoft.aspnetcore.http.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.AspNetCore.Http.Features/2.2.0": {
-      "sha512": "ziFz5zH8f33En4dX81LW84I6XrYXKf9jg6aM39cM+LffN9KJahViKZ61dGMSO2gd3e+qe5yBRwsesvyqlZaSMg==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.http.features/2.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.xml",
-        "microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
-        "microsoft.aspnetcore.http.features.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore/7.0.4": {
@@ -2725,36 +2595,6 @@
         "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll",
         "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt"
-      ]
-    },
-    "MimeKit/3.5.0": {
-      "sha512": "XHRxnUJjNC6ufN94Yixp0QaLAZL+4L3huwzBhG5grBn68FQo3lH24gHKl15ceK4ktsALTqxdKPc/iMbQ442CGA==",
-      "type": "package",
-      "path": "mimekit/3.5.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "icons/mimekit-50.png",
-        "lib/net462/MimeKit.dll",
-        "lib/net462/MimeKit.pdb",
-        "lib/net462/MimeKit.xml",
-        "lib/net47/MimeKit.dll",
-        "lib/net47/MimeKit.pdb",
-        "lib/net47/MimeKit.xml",
-        "lib/net48/MimeKit.dll",
-        "lib/net48/MimeKit.pdb",
-        "lib/net48/MimeKit.xml",
-        "lib/net6.0/MimeKit.dll",
-        "lib/net6.0/MimeKit.pdb",
-        "lib/net6.0/MimeKit.xml",
-        "lib/netstandard2.0/MimeKit.dll",
-        "lib/netstandard2.0/MimeKit.pdb",
-        "lib/netstandard2.0/MimeKit.xml",
-        "lib/netstandard2.1/MimeKit.dll",
-        "lib/netstandard2.1/MimeKit.pdb",
-        "lib/netstandard2.1/MimeKit.xml",
-        "mimekit.3.5.0.nupkg.sha512",
-        "mimekit.nuspec"
       ]
     },
     "Mono.TextTemplating/2.2.1": {
@@ -4449,5 +4289,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "El proyecto General.CrossCutting.Lib no es compatible con net7.0 (.NETCoreApp,Version=v7.0). El proyecto General.CrossCutting.Lib admite:\r\n  - net7.0-android33.0 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-ios16.1 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-maccatalyst16.1 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-windows10.0.19041 (.NETCoreApp,Version=v7.0)",
+      "libraryId": "General.CrossCutting.Lib",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

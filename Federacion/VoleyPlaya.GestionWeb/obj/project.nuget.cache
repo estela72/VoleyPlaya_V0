@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "FL2znBsV6FatF2rG+4jSdRyf91Gc+Zr5q4xzBFrqYKwT2hL3UQR898fUSXyHmWtLMk75UtQuZpvpUjZbPG70Ag==",
-  "success": true,
+  "dgSpecHash": "ar8xYh5jgdQWhVS9iXjsLrUF10q7o8umDVsq94bNtLur3Mr7jAue6Vdu1gah86CDyUggckuwua0QuetwRkklfg==",
+  "success": false,
   "projectFilePath": "D:\\srcRepository\\Proyectos Estela\\Federacion\\VoleyPlaya.GestionWeb\\VoleyPlaya.GestionWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\egonz\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
@@ -15,7 +15,6 @@
     "C:\\Users\\egonz\\.nuget\\packages\\epplus.system.drawing\\6.1.1\\epplus.system.drawing.6.1.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\fontawesome\\4.7.0\\fontawesome.4.7.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
-    "C:\\Users\\egonz\\.nuget\\packages\\mailkit\\3.5.0\\mailkit.3.5.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\mathnet.numerics.signed\\4.15.0\\mathnet.numerics.signed.4.15.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
@@ -115,7 +114,6 @@
     "C:\\Users\\egonz\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
-    "C:\\Users\\egonz\\.nuget\\packages\\mimekit\\3.5.0\\mimekit.3.5.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
@@ -236,5 +234,15 @@
     "C:\\Users\\egonz\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "El proyecto General.CrossCutting.Lib no es compatible con net7.0 (.NETCoreApp,Version=v7.0). El proyecto General.CrossCutting.Lib admite:\r\n  - net7.0-android33.0 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-ios16.1 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-maccatalyst16.1 (.NETCoreApp,Version=v7.0)\r\n  - net7.0-windows10.0.19041 (.NETCoreApp,Version=v7.0)",
+      "libraryId": "General.CrossCutting.Lib",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }
