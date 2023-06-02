@@ -18,7 +18,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
 using VoleyPlaya.GestionWeb.Data.Migrations;

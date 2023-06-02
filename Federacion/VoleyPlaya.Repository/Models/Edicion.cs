@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 
+using VoleyPlaya.Repository.Enums;
+
 namespace VoleyPlaya.Repository.Models
 {
     public class Edicion : Entity
@@ -21,6 +23,7 @@ namespace VoleyPlaya.Repository.Models
         string _genero;
         string? _tipoCalendario;
         private string? _modeloCompeticion; // Juegos deportivos o Circuito -> indica como es la distribución de equipos en los grupos
+        private EnumEstadoEdicion _estado;
 
         HashSet<Jornada> _jornadas;
         HashSet<EdicionGrupo> _grupos;
@@ -56,6 +59,7 @@ namespace VoleyPlaya.Repository.Models
         public HashSet<EdicionGrupo> Grupos { get => _grupos; set => _grupos = value; }
         public HashSet<Equipo> Equipos { get => _equipos; set => _equipos = value; }
         public string? ModeloCompeticion { get => _modeloCompeticion; set => _modeloCompeticion = value; }
+        public EnumEstadoEdicion Estado { get => _estado; set => _estado = value; }
 
         internal void AddJornada(Jornada jornadaDto)
         {

@@ -17,6 +17,8 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+
+using VoleyPlaya.Repository.Enums;
 using VoleyPlaya.Repository.Models;
 
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -134,7 +136,7 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return true;
         }
-        private async Task<bool> SaveEquiposAsync(EdicionGrupo grupoDto, JsonArray equipos/*, int numEquipos*/)
+        private async Task<bool> SaveEquiposAsync(EdicionGrupo grupoDto, JsonArray equipos)
         {
             foreach (var equipo in equipos)
             {
@@ -149,8 +151,9 @@ namespace VoleyPlaya.Repository.Services
                 int puntosContra = equipo["PuntosContra"]!.GetValue<int>()!;
                 double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
                 int puntos = equipo["Puntos"]!.GetValue<int>()!;
+                int clasifinal = equipo["ClasificacionFinal"]!.GetValue<int>()!;
                 var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
-                    coeficiente, puntos, ordenEntrada);
+                    coeficiente, puntos, ordenEntrada, clasifinal);
                 if (!grupoDto.Equipos.Contains(equipoDto))
                     grupoDto.Equipos.Add(equipoDto);
             }
@@ -743,6 +746,13 @@ namespace VoleyPlaya.Repository.Services
             }
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return "Pistas actualizadas";
+        }
+        public async Task CambiarEstadoEdicion(int idEdicion, string nuevoEstado)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(idEdicion);
+            edicion.Estado = Enum.Parse<EnumEstadoEdicion>(nuevoEstado);
+            await _voleyPlayaUoW.EdicionRepository.UpdateAsync(edicion);
+            await _voleyPlayaUoW.SaveEntitiesAsync();
         }
     }
 }

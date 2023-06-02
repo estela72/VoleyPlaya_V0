@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Nodes;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
 using VoleyPlaya.GestionWeb.Infrastructure;
@@ -584,6 +584,22 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
-
+        public async Task<IActionResult> OnPostGenerarClasificacionFinalAsync()
+        {
+            try
+            {
+                var str = await _service.GenerarClasificacionFinal(Edicion.Id);
+            }
+            catch (Exception x)
+            {
+                ErrorMessage = "Error actualizando la clasificación final: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
+            }
+            return Page();
+        }
     }
 }

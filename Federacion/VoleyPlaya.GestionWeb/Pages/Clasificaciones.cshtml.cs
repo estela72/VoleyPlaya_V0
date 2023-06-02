@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using System.Runtime.InteropServices;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
 

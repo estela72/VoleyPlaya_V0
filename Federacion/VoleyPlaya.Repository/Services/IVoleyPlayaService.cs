@@ -60,5 +60,6 @@ namespace VoleyPlaya.Repository.Services
         Task<string> ActualizarClasificacionFinal(int edicionId, List<VoleyPlaya.Repository.Models.Equipo> equipos);
         Task<string> GetListaPruebasAsync();
         Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo);
+        Task CambiarEstadoEdicion(int idEdicion, string nuevoEstado);
     }
 }

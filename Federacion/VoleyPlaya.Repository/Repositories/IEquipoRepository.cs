@@ -18,7 +18,7 @@ namespace VoleyPlaya.Repository.Repositories
     public interface IEquipoRepository : IRepository<Equipo>
     {
         Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, int puntosFavor, int puntosContra,
-                    double coeficiente, int puntos, int ordenEntrada);
+                    double coeficiente, int puntos, int ordenEntrada, int clasifinal);
         Task CheckAddUpdate(Edicion edicionDto, int idEquipo, int posicion, string equiNombre, int jugados, int ganados, int perdidos, 
             int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada);
         Task RemoveEquipos(int numEquipos, EdicionGrupo edicionGrupo);
@@ -35,7 +35,7 @@ namespace VoleyPlaya.Repository.Repositories
         }
 
         public async Task<Equipo> CheckAddUpdate(EdicionGrupo edicionGrupoDto, int idEquipo, int posicion, string nombre, int jugados, int ganados, int perdidos, 
-            int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada)
+            int puntosFavor, int puntosContra, double coeficiente, int puntos, int ordenEntrada, int clasifinal)
         {
             if (nombre.Equals(string.Empty)) return null;
             Equipo dto = null;
@@ -56,7 +56,8 @@ namespace VoleyPlaya.Repository.Repositories
                     OrdenCalendario = posicion,
                     Edicion = edicionGrupoDto.Edicion,
                     Retirado=false,
-                    OrdenEntrada = ordenEntrada
+                    OrdenEntrada = ordenEntrada,
+                    ClasificacionFinal = clasifinal
                 });
             else
             {
@@ -71,6 +72,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.PuntosFavor = puntosFavor;
                 dto.Edicion = edicionGrupoDto.Edicion;
                 dto.OrdenEntrada = ordenEntrada;
+                dto.ClasificacionFinal = clasifinal;
                 return await UpdateAsync(dto);
             }
         }

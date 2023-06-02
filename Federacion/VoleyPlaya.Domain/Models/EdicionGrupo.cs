@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Services;
 using VoleyPlaya.Repository.Models;
 

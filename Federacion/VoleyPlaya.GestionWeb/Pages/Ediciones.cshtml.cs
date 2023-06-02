@@ -23,7 +23,8 @@ namespace VoleyPlaya.Gestion.Web.Views.Edicion
             try
             {
                 var ediciones = await _service.GetAllAsync();
-                Ediciones = new ObservableCollection<VoleyPlaya.Domain.Models.Edicion>(ediciones.ToList());
+                ediciones = ediciones.OrderBy(e => e.Estado).ToList();
+                Ediciones = new ObservableCollection<VoleyPlaya.Domain.Models.Edicion>(ediciones);
             }
             catch(Exception ex)
             {
@@ -41,6 +42,36 @@ namespace VoleyPlaya.Gestion.Web.Views.Edicion
             catch (Exception ex)
             {
                 ErrorMessage = "Error borrando la competición.";
+            }
+
+            return RedirectToPage("Ediciones");
+        }
+        public async Task<IActionResult> OnPostFinalizarAsync(int? id)
+        {
+            if (id == null)
+                return Page();
+            try
+            {
+                await _service.CambiarEstadoEdicion(id.Value, Domain.Enums.EnumEstadoEdicion.Finalizada);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "Error finalizando la competición.";
+            }
+
+            return RedirectToPage("Ediciones");
+        }
+        public async Task<IActionResult> OnPostEnJuegoAsync(int? id)
+        {
+            if (id == null)
+                return Page();
+            try
+            {
+                await _service.CambiarEstadoEdicion(id.Value, Domain.Enums.EnumEstadoEdicion.EnJuego);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "Error poniendo en juego la competición.";
             }
 
             return RedirectToPage("Ediciones");

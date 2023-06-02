@@ -18,7 +18,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Repository.Services;
 
@@ -77,6 +77,8 @@ namespace VoleyPlaya.Domain.Services
         Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos);
         Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo);
         Task<string> UpdateClasificacionGrupos(int edicionId);
+        Task CambiarEstadoEdicion(int idEdicion, EnumEstadoEdicion nuevoEstado);
+        Task<string> GenerarClasificacionFinal(int id);
     }
     public class EdicionService : IEdicionService
     {
@@ -508,6 +510,20 @@ namespace VoleyPlaya.Domain.Services
                 await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
             }
             return "Clasificación grupos actualizada";
+        }
+
+        public async Task CambiarEstadoEdicion(int idEdicion, EnumEstadoEdicion nuevoEstado)
+        {
+            await _service.CambiarEstadoEdicion(idEdicion, nuevoEstado.ToString());
+        }
+
+        public async Task<string> GenerarClasificacionFinal(int id)
+        {
+            var dto = await _service.GetEdicionByIdAsync(id);
+            var edicion = _mapper.Map<Edicion>(dto);
+            var grupoFinal = await edicion.GenerarClasificacionFinal();
+            await UpdateEquipsGrupoAsync(grupoFinal.Id, grupoFinal.Equipos);
+            return "Clasificación final actualizada";
         }
     }
 }

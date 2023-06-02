@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
-
+using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Services;
 using VoleyPlaya.Repository.Models;
 using VoleyPlaya.Repository.Services;
@@ -61,7 +61,7 @@ namespace VoleyPlaya.Domain.Models
 
         public EnumModeloCompeticion ModeloCompeticion { get; set; }
         public string ModeloCompeticionStr { get => Enum.GetName(typeof(EnumModeloCompeticion), ModeloCompeticion); }
-
+        public EnumEstadoEdicion Estado {  get; set; }
         public Edicion()
         {
             Temporada = DateTime.Now.Year.ToString();
@@ -359,23 +359,6 @@ namespace VoleyPlaya.Domain.Models
                 Grupos.Add(grupo);
             }
             DistribucionEquiposSerpiente(numEquiposGrupo);
-            //// Los equipos se reparten por los dos grupos en orden A B, B A, ... si el número de equipos es impar, el último equipo se asigna al grupo B
-            //int idxEquipo = 0;
-            //var equipos = Equipos.OrderBy(e => e.OrdenEntrada).ToList();
-
-            //int idxGrupo = 0;
-            //for (int i = 0; i < equipos.Count; i++)
-            //{
-            //    Equipo equipo = equipos[i];                
-            //    EdicionGrupo grupo = Grupos[idxGrupo]; 
-            //    equipo.Posicion = grupo.Equipos.Count + 1;
-            //    grupo.Equipos.Add(equipo);
-            //    if (idxGrupo == 0) idxGrupo = 1;
-            //    else idxGrupo = 0;
-
-            //    if (restoEquipos > 0 && i == equipos.Count - 2)
-            //        idxGrupo = 1;
-            //}
             return true;
         }
 
@@ -526,12 +509,12 @@ namespace VoleyPlaya.Domain.Models
                 }
                 else
                 {
-                    partido.FechaHora = fechaHora;
+                    //partido.FechaHora = fechaHora;
                     partido.Local = equipo1;
                     partido.Visitante = equipo2;
                     partido.NombreLocal = equipo1;
                     partido.NombreVisitante = equipo2;
-                    partido.Ronda = par.Ronda;
+                    //partido.Ronda = par.Ronda;
                 }
                 fechaHora = fechaHora.AddMinutes(intervaloMin);
             }
@@ -646,6 +629,121 @@ namespace VoleyPlaya.Domain.Models
             }
             else
                 return equipo;
+        }
+
+        internal async Task<EdicionGrupo> GenerarClasificacionFinal()
+        {
+            var grupoFinal = Grupos.FirstOrDefault(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final));
+            if (grupoFinal == null)
+                return null;
+
+            var todosConResultado = grupoFinal.Partidos.All(p=>p.ConResultado && p.Validado);
+            if (!todosConResultado)
+                return null;
+
+            bool asigGanador;
+            bool asigPerdedor;
+            foreach (var partido in grupoFinal.Partidos)
+            {
+                if (partido.Ronda.Equals("F"))
+                {
+                    var ganador = GetEquipoGanador(partido,null,out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        if (primero != null) primero.ClasificacionFinal = 1;
+                        if (segundo != null) segundo.ClasificacionFinal = 2;
+                    }
+                }
+                if (partido.Ronda.Equals("3/4"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 4;
+                    }
+                }
+                if (partido.Ronda.Equals("1/4"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 5;
+                    }
+                }
+                if (partido.Ronda.Equals("1/8"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 9;
+                    }
+                }
+                if (partido.Ronda.Equals("1/16"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 17;
+                    }
+                }
+                if (partido.Ronda.Equals("1/32"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 33;
+                    }
+                }
+                if (partido.Ronda.Equals("1/64"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 65;
+                    }
+                }
+                if (partido.Ronda.Equals("1/128"))
+                {
+                    var ganador = GetEquipoGanador(partido, null, out asigGanador);
+                    var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
+                    if (asigGanador && asigPerdedor)
+                    {
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        //if (primero != null) primero.ClasificacionFinal = 3;
+                        if (segundo != null) segundo.ClasificacionFinal = 129;
+                    }
+                }
+            }
+
+            return grupoFinal;
         }
     }
 }

@@ -36,11 +36,27 @@
                             @Html.DisplayFor(modelItem => item.GeneroStr)
                         </td>
                         <td>
-                            <form asp-page-handler="Delete" method="post">
-                                <a class="btn btn-primary" asp-page="./Edicion" asp-route-id="@item.Id"> Editar</a>
-                                <button class="btn btn-danger">Borrar</button>
-                                <input type="hidden" name="id" value="@item.Id" />
-                            </form>
+                            <div class="btn-group">
+                                <a class="btn btn-primary m-2" asp-page="./Edicion" asp-route-id="@item.Id"> Editar</a>
+                                @if (item.Estado.Equals(EnumEstadoEdicion.EnJuego))
+                                {
+                                    <form asp-page-handler="Finalizar" method="post">
+                                        <button class="btn btn-primary m-2">Finalizar</button>
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                    </form>
+                                }
+                                @if (item.Estado.Equals(EnumEstadoEdicion.Registrada))
+                                {
+                                    <form asp-page-handler="EnJuego" method="post">
+                                        <button class="btn btn-danger m-2">Poner en Juego</button>
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                    </form>
+                                    <form asp-page-handler="Delete" method="post">
+                                        <button class="btn btn-danger m-2">Borrar</button>
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                    </form>
+                                }
+                            </div>
                         </td>
                     </tr>
                 }
