@@ -28,382 +28,408 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.Label label3;
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.nombre = new System.Windows.Forms.TextBox();
-            this.apellidos = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dni = new System.Windows.Forms.MaskedTextBox();
-            this.iban = new System.Windows.Forms.MaskedTextBox();
-            this.cantidad = new System.Windows.Forms.MaskedTextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.colNombre = new System.Windows.Forms.ColumnHeader();
-            this.colApellidos = new System.Windows.Forms.ColumnHeader();
-            this.colDni = new System.Windows.Forms.ColumnHeader();
-            this.colIban = new System.Windows.Forms.ColumnHeader();
-            this.colCantidad = new System.Windows.Forms.ColumnHeader();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.ibanEmisor = new System.Windows.Forms.MaskedTextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.nif = new System.Windows.Forms.TextBox();
-            this.concepto = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            label3 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.SuspendLayout();
+            Label label3;
+            label1 = new Label();
+            label2 = new Label();
+            nombre = new TextBox();
+            apellidos = new TextBox();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            panel1 = new Panel();
+            dni = new MaskedTextBox();
+            iban = new MaskedTextBox();
+            cantidad = new MaskedTextBox();
+            panel2 = new Panel();
+            listView1 = new ListView();
+            colNombre = new ColumnHeader();
+            colApellidos = new ColumnHeader();
+            colDni = new ColumnHeader();
+            colIban = new ColumnHeader();
+            colCantidad = new ColumnHeader();
+            button5 = new Button();
+            button6 = new Button();
+            label7 = new Label();
+            ibanEmisor = new MaskedTextBox();
+            label8 = new Label();
+            nif = new TextBox();
+            concepto = new TextBox();
+            label9 = new Label();
+            label10 = new Label();
+            saveFileDialog1 = new SaveFileDialog();
+            panel3 = new Panel();
+            btImportarExcel = new Button();
+            openFile = new OpenFileDialog();
+            label3 = new Label();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            SuspendLayout();
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Dock = System.Windows.Forms.DockStyle.Top;
-            label3.Location = new System.Drawing.Point(0, 0);
+            label3.Dock = DockStyle.Top;
+            label3.Location = new Point(0, 0);
             label3.Name = "label3";
-            label3.Padding = new System.Windows.Forms.Padding(3);
-            label3.Size = new System.Drawing.Size(443, 27);
+            label3.Padding = new Padding(3);
+            label3.Size = new Size(443, 27);
             label3.TabIndex = 0;
             label3.Text = "Agregar todos los datos y una vez añadidos generar el fichero";
-            label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            label3.TextAlign = ContentAlignment.TopCenter;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 56);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 21);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Nombre";
+            label1.AutoSize = true;
+            label1.Location = new Point(16, 56);
+            label1.Name = "label1";
+            label1.Size = new Size(68, 21);
+            label1.TabIndex = 0;
+            label1.Text = "Nombre";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 272);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 21);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Cantidad (€)";
+            label2.AutoSize = true;
+            label2.Location = new Point(16, 272);
+            label2.Name = "label2";
+            label2.Size = new Size(95, 21);
+            label2.TabIndex = 0;
+            label2.Text = "Cantidad (€)";
             // 
             // nombre
             // 
-            this.nombre.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.nombre.Location = new System.Drawing.Point(135, 52);
-            this.nombre.Name = "nombre";
-            this.nombre.Size = new System.Drawing.Size(325, 29);
-            this.nombre.TabIndex = 1;
+            nombre.CharacterCasing = CharacterCasing.Upper;
+            nombre.Location = new Point(135, 52);
+            nombre.Name = "nombre";
+            nombre.Size = new Size(325, 29);
+            nombre.TabIndex = 1;
             // 
             // apellidos
             // 
-            this.apellidos.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.apellidos.Location = new System.Drawing.Point(135, 106);
-            this.apellidos.Name = "apellidos";
-            this.apellidos.Size = new System.Drawing.Size(325, 29);
-            this.apellidos.TabIndex = 2;
+            apellidos.CharacterCasing = CharacterCasing.Upper;
+            apellidos.Location = new Point(135, 106);
+            apellidos.Name = "apellidos";
+            apellidos.Size = new Size(325, 29);
+            apellidos.TabIndex = 2;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 110);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 21);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Apellidos";
+            label4.AutoSize = true;
+            label4.Location = new Point(16, 110);
+            label4.Name = "label4";
+            label4.Size = new Size(74, 21);
+            label4.TabIndex = 0;
+            label4.Text = "Apellidos";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 164);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(111, 21);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "DNI (con letra)";
+            label5.AutoSize = true;
+            label5.Location = new Point(16, 164);
+            label5.Name = "label5";
+            label5.Size = new Size(111, 21);
+            label5.TabIndex = 0;
+            label5.Text = "DNI (con letra)";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 218);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(100, 21);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Nº de cuenta";
+            label6.AutoSize = true;
+            label6.Location = new Point(16, 218);
+            label6.Name = "label6";
+            label6.Size = new Size(100, 21);
+            label6.TabIndex = 0;
+            label6.Text = "Nº de cuenta";
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(178, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(156, 36);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Agregar";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.BackColor = Color.FromArgb(255, 255, 192);
+            button1.Location = new Point(178, 6);
+            button1.Name = "button1";
+            button1.Size = new Size(156, 36);
+            button1.TabIndex = 7;
+            button1.Text = "Agregar";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button2.Location = new System.Drawing.Point(16, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 36);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Agregar y limpiar";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.BackColor = Color.FromArgb(192, 255, 192);
+            button2.Location = new Point(16, 6);
+            button2.Name = "button2";
+            button2.Size = new Size(147, 36);
+            button2.TabIndex = 6;
+            button2.Text = "Agregar y limpiar";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button3.Location = new System.Drawing.Point(350, 6);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(130, 36);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Limpiar";
-            this.button3.UseVisualStyleBackColor = false;
+            button3.BackColor = Color.FromArgb(255, 255, 192);
+            button3.Location = new Point(350, 6);
+            button3.Name = "button3";
+            button3.Size = new Size(130, 36);
+            button3.TabIndex = 8;
+            button3.Text = "Limpiar";
+            button3.UseVisualStyleBackColor = false;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(657, 441);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(532, 36);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "Generar fichero SEPA";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            button4.Location = new Point(657, 441);
+            button4.Name = "button4";
+            button4.Size = new Size(532, 36);
+            button4.TabIndex = 9;
+            button4.Text = "Generar fichero SEPA";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.dni);
-            this.panel1.Controls.Add(this.iban);
-            this.panel1.Controls.Add(this.cantidad);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.nombre);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.apellidos);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(505, 382);
-            this.panel1.TabIndex = 3;
+            panel1.BackColor = SystemColors.ControlLight;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(dni);
+            panel1.Controls.Add(iban);
+            panel1.Controls.Add(cantidad);
+            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(nombre);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(apellidos);
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(label6);
+            panel1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            panel1.Location = new Point(12, 12);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(505, 382);
+            panel1.TabIndex = 3;
             // 
             // dni
             // 
-            this.dni.BeepOnError = true;
-            this.dni.Location = new System.Drawing.Point(135, 156);
-            this.dni.Mask = "99999999L";
-            this.dni.Name = "dni";
-            this.dni.Size = new System.Drawing.Size(325, 29);
-            this.dni.TabIndex = 3;
+            dni.BeepOnError = true;
+            dni.Location = new Point(135, 156);
+            dni.Mask = "99999999L";
+            dni.Name = "dni";
+            dni.Size = new Size(325, 29);
+            dni.TabIndex = 3;
             // 
             // iban
             // 
-            this.iban.BeepOnError = true;
-            this.iban.Location = new System.Drawing.Point(135, 215);
-            this.iban.Mask = "LL9999999999999999999999999";
-            this.iban.Name = "iban";
-            this.iban.Size = new System.Drawing.Size(325, 29);
-            this.iban.TabIndex = 4;
+            iban.BeepOnError = true;
+            iban.Location = new Point(135, 215);
+            iban.Mask = "LL9999999999999999999999999";
+            iban.Name = "iban";
+            iban.Size = new Size(325, 29);
+            iban.TabIndex = 4;
             // 
             // cantidad
             // 
-            this.cantidad.BeepOnError = true;
-            this.cantidad.Location = new System.Drawing.Point(135, 269);
-            this.cantidad.Mask = "####.00";
-            this.cantidad.Name = "cantidad";
-            this.cantidad.Size = new System.Drawing.Size(325, 29);
-            this.cantidad.TabIndex = 5;
-            this.cantidad.ValidatingType = typeof(int);
+            cantidad.BeepOnError = true;
+            cantidad.Location = new Point(135, 269);
+            cantidad.Mask = "####.00";
+            cantidad.Name = "cantidad";
+            cantidad.Size = new Size(325, 29);
+            cantidad.TabIndex = 5;
+            cantidad.ValidatingType = typeof(int);
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 333);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(501, 45);
-            this.panel2.TabIndex = 6;
+            panel2.BackColor = SystemColors.ControlDark;
+            panel2.Controls.Add(button2);
+            panel2.Controls.Add(button1);
+            panel2.Controls.Add(button3);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(0, 333);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(501, 45);
+            panel2.TabIndex = 6;
             // 
             // listView1
             // 
-            this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.listView1.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listView1.CheckBoxes = true;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colNombre,
-            this.colApellidos,
-            this.colDni,
-            this.colIban,
-            this.colCantidad});
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView1.HideSelection = true;
-            this.listView1.HoverSelection = true;
-            this.listView1.Location = new System.Drawing.Point(657, 92);
-            this.listView1.Name = "listView1";
-            this.listView1.ShowGroups = false;
-            this.listView1.Size = new System.Drawing.Size(532, 338);
-            this.listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            listView1.Activation = ItemActivation.OneClick;
+            listView1.BackColor = SystemColors.InactiveCaption;
+            listView1.BorderStyle = BorderStyle.None;
+            listView1.CheckBoxes = true;
+            listView1.Columns.AddRange(new ColumnHeader[] { colNombre, colApellidos, colDni, colIban, colCantidad });
+            listView1.FullRowSelect = true;
+            listView1.GridLines = true;
+            listView1.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listView1.HideSelection = true;
+            listView1.HoverSelection = true;
+            listView1.Location = new Point(657, 92);
+            listView1.Name = "listView1";
+            listView1.ShowGroups = false;
+            listView1.Size = new Size(532, 338);
+            listView1.Sorting = SortOrder.Ascending;
+            listView1.TabIndex = 4;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
             // 
             // colNombre
             // 
-            this.colNombre.Text = "Nombre";
-            this.colNombre.Width = 120;
+            colNombre.Text = "Nombre";
+            colNombre.Width = 120;
             // 
             // colApellidos
             // 
-            this.colApellidos.Text = "Apellidos";
-            this.colApellidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colApellidos.Width = 150;
+            colApellidos.Text = "Apellidos";
+            colApellidos.TextAlign = HorizontalAlignment.Center;
+            colApellidos.Width = 150;
             // 
             // colDni
             // 
-            this.colDni.Text = "DNI";
-            this.colDni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colDni.Width = 80;
+            colDni.Text = "DNI";
+            colDni.TextAlign = HorizontalAlignment.Center;
+            colDni.Width = 80;
             // 
             // colIban
             // 
-            this.colIban.Text = "IBAN";
-            this.colIban.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colIban.Width = 110;
+            colIban.Text = "IBAN";
+            colIban.TextAlign = HorizontalAlignment.Center;
+            colIban.Width = 110;
             // 
             // colCantidad
             // 
-            this.colCantidad.Text = "Cantidad";
-            this.colCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colCantidad.Width = 70;
+            colCantidad.Text = "Cantidad";
+            colCantidad.TextAlign = HorizontalAlignment.Center;
+            colCantidad.Width = 70;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(1037, 506);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(152, 36);
-            this.button5.TabIndex = 10;
-            this.button5.Text = "Limpiar tabla";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            button5.Location = new Point(1037, 506);
+            button5.Name = "button5";
+            button5.Size = new Size(152, 36);
+            button5.TabIndex = 10;
+            button5.Text = "Limpiar tabla";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(657, 506);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(166, 36);
-            this.button6.TabIndex = 10;
-            this.button6.Text = "Eliminar filas seleccionadas";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            button6.Location = new Point(657, 506);
+            button6.Name = "button6";
+            button6.Size = new Size(166, 36);
+            button6.TabIndex = 10;
+            button6.Text = "Eliminar filas seleccionadas";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(665, 14);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 15);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "IBAN Emisor";
+            label7.AutoSize = true;
+            label7.Location = new Point(665, 14);
+            label7.Name = "label7";
+            label7.Size = new Size(73, 15);
+            label7.TabIndex = 11;
+            label7.Text = "IBAN Emisor";
             // 
             // ibanEmisor
             // 
-            this.ibanEmisor.BeepOnError = true;
-            this.ibanEmisor.Location = new System.Drawing.Point(763, 11);
-            this.ibanEmisor.Mask = "LL9999999999999999999999999";
-            this.ibanEmisor.Name = "ibanEmisor";
-            this.ibanEmisor.Size = new System.Drawing.Size(325, 23);
-            this.ibanEmisor.TabIndex = 12;
+            ibanEmisor.BeepOnError = true;
+            ibanEmisor.Location = new Point(763, 11);
+            ibanEmisor.Mask = "LL9999999999999999999999999";
+            ibanEmisor.Name = "ibanEmisor";
+            ibanEmisor.Size = new Size(325, 23);
+            ibanEmisor.TabIndex = 12;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(665, 44);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(25, 15);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "NIF";
+            label8.AutoSize = true;
+            label8.Location = new Point(665, 44);
+            label8.Name = "label8";
+            label8.Size = new Size(25, 15);
+            label8.TabIndex = 11;
+            label8.Text = "NIF";
             // 
             // nif
             // 
-            this.nif.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.nif.Location = new System.Drawing.Point(763, 36);
-            this.nif.Name = "nif";
-            this.nif.Size = new System.Drawing.Size(325, 23);
-            this.nif.TabIndex = 2;
+            nif.CharacterCasing = CharacterCasing.Upper;
+            nif.Location = new Point(763, 36);
+            nif.Name = "nif";
+            nif.Size = new Size(325, 23);
+            nif.TabIndex = 2;
             // 
             // concepto
             // 
-            this.concepto.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.concepto.Location = new System.Drawing.Point(763, 63);
-            this.concepto.Name = "concepto";
-            this.concepto.Size = new System.Drawing.Size(325, 23);
-            this.concepto.TabIndex = 2;
+            concepto.CharacterCasing = CharacterCasing.Upper;
+            concepto.Location = new Point(763, 63);
+            concepto.Name = "concepto";
+            concepto.Size = new Size(325, 23);
+            concepto.TabIndex = 2;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(665, 66);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 15);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Concepto Pago";
+            label9.AutoSize = true;
+            label9.Location = new Point(665, 66);
+            label9.Name = "label9";
+            label9.Size = new Size(89, 15);
+            label9.TabIndex = 11;
+            label9.Text = "Concepto Pago";
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(733, 480);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(412, 15);
-            this.label10.TabIndex = 13;
-            this.label10.Text = "El fichero generado se guardará en Mis Documentos con el nombre sepa.xml";
+            label10.AutoSize = true;
+            label10.Location = new Point(733, 480);
+            label10.Name = "label10";
+            label10.Size = new Size(412, 15);
+            label10.TabIndex = 13;
+            label10.Text = "El fichero generado se guardará en Mis Documentos con el nombre sepa.xml";
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(btImportarExcel);
+            panel3.Location = new Point(12, 400);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(505, 77);
+            panel3.TabIndex = 14;
+            // 
+            // btImportarExcel
+            // 
+            btImportarExcel.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btImportarExcel.Location = new Point(10, 7);
+            btImportarExcel.Name = "btImportarExcel";
+            btImportarExcel.Size = new Size(249, 56);
+            btImportarExcel.TabIndex = 0;
+            btImportarExcel.Text = "Importar excel pagos";
+            btImportarExcel.UseVisualStyleBackColor = true;
+            btImportarExcel.Click += btImportarExcel_Click;
+            // 
+            // openFile
+            // 
+            openFile.DefaultExt = "xlsx";
+            openFile.FileName = "*.xlsx";
+            openFile.InitialDirectory = ".";
+            openFile.Title = "Seleccionar excel con datos de pagos";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1202, 548);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.ibanEmisor);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.concepto);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.nif);
-            this.Name = "Form1";
-            this.Text = "Pagos Federación de Voleibol";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1202, 548);
+            Controls.Add(panel3);
+            Controls.Add(label10);
+            Controls.Add(ibanEmisor);
+            Controls.Add(label9);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(listView1);
+            Controls.Add(panel1);
+            Controls.Add(button6);
+            Controls.Add(button5);
+            Controls.Add(concepto);
+            Controls.Add(button4);
+            Controls.Add(nif);
+            Name = "Form1";
+            Text = "Pagos Federación de Voleibol";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -440,5 +466,8 @@
         private Label label9;
         private Label label10;
         private SaveFileDialog saveFileDialog1;
+        private Panel panel3;
+        private Button btImportarExcel;
+        private OpenFileDialog openFile;
     }
 }

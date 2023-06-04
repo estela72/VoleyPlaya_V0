@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PagosXml.Dominio
 {
-    internal class Persona
+    public class Persona
     {
         string Nombre;
         string Apellidos;
