@@ -3,6 +3,7 @@ using PagosXml.Dominio;
 using System.Collections;
 using System.Xml.Schema;
 using System.Xml;
+using PagosXml.Infraestructura;
 
 namespace PagosXml
 {
@@ -24,24 +25,25 @@ namespace PagosXml
 
         private void button2_Click(object sender, EventArgs e)
         {
-            AddPerson();
+            PersonCheck();
+            Persona persona = new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text));
+            AddPerson(persona);
             CleanData();
         }
 
-        private void AddPerson()
+        private void AddPerson(Persona persona)
         {
             try
             {
-                PersonCheck();
-                personas.Add(new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text)));
-                ListViewItem listViewItem = new ListViewItem(new string[] { this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, this.cantidad.Text });
-                listViewItem.Name = this.dni.Text;
+                personas.Add(persona);
+                ListViewItem listViewItem = new ListViewItem(new string[] { persona.Nombre1, persona.Apellidos1, persona.Dni1, persona.Iban1, persona.Cantidad1.ToString() });
+                listViewItem.Name = persona.Dni1;
                 listView1.Items.Add(listViewItem);
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 MessageBox.Show("Error: " + x.Message);
-            } 
+            }
         }
 
         private void CleanData()
@@ -67,7 +69,7 @@ namespace PagosXml
             {
                 double val = Convert.ToDouble(this.cantidad.Text);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new ArgumentException("Cantidad debe contener un valor válido");
             }
@@ -76,7 +78,9 @@ namespace PagosXml
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddPerson();
+            PersonCheck();
+            Persona persona = new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text));
+            AddPerson(persona);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -91,7 +95,7 @@ namespace PagosXml
                 SaveXmlFile();
                 MessageBox.Show("Fichero sepa generado en carpeta MisDocumentos");
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 MessageBox.Show("Error: " + x.Message);
             }
@@ -99,7 +103,7 @@ namespace PagosXml
         }
 
         private void SaveXmlFile()
-        { 
+        {
             using (var stream = new MemoryStream(File.ReadAllBytes(".\\Infraestructura\\esquema_sepa_file1.xsd")))
             {
                 var schema = XmlSchema.Read(XmlReader.Create(stream), null);
@@ -117,7 +121,7 @@ namespace PagosXml
                 doc.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = new DocumentCstmrCdtTrfInitnPmtInfCdtTrfTxInf[personas.Count];
                 short i = 1;
                 int indice = 0;
-                foreach(Persona persona in personas)
+                foreach (Persona persona in personas)
                 {
                     var p = new DocumentCstmrCdtTrfInitnPmtInfCdtTrfTxInf();
                     p.PmtId.EndToEndId = i++;
@@ -162,8 +166,35 @@ namespace PagosXml
         private void RemovePersona(string dni)
         {
             var persona = personas.Where(p => p.Dni1.Equals(dni)).SingleOrDefault();
-            if (persona!=null)
-               personas.Remove(persona);
+            if (persona != null)
+                personas.Remove(persona);
+        }
+
+        private void btImportarExcel_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos de excel (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFile = openFileDialog.FileName;
+
+                // Leer el archivo seleccionado
+                try
+                {
+                    var arbitros = ExcelInterprete.ReadExcelPagosFile(selectedFile);
+                    foreach (ArbitroPlaya arbi in arbitros)
+                    {
+                        arbi.Cantidad1 = (arbi.JornadasSabado * 25) + (arbi.JornadasDomingo * 35);
+                        AddPerson(arbi);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Error al leer el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
