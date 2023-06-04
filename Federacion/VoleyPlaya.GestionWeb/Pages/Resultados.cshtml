@@ -1,0 +1,264 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.ResultadosModel
+@{
+}
+<h1>Calendario de Competición</h1>
+<div class="card">
+    <form method="get">
+            <div class="card-header">
+                <h2>Filtros</h2>
+                <div style="max-width: 600px; ">
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Prueba</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.PruebaSelected, @Model.Pruebas, "Seleccione una prueba", new{@class="form-control", id = "prueba-select",
+                        @onchange= "applyFilter()" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCompeticiones)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @disabled="disabled",@onchange= "applyFilter()" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                        }
+                    </div>
+                </div>
+                    <div class="form-group row m-1">
+                        <label class="col-sm-4 col-form-label">Categoría</label>
+                        <div class="col-sm-8">
+                            @if (!Model.SelectCategorias)
+                            {
+                                @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                            @disabled="disabled", @onchange="applyFilter()"})
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                            @onchange="applyFilter()"})
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row m-1">
+                        <label class="col-sm-4 col-form-label">Género</label>
+                        <div class="col-sm-8">
+                            @if (!Model.SelectGeneros)
+                            {
+                                @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                            @disabled="disabled", @onchange="applyFilter()"})
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                            @onchange="applyFilter()"})
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row m-1">
+                        <label class="col-sm-4 col-form-label">Grupo</label>
+                        <div class="col-sm-8">
+                            @if (!Model.SelectGrupos)
+                            {
+                                @Html.DropDownListFor(m=>@Model.GrupoSelected, @Model.Grupos, "Seleccione un grupo", new{@class="form-control", id = "grupo-select", name="grupo-select",
+                            @disabled="disabled", @onchange="applyFilter()"})
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m=>@Model.GrupoSelected, @Model.Grupos, "Seleccione un grupo", new{@class="form-control", id = "grupo-select", name="grupo-select",
+                            @onchange="applyFilter()"})
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row m-1">
+                    </div>
+                </div>
+            </div>
+    </form>
+    <div class="col" style="max-width: 600px;">
+        <div class="retirado">
+            <p>Equipo Retirado</p>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <form method="post" asp-page-handler="Guardar"
+                        asp-route-pruebaId="@Model.PruebaSelected"
+                        asp-route-competicionId="@Model.CompeticionSelected"
+                        asp-route-categoriaId="@Model.CategoriaSelected"
+                        asp-route-generoId="@Model.GeneroSelected"
+                        asp-route-grupoId="@Model.GrupoSelected">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m=>Model.CompeticionSelected)
+        @Html.HiddenFor(m=>Model.CategoriaSelected)
+        @Html.HiddenFor(m=>Model.GeneroSelected)
+        @Html.HiddenFor(m=>Model.GrupoSelected)
+        <div class="card-body">
+            <div class="card-header">
+                @if (Model.Partidos!=null && Model.Partidos.Count > 0)
+                {
+                    <p>Recuerda pulsar el botón Guardar para que los resultados queden registrados</p>
+                    <button type="submit" class="btn btn-primary">Guardar resultados</button>
+                }
+            </div>
+            @if (Model.Partidos != null)
+            {
+                <table id="partidos" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Jornada</th>
+                            <th>Partido</th>
+                            <th>Fecha y hora</th>
+                            <th>Pista</th>
+                            <th>Equipos</th>
+                            <th>Set 1</th>
+                            <th>Set 2</th>
+                            <th>Set 3</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los calendarios filtrados en función de los filtros seleccionados -->
+                        @for (int i=0; i<Model.Partidos.Count;i++)
+                        {
+                            @Html.HiddenFor(m=>Model.Partidos[i].Id)
+                            <tr>
+                                <td><label asp-for="@Model.Partidos[@i].Jornada">@Model.Partidos[@i].Jornada</label></td>
+                                <td><label asp-for="@Model.Partidos[@i].Label">@Model.Partidos[@i].Label</label></td>
+                                <td><label asp-for="@Model.Partidos[@i].FechaHora">@Model.Partidos[@i].FechaHora.ToString("dd/MM/yyyy HH:mm")</label></td>
+                                <td><label asp-for="@Model.Partidos[@i].Pista">@Model.Partidos[@i].Pista</label></td>
+                                <td>
+                                    @if (Model.Partidos[i].RetiradoLocal) 
+                                    {
+                                        <label class="retirado" asp-for="@Model.Partidos[@i].Local">@Model.Partidos[@i].Local</label><a>-</a>
+                                    }
+                                    else
+                                    {
+                                        <label asp-for="@Model.Partidos[@i].Local">@Model.Partidos[@i].Local</label><a>-</a>
+                                    }
+                                    @if (Model.Partidos[i].RetiradoVisitante) 
+                                    {
+                                        <label class="retirado" asp-for="@Model.Partidos[@i].Visitante">@Model.Partidos[@i].Visitante</label>
+                                    }
+                                    else
+                                    {
+                                        <label asp-for="@Model.Partidos[@i].Visitante">@Model.Partidos[@i].Visitante</label>                                        
+                                    }
+
+                                </td>
+                                @if (Model.Partidos[i].RetiradoLocal || Model.Partidos[i].RetiradoVisitante || Model.Partidos[i].ConResultado)
+                                {
+                                    <td>
+                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Local" disabled/>
+                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" disabled />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Local" disabled />
+                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" disabled />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Local" disabled />
+                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" disabled />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="res-local retirado" asp-for="@Model.Partidos[i].Resultado.Local" disabled />
+                                        <input type="number" class="res-visitante retirado" asp-for="@Model.Partidos[i].Resultado.Visitante" disabled />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <input type="number"  class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set1.Local" />
+                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set2.Local" />
+                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set3.Local" />
+                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="res-local" asp-for="@Model.Partidos[i].Resultado.Local" disabled />
+                                        <input type="number" class="res-visitante" asp-for="@Model.Partidos[i].Resultado.Visitante" disabled />
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="card-footer">
+            @if (Model.Partidos == null)
+            {
+                <h2>Seleccionar Prueba, Competicion, Categoría, Género y Grupo para cargar los partidos disputados en el día de hoy</h2>
+            }
+            else if (Model.Partidos.Count > 0)
+            {
+            <button type="submit" class="btn btn-primary">Guardar resultados</button>
+            }
+            else
+            {
+                <h2>No hay partidos disputados en el día de hoy</h2>
+            }
+        </div>
+    </form>
+</div>
+@section scripts {
+    <script>
+        // Seleccionar todos los checkboxes de la tabla
+        const resultados = document.querySelectorAll('.resultado');
+
+        // Agregar un event listener a cada checkbox
+        resultados.forEach((resultado) => {
+            resultado.addEventListener('change', (event) => {
+                // Obtener la fila de la tabla a la que pertenece el resultado
+                const row = event.target.closest('tr');
+
+                // Obtener los parciales como local
+                const locales = row.querySelectorAll('.local');
+
+                // Obtener los parciales como visitante
+                const visitantes = row.querySelectorAll('.visitante');
+
+                // Obtener el resultado local
+                const resLocal = row.querySelector('.res-local');
+                const resVisitante = row.querySelector('.res-visitante');
+
+                var rl = 0;
+                var rv = 0;
+
+                for (let i = 0; i < 3; i++) {
+                    const valor1 = locales[i].value;
+                    const valor2 = visitantes[i].value;
+                    if (valor1 > valor2) { rl = rl + 1; }
+                    else if (valor2 > valor1) { rv = rv + 1; }
+                }
+                // Actualizar el contenido del resultado del partido
+                resLocal.value = rl;
+                resVisitante.value = rv;
+            });
+        });
+    </script>
+    @*<script>
+        function applyFilter() {
+            var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
+            var competicion = $("#competicion-select").val();
+            var categoria = $("#categoria-select").val();
+            var genero = $("#genero-select").val();
+            var grupo = $("#grupo-select").val();
+            url += '?competicion=' + competicion; // agregar el filtro de categoría a la URL
+            url += '&categoria=' + categoria; // agregar el filtro de categoría a la URL
+            url += '&genero=' + genero; // agregar el filtro de categoría a la URL
+            url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
+            window.location.href = url; // recargar la página con la URL actualizada
+        }
+    </script>*@
+}

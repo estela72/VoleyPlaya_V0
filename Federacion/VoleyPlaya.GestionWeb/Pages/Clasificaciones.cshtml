@@ -1,0 +1,210 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.ClasificacionesModel
+@{
+}
+
+<div class="card">
+    <form method="get">
+        <div class="card-header">
+            <h2>Filtros</h2>
+            <div style="max-width: 600px; ">
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Prueba</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.PruebaSelected, @Model.Pruebas, "Seleccione una prueba", new{@class="form-control", id = "prueba-select",
+                        @onchange= "applyFilter()" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCompeticiones)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @disabled="disabled",@onchange= "applyFilter()" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Categoría</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCategorias)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                                                @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                                                @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Género</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectGeneros){
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                                                 @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                                                @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Grupo</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectGrupos)
+                        {
+                            @Html.DropDownListFor(m=>@Model.GrupoSelected, @Model.Grupos, "Seleccione un grupo", new{@class="form-control", id = "grupo-select", name="grupo-select", 
+                                                @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.GrupoSelected, @Model.Grupos, "Seleccione un grupo", new{@class="form-control", id = "grupo-select", name="grupo-select", 
+                                                 @onchange="applyFilter()"})                            
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                   
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col" style="max-width: 600px;">
+        <div class="retirado">
+            <p>Equipo Retirado</p>
+        </div>
+    </div>
+</div>
+@if (Model.Clasificaciones != null)
+{
+    <div class="card">        
+        @foreach (var grupo in Model.Clasificaciones)
+        {
+            <div class="card-header alert-info">
+                <div class="row g-3 m-2">
+                    <row>
+                         @Html.DisplayFor(modelItem => grupo.Edicion.Alias, new{@class="col m-5 h4"})
+                         Grupo @Html.DisplayFor(modelItem => grupo.Name, new{@class="col m-5 h4"})
+                    </row>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-striped table-hover partidos">
+                    <thead>
+                        <tr>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Puntos)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Jugados)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Ganados)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Perdidos)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosFavor)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosContra)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Coeficiente)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipo in grupo.Equipos.OrderByDescending(e=>e.Puntos).ThenByDescending(e=>e.Coeficiente))
+                        {
+                            var clase = "";
+                            if (equipo.Retirado) clase = "retirado";
+                            <tr class="@clase">
+                                <td class="@clase">
+                                    @Html.DisplayFor(modelItem =>  equipo.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Puntos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Jugados)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Ganados)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Perdidos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.PuntosFavor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.PuntosContra)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Coeficiente)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <table class ="table table-borderless table-striped table-hover partidos">
+                    <caption>Partidos</caption>
+                    <thead>
+                        <tr>
+                            <th>J</th>
+                            <th>Partido</th>
+                            <th>Fecha y hora</th>
+                            <th>Pista</th>
+                            <th></th>
+                            <th>Local</th>
+                            <th>Res local</th>
+                            <th>Res visitante</th>
+                            <th>Visitante</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los calendarios filtrados en función de los filtros seleccionados -->
+                        @foreach (var partido in grupo.Partidos)
+                        {
+                            var claseLocal = "";
+                            var claseVisit = "";
+                            if (partido.RetiradoLocal) claseLocal = "retirado";
+                            if (partido.RetiradoVisitante) claseVisit = "retirado";
+                            <tr>
+                                <td>@partido.Jornada</td>
+                                <td>@partido.Label</td>
+                                <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@partido.Pista</td>
+                                <td>@partido.Ronda</td>
+                                <td class="@claseLocal">@partido.Local</td>
+                                <td>@partido.Resultado.Local</td>
+                                <td>@partido.Resultado.Visitante</td>
+                                <td class="@claseVisit">@partido.Visitante</td>
+                                <td>(@partido.Resultado.Set1.Local-@partido.Resultado.Set1.Visitante;@partido.Resultado.Set2.Local-@partido.Resultado.Set2.Visitante;@partido.Resultado.Set3.Local-@partido.Resultado.Set3.Visitante)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+@section scripts {
+    @*<script>
+        function applyFilter() {
+            var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
+            var competicion = $("#competicion-select").val();
+            var categoria = $("#categoria-select").val();
+            var genero = $("#genero-select").val();
+            var grupo = $("#grupo-select").val();
+            url += '?competicion=' + competicion; // agregar el filtro de categoría a la URL
+            url += '&categoria=' + categoria; // agregar el filtro de categoría a la URL
+            url += '&genero=' + genero; // agregar el filtro de categoría a la URL
+            url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
+            window.location.href = url; // recargar la página con la URL actualizada
+        }
+    </script>*@
+}

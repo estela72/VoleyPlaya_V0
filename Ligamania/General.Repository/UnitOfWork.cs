@@ -16,35 +16,19 @@ using System.Threading.Tasks;
 
 namespace General.CrossCutting.Lib
 {
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     public interface IUnitOfWork : IDisposable
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     {
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         Task<EntityEntry> GetEntityEntry(Entity entity);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
-
-        //Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
+        Task<int> SaveMauiChangesAsync();
         Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default);
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
+        string GetCurrentUser();
     }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     public abstract class UnitOfWork : IUnitOfWork, IDisposable
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
     {
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         protected readonly DbContext _context;
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         protected readonly ILogger _logger;
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public string DEFAULT_SCHEMA = "";
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         private IDbContextTransaction _currentTransaction;
         private readonly IConfiguration _configuration;
 
@@ -66,14 +50,16 @@ namespace General.CrossCutting.Lib
             _logger = loggerFactory.CreateLogger("logs");
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public bool HasActiveTransaction => _currentTransaction != null;
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
 
+        public string GetCurrentUser()
+        {
+            var httpContextAccessor = _context.GetService<IHttpContextAccessor>();
+            var userId = httpContextAccessor.HttpContext?.User
+                                   .FindFirst(ClaimTypes.NameIdentifier).Value;
+            return userId;
+        }
         private Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             try
@@ -138,9 +124,7 @@ namespace General.CrossCutting.Lib
             }
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             // Dispatch Domain Events collection.
             // Choices:
@@ -156,10 +140,66 @@ namespace General.CrossCutting.Lib
 
             return result > 0;
         }
+        public Task<int> SaveMauiChangesAsync()
+        {
+            try
+            {
+                var modifiedEntries = _context.ChangeTracker.Entries()
+                    .Where(x => x.Entity is IBaseEntity
+                        && (x.State == EntityState.Added || x.State == EntityState.Modified));
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
+                foreach (var entry in modifiedEntries)
+                {
+                    if (entry.Entity is IBaseEntity entity)
+                    {
+                        string userName = string.Empty;
+                        DateTime now = DateTime.UtcNow;
+
+                        if (entry.State == EntityState.Added)
+                        {
+                            entity.CreatedBy = userName;
+                            entity.CreatedDate = now;
+                        }
+                        else
+                        {
+                            _context.Entry(entity).Property(x => x.CreatedBy).IsModified = false;
+                            _context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+                        }
+                        entity.UpdatedBy = userName;
+                        entity.UpdatedDate = now;
+                    }
+                }
+
+                var entities = from e in _context.ChangeTracker.Entries()
+                               where e.State == EntityState.Added
+                                   || e.State == EntityState.Modified
+                               select e.Entity;
+                foreach (var entity in entities)
+                {
+                    var validationContext = new ValidationContext(entity);
+                    Validator.ValidateObject(entity, validationContext);
+                }
+
+                return _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException updateConcException)
+            {
+                Console.WriteLine("error " + updateConcException);
+                return null;
+            }
+            catch (DbUpdateException updateException)
+            {
+                Console.WriteLine("error " + updateException);
+                return null;
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine("error " + x);
+                return null;
+            }
+        }
+
         public async Task<IDbContextTransaction> BeginTransactionAsync()
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             if (_currentTransaction != null) return null;
 
@@ -168,9 +208,7 @@ namespace General.CrossCutting.Lib
             return _currentTransaction;
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task CommitTransactionAsync(IDbContextTransaction transaction)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
             if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
@@ -195,9 +233,7 @@ namespace General.CrossCutting.Lib
             }
         }
 
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public void RollbackTransaction()
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             try
             {
@@ -217,10 +253,7 @@ namespace General.CrossCutting.Lib
         {
             _context.Dispose();
         }
-
-#pragma warning disable CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         public async Task<EntityEntry> GetEntityEntry(Entity entity)
-#pragma warning restore CS1591 // Falta el comentario XML para el tipo o miembro visible públicamente
         {
             return await Task.FromResult(_context.Entry(entity));
         }

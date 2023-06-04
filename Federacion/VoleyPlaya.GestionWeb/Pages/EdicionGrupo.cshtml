@@ -1,0 +1,199 @@
+﻿@page 
+@model VoleyPlaya.Gestion.Web.Views.Edicion.EdicionGrupoModel
+@{
+
+}
+<form method="post">
+    @Html.HiddenFor(m=>m.Grupo.Id)
+    @Html.HiddenFor(m=>m.Grupo.Name)
+    @Html.HiddenFor(m=>m.Grupo.Edicion.Id)
+    @Html.HiddenFor(m=>m.Grupo.Edicion.NumJornadas)
+    @Html.HiddenFor(m=>m.Grupo.NumEquipos)
+    <div class="card">
+        <div class="card-header alert-info">
+            <div class="row g-3 m-2">
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Temporada, new{@class="col m-5 h4"})
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Prueba, new{@class="col m-5 h4"})
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.Competicion, new{@class="col m-5 h4"})
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.CategoriaStr, new{@class="col m-5 h4"})
+                @Html.DisplayFor(modelItem => modelItem.Grupo.Edicion.GeneroStr, new{@class="col m-5 h4"})
+                <label class="align-content-start h4">Grupo @Model.Grupo.Name - Clasificación</label>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless table-striped table-hover">
+                <thead>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Nombre)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Puntos)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Jugados)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Ganados)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Perdidos)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().PuntosFavor)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().PuntosContra)</td>
+                        <td>@Html.DisplayNameFor(m=>m.Grupo.Equipos.First().Coeficiente)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Grupo.EquiposOrdered.Count; i++)
+                    {
+                        @Html.HiddenFor(m=> Model.Grupo.EquiposOrdered[@i].Posicion)
+                        <tr>
+                            
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Puntos)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Jugados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Ganados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Perdidos)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].PuntosFavor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].PuntosContra)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem =>  Model.Grupo.EquiposOrdered[@i].Coeficiente)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            @if (Model.Grupo.Partidos.Count == 0)
+            {
+                <input type="submit" class="btn btn-primary" value="Generar partidos" />
+            }
+        </div>
+    </div>
+</form>
+
+<form method="post" asp-page-handler="Partidos">
+    @Html.HiddenFor(m=>Model.Grupo.Id)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Id)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Nombre)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Temporada)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Competicion)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Categoria)
+    @Html.HiddenFor(m=>Model.Grupo.Edicion.Genero)
+    @Html.HiddenFor(m=>Model.Grupo.Name)
+    @Html.HiddenFor(m=>m.Grupo.Edicion.NumJornadas)
+    @Html.HiddenFor(m=>m.Grupo.NumEquipos)
+    @for(int i=0; i < Model.Grupo.Equipos.Count; i++)
+    {
+        @Html.HiddenFor(m=>Model.Grupo.Equipos[@i].Id)
+        @Html.HiddenFor(m=>Model.Grupo.Equipos[@i].Nombre)
+    }
+    <div class="card">
+        <div class="card-header">
+            <label class="alert-info form-control" style="font-size:large; font-weight:bold">Partidos</label>
+            <div class="row g-2 m-1">
+                <div class="col" style="font-size:large">
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Temporada)
+                    @Html.DisplayName(" - ")
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Prueba)
+                    @Html.DisplayName(" - ")
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Competicion)
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Categoria)
+                    @Html.DisplayTextFor(m=>Model.Grupo.Edicion.Genero)
+                    @Html.DisplayName(" - ")
+                    @Html.DisplayNameFor(m=>Model.Grupo.Name)
+                    @Html.DisplayTextFor(m=>Model.Grupo.Name)
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table id="partidos" class="table table-bordered table-responsive d-sm-table" style="width:100%">
+                <thead>
+                    <tr style="background-color:darkgrey" align="center">
+                        <th></th>
+                        <th>Jor</th>
+                        <th>Nº</th>
+                        <th>Fecha y hora</th>
+                        <th>Pista</th>
+                        <th>Equipos</th>
+                        <th>1º set</th>
+                        <th>2º set</th>
+                        <th>3º set</th>
+                        <th colspan="2">Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Grupo.Partidos.Count; i++)
+                    {
+                        <tr style="font-weight:bold;background-color:lightsteelblue" align="center">
+                            @Html.HiddenFor(m=>Model.Grupo.Partidos[@i].Id)
+                            <td rowspan="2" style="background-color:lightgrey" align="center">
+                                <!-- Agrega la clase 'btn' para crear un botón de Bootstrap -->
+                                <a class="btn btn-danger" asp-page-handler="DeletePartido"
+                                            asp-route-partidoId="@Model.Grupo.Partidos[@i].Id"
+                                            asp-route-groupId="@Model.Grupo.Id">
+                                    <!-- Agrega la clase 'fa' y la clase 'fa-trash' para agregar el icono de eliminar de Font Awesome -->
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                            <td rowspan="2" style="background-color:lightgrey" align="center">
+                                @Html.DisplayTextFor(m=>Model.Grupo.Partidos[@i].Jornada)
+                            </td>
+                            <td rowspan="2" style="background-color:lightgrey" align="center">
+                                @Html.DisplayTextFor(m=>Model.Grupo.Partidos[@i].Label)
+                            </td>
+                            <td rowspan="2" style="background-color:lightgrey" align="center">
+                                @Html.EditorFor(m => m.Grupo.Partidos[@i].FechaHora)
+                            </td>
+                            <td rowspan="2" style="background-color:lightgrey" align="center">
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Pista)
+                            </td>
+                            <td>
+                                <input type="text" readonly style="font-weight:bold" asp-for="@Model.Grupo.Partidos[@i].Local" />
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set1.Local)
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set2.Local)
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set3.Local)
+                            </td>
+                            <td style="font-weight:bold">
+                                @Html.DisplayFor(m=>m.Grupo.Partidos[@i].Resultado.Local)
+                            </td>
+                        </tr>
+                        <tr class="table-borderless" style="font-weight:bold;background-color:lightgoldenrodyellow" align="center">
+                            <td style="font-weight:bold">
+                                <input type="text" readonly style="font-weight:bold" asp-for="@Model.Grupo.Partidos[@i].Visitante" />
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set1.Visitante)
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set2.Visitante)
+                            </td>
+                            <td>
+                                @Html.EditorFor(m=>Model.Grupo.Partidos[@i].Resultado.Set3.Visitante)
+                            </td>
+                            <td style="font-weight:bold">
+                                @Html.DisplayFor(m=>m.Grupo.Partidos[@i].Resultado.Visitante)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Guardar partidos</button>
+        </div>
+    </div>
+</form>

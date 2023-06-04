@@ -1,0 +1,119 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+
+/* Estilo para los pasos de la gu�a */
+.guia-paso {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilo para los pasos completados */
+.completado {
+    background-color: #c9e6c9;
+    border-color: #8bc78b;
+}
+
+/* Estilo de la tarjeta */
+.card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para ocultar la tarjeta */
+.card-hidden {
+    display: none;
+}
+
+/* Estilo para mostrar la tarjeta */
+.card-visible {
+    display: block;
+}
+
+/* Estilo del bot�n de icono para cambiar el estado de la tarjeta */
+.toggle-icon {
+    cursor: pointer;
+    color: blue;
+}
+
+/*table {
+    table-layout: fixed;
+}*/
+
+/*#tablaPartidos th td {
+    width: 30px;
+    overflow: auto;*/
+    /*border: 1px solid;*/
+/*}*/
+
+.smallCell {
+    /*width: 10%;*/
+    max-width: 3;
+    background-color:yellow;
+}
+
+.retirado{
+    background-color: lightgray;
+}
+table.partidos td {
+}
+.retirado
+{
+    background-color: lightgray;
+    color: red;
+}
+/*.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}*/
+.text-center {
+    text-align: center;
+}
+
+.centered-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.table-fit td,
+.table-fit th {
+    white-space: nowrap;
+    width: 1%;
+}
+.custom-editor {
+    width: 60px;
+}
+.custom-editor-date {
+    width:160px;
+}
+.custom-editor-checkbox {
+    width:25px;
+    height:25px;
+}

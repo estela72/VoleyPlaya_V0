@@ -1,0 +1,216 @@
+﻿@page
+@model VoleyPlaya.GestionWeb.Pages.GruposModel
+@*@if (!string.IsNullOrEmpty(Model.UrlEdicion))
+{
+    <p><a href="@Model.UrlEdicion">Volver a la competición</a></p>
+}*@
+
+<h1>Composición de Grupos</h1>
+<div class="card">
+    <form method="get">
+        <div class="card-header">
+            <h2>Filtros</h2>
+            <div style="max-width: 600px; ">
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Prueba</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m=>@Model.PruebaSelected, @Model.Pruebas, "Seleccione una prueba", new{@class="form-control", id = "prueba-select",
+                        @onchange= "applyFilter()" })
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Competición</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCompeticiones)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @disabled="disabled",@onchange= "applyFilter()" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CompeticionSelected, @Model.Competiciones, "Seleccione una competición", new{@class="form-control", id = "competicion-select",
+                        @onchange= "applyFilter()" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Categoría</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectCategorias)
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                        @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.CategoriaSelected, @Model.Categorias, "Seleccione una categoría", new{@class="form-control", id = "categoria-select",
+                        @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+                <div class="form-group row m-1">
+                    <label class="col-sm-4 col-form-label">Género</label>
+                    <div class="col-sm-8">
+                        @if (!Model.SelectGeneros)
+                        {
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                        @disabled="disabled", @onchange="applyFilter()"})
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=>@Model.GeneroSelected, @Model.Generos, "Seleccione un género", new{@class="form-control", id = "genero-select",
+                        @onchange="applyFilter()"})
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col" style="max-width: 600px;">
+        <div class="retirado">
+            <p>Equipo Retirado</p>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <form method="post" asp-page-handler="Exportar" asp-route-pruebaId="@Model.PruebaSelected"
+                        asp-route-competicionId="@Model.CompeticionSelected" asp-route-categoriaId="@Model.CategoriaSelected" asp-route-generoId="@Model.GeneroSelected">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m=>Model.PruebaSelected)
+        @Html.HiddenFor(m=>Model.CompeticionSelected)
+        @Html.HiddenFor(m=>Model.CategoriaSelected)
+        @Html.HiddenFor(m=>Model.GeneroSelected)
+        <div class="card-header">
+            <button type="submit" class="btn btn-primary m-2" id="exportar" name="exportar">Exportar a Excel</button>
+        </div>
+    </form>
+</div>
+
+@if (Model.Grupos != null && Model.Grupos.Count > 0 && Model.Grupos.First().Equipos.Count > 0)
+{
+    var grupos = Model.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
+    @foreach (var grupo in grupos)
+    {
+        <div class="card m-2 p-2" style="background-color:beige">
+            <div class="card-body">
+                <h2>Grupo @grupo.Name</h2>
+                <table class="table table-borderless table-striped table-hover partidos">
+                    <caption style="caption-side:top;font-size:larger;font-weight:bold">Clasificación</caption>
+                    <thead>
+                        <tr>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Puntos)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Jugados)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Ganados)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Perdidos)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosFavor)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().PuntosContra)</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Coeficiente)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipo in grupo.Equipos.OrderByDescending(e => e.Puntos).ThenByDescending(e => e.Coeficiente))
+                        {
+                            var clase = "";
+                            if (equipo.Retirado) clase = "retirado";
+                            <tr class="@clase">
+                                <td class="@clase">
+                                    @Html.DisplayFor(modelItem =>  equipo.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Puntos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Jugados)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Ganados)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Perdidos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.PuntosFavor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.PuntosContra)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem =>  equipo.Coeficiente)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <table class="table table-fit" id="tablaPartidos">
+                    <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
+                    <thead>
+                        <tr>
+                            <th>Jornada</th>
+                            <th>Nº Partido</th>
+                            <th>Ronda</th>
+                            <th>Fecha</th>
+                            <th>Pista</th>
+                            <th>Local</th>
+                            <th colspan="2">Resultado</th>
+                            <th>Visitante</th>
+                            <th>Sets</th>
+                            <th>Validar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var partido in grupo.Partidos)
+                        {
+                            var clase = "";
+                            @if (partido.RetiradoLocal || partido.RetiradoVisitante)
+                            {
+                                clase = "retirado";
+                            }
+                            <tr class="@clase">
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Jornada)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Label)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Ronda)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.FechaHora)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Pista)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Local)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Local)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Visitante)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Visitante)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Set1.Local)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set1.Visitante)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set2.Visitante)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set3.Local)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set3.Visitante)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+
+@section scripts {
+}
