@@ -1,8 +1,12 @@
 ﻿using General.CrossCutting.Lib;
 
+using MathNet.Numerics.Distributions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Abstractions;
+
+using NPOI.Util;
 
 using System;
 using System.Collections.Generic;
@@ -51,26 +55,28 @@ namespace VoleyPlaya.Repository.Repositories
         public async Task<Edicion> CheckAddUpdate(Temporada temporadaDto, Competicion competicionDto, Categoria categoriaDto, 
             string genero, string tipoCalendario, string prueba, string modeloCompeticion)
         {
+            Arguments.Check(new object[] { temporadaDto, competicionDto, categoriaDto, prueba, genero });
             var dto = await FindAsync(c => c.Temporada.Nombre.Equals(temporadaDto.Nombre)
                 && c.Competicion.Nombre.Equals(competicionDto.Nombre)
                 && c.Categoria.Nombre.Equals(categoriaDto.Nombre)
-                && c.Genero!.Equals(genero)
-                && c.Prueba!.Equals(prueba)
+                && c.Genero.Equals(genero)
+                && c.Prueba.Equals(prueba)
                 );
             if (dto == null)
-                return await AddAsyn(new Edicion(temporadaDto, competicionDto, categoriaDto)
+                return await AddAsyn(new Edicion()
                 {
-                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, prueba, competicionDto.Nombre, categoriaDto.Nombre, genero),
+                    Temporada = temporadaDto,
+                    Competicion = competicionDto,
+                    Categoria = categoriaDto,
+                    Prueba = prueba,
                     Genero = genero,
+                    Nombre = VoleyPlayaService.GetNombreEdicion(temporadaDto.Nombre, prueba, competicionDto.Nombre, categoriaDto.Nombre, genero),
                     TipoCalendario = tipoCalendario,
-                    ModeloCompeticion = modeloCompeticion,
-                    Prueba = prueba
+                    ModeloCompeticion = modeloCompeticion
                 });
             else
             {
-                //dto.Genero = genero;
                 dto.TipoCalendario = tipoCalendario;
-                //dto.Prueba = prueba;
                 dto.ModeloCompeticion = modeloCompeticion;
                 dto = await UpdateAsync(dto);
             }

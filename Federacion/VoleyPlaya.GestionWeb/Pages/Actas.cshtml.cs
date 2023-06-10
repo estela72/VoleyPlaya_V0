@@ -225,18 +225,23 @@ namespace VoleyPlaya.GestionWeb.Pages
             nuevaHoja.Cells["D30"].Value = partido.Local;
             nuevaHoja.Cells["R30"].Value = partido.Visitante;
 
-            var locales = partido.Local.Split('-');
-            var visitantes = partido.Visitante.Split('-');
-
-            if (locales.Count() > 1)
+            if (!string.IsNullOrEmpty(partido.Local))
             {
-                nuevaHoja.Cells["D32"].Value = locales[0].Trim();
-                nuevaHoja.Cells["D33"].Value = locales[1].Trim();
+                var locales = partido.Local.Split('-');
+                if (locales.Count() > 1)
+                {
+                    nuevaHoja.Cells["D32"].Value = locales[0].Trim();
+                    nuevaHoja.Cells["D33"].Value = locales[1].Trim();
+                }
             }
-            if (visitantes.Count() > 1)
+            if (!string.IsNullOrEmpty(partido.Visitante))
             {
-                nuevaHoja.Cells["Q32"].Value = visitantes[0].Trim();
-                nuevaHoja.Cells["Q33"].Value = visitantes[1].Trim();
+                var visitantes = partido.Visitante.Split('-');
+                if (visitantes.Count() > 1)
+                {
+                    nuevaHoja.Cells["Q32"].Value = visitantes[0].Trim();
+                    nuevaHoja.Cells["Q33"].Value = visitantes[1].Trim();
+                }
             }
         }
 

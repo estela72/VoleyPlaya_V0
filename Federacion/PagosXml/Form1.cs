@@ -23,7 +23,7 @@ namespace PagosXml
             personas = new List<Persona>();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void addPerson_Click(object sender, EventArgs e)
         {
             PersonCheck();
             Persona persona = new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text));
@@ -31,6 +31,72 @@ namespace PagosXml
             CleanData();
         }
 
+        private void addPersonNoClean_Click(object sender, EventArgs e)
+        {
+            PersonCheck();
+            Persona persona = new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text));
+            AddPerson(persona);
+        }
+
+        private void cleanData_Click(object sender, EventArgs e)
+        {
+            CleanData();
+        }
+
+        private void saveXml_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveXmlFile();
+                MessageBox.Show("Fichero sepa generado en carpeta MisDocumentos");
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Error: " + x.Message);
+            }
+
+        }
+        private void clearList_Click(object sender, EventArgs e)
+        {
+            personas = new List<Persona>();
+            listView1.Items.Clear();
+        }
+
+        private void removeItems_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView1.Items)
+                if (item.Checked)
+                {
+                    listView1.Items.Remove(item);
+                    RemovePersona(item.Name);
+                }
+        }
+        private void btImportarExcel_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos de excel (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFile = openFileDialog.FileName;
+
+                // Leer el archivo seleccionado
+                try
+                {
+                    var arbitros = ExcelInterprete.ReadExcelPagosFile(selectedFile);
+                    foreach (ArbitroPlaya arbi in arbitros)
+                    {
+                        arbi.Cantidad1 = (arbi.JornadasSabado * 25) + (arbi.JornadasDomingo * 35);
+                        AddPerson(arbi);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Error al leer el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
         private void AddPerson(Persona persona)
         {
             try
@@ -76,31 +142,6 @@ namespace PagosXml
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            PersonCheck();
-            Persona persona = new Persona(this.nombre.Text, this.apellidos.Text, this.dni.Text, this.iban.Text, Convert.ToSingle(this.cantidad.Text));
-            AddPerson(persona);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            CleanData();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SaveXmlFile();
-                MessageBox.Show("Fichero sepa generado en carpeta MisDocumentos");
-            }
-            catch (Exception x)
-            {
-                MessageBox.Show("Error: " + x.Message);
-            }
-
-        }
 
         private void SaveXmlFile()
         {
@@ -147,21 +188,6 @@ namespace PagosXml
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            personas = new List<Persona>();
-            listView1.Items.Clear();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in listView1.Items)
-                if (item.Checked)
-                {
-                    listView1.Items.Remove(item);
-                    RemovePersona(item.Name);
-                }
-        }
 
         private void RemovePersona(string dni)
         {
@@ -170,31 +196,6 @@ namespace PagosXml
                 personas.Remove(persona);
         }
 
-        private void btImportarExcel_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Archivos de excel (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*";
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string selectedFile = openFileDialog.FileName;
-
-                // Leer el archivo seleccionado
-                try
-                {
-                    var arbitros = ExcelInterprete.ReadExcelPagosFile(selectedFile);
-                    foreach (ArbitroPlaya arbi in arbitros)
-                    {
-                        arbi.Cantidad1 = (arbi.JornadasSabado * 25) + (arbi.JornadasDomingo * 35);
-                        AddPerson(arbi);
-                    }
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show("Error al leer el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
     }
 }

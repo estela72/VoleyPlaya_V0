@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Utilities.Collections;
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -11,9 +12,6 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -29,7 +27,6 @@ namespace VoleyPlaya.Repository.Services
     {
         private IVoleyPlayaUnitOfWork _voleyPlayaUoW;
         public VoleyPlayaService(IVoleyPlayaUnitOfWork unitOfWork) => _voleyPlayaUoW= unitOfWork;
-        JsonSerializerOptions Options = new() { ReferenceHandler = ReferenceHandler.IgnoreCycles };
 
         public async Task<bool> DeleteEdicionAsync(string edicionName)
         {
@@ -56,210 +53,53 @@ namespace VoleyPlaya.Repository.Services
         public async Task<List<Edicion>> GetAllEdicionesAsync()
         {
             var dto = await _voleyPlayaUoW.EdicionRepository.GetFullAsync();
-            //var json = JsonSerializer.Serialize<List<Edicion>>(dto.ToList(),Options);
             return dto.OrderByDescending(c=>c.CreatedDate).ToList();
         }
 
-        public async Task<Edicion> GetEdicionAsync(string edicionName)
+        public async Task<Edicion> GetEdicionAsync(string edicionName) => await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edicionName);
+        public async Task<Edicion> GetEdicionAsync(int id) => await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(id);
+        public async Task<Edicion> GetEdicionByIdAsync(int id) => await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(id);
+        public async Task<Edicion> GetBasicEdicionAsync(int id) => await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(id);
+        public Edicion GetEdicion(string edicionName) => _voleyPlayaUoW.EdicionRepository.GetByName(edicionName);
+        public async Task<bool> UpdateDatosPartidosAsync(EdicionGrupo grupo)
         {
-            var dto = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(edicionName);
-            //var json = JsonSerializer.Serialize<Edicion>(dto, Options);
-            return dto;
-        }
-        public async Task<Edicion> GetEdicionAsync(int id)
-        {
-            var dto = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(id);
-            //var json = JsonSerializer.Serialize<Edicion>(dto, Options);
-            return dto;
-        }
-        public async Task<Edicion> GetEdicionByIdAsync(int id)
-        {
-            var dto = await _voleyPlayaUoW.EdicionRepository.GetFullEdicionAsync(id);
-            //var json = JsonSerializer.Serialize<Edicion>(dto, Options);
-            return dto;
-        }
-        public async Task<Edicion> GetBasicEdicionAsync(int id)
-        {
-            var dto = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(id);
-            return dto;// JsonSerializer.Serialize<Edicion>(dto, Options);
-        }
-        public Edicion GetEdicion(string edicionName)
-        {
-            var dto = _voleyPlayaUoW.EdicionRepository.GetByName(edicionName);
-            //var json = JsonSerializer.Serialize<Edicion>(dto, Options);
-            return dto;
-        }
-        public async Task<bool> SaveEdicionAsync(string json)
-        {
-            JsonNode edicionNode = JsonNode.Parse(json)!;
-            Edicion edicionDto;
-            // crear temporada, competicion y categoria si no existen
-            var dtos = await BeforeSaveAsync(edicionNode);
-
-            // crear o actualizar la edición
-            edicionDto = await SaveEdicionAsync(edicionNode, dtos);
-            await _voleyPlayaUoW.SaveEntitiesAsync();
-
-            return true;
-        }
-
-        private async Task<bool> SaveGruposAsync(JsonArray grupos, Edicion edicionDto)
-        {
-            // almaceno grupos
-            foreach (var grupo in grupos)
-            {
-                if (grupo["Name"] == null) continue;
-                string nombre = grupo["Name"]!.GetValue<string>();
-                string tipo = grupo["TipoGrupoStr"]!.GetValue<string>();
-                var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicionDto, nombre, tipo);
-            }
-            await _voleyPlayaUoW.SaveEntitiesAsync();
-
-            foreach (var grupo in grupos)
-            {
-                if (grupo["Name"] == null) continue;
-                string nombre = grupo["Name"]!.GetValue<string>();
-                var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g => g.Edicion.Id.Equals(edicionDto.Id)
-                    && g.Nombre.Equals(nombre), g => g.Equipos);
-                JsonArray equipos = grupo["Equipos"]!.AsArray();
-                await SaveEquiposAsync(grupoDto, equipos);
-            }
-            await _voleyPlayaUoW.SaveEntitiesAsync();
-            return true;
-        }
-        // almacenar grupos y sus equipos
-        public async Task<bool> UpdateGruposAsync(int id, string json)
-        {
-            JsonArray edicionNode = JsonNode.Parse(json)!.AsArray();
-            Edicion edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
-            await SaveGruposAsync(edicionNode, edicionDto);
-            await _voleyPlayaUoW.SaveEntitiesAsync();
-            return true;
-        }
-        private async Task<bool> SaveEquiposAsync(EdicionGrupo grupoDto, JsonArray equipos)
-        {
-            foreach (var equipo in equipos)
-            {
-                int id = equipo!["Id"]!.GetValue<int>();
-                int posicion = equipo!["Posicion"]!.GetValue<int>()!;
-                int ordenEntrada = equipo!["OrdenEntrada"]!.GetValue<int>();
-                string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
-                int jugados = equipo["Jugados"]!.GetValue<int>()!;
-                int ganados = equipo["Ganados"]!.GetValue<int>()!;
-                int perdidos = equipo["Perdidos"]!.GetValue<int>()!;
-                int puntosFavor = equipo["PuntosFavor"]!.GetValue<int>()!;
-                int puntosContra = equipo["PuntosContra"]!.GetValue<int>()!;
-                double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
-                int puntos = equipo["Puntos"]!.GetValue<int>()!;
-                int clasifinal = equipo["ClasificacionFinal"]!.GetValue<int>()!;
-                var equipoDto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupoDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
-                    coeficiente, puntos, ordenEntrada, clasifinal);
-                if (!grupoDto.Equipos.Contains(equipoDto))
-                    grupoDto.Equipos.Add(equipoDto);
-            }
-            return true;
-        }
-        private async Task<bool> SaveEquiposAsync(Edicion edicionDto, JsonArray equipos)
-        {
-            foreach (var equipo in equipos)
-            {
-                int id = equipo!["Id"]!.GetValue<int>();
-                int posicion = equipo!["Posicion"]!.GetValue<int>()!;
-                int ordenEntrada = equipo!["OrdenEntrada"]!.GetValue<int>();
-                string equiNombre = equipo["Nombre"]!.GetValue<string>()!;
-                int jugados = equipo["Jugados"]!.GetValue<int>()!;
-                int ganados = equipo["Ganados"]!.GetValue<int>()!;
-                int perdidos = equipo["Perdidos"]!.GetValue<int>()!;
-                int puntosFavor = equipo["PuntosFavor"]!.GetValue<int>()!;
-                int puntosContra = equipo["PuntosContra"]!.GetValue<int>()!;
-                double coeficiente = equipo["Coeficiente"]!.GetValue<double>()!;
-                int puntos = equipo["Puntos"]!.GetValue<int>()!;
-                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicionDto, id, posicion, equiNombre, jugados, ganados, perdidos, puntosFavor, puntosContra,
-                    coeficiente, puntos,ordenEntrada);
-            }
-            return true;
-        }
-        private async Task RemoveEquiposAsync(Edicion edicionDto, JsonArray equipos)
-        {
-            foreach(var equipo in equipos)
-            {
-                int id = equipo["Id"]!.GetValue<int>()!;
-                await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
-            }
-        }
-        private async Task<Edicion> SaveEdicionAsync(JsonNode edicionNode, dynamic dtos)
-        {
-            string genero = edicionNode["GeneroStr"]!.GetValue<string>();
-            string prueba = edicionNode["Prueba"]!.GetValue<string>();
-            string tipoCalendario = "";
-            if (edicionNode["tipoCalendario"]!=null) tipoCalendario = edicionNode["TipoCalendario"]!.GetValue<string>();
-            string modeloCompeticion = edicionNode["ModeloCompeticionStr"]!.GetValue<string>();
-            Edicion edicionDto = await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(
-                dtos.temporadaDto,
-                dtos.competicionDto,
-                dtos.categoriaDto,
-                genero,
-                tipoCalendario,
-                prueba,
-                modeloCompeticion
-                );
-            return edicionDto;
-        }
-        public async Task<bool> UpdateJornadasAsync(int edicionId, string json)
-        {
-            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(edicionId);
-            JsonNode jsonNode = JsonNode.Parse(json)!;
-            JsonArray jornadas = jsonNode!.AsArray()!;
-            foreach (var jornada in jornadas)
-            {
-                var numero = jornada["Jornada"]!.GetValue<int>();
-                var fecha = jornada["Fecha"]!.GetValue<DateTime>();
-                var nombre = "Jornada " + jornada["Jornada"]!.GetValue<int>().ToString();
-                var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, numero, fecha, nombre);
-            }
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
-        }
-
-        public async Task<bool> UpdateGrupoPartidosAsync(string json)
-        {
-            JsonNode edicionNode = JsonNode.Parse(json)!;
-            var id = edicionNode["Id"]!.GetValue<int>();
-            EdicionGrupo edicionGrupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(eg=>eg.Id.Equals(id), eg=>eg.Equipos);
+            EdicionGrupo edicionGrupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetWithEquiposYPartidosAsync(grupo.Id);
             if (edicionGrupoDto != null)
             {
-                //JsonObject equi = edicionNode["Equipos"].AsObject();
-                JsonArray jsonEquipos = edicionNode["Equipos"]!.AsArray();
-                await SaveEquiposAsync(edicionGrupoDto, jsonEquipos);
-                JsonArray partidos = edicionNode["Partidos"]!.AsArray();
-                await UpdatePartidos(edicionGrupoDto, partidos);
+                var partidos = grupo.Partidos;
+                await UpdateDatosPartidosGrupo(edicionGrupoDto, partidos);
                 return await _voleyPlayaUoW.SaveEntitiesAsync();
             }
-            
-            return false;
-        }
-        public async Task<bool> UpdateDatosPartidosAsync(string json)
-        {
-            JsonNode edicionNode = JsonNode.Parse(json)!;
-            var id = edicionNode["Id"]!.GetValue<int>();
-            EdicionGrupo edicionGrupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetWithEquiposYPartidosAsync(id);
-            if (edicionGrupoDto != null)
-            {
-                JsonArray partidos = edicionNode["Partidos"]!.AsArray();
-                await UpdatePartidos(edicionGrupoDto, partidos);
-                return await _voleyPlayaUoW.SaveEntitiesAsync();
-            }
-            return false;
+            return true;
         }
 
-        public async Task<EdicionGrupo> UpdateResultadosPartidosAsync(string json)
+        public async Task<EdicionGrupo> UpdateResultadosPartidosAsync(IEnumerable<Partido> partidos)
         {
-            JsonNode grupoNode = JsonNode.Parse(json)!;
-            JsonArray partidos = grupoNode!.AsArray();
-            int grupoId = await UpdateResultadoPartidos(partidos);
+            int grupoId = await UpdateResultadoPartidos(partidos); 
             await _voleyPlayaUoW.SaveEntitiesAsync();
 
-            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g=>g.Id.Equals(grupoId), g=>g.Equipos, g=>g.Partidos);
+            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g => g.Id.Equals(grupoId), g => g.Equipos, g => g.Partidos);
             return grupoDto;
+        }
+        private async Task<int> UpdateResultadoPartidos(IEnumerable<Partido> partidos)
+        {
+            int grupoId = 0;
+            var user = _voleyPlayaUoW.GetCurrentUser();
+            foreach (var partido in partidos)
+            {
+                var partidoDto = await _voleyPlayaUoW.PartidoRepository.FindIncludingAsync(p => p.Id.Equals(partido.Id), p => p.Grupo);
+                if (partidoDto == null) continue;
+
+                grupoId = partidoDto.Grupo.Id;
+                var set1 = partido.Parciales.First();
+                var set2 = partido.Parciales.Skip(1).First();
+                var set3 = partido.Parciales.Last();
+                partidoDto!.AddResultado(partido.ResultadoLocal.GetValueOrDefault(0), partido.ResultadoVisitante.GetValueOrDefault(0), 
+                    set1.ResultadoLocal.GetValueOrDefault(0), set1.ResultadoVisitante.GetValueOrDefault(0), 
+                    set2.ResultadoLocal.GetValueOrDefault(0), set2.ResultadoVisitante.GetValueOrDefault(0), 
+                    set3.ResultadoLocal.GetValueOrDefault(0), set3.ResultadoVisitante.GetValueOrDefault(0), user);
+            }
+            return grupoId;
         }
         public static string GetNombreEdicion(string temporada, string prueba, string competicion, string categoria, string genero)
         {
@@ -283,152 +123,14 @@ namespace VoleyPlaya.Repository.Services
 
             return groupName;
         }
-        private async Task<dynamic> BeforeSaveAsync(JsonNode competicionNode)
-        {
-            string temporada = competicionNode["Temporada"]!.GetValue<string>();
-            var temporadaDto = await _voleyPlayaUoW.TemporadaRepository.CheckAddUpdate(temporada);
-
-            string competicion = competicionNode["Competicion"]!.GetValue<string>();
-            var competicionDto = await _voleyPlayaUoW.CompeticionRepository.CheckAddUpdate(competicion);
-
-            string categoria = competicionNode["CategoriaStr"]!.GetValue<string>();
-            var categoriaDto = await _voleyPlayaUoW.CategoriaRepository.CheckAddUpdate(categoria);
-
-            return new { temporadaDto, competicionDto, categoriaDto };
-        }
-        private async Task AfterSaveAsync(JsonNode edicionNode, EdicionGrupo grupoDto, JsonArray partidos)
-        {
-            await UpdatePartidos(grupoDto, partidos);
-
-            
-        }
-        private async Task UpdatePartidos(EdicionGrupo grupoDto, JsonArray partidos)
-        {
-            var user = _voleyPlayaUoW.GetCurrentUser();
-            foreach (var partido in partidos)
-            {
-                var id = partido["Id"]!.GetValue<int>();
-                int jornada = partido["Jornada"]!.GetValue<int>()!;
-                int numPartido = partido["NumPartido"]!.GetValue<int>()!;
-                DateTime fechaHora = partido["FechaHora"]!.GetValue<DateTime>()!;
-                string pista = partido["Pista"]!=null?partido["Pista"]!.GetValue<string>():string.Empty;
-
-                string local = string.Empty;
-                if (partido["Local"] != null)
-                    local = partido["Local"]!.GetValue<string>();
-                else if (partido["NombreLocal"] != null)
-                    local = partido["NombreLocal"]!.GetValue<string>();
-
-                string visitante = string.Empty;
-                if (partido["Visitante"] != null)
-                    visitante = partido["Visitante"]!.GetValue<string>();
-                else if (partido["NombreVisitante"] != null)
-                    visitante = partido["NombreVisitante"]!.GetValue<string>();
-                string label = partido["Label"]!=null?partido["Label"]!.GetValue<string>():string.Empty;
-
-                string nombreLocal = local;
-                if (partido["NombreLocal"]!=null)
-                   nombreLocal = partido["NombreLocal"]!.GetValue<string>()!;
-                string nombreVisitante = visitante;
-                if (partido["NombreVisitante"]!=null)
-                    nombreVisitante = partido["NombreVisitante"]!.GetValue<string>()!;
-                bool validado = partido["Validado"]!.GetValue<bool>()!;
-
-                var localDto = grupoDto.Equipos.SingleOrDefault(e=>e.Nombre.Equals(local));
-                var visitanteDto = grupoDto.Equipos.SingleOrDefault(e => e.Nombre.Equals(visitante));
-
-                string ronda = "I";
-                if (partido["Ronda"] != null) ronda = partido["Ronda"]!.GetValue<string>();
-
-                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(grupoDto, localDto, visitanteDto, id, jornada, numPartido, fechaHora, pista,label,validado, 
-                    nombreLocal, nombreVisitante, ronda);
-
-                JsonObject resultado = partido["Resultado"]!.AsObject()!;
-                int resLocal = resultado["Local"]!.GetValue<int>()!;
-                int resVisitante = resultado["Visitante"]!.GetValue<int>();
-
-                JsonObject set1 = resultado["Set1"]!.AsObject()!;
-                int set1Local = set1["Local"]!.GetValue<int>();
-                int set1Visitante = set1["Visitante"]!.GetValue<int>();
-                JsonObject set2 = resultado["Set2"]!.AsObject()!;
-                int set2Local = set2["Local"]!.GetValue<int>();
-                int set2Visitante = set2["Visitante"]!.GetValue<int>();
-                JsonObject set3 = resultado["Set3"]!.AsObject()!;
-                int set3Local = set3["Local"]!.GetValue<int>();
-                int set3Visitante = set3["Visitante"]!.GetValue<int>();
-
-                partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante,user);
-
-                grupoDto!.AddPartido(partidoDto);
-            }
-        }
-        private async Task<int> UpdateResultadoPartidos(JsonArray partidos)
-        {
-            int grupoId = 0;
-            var user = _voleyPlayaUoW.GetCurrentUser();
-            foreach (var partido in partidos)
-            {
-                var id = partido["Id"]!.GetValue<int>();
-                var partidoDto = await _voleyPlayaUoW.PartidoRepository.FindIncludingAsync(p=>p.Id.Equals(id), p=>p.Grupo);
-                grupoId = partidoDto.Grupo.Id;
-                JsonObject resultado = partido["Resultado"]!.AsObject()!;
-                int resLocal = resultado["Local"]!.GetValue<int>()!;
-                int resVisitante = resultado["Visitante"]!.GetValue<int>();
-                if (partidoDto.ConResultado || partidoDto.Validado || (resLocal == 0 && resVisitante == 0))
-                    continue;
-
-                JsonObject set1 = resultado["Set1"]!.AsObject()!;
-                int set1Local = set1["Local"]!.GetValue<int>();
-                int set1Visitante = set1["Visitante"]!.GetValue<int>();
-                JsonObject set2 = resultado["Set2"]!.AsObject()!;
-                int set2Local = set2["Local"]!.GetValue<int>();
-                int set2Visitante = set2["Visitante"]!.GetValue<int>();
-                JsonObject set3 = resultado["Set3"]!.AsObject()!;
-                int set3Local = set3["Local"]!.GetValue<int>();
-                int set3Visitante = set3["Visitante"]!.GetValue<int>();
-
-                partidoDto!.AddResultado(resLocal, resVisitante, set1Local, set1Visitante, set2Local, set2Visitante, set3Local, set3Visitante, user);
-            }
-            return grupoId;
-        }
-        public async Task<EdicionGrupo> GetGrupoAsync(int id)
-        {
-            var dto = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(id);
-            //var json = JsonSerializer.Serialize<EdicionGrupo>(dto, Options);
-            return dto;
-        }
-        public async Task<bool> UpdateEquiposAsync(int idGrupo, string jsonEquipos)
+        public async Task<EdicionGrupo> GetGrupoAsync(int id) => await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(id);
+        public async Task<bool> UpdateEquiposAsync(int idGrupo, IEnumerable<Equipo> equipos)
         {
             var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(idGrupo);
-            JsonNode jsonGrupo = JsonNode.Parse(jsonEquipos)!;
-            JsonArray equipos = jsonGrupo!.AsArray();
-            await SaveEquiposAsync(grupoDto, equipos);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            await UpdateListaEquipos(grupoDto, equipos);
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
         }
-
-        public async Task<bool> UpdateEquiposEdicionAsync(int idEdicion, string jsonEquiposToAddOrUpdate, string jsonEquiposToRemove)
-        {
-            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(idEdicion);
-            JsonNode json = JsonNode.Parse(jsonEquiposToAddOrUpdate)!;
-            JsonArray equipos = json!.AsArray();
-            await SaveEquiposAsync(edicionDto, equipos);
-
-            json = JsonNode.Parse(jsonEquiposToRemove)!;
-            equipos = json!.AsArray();
-            await RemoveEquiposAsync(edicionDto, equipos);
-
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
-        }
-
-        public async Task<bool> UpdateEquiposEdicionAsync(int edicionId, string jsonEquipos)
-        {
-            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(edicionId);
-            JsonNode json = JsonNode.Parse(jsonEquipos)!;
-            JsonArray equipos = json!.AsArray();
-            await SaveEquiposAsync(edicionDto, equipos);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
-        }
-
         public async Task<bool> DeleteGrupoAsync(int id)
         {
             await DeleteGrupoWithPartidos(id);
@@ -446,16 +148,9 @@ namespace VoleyPlaya.Repository.Services
         }
         public async Task<string> DeleteEquipoAsync(int id)
         {
-            try
-            {
-                bool deleted = await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
-                var str = (await _voleyPlayaUoW.SaveEntitiesAsync()) ? "": "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
-                return str;
-            }
-            catch(Exception x)
-            {
-                return "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
-            }
+            bool deleted = await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
+            var str = (await _voleyPlayaUoW.SaveEntitiesAsync()) ? "": "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
+            return str;
         }
         public async Task<string> DeletePartidoAsync(int partidoId)
         {
@@ -473,18 +168,18 @@ namespace VoleyPlaya.Repository.Services
         public async Task<string> GetTipoCalendarioEdicion(int id)
         {
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
-            return edicionDto?.TipoCalendario;
+            return edicionDto?.TipoCalendario??"";
         }
 
         public async Task<string> GetModeloCompeticionAsync(int id)
         {
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
-            return edicionDto?.ModeloCompeticion;
+            return edicionDto?.ModeloCompeticion ?? "";
         }
         public async Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId)
         {
             var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.FindAllAsync(g => g.EdicionId.Equals(edicionId));
-            return grupos.ToList();// JsonSerializer.Serialize<List<EdicionGrupo>>(grupos.ToList(), Options);
+            return grupos.ToList();
         }
         public async Task<List<PartidoVis>> GetPartidosFiltradosAsync(int edicionSelected, int grupoSelected)
         {
@@ -522,40 +217,38 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0,0);
             return await _voleyPlayaUoW.SaveEntitiesAsync();
         }
-        public async Task<string> GetAllCompeticionesAsync(string idPrueba)
+        public async Task<IList<(int id, string nombre)>> GetAllCompeticionesAsync(string idPrueba)
         {
-            var dtos = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e=>e.Prueba.Equals(idPrueba), e=>e.Competicion);
+            var dtos = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Prueba.Equals(idPrueba), e => e.Competicion);
             var competiciones = dtos.Select(e => new { Id = e.Competicion.Id, Nombre = e.Competicion.Nombre }).ToList();
             var comp = competiciones.Distinct();
-            return JsonSerializer.Serialize(comp, Options);
+            return comp.Select(c => (c.Id, c.Nombre)).ToList();
         }
-        public async Task<string> GetAllCategoriasByEdicionAsync(string idPrueba, int idCompeticion)
+        public async Task<IList<(int id, string nombre)>> GetAllCategoriasByEdicionAsync(string idPrueba, int idCompeticion)
         {
-            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion), e=>e.Categoria);
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion), e => e.Categoria);
             var categorias = ediciones.Select(e => new { Id = e.Categoria.Id, Nombre = e.Categoria.Nombre }).ToList();
             var cat = categorias.Distinct();
-            return JsonSerializer.Serialize(cat, Options);
+            return cat.Select(c => (c.Id, c.Nombre)).ToList();
+        }
+        public async Task<IList<(string id, string nombre)>> GetAllGenerosAsync(string idPrueba, int idCompeticion, int idCategoria)
+        {
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria));
+            var generos = ediciones.Select(e => new { Id = e.Genero, Nombre = e.Genero }).ToList();
+            return generos.Select(g => (g.Id, g.Nombre)).ToList();
         }
 
-        public async Task<string> GetAllGenerosAsync(string idPrueba, int idCompeticion, int idCategoria)
+        public async Task<IList<(int id, string nombre)>> GetAllGruposAsync(string idPrueba, int idCompeticion, int idCategoria, string genero)
         {
-            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion)&&e.Categoria.Id.Equals(idCategoria));
-            var generos = ediciones.Select(e => new { Id = e.Genero, Nombre = e.Genero}).ToList();
-            return JsonSerializer.Serialize(generos, Options);
-        }
-
-        public async Task<string> GetAllGruposAsync(string idPrueba, int idCompeticion, int idCategoria, string genero)
-        {
-            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero), e=>e.Grupos);
-            var grupos = ediciones.SelectMany(e=>e.Grupos).Select(g => new { Id = g.Id, Nombre = g.Nombre }).ToList();
-            return JsonSerializer.Serialize(grupos, Options);
+            var ediciones = await _voleyPlayaUoW.EdicionRepository.FindAllIncludingAsync(e => e.Prueba.Equals(idPrueba) && e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero), e => e.Grupos);
+            var grupos = ediciones.SelectMany(e => e.Grupos).Select(g => new { Id = g.Id, Nombre = g.Nombre }).ToList();
+            return grupos.Select(g => (g.Id, g.Nombre)).ToList();
         }
         public async Task<List<EdicionGrupo>> GetClasificacionesAsync(string prueba, int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
         {
             var grupos = await _voleyPlayaUoW.EdicionGrupoRepository.GetWithEquiposAsync(prueba, competicionSelected, categoriaSelected, generoSelected, grupoSelected);
             return grupos;
         }
-
         public async Task<EdicionGrupo> RetirarEquipoAsync(int id)
         {
             var equipo = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(id);
@@ -585,10 +278,8 @@ namespace VoleyPlaya.Repository.Services
             // actualizar la clasificacion (desde dominio)
             await _voleyPlayaUoW.SaveEntitiesAsync();
             var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(e => e.Id.Equals(equipo.EdicionGrupoId.Value), e => e.Equipos, e => e.Partidos);
-            return grupo;// JsonSerializer.Serialize<EdicionGrupo>(grupo, Options);
-
+            return grupo;
         }
-
         public async Task<List<Partido>> GetPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected)
         {
             var partidos = await _voleyPlayaUoW.PartidoRepository.GetListaPartidosAsync(pruebaSelected, competicionSelected, categoriaSelected, generoSelected, grupoSelected);
@@ -610,7 +301,6 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return msg;
         }
-
         public async Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(string prueba, int idCompeticion, int idCategoria, string genero)
         {
             var edi = await _voleyPlayaUoW.EdicionRepository.FindAsync(e => e.Prueba.Equals(prueba) && e.Competicion.Id.Equals(idCompeticion) && e.Categoria.Id.Equals(idCategoria) && e.Genero.Equals(genero));
@@ -622,14 +312,12 @@ namespace VoleyPlaya.Repository.Services
             }
             return null;
         }
-
         public async Task<bool> SaveTablaCalendarios(List<TablaCalendario> partidos)
         {
             foreach (var partido in partidos)
             {
                 try
                 {
-                    //partido.Nombre = "Calendario " + partido.NumEquipos.ToString() + " equipos - Partido " + partido.NumPartido;
                     var par = await _voleyPlayaUoW.TablaCalendarioRepository.FindAsync(p => p.Nombre.Equals(partido.Nombre));
                     if (par == null)
                         await _voleyPlayaUoW.TablaCalendarioRepository.CreateAsync(partido);
@@ -658,26 +346,15 @@ namespace VoleyPlaya.Repository.Services
             var partidos = await _voleyPlayaUoW.TablaCalendarioRepository.FindAllAsync(t => t.NumEquipos == -1 && t.NumGrupos==numGrupos);
             return partidos.ToList();
         }
-
-        public async Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int edicionId, string jsonGrupo)
+        public async Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int edicionId, EdicionGrupo grupo)
         {
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(edicionId);
             if (edicionDto == null) return false;
-
-            JsonNode json = JsonNode.Parse(jsonGrupo)!;
-            var id = json["Id"]!.GetValue<int>();
-            if (json["Name"] == null) return false;
-            
-            string nombre = json["Name"]!.GetValue<string>();
-            string tipo = json["TipoGrupoStr"]!.GetValue<string>();
-            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicionDto, nombre, tipo);
+            var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicionDto, grupo.Nombre, grupo.Tipo);
             await _voleyPlayaUoW.SaveEntitiesAsync();
 
-            JsonArray jsonEquipos = json["Equipos"]!.AsArray();
-            await SaveEquiposAsync(grupoDto, jsonEquipos);
-
-            JsonArray partidos = json["Partidos"]!.AsArray();
-            await UpdatePartidos(grupoDto, partidos);
+            await UpdateListaEquipos(grupoDto, grupo.Equipos);
+            await UpdateGrupoPartidosAsync(grupo);
 
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return true;
@@ -690,11 +367,20 @@ namespace VoleyPlaya.Repository.Services
                             && e.Categoria.Id.Equals(categoriaId) && e.Genero.Equals(generoId));
             return edicion;
         }
-
-        public async Task<string> ValidarPartidoAsync(int idPartido, bool activo)
+        public async Task<string> ValidarPartidoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
         {
             var partido = await _voleyPlayaUoW.PartidoRepository.GetByIdAsync(idPartido);
             partido.Validado = activo;
+            var local = 0;
+            var visi = 0;
+            local += set1L != 0 && set1L > set1V ? 1 : 0;
+            local += set2L != 0 && set2L > set2V ? 1 : 0;
+            local += set3L != 0 && set3L > set3V ? 1 : 0;
+            visi += set1V != 0 && set1L < set1V ? 1 : 0;
+            visi += set2V != 0 && set2L < set2V ? 1 : 0;
+            visi += set3V != 0 && set3L < set3V ? 1 : 0;
+
+            partido.AddResultado(local, visi, set1L, set1V, set2L, set2V, set3L, set3V, _voleyPlayaUoW.GetCurrentUser());
             partido.UserValidador = _voleyPlayaUoW.GetCurrentUser();
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return "Partido validado";
@@ -716,7 +402,6 @@ namespace VoleyPlaya.Repository.Services
             }
             await _voleyPlayaUoW.SaveEntitiesAsync();
         }
-
         public async Task<string> ActualizarClasificacionFinal(int edicionId, List<Equipo> equipos)
         {
             string str = "";
@@ -727,11 +412,12 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.SaveEntitiesAsync();
             return str;
         }
-        public async Task<string> GetListaPruebasAsync()
+        public async Task<IList<(int id, string nombre)>> GetListaPruebasAsync()
         {
+            List<(int id, string nombre)> pruebas = new List<(int id, string nombre)>();
             var dtos = await _voleyPlayaUoW.EdicionRepository.GetAllPruebasAsync();
-            var pruebas = dtos.Select(e => new { Id = e.Id, Nombre = e.Prueba }).ToList();
-            return JsonSerializer.Serialize(pruebas, Options);
+            pruebas = dtos.Select(d => (d.Id, d.Prueba)).ToList();
+            return pruebas;
         }
         public async Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo)
         {
@@ -753,6 +439,128 @@ namespace VoleyPlaya.Repository.Services
             edicion.Estado = Enum.Parse<EnumEstadoEdicion>(nuevoEstado);
             await _voleyPlayaUoW.EdicionRepository.UpdateAsync(edicion);
             await _voleyPlayaUoW.SaveEntitiesAsync();
+        }
+        public async Task<bool> UpdateEdicionGenericoAsync(Edicion edi, string temporadaStr, string competicionStr, string categoriaStr)
+        {
+            var temporada = await SaveTemporadaAsync(temporadaStr ?? "");
+            var competicion = await SaveCompeticionAsync(competicionStr ?? "");
+            var categoria = await SaveCategoriaAsync(categoriaStr ?? "");
+            await _voleyPlayaUoW.EdicionRepository.CheckAddUpdate(temporada, competicion, categoria, edi.Genero, edi.TipoCalendario ?? "", edi.Prueba, edi.ModeloCompeticion ?? "");
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
+        }
+        private async Task<Temporada> SaveTemporadaAsync(string temporada) => await _voleyPlayaUoW.TemporadaRepository.CheckAddUpdate(temporada);
+        private async Task<Competicion> SaveCompeticionAsync(string competicion) => await _voleyPlayaUoW.CompeticionRepository.CheckAddUpdate(competicion);
+        private async Task<Categoria> SaveCategoriaAsync(string categoria) => await _voleyPlayaUoW.CategoriaRepository.CheckAddUpdate(categoria);
+        public async Task<bool> UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equiposToAdd, List<Equipo> equiposToRemove)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.FindIncludingAsync(e=>e.Id.Equals(edicionId), e=>e.Equipos);
+            foreach(var equipo in equiposToAdd)
+                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, equipo.Id, equipo.OrdenCalendario, equipo.Nombre, equipo.Jugados, equipo.Ganados, equipo.Perdidos, equipo.PuntosFavor, 
+                    equipo.PuntosContra, equipo.Coeficiente, equipo.Puntos, equipo.OrdenEntrada);
+            foreach (var equipo in equiposToRemove)
+                await _voleyPlayaUoW.EquipoRepository.DeleteAsync(equipo.Id);
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+
+            return true;
+        }
+        public async Task<bool> UpdateGruposAsync(int id, HashSet<EdicionGrupo> grupos)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.FindIncludingAsync(e => e.Id.Equals(id), e => e.Grupos, e => e.Equipos);
+
+            // almaceno grupos
+            foreach (var grupo in grupos)
+            {
+                var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicion, grupo.Nombre, grupo.Tipo);
+                foreach(var equipo in grupo.Equipos)
+                {
+                    var equipoDto = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(equipo.Id);
+                    if (!grupoDto.Equipos.Contains(equipoDto))
+                        grupoDto.Equipos.Add(equipoDto);
+                }
+                foreach (var equipo in grupoDto.Equipos)
+                    if (!grupo.Equipos.Contains(equipo))
+                        grupoDto.Equipos.Remove(equipo);
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+
+            return true;
+        }
+        public async Task<bool> UpdateJornadasAsync(int id, HashSet<Jornada> jornadas)
+        {
+            var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
+            foreach (var jornada in jornadas)
+            {
+                var jornadaDto = await _voleyPlayaUoW.JornadaRepository.CheckAddUpdate(edicionDto, jornada.Numero, jornada.Fecha, jornada.Nombre);
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
+        }
+        public async Task<bool> UpdatePosicionEquiposAsync(List<Equipo> equipos, int grupoId)
+        {
+            var grupo = await _voleyPlayaUoW.EdicionGrupoRepository.FindIncludingAsync(g => g.Id.Equals(grupoId), g => g.Equipos);
+            foreach(var equipo in equipos)
+            {
+                var dto = grupo.Equipos.FirstOrDefault(e => e.Id.Equals(equipo.Id));
+                if (dto == null) return false;
+                dto.OrdenCalendario = equipo.OrdenCalendario;
+                await _voleyPlayaUoW.EquipoRepository.UpdateAsync(dto);
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equipos)
+        {
+            var edicion = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(edicionId);
+            await UpdateListaEquipos(edicion, equipos);
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return true;
+        }
+        private async Task UpdateListaEquipos(Edicion edicion, IEnumerable<Equipo> equipos)
+        { 
+            foreach (var equipo in equipos)
+            {
+                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, equipo.Id, equipo.OrdenCalendario, equipo.Nombre, equipo.Jugados, equipo.Ganados, equipo.Perdidos, equipo.PuntosFavor,
+                        equipo.PuntosContra, equipo.Coeficiente, equipo.Puntos, equipo.OrdenEntrada);
+            }
+        }
+        private async Task UpdateListaEquipos(EdicionGrupo grupo, IEnumerable<Equipo> equipos)
+        {
+            foreach (var equipo in equipos)
+            {
+                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupo, equipo.Id, equipo.OrdenCalendario, equipo.Nombre, equipo.Jugados, equipo.Ganados, equipo.Perdidos, equipo.PuntosFavor,
+                        equipo.PuntosContra, equipo.Coeficiente, equipo.Puntos, equipo.OrdenEntrada, equipo.ClasificacionFinal);
+            }
+        }
+        public async Task<bool> UpdateGrupoPartidosAsync(EdicionGrupo grupo)
+        {
+            var gr = await _voleyPlayaUoW.EdicionGrupoRepository.GetByIdAsync(grupo.Id);
+            return await UpdateDatosPartidosGrupo(gr, grupo.Partidos);
+        }
+        private async Task<bool> UpdateDatosPartidosGrupo(EdicionGrupo gr, IEnumerable<Partido> partidos)
+        { 
+            foreach (var partido in partidos)
+            {
+                var local = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(partido.Local.Id);
+                var visitante = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(partido.Visitante.Id);
+
+                var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(gr, local, visitante, partido.Id, partido.Jornada ?? 0, partido.NumPartido ?? 0, partido.FechaHora ?? DateTime.Now,
+                    partido.Pista ?? "", partido.Label ?? "", partido.Validado, partido.NombreLocal ?? "", partido.NombreVisitante ?? "", partido.Ronda);
+
+                partidoDto!.AddResultado(partido.ResultadoLocal.GetValueOrDefault(0), partido.ResultadoVisitante.GetValueOrDefault(0), 
+                    partido.Parciales.First().ResultadoLocal.GetValueOrDefault(0),
+                    partido.Parciales.First().ResultadoVisitante.GetValueOrDefault(0),
+                    partido.Parciales.Skip(1).First().ResultadoLocal.GetValueOrDefault(0),
+                    partido.Parciales.Skip(1).First().ResultadoVisitante.GetValueOrDefault(0),
+                    partido.Parciales.Last().ResultadoLocal.GetValueOrDefault(0),
+                    partido.Parciales.Last().ResultadoVisitante.GetValueOrDefault(0),
+                    _voleyPlayaUoW.GetCurrentUser());
+
+
+            }
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+
+            return true;
         }
     }
 }

@@ -94,11 +94,12 @@ namespace VoleyPlaya.Repository.Models
             _parciales = new HashSet<ParcialPartido>();
         }
 
-        public Partido(EdicionGrupo edicionGrupo, Equipo local, Equipo visitante):this()
+        public Partido(EdicionGrupo edicionGrupo, Equipo local, Equipo visitante)
         {
             _edicionGrupo = edicionGrupo;
             _local = local;
             _visitante = visitante;
+            _parciales = new HashSet<ParcialPartido>();
         }
 
         public EdicionGrupo? Grupo { get => _edicionGrupo; set => _edicionGrupo = value; }

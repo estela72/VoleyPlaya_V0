@@ -18,19 +18,19 @@ namespace General.CrossCutting.Lib
     public abstract class BaseEntity : IBaseEntity
     {
         private int? _requestedHashCode;
-        private int _Id;
-        private DateTime _CreatedDateTime;
-        private DateTime _UpdatedDateTime;
-        private string _CreatedBy;
-        private string _UpdatedBy;
+        //private int _Id;
+        //private DateTime _CreatedDateTime;
+        //private DateTime _UpdatedDateTime;
+        //private string _CreatedBy;
+        //private string _UpdatedBy;
 
         [Key]
-        public int Id { get { return _Id; } set { _Id = value; } }
+        public int Id { get; set; }
 
-        public DateTime CreatedDate { get { return _CreatedDateTime; } set { _CreatedDateTime = value; } }
-        public DateTime UpdatedDate { get { return _UpdatedDateTime; } set { _UpdatedDateTime = value; } }
-        public string CreatedBy { get { return _CreatedBy; } set { _CreatedBy = value; } }
-        public string UpdatedBy { get { return _UpdatedBy; } set { _UpdatedBy = value; } }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public bool IsTransient()
         {
             return this.Id == default(Int32);
@@ -84,8 +84,6 @@ namespace General.CrossCutting.Lib
     }
     public abstract class Entity : BaseEntity, IEntity
     {
-        private string _Nombre;
-
-        public string Nombre { get { return _Nombre; } set { _Nombre = value; } }
+        public string Nombre { get; set; }
     }
 }

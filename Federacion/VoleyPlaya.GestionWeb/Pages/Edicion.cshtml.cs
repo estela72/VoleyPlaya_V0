@@ -176,7 +176,7 @@ namespace VoleyPlaya.GestionWeb.Pages
         {
             try
             {
-                await _service.UpdateEdicionAsync(Edicion);
+                _ = await _service.UpdateEdicionGenericoAsync(Edicion);
                 EdicionName = EdicionService.GetNombreEdicion(Edicion.Temporada, Edicion.Prueba, Edicion.Competicion, Edicion.CategoriaStr, Edicion.GeneroStr);
                 await GetEdicion(EdicionName);
                 await Fill();
@@ -250,19 +250,12 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostGuardarGruposAsync()
+        public async Task<IActionResult> OnPostGuardarPosicionEquiposAsync(int grupoId)
         {
             try
             {
-                var grupos = GruposLiga;
-                if (Edicion.Id == 0 && !string.IsNullOrEmpty(EdicionName))
-                    await GetEdicion(EdicionName);
-                if (Edicion.Id == 0 && !string.IsNullOrEmpty(Edicion.Nombre))
-                    await GetEdicion(EdicionName);
-
-                Edicion.Grupos = grupos;
-
-                await _service.UpdateGruposAsync(Edicion);
+                var equipos = GruposLiga.FirstOrDefault(g => g.Id.Equals(grupoId))?.Equipos;
+                await _service.UpdatePosicionEquiposAsync(equipos??null,grupoId);
                 await GetEdicion(Edicion.Nombre);
                 await Fill();
             }
@@ -487,11 +480,11 @@ namespace VoleyPlaya.GestionWeb.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostValidarPartidoAsync(int idPartido, bool activo)
+        public async Task<IActionResult> OnPostValidarPartidoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
         {
             try
             {
-                var str = await _service.ValidarPartidoAsync(idPartido, activo);
+                var str = await _service.ValidarPartidoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
                 ErrorMessage = str;
             }
             catch(Exception x)
