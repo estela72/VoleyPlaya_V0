@@ -320,7 +320,7 @@
                                                         @Html.EditorFor(m=>Model.Edicion.FechasJornadas[i].Jornada, new {@class="col-sm-1 inputJornada"})
                                                     </td>
                                                     <td>
-                                                        <input type="date" asp-for="@Model.Edicion.FechasJornadas[i].Fecha" class="form-control inputFecha" />
+                                                        <input type="date" class="form-control inputFecha" asp-for="@Model.Edicion.FechasJornadas[i].Fecha" />
                                                     </td>
                                                     @if (i > 0)
                                                     {
@@ -374,6 +374,30 @@
                 }
             </div>
             <form method="post">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m=>Model.Edicion.Id)
+                @Html.HiddenFor(m=>Model.Edicion.Nombre)
+                @Html.HiddenFor(m=>Model.EdicionName)
+                @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
+                @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
+                @Html.HiddenFor(m=>Model.Edicion.NumJornadas)
+                @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
+                {
+                    @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Id)
+                    @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Nombre)
+                }
+                @for (int i = 0; i < Model.GruposLiga.Count; i++)
+                {
+                    @Html.HiddenFor(m=>Model.GruposLiga[i].Id)
+                    @Html.HiddenFor(m=>Model.GruposLiga[i].Name)
+                    @for (int j = 0; j < Model.GruposLiga[i].Equipos.Count; j++)
+                    {
+                        @Html.HiddenFor(m=>Model.GruposLiga[i].Equipos[j].Id)
+                        @Html.HiddenFor(m=>Model.GruposLiga[i].Equipos[j].Nombre)
+                        @Html.HiddenFor(m=>Model.GruposLiga[i].Equipos[j].Posicion)
+                        @Html.HiddenFor(m=>Model.GruposLiga[i].Equipos[j].OrdenEntrada)
+                    }
+                }
                 <div class="card collapse" id="collapsePartidosFG">
                     <div class="card-body">
                         @if (Model.GruposLiga.Count > 0 && Model.GruposLiga.First().Equipos.Count > 0)
@@ -381,11 +405,11 @@
                             @for (int i = 0; i < Model.GruposLiga.Count; i++)
                             {
                                 var grupo = Model.GruposLiga[i];
+                                var listaEquipos = new SelectList(grupo.Equipos.Select(e => e.Nombre));
                                 @Html.HiddenFor(m=>Model.GruposLiga[i].Id)
                                 <div style="background-color:lightgray">
                                     <h3>Grupo @Model.GruposLiga[i].Name</h3>
-                                    @Html.CheckBoxFor(m=>Model.SobreescribirPistasGrupo, new { @class = "custom-editor-checkbox", id="sobreescribir"})
-                                    <table class="table table-fit" id="tablaPartidos">
+                                    <table class="table  table-responsive table-fit" id="tablaPartidos">
                                         <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
                                         <thead>
                                             <tr>
@@ -407,8 +431,9 @@
                                             {
                                                 @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].Id)
                                                 @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].NumPartido)
-                                                @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].Jornada)
-                                                var listaEquipos = new SelectList(Model.GruposLiga[i].Equipos.Select(e => e.Nombre));
+                                                @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].EquipoLocalId)
+                                                @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].EquipoVisitanteId)
+                                                @Html.HiddenFor(m=>Model.GruposLiga[i].Partidos[j].Ronda)
                                                 var clase="";
                                                 var fila = "fila" + j;
                                                 @if (Model.GruposLiga[i].Partidos[j].RetiradoLocal || Model.GruposLiga[i].Partidos[j].RetiradoVisitante )
@@ -432,7 +457,7 @@
                                                         @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Pista,new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
-                                                        @Html.DropDownListFor(m=>Model.GruposLiga[i].Partidos[j].Local, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.DropDownListFor(m=>Model.GruposLiga[i].Partidos[j].Local, @Model.ListaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                         
                                                     <td>
@@ -442,7 +467,7 @@
                                                         @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Visitante,new { htmlAttributes = new { @class = "custom-editor", @disabled = "disabled" } })
                                                     </td>
                                                     <td>
-                                                        @Html.DropDownListFor(m=>Model.GruposLiga[i].Partidos[j].Visitante, listaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.DropDownListFor(m=>Model.GruposLiga[i].Partidos[j].Visitante, @Model.ListaEquipos,"Seleccionar equipo",new { htmlAttributes = new { @class = "custom-editor" } })
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m=>Model.GruposLiga[i].Partidos[j].Resultado.Set1.Local,new { htmlAttributes = new { @class = "custom-editor", id="set1_local" } })
@@ -563,28 +588,19 @@
                     @Html.HiddenFor(m=>Model.EdicionName)
                     @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
                     @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
-                    @Html.HiddenFor(m=>Model.Edicion.NumJornadas)
-                    @for (int i = 0; i < Model.Edicion.Equipos.Count; i++)
-                    {
-                        @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Id)
-                        @Html.HiddenFor(m=>Model.Edicion.Equipos[i].Nombre)
-                    }
-                    @for (int i = 0; i < Model.Edicion.Grupos.Count; i++)
-                    {
-                        @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Id)
-                        @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Name)
-                        @Html.HiddenFor(m=>Model.Edicion.Grupos[i].TipoGrupo)
-                        @for (int j = 0; j < Model.Edicion.Grupos[i].Equipos.Count; j++)
-                        {
-                            @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Id)
-                            @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Nombre)
-                            @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].Posicion)
-                            @Html.HiddenFor(m=>Model.Edicion.Grupos[i].Equipos[j].OrdenEntrada)
-                        }
-                    }                    
+                    @Html.HiddenFor(m=>Model.Edicion.NumJornadas)                   
                     @for (int i=0;i< Model.GruposFF.Count;i++)
                     {
                         @Html.HiddenFor(m=>Model.GruposFF[i].Id)
+                        @Html.HiddenFor(m=>Model.GruposFF[i].Name)
+                        @Html.HiddenFor(m=>Model.GruposFF[i].TipoGrupo)
+                        @for (int j = 0; j < Model.GruposFF[i].Equipos.Count; j++)
+                        {
+                            @Html.HiddenFor(m=>Model.GruposFF[i].Equipos[j].Id)
+                            @Html.HiddenFor(m=>Model.GruposFF[i].Equipos[j].Nombre)
+                            @Html.HiddenFor(m=>Model.GruposFF[i].Equipos[j].Posicion)
+                            @Html.HiddenFor(m=>Model.GruposFF[i].Equipos[j].OrdenEntrada)
+                        }
                     }
                     <div class="card-body">
                         @if (Model.GruposFF.Count > 0)
@@ -616,6 +632,8 @@
                                             {
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].Id)
                                                 @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].NumPartido)
+                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].EquipoLocalId)
+                                                @Html.HiddenFor(m=>Model.GruposFF[i].Partidos[j].EquipoVisitanteId)
                                                 var listaEquipos = new SelectList(Model.GruposFF[i].Equipos.Select(e => e.Nombre.Trim()).ToList());
                                                 var clase = "";
                                                 @if (Model.GruposFF[i].Partidos[j].RetiradoLocal || Model.GruposFF[i].Partidos[j].RetiradoVisitante)
@@ -666,12 +684,12 @@
                                                         }
                                                     </td>
                                                     <td>
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set1.Local,new { htmlAttributes = new { @class = "custom-editor" } })
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set1.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set2.Local,new { htmlAttributes = new { @class = "custom-editor" } })
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set2.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set3.Local,new { htmlAttributes = new { @class = "custom-editor" } })
-                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set3.Visitante,new { htmlAttributes = new { @class = "custom-editor" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set1.Local,new { htmlAttributes = new { @class = "custom-editor",id="set1_local" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set1.Visitante,new { htmlAttributes = new { @class = "custom-editor", id="set1_visitante" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set2.Local,new { htmlAttributes = new { @class = "custom-editor", id="set2_local" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set2.Visitante,new { htmlAttributes = new { @class = "custom-editor",id="set2_visitante" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set3.Local,new { htmlAttributes = new { @class = "custom-editor",id="set3_local" } })
+                                                        @Html.EditorFor(m=>Model.GruposFF[i].Partidos[j].Resultado.Set3.Visitante,new { htmlAttributes = new { @class = "custom-editor",id="set3_visitante" } })
                                                     </td>
                                                     <td>
                                                         @Html.CheckBoxFor(m=>Model.GruposFF[i].Partidos[j].Validado, new { @class = "custom-editor-checkbox validar-chkbox", data_id=@Model.GruposFF[i].Partidos[j].Id})
@@ -766,7 +784,7 @@
                 // Obtiene el elemento tr padre del icono de copia
                 var filaActual = this.parentElement.parentElement;
                 // Obtiene el elemento tr anterior
-                var filaAnterior = filaActual.previousElementSibling;
+                var filaAnterior = filaActual.previousElementSibling.previousElementSibling;
                 // Verifica si hay una fila anterior
                 if (filaAnterior) {
                     // Obtiene el valor de la fecha de la fila anterior
@@ -779,57 +797,57 @@
             });
         }
 
-        // Obtén todos los iconos de copia
-        var iconosMas20 = document.getElementsByClassName("iconoMas20");
-        // Agrega un evento de clic a cada icono de copia
-        for (var i = 0; i < iconosMas20.length; i++) {
-            iconosMas20[i].addEventListener("click", function () {
-                // Obtiene el elemento tr padre del icono de copia
-                var filaActual = this.parentElement.parentElement;
-                // Obtiene el elemento tr anterior
-                var filaAnterior = filaActual.previousElementSibling;
-                // Verifica si hay una fila anterior
-                if (filaAnterior) {
-                    // Obtiene el valor de la fecha de la fila anterior
-                    var fechaAnterior = filaAnterior.querySelector(".fechaPartido").value;
-                    // Obtiene el input de fecha de la fila actual
-                    var inputFechaActual = filaActual.querySelector(".fechaPartido");
-                    // Sumar 20 minutos a la fecha
-                    inputFechaActual.value.setMinutes(fechaAnterior.getMinutes() + 20);
-                    // Copia el valor de la fecha anterior al input de fecha actual
-                    //inputFechaActual.value = fechaAnterior;
-                }
-            });
-        }
+        //// Obtén todos los iconos de copia
+        //var iconosMas20 = document.getElementsByClassName("iconoMas20");
+        //// Agrega un evento de clic a cada icono de copia
+        //for (var i = 0; i < iconosMas20.length; i++) {
+        //    iconosMas20[i].addEventListener("click", function () {
+        //        // Obtiene el elemento tr padre del icono de copia
+        //        var filaActual = this.parentElement.parentElement;
+        //        // Obtiene el elemento tr anterior
+        //        var filaAnterior = filaActual.previousElementSibling;
+        //        // Verifica si hay una fila anterior
+        //        if (filaAnterior) {
+        //            // Obtiene el valor de la fecha de la fila anterior
+        //            var fechaAnterior = filaAnterior.querySelector(".fechaPartido").value;
+        //            // Obtiene el input de fecha de la fila actual
+        //            var inputFechaActual = filaActual.querySelector(".fechaPartido");
+        //            // Sumar 20 minutos a la fecha
+        //            inputFechaActual.value.setMinutes(fechaAnterior.getMinutes() + 20);
+        //            // Copia el valor de la fecha anterior al input de fecha actual
+        //            //inputFechaActual.value = fechaAnterior;
+        //        }
+        //    });
+        //}
 
-        // Obtén todos los iconos de copia
-        var iconosMas60 = document.getElementsByClassName("iconoMas60");
-        // Agrega un evento de clic a cada icono de copia
-        for (var i = 0; i < iconosMas60.length; i++) {
-            iconosMas60[i].addEventListener("click", function () {
-                var fechaAnteriorString = "2023-05-25T12:34:56";
-                var fechaAnterior = new Date(fechaAnteriorString);
-                var minutos = fechaAnterior.getMinutes();
+        //// Obtén todos los iconos de copia
+        //var iconosMas60 = document.getElementsByClassName("iconoMas60");
+        //// Agrega un evento de clic a cada icono de copia
+        //for (var i = 0; i < iconosMas60.length; i++) {
+        //    iconosMas60[i].addEventListener("click", function () {
+        //        var fechaAnteriorString = "2023-05-25T12:34:56";
+        //        var fechaAnterior = new Date(fechaAnteriorString);
+        //        var minutos = fechaAnterior.getMinutes();
                 
-                // Obtiene el elemento tr padre del icono de copia
-                var filaActual6 = this.parentElement.parentElement;
-                // Obtiene el elemento tr anterior
-                var filaAnterior6 = filaActual6.previousElementSibling.nextElementSibling;
-                // Verifica si hay una fila anterior
-                if (filaAnterior6) {
-                    // Obtiene el valor de la fecha de la fila anterior
-                    var fechaAnterior6 = filaAnterior6.querySelector(".fechaPartido").value;
+        //        // Obtiene el elemento tr padre del icono de copia
+        //        var filaActual6 = this.parentElement.parentElement;
+        //        // Obtiene el elemento tr anterior
+        //        var filaAnterior6 = filaActual6.previousElementSibling.nextElementSibling;
+        //        // Verifica si hay una fila anterior
+        //        if (filaAnterior6) {
+        //            // Obtiene el valor de la fecha de la fila anterior
+        //            var fechaAnterior6 = filaAnterior6.querySelector(".fechaPartido").value;
 
-                    var f = new Date(fechaAnterior6);
-                    // Obtiene el input de fecha de la fila actual
-                    var inputFechaActual6 = filaActual6.querySelector(".fechaPartido");
-                    // Sumar 60 minutos a la fecha
-                    inputFechaActual6.value.setMinutes(f.getMinutes() + 60);
-                    // Copia el valor de la fecha anterior al input de fecha actual
-                    //inputFechaActual.value = fechaAnterior;
-                }
-            });
-        }
+        //            var f = new Date(fechaAnterior6);
+        //            // Obtiene el input de fecha de la fila actual
+        //            var inputFechaActual6 = filaActual6.querySelector(".fechaPartido");
+        //            // Sumar 60 minutos a la fecha
+        //            inputFechaActual6.value.setMinutes(f.getMinutes() + 60);
+        //            // Copia el valor de la fecha anterior al input de fecha actual
+        //            //inputFechaActual.value = fechaAnterior;
+        //        }
+        //    });
+        //}
 
         $(document).ready(function () {
             $('.validar-chkbox').change(function () {
@@ -853,13 +871,13 @@
                         xhr.setRequestHeader("XSRF-TOKEN",
                             $('input:hidden[name="__RequestVerificationToken"]').val());
                     }, success: function (response) {
-                        alert('Almacenado resultado y validado');
+                        //alert('Almacenado resultado y validado');
                     },
                     failure: function (response) {
-                        //alert("Failure");
+                        alert("Error: "+response);
                     },
                     error: function (response) {
-                        //alert("Error");
+                        alert("Ojo! "+response);
                     }
                 });
             });

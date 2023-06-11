@@ -6,6 +6,7 @@ using Org.BouncyCastle.Utilities.Collections;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -68,7 +69,6 @@ namespace VoleyPlaya.Repository.Services
             {
                 var partidos = grupo.Partidos;
                 await UpdateDatosPartidosGrupo(edicionGrupoDto, partidos);
-                return await _voleyPlayaUoW.SaveEntitiesAsync();
             }
             return true;
         }
@@ -472,15 +472,17 @@ namespace VoleyPlaya.Repository.Services
             foreach (var grupo in grupos)
             {
                 var grupoDto = await _voleyPlayaUoW.EdicionGrupoRepository.CheckAddUpdate(edicion, grupo.Nombre, grupo.Tipo);
+                if (grupo.Equipos == null) continue;
                 foreach(var equipo in grupo.Equipos)
                 {
                     var equipoDto = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(equipo.Id);
-                    if (!grupoDto.Equipos.Contains(equipoDto))
-                        grupoDto.Equipos.Add(equipoDto);
+                    if (equipoDto == null) continue;
+                    if (equipoDto.Grupos == null) equipoDto.Grupos = new HashSet<EdicionGrupo>();
+                    Debug.Assert(equipoDto.Grupos != null);
+                    equipoDto.Grupos.Add(grupoDto);
+                    equipoDto.OrdenCalendario = equipo.OrdenCalendario;
+                    await _voleyPlayaUoW.EquipoRepository.UpdateAsync(equipoDto);
                 }
-                foreach (var equipo in grupoDto.Equipos)
-                    if (!grupo.Equipos.Contains(equipo))
-                        grupoDto.Equipos.Remove(equipo);
             }
             await _voleyPlayaUoW.SaveEntitiesAsync();
 
@@ -545,7 +547,7 @@ namespace VoleyPlaya.Repository.Services
                 var visitante = await _voleyPlayaUoW.EquipoRepository.GetByIdAsync(partido.Visitante.Id);
 
                 var partidoDto = await _voleyPlayaUoW.PartidoRepository.CheckAddUpdate(gr, local, visitante, partido.Id, partido.Jornada ?? 0, partido.NumPartido ?? 0, partido.FechaHora ?? DateTime.Now,
-                    partido.Pista ?? "", partido.Label ?? "", partido.Validado, partido.NombreLocal ?? "", partido.NombreVisitante ?? "", partido.Ronda);
+                    partido.Pista ?? "", partido.Label ?? "", partido.Validado, partido.NombreLocal ?? "", partido.NombreVisitante ?? "", partido.Ronda??"");
 
                 partidoDto!.AddResultado(partido.ResultadoLocal.GetValueOrDefault(0), partido.ResultadoVisitante.GetValueOrDefault(0), 
                     partido.Parciales.First().ResultadoLocal.GetValueOrDefault(0),
@@ -561,6 +563,24 @@ namespace VoleyPlaya.Repository.Services
             await _voleyPlayaUoW.SaveEntitiesAsync();
 
             return true;
+        }
+        public async Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
+        {
+            var partido = await _voleyPlayaUoW.PartidoRepository.GetByIdAsync(idPartido);
+            var local = 0;
+            var visi = 0;
+            local += set1L != 0 && set1L > set1V ? 1 : 0;
+            local += set2L != 0 && set2L > set2V ? 1 : 0;
+            local += set3L != 0 && set3L > set3V ? 1 : 0;
+            visi += set1V != 0 && set1L < set1V ? 1 : 0;
+            visi += set2V != 0 && set2L < set2V ? 1 : 0;
+            visi += set3V != 0 && set3L < set3V ? 1 : 0;
+            partido.ConResultado = activo;
+
+            partido.AddResultado(local, visi, set1L, set1V, set2L, set2V, set3L, set3V, _voleyPlayaUoW.GetCurrentUser());
+            partido.UserResultado = _voleyPlayaUoW.GetCurrentUser();
+            await _voleyPlayaUoW.SaveEntitiesAsync();
+            return "Confirmado resultado del partido "+partido.Label;
         }
     }
 }

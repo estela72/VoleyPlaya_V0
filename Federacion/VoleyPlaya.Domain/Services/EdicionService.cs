@@ -1,28 +1,10 @@
 ﻿using AutoMapper;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.DependencyInjection;
-
-using NPOI.POIFS.Crypt.Dsig;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Repository.Services;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 using EdicionGrupo = VoleyPlaya.Domain.Models.EdicionGrupo;
 
@@ -79,6 +61,7 @@ namespace VoleyPlaya.Domain.Services
         Task<string> GenerarClasificacionFinal(int id);
         Task<bool> UpdateEdicionGenericoAsync(Edicion edicion);
         Task<bool> UpdatePosicionEquiposAsync(List<Equipo>? equipos, int grupoId);
+        Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V);
     }
     public class EdicionService : IEdicionService
     {
@@ -259,7 +242,7 @@ namespace VoleyPlaya.Domain.Services
         }
         public static string GetNombreEdicion(string temporada, string prueba, string competicion, string categoria, string genero)
         {
-            return temporada + "_" + prueba+"_"+ competicion + "_" + categoria + "_" + genero;
+            return temporada + "_" + prueba + "_" + competicion + "_" + categoria + "_" + genero;
         }
         public Task<string> GetTipoCalendarioEdicion(int id)
         {
@@ -286,11 +269,11 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task<dynamic> ExportarCalendarioAsync(string prueba, int competicion, int categoria, string genero, int grupoId)
         {
-            var partidos = await GetPartidosFiltradosAsync(prueba,competicion, categoria, genero, grupoId);
+            var partidos = await GetPartidosFiltradosAsync(prueba, competicion, categoria, genero, grupoId);
 
             // Descargar el archivo de Excel en el navegador del usuario
             dynamic miObjetoDynamic = new System.Dynamic.ExpandoObject();
-            miObjetoDynamic.edicion = partidos.First().Competicion+ " "+ partidos.First().Categoria+" "+partidos.First().Genero;
+            miObjetoDynamic.edicion = partidos.First().Competicion + " " + partidos.First().Categoria + " " + partidos.First().Genero;
             miObjetoDynamic.grupo = partidos.First().Grupo;
             miObjetoDynamic.partidos = partidos;
             return miObjetoDynamic;
@@ -313,7 +296,7 @@ namespace VoleyPlaya.Domain.Services
         public async Task<List<SelectionItem>> GetCompeticiones()
         {
             var edicionesDto = await _service.GetAllEdicionesAsync();
-            var ediciones = _mapper.Map<List<Edicion>>(edicionesDto);  
+            var ediciones = _mapper.Map<List<Edicion>>(edicionesDto);
             return ediciones.Select(e => new SelectionItem { Id = e.Id, Item = e.Alias }).ToList();
         }
         public async Task<List<SelectionItem>> GetListaEdiciones()
@@ -327,7 +310,7 @@ namespace VoleyPlaya.Domain.Services
             var pruebas = await _service.GetListaPruebasAsync();
             List<SelectionItem> lista = new List<SelectionItem>();
             foreach (var prueba in pruebas)
-                lista.Add(new SelectionItem { Id = prueba.id, Item=prueba.nombre });
+                lista.Add(new SelectionItem { Id = prueba.id, Item = prueba.nombre });
             return lista;
         }
         public async Task<List<SelectionItem>> GetListaCompeticiones(string idPrueba)
@@ -335,13 +318,13 @@ namespace VoleyPlaya.Domain.Services
             var competiciones = await _service.GetAllCompeticionesAsync(idPrueba);
             List<SelectionItem> lista = new List<SelectionItem>();
             foreach (var comp in competiciones)
-                lista.Add(new SelectionItem { Id = comp.id, Item = comp.nombre});
+                lista.Add(new SelectionItem { Id = comp.id, Item = comp.nombre });
             return lista;
         }
         public async Task<List<SelectionItem>> GetListaCategorias(string idPrueba, int idCompeticion)
         {
-            var categorias = await _service.GetAllCategoriasByEdicionAsync(idPrueba,idCompeticion);
-            
+            var categorias = await _service.GetAllCategoriasByEdicionAsync(idPrueba, idCompeticion);
+
             List<SelectionItem> lista = new List<SelectionItem>();
             foreach (var cat in categorias)
                 lista.Add(new SelectionItem { Id = cat.id, Item = cat.nombre });
@@ -349,20 +332,20 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task<List<SelectionItem>> GetListaGeneros(string idPrueba, int idCompeticion, int idCategoria)
         {
-            var generos = await _service.GetAllGenerosAsync(idPrueba,idCompeticion, idCategoria);
-            
+            var generos = await _service.GetAllGenerosAsync(idPrueba, idCompeticion, idCategoria);
+
             List<SelectionItem> lista = new List<SelectionItem>();
             int id = 0;
             foreach (var cat in generos)
-                lista.Add(new SelectionItem { Id = id++, Item =cat.nombre});
+                lista.Add(new SelectionItem { Id = id++, Item = cat.nombre });
             return lista;
         }
         public async Task<List<SelectionItem>> GetListaGrupos(string idPrueba, int idCompeticion, int idCategoria, string genero)
         {
-            var grupos = await _service.GetAllGruposAsync(idPrueba,idCompeticion, idCategoria, genero);
+            var grupos = await _service.GetAllGruposAsync(idPrueba, idCompeticion, idCategoria, genero);
             List<SelectionItem> lista = new List<SelectionItem>();
             foreach (var cat in grupos)
-                lista.Add(new SelectionItem { Id = cat.id, Item = cat.nombre});
+                lista.Add(new SelectionItem { Id = cat.id, Item = cat.nombre });
             return lista;
         }
         public async Task<List<EdicionGrupo>> GetClasificacionEquiposAsync(string prueba, int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected)
@@ -397,7 +380,7 @@ namespace VoleyPlaya.Domain.Services
         public async Task<List<EdicionGrupo>> GetAllGruposAsync(string pruebaId, int competicion, int categoria, string genero)
         {
             List<EdicionGrupo> list = new List<EdicionGrupo>();
-            var gruposDto = await _service.GetAllGruposFiltradosAsync(pruebaId, competicion,categoria,genero);
+            var gruposDto = await _service.GetAllGruposFiltradosAsync(pruebaId, competicion, categoria, genero);
             list = _mapper.Map<List<EdicionGrupo>>(gruposDto);
             return list;
         }
@@ -443,7 +426,7 @@ namespace VoleyPlaya.Domain.Services
         {
             var edicion = await _service.GetEdicionByIdAsync(edicionId);
             var edi = _mapper.Map<Edicion>(edicion);
-            foreach (var grupo in edi.Grupos.Where(g=>g.TipoGrupo.Equals(EnumTipoGrupo.Liga)))
+            foreach (var grupo in edi.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)))
             {
                 await UpdateClasificacion(grupo);
                 await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
@@ -476,9 +459,16 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task<bool> UpdatePosicionEquiposAsync(List<Equipo>? equipos, int grupoId)
         {
-            Arguments.Check(new[] { equipos});
+            Arguments.Check(new[] { equipos });
             var lista = _mapper.Map<List<VoleyPlaya.Repository.Models.Equipo>>(equipos);
             return await _service.UpdatePosicionEquiposAsync(lista, grupoId);
+        }
+
+        public async Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
+        {
+            Arguments.Check(new[] { idPartido });
+
+            return await _service.ConfirmarResultadoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
         }
     }
 }

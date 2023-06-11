@@ -70,7 +70,7 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.Puntos = puntos;
                 dto.PuntosContra = puntosContra;
                 dto.PuntosFavor = puntosFavor;
-                dto.Edicion = edicionGrupoDto.Edicion;
+                //dto.Edicion = edicionGrupoDto.Edicion;
                 dto.OrdenEntrada = ordenEntrada;
                 dto.ClasificacionFinal = clasifinal;
                 return await UpdateAsync(dto);

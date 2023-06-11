@@ -87,28 +87,28 @@
     </div>
 </div>
 <div class="card">
-    <form method="post" asp-page-handler="Guardar"
+   @* <form method="post" asp-page-handler="Guardar"
                         asp-route-pruebaId="@Model.PruebaSelected"
                         asp-route-competicionId="@Model.CompeticionSelected"
                         asp-route-categoriaId="@Model.CategoriaSelected"
                         asp-route-generoId="@Model.GeneroSelected"
-                        asp-route-grupoId="@Model.GrupoSelected">
-        @Html.AntiForgeryToken()
+                        asp-route-grupoId="@Model.GrupoSelected">*@
+        @*@Html.AntiForgeryToken()*@
         @Html.HiddenFor(m=>Model.CompeticionSelected)
         @Html.HiddenFor(m=>Model.CategoriaSelected)
         @Html.HiddenFor(m=>Model.GeneroSelected)
         @Html.HiddenFor(m=>Model.GrupoSelected)
         <div class="card-body">
-            <div class="card-header">
+            @*<div class="card-header">
                 @if (Model.Partidos!=null && Model.Partidos.Count > 0)
                 {
                     <p>Recuerda pulsar el botón Guardar para que los resultados queden registrados</p>
                     <button type="submit" class="btn btn-primary">Guardar resultados</button>
                 }
-            </div>
+            </div>*@
             @if (Model.Partidos != null)
             {
-                <table id="partidos" class="table table-striped table-hover">
+                <table id="partidos" class="table table-responsive table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Jornada</th>
@@ -120,6 +120,7 @@
                             <th>Set 2</th>
                             <th>Set 3</th>
                             <th>Resultado</th>
+                            <th>Confirmar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,16 +155,16 @@
                                 @if (Model.Partidos[i].RetiradoLocal || Model.Partidos[i].RetiradoVisitante || Model.Partidos[i].ConResultado)
                                 {
                                     <td>
-                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Local" disabled/>
-                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" disabled />
+                                        <input type="number" id="set1_local" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Local" disabled/>
+                                        <input type="number" id="set1_visitante" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" disabled />
                                     </td>
                                     <td>
-                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Local" disabled />
-                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" disabled />
+                                        <input type="number" id="set2_local" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Local" disabled />
+                                        <input type="number" id="set2_visitante" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" disabled />
                                     </td>
                                     <td>
-                                        <input type="number" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Local" disabled />
-                                        <input type="number" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" disabled />
+                                        <input type="number" id="set3_local" class="resultado local retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Local" disabled />
+                                        <input type="number" id="set3_visitante" class="resultado visitante retirado" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" disabled />
                                     </td>
                                     <td>
                                         <input type="number" class="res-local retirado" asp-for="@Model.Partidos[i].Resultado.Local" disabled />
@@ -173,22 +174,26 @@
                                 else
                                 {
                                     <td>
-                                        <input type="number"  class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set1.Local" />
-                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" />
+                                        <input type="number" id="set1_local" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set1.Local" />
+                                        <input type="number" id="set1_visitante" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set1.Visitante" />
                                     </td>
                                     <td>
-                                        <input type="number" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set2.Local" />
-                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" />
+                                        <input type="number"  id="set2_local" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set2.Local" />
+                                        <input type="number" id="set2_visitante" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set2.Visitante" />
                                     </td>
                                     <td>
-                                        <input type="number" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set3.Local" />
-                                        <input type="number" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" />
+                                        <input type="number" id="set3_local" class="resultado local" asp-for="@Model.Partidos[i].Resultado.Set3.Local" />
+                                        <input type="number" id="set3_visitante" class="resultado visitante" asp-for="@Model.Partidos[i].Resultado.Set3.Visitante" />
                                     </td>
                                     <td>
                                         <input type="number" class="res-local" asp-for="@Model.Partidos[i].Resultado.Local" disabled />
                                         <input type="number" class="res-visitante" asp-for="@Model.Partidos[i].Resultado.Visitante" disabled />
                                     </td>
                                 }
+                                <td>
+                                    @Html.AntiForgeryToken()
+                                    @Html.CheckBoxFor(m=>Model.Partidos[i].ConResultado, new { @class = "custom-editor-checkbox confirmar-chkbox", data_id=@Model.Partidos[i].Id })
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -202,17 +207,18 @@
             }
             else if (Model.Partidos.Count > 0)
             {
-            <button type="submit" class="btn btn-primary">Guardar resultados</button>
+                <h2>Modifica el resultado del partido y confírmalo pinchando en la casilla Confirmar</h2>
+                @*<button type="submit" class="btn btn-primary">Guardar resultados</button>*@
             }
             else
             {
                 <h2>No hay partidos disputados en el día de hoy</h2>
             }
         </div>
-    </form>
+    @*</form>*@
 </div>
 @section scripts {
-    <script>
+    <script type="text/javascript">
         // Seleccionar todos los checkboxes de la tabla
         const resultados = document.querySelectorAll('.resultado');
 
@@ -246,19 +252,38 @@
                 resVisitante.value = rv;
             });
         });
+        $(document).ready(function () {
+            $('.confirmar-chkbox').change(function () {
+                var rowId = $(this).data('id');
+                var isChecked = $(this).is(':checked');
+                // Obtiene el elemento tr padre del icono de copia
+                var filaActual = this.parentElement.parentElement;
+                // Obtiene el input de fecha de la fila actual
+                var set1Local = filaActual.querySelector("#set1_local").value;
+                var set1Visi = filaActual.querySelector("#set1_visitante").value;
+                var set2Local = filaActual.querySelector("#set2_local").value;
+                var set2Visi = filaActual.querySelector("#set2_visitante").value;
+                var set3Local = filaActual.querySelector("#set3_local").value;
+                var set3Visi = filaActual.querySelector("#set3_visitante").value;
+
+                $.ajax({
+                    type: "POST",
+                    //url: "/Resultados/",
+                    data: { idPartido: rowId, activo: isChecked, set1L:set1Local, set1V: set1Visi, set2L:set2Local, set2V: set2Visi, set3L:set3Local, set3V: set3Visi  },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    }, success: function (response) {
+                        alert(response);
+                    },
+                    failure: function (response) {
+                        alert("Failure: "+response);
+                    },
+                    error: function (response) {
+                        alert("Error: "+response);
+                    }
+                });
+            });
+        });
     </script>
-    @*<script>
-        function applyFilter() {
-            var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
-            var competicion = $("#competicion-select").val();
-            var categoria = $("#categoria-select").val();
-            var genero = $("#genero-select").val();
-            var grupo = $("#grupo-select").val();
-            url += '?competicion=' + competicion; // agregar el filtro de categoría a la URL
-            url += '&categoria=' + categoria; // agregar el filtro de categoría a la URL
-            url += '&genero=' + genero; // agregar el filtro de categoría a la URL
-            url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
-            window.location.href = url; // recargar la página con la URL actualizada
-        }
-    </script>*@
 }

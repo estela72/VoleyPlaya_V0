@@ -652,8 +652,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         if (primero != null) primero.ClasificacionFinal = 1;
                         if (segundo != null) segundo.ClasificacionFinal = 2;
                     }
@@ -664,8 +664,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 4;
                     }
@@ -676,8 +676,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 5;
                     }
@@ -688,8 +688,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 9;
                     }
@@ -700,8 +700,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 17;
                     }
@@ -712,8 +712,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 33;
                     }
@@ -724,8 +724,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 65;
                     }
@@ -736,8 +736,8 @@ namespace VoleyPlaya.Domain.Models
                     var perdedor = GetEquipoPerdedor(partido, null, out asigPerdedor);
                     if (asigGanador && asigPerdedor)
                     {
-                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(ganador));
-                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Nombre.Equals(perdedor));
+                        var primero = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(ganador));
+                        var segundo = grupoFinal.Equipos.FirstOrDefault(e => e.Id.Equals(perdedor));
                         //if (primero != null) primero.ClasificacionFinal = 3;
                         if (segundo != null) segundo.ClasificacionFinal = 129;
                     }

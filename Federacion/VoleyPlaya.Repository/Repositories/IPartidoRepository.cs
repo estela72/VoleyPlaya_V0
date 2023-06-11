@@ -54,9 +54,9 @@ namespace VoleyPlaya.Repository.Repositories
                 dto.FechaHora = fechaHora;
                 dto.Pista = pista.Trim();
                 dto.Label = label.Trim();
-                if (localDto!=null)
+                if (localDto!=null && dto.Local.Id!=localDto.Id)
                     dto.Local = localDto;
-                if (visitanteDto != null)
+                if (visitanteDto != null && dto.Visitante.Id!=visitanteDto.Id)
                     dto.Visitante = visitanteDto;
                 dto.NombreLocal = nombreLocal.Trim();
                 dto.NombreVisitante = nombreVisitante.Trim();

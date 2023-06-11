@@ -29,7 +29,7 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity
             new InputUser
             {
                 Email = "voleyasturias@fvbpa.com",
-                Name = "Federacion de Voleiboll Asturiana",
+                Name = "Federacion de Voleibol Asturiana",
                 Password = "Voleibol_2023"
             }
         };

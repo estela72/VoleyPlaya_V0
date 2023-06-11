@@ -486,17 +486,13 @@ namespace VoleyPlaya.GestionWeb.Pages
             {
                 var str = await _service.ValidarPartidoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
                 ErrorMessage = str;
+                return new JsonResult(str);
             }
             catch(Exception x)
             {
                 ErrorMessage = "Error eliminando un partido de la competición: " + x.Message;
+                return new JsonResult(ErrorMessage);
             }
-            finally
-            {
-                await GetEdicion(Edicion.Nombre);
-                await Fill();
-            }
-            return Page();
         }
         public async Task<IActionResult> OnPostClasificacionFinalAsync()
         {
