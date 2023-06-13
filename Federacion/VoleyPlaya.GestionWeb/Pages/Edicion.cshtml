@@ -739,7 +739,6 @@
                             @Html.HiddenFor(m=>Model.EdicionName)
                             @Html.HiddenFor(m=>Model.Edicion.TipoCalendario)
                             @Html.HiddenFor(m=>Model.Edicion.ModeloCompeticion)
-                            <input type="submit" class="btn btn-primary" value="Actualizar Clasificación Final" />
                     </div>
                     <div class="card-body" style="background-color:lightgray">
                         <table class="table table-fit" id="tablaClasiFinal">
@@ -754,8 +753,8 @@
                                 {
                                     @Html.HiddenFor(m=>Model.EquiposCF[i].Id)
                                     <tr>
-                                        <td>@Html.DisplayFor(m=>Model.EquiposCF[i].Nombre,new { htmlAttributes = new { @class = "custom-editor" } })</td>
                                         <td>@Html.EditorFor(m=>Model.EquiposCF[i].ClasificacionFinal,new { htmlAttributes = new { @class = "custom-editor" } })</td>
+                                        <td>@Html.DisplayFor(m=>Model.EquiposCF[i].Nombre,new { htmlAttributes = new { @class = "custom-editor" } })</td>
                                     </tr>
                                 }
                             </tbody>

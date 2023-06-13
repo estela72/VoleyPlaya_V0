@@ -530,8 +530,9 @@ namespace VoleyPlaya.Repository.Services
         {
             foreach (var equipo in equipos)
             {
-                await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupo, equipo.Id, equipo.OrdenCalendario, equipo.Nombre, equipo.Jugados, equipo.Ganados, equipo.Perdidos, equipo.PuntosFavor,
+                var dto = await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(grupo, equipo.Id, equipo.OrdenCalendario, equipo.Nombre, equipo.Jugados, equipo.Ganados, equipo.Perdidos, equipo.PuntosFavor,
                         equipo.PuntosContra, equipo.Coeficiente, equipo.Puntos, equipo.OrdenEntrada, equipo.ClasificacionFinal);
+                grupo.Equipos.Add(dto);
             }
         }
         public async Task<bool> UpdateGrupoPartidosAsync(EdicionGrupo grupo)

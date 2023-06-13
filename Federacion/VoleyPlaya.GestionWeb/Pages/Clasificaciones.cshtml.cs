@@ -14,6 +14,7 @@ namespace VoleyPlaya.GestionWeb.Pages
     public class ClasificacionesModel : VPPageModel
     {
         public List<EdicionGrupo> Clasificaciones { get; set; }
+        public EdicionGrupo ClasificacionFinal { get; set; }
 
         public ClasificacionesModel(IEdicionService service) : base(service)
         {
@@ -31,6 +32,9 @@ namespace VoleyPlaya.GestionWeb.Pages
                 return;
 
             Clasificaciones = await _service.GetClasificacionEquiposAsync(PruebaSelected, int.Parse(CompeticionSelected), int.Parse(CategoriaSelected), GeneroSelected, GrupoSelected);
+            if (Clasificaciones == null) return;
+            ClasificacionFinal = Clasificaciones.FirstOrDefault(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final));
+
             Clasificaciones = Clasificaciones.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
         }
     }

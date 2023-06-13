@@ -191,20 +191,81 @@
             </div>
         }
     </div>
+    @if (Model.ClasificacionFinal != null)
+    {
+        var grupo = Model.ClasificacionFinal;
+        <div class="card">
+            <div class="card-header alert-danger">
+                <div class="row g-3 m-2">
+                    <h3>
+                        Fase Final 
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-striped table-hover partidos">
+                    <thead>
+                        <tr>
+                            <td>Clasificación Final</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipo in grupo.Equipos.OrderBy(e => e.ClasificacionFinal==0).ThenBy(e => e.ClasificacionFinal))
+                        {
+                            var clase = "";
+                            if (equipo.Retirado) clase = "retirado";
+                            <tr class="@clase">
+                                <td class="@clase">@Html.DisplayFor(modelItem => equipo.ClasificacionFinal)</td>
+                                <td class="@clase">@Html.DisplayFor(modelItem =>  equipo.Nombre)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <table class="table table-borderless table-striped table-hover partidos">
+                    <caption>Partidos</caption>
+                    <thead>
+                        <tr>
+                            <th>J</th>
+                            <th>Partido</th>
+                            <th>Fecha y hora</th>
+                            <th>Pista</th>
+                            <th></th>
+                            <th>Local</th>
+                            <th>Res local</th>
+                            <th>Res visitante</th>
+                            <th>Visitante</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los calendarios filtrados en función de los filtros seleccionados -->
+                        @foreach (var partido in grupo.Partidos)
+                        {
+                            var claseLocal = "";
+                            var claseVisit = "";
+                            if (partido.RetiradoLocal) claseLocal = "retirado";
+                            if (partido.RetiradoVisitante) claseVisit = "retirado";
+                            <tr>
+                                <td>@partido.Jornada</td>
+                                <td>@partido.Label</td>
+                                <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@partido.Pista</td>
+                                <td>@partido.Ronda</td>
+                                <td class="@claseLocal">@partido.Local</td>
+                                <td>@partido.Resultado.Local</td>
+                                <td>@partido.Resultado.Visitante</td>
+                                <td class="@claseVisit">@partido.Visitante</td>
+                                <td>(@partido.Resultado.Set1.Local-@partido.Resultado.Set1.Visitante;@partido.Resultado.Set2.Local-@partido.Resultado.Set2.Visitante;@partido.Resultado.Set3.Local-@partido.Resultado.Set3.Visitante)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
 @section scripts {
-    @*<script>
-        function applyFilter() {
-            var url = window.location.href.split('?')[0]; // obtener la URL base sin los parámetros de la consulta
-            var competicion = $("#competicion-select").val();
-            var categoria = $("#categoria-select").val();
-            var genero = $("#genero-select").val();
-            var grupo = $("#grupo-select").val();
-            url += '?competicion=' + competicion; // agregar el filtro de categoría a la URL
-            url += '&categoria=' + categoria; // agregar el filtro de categoría a la URL
-            url += '&genero=' + genero; // agregar el filtro de categoría a la URL
-            url += '&grupo=' + grupo; // agregar el filtro de categoría a la URL
-            window.location.href = url; // recargar la página con la URL actualizada
-        }
-    </script>*@
 }

@@ -473,7 +473,7 @@ namespace VoleyPlaya.Domain.Models
                 if (asignadoE1)
                 {
                     var e1 = Equipos.Where(e => e.Id.Equals(equipo1)).FirstOrDefault();
-                    var existeE1 = grupo.Equipos.FirstOrDefault(e => e.Id.Equals(equipo1));
+                     var existeE1 = grupo.Equipos.FirstOrDefault(e => e.Id.Equals(equipo1));
                     local = e1.Nombre;
                     if (existeE1==null)
                         grupo.Equipos.Add(e1);
@@ -499,7 +499,9 @@ namespace VoleyPlaya.Domain.Models
                         Label = "P" + par.NumPartido.ToString(),
                         NumPartido = par.NumPartido,
                         Local = local,
+                        EquipoLocalId = equipo1,
                         Visitante = visitante,
+                        EquipoVisitanteId = equipo2,
                         Prueba = Prueba,
                         Pista = "",
                         RetiradoLocal = false,
@@ -512,6 +514,8 @@ namespace VoleyPlaya.Domain.Models
                 }
                 else
                 {
+                    partido.EquipoLocalId = equipo1;
+                    partido.EquipoVisitanteId = equipo2;
                     partido.Local = local;
                     partido.Visitante = visitante;
                     partido.NombreLocal = local;

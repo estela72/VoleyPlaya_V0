@@ -210,6 +210,105 @@
             </div>
         </div>
     }
+
+    var gruposF = Model.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).ToList();
+    @foreach (var grupo in gruposF)
+    {
+        <div class="card m-2 p-2" style="background-color:lightcyan">
+            <div class="card-body">
+                <h2>Fase Final</h2>
+                <table class="table table-borderless table-striped table-hover partidos">
+                    <caption style="caption-side:top;font-size:larger;font-weight:bold">Clasificación</caption>
+                    <thead>
+                        <tr>
+                            <td>Clasificación Final</td>
+                            <td>@Html.DisplayNameFor(m=>grupo.Equipos.First().Nombre)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipo in grupo.Equipos.OrderBy(e => e.ClasificacionFinal == 0).ThenBy(e => e.ClasificacionFinal))
+                        {
+                            var clase = "";
+                            if (equipo.Retirado) clase = "retirado";
+                            <tr class="@clase">
+                                <td class="@clase">
+                                    @Html.DisplayFor(modelItem =>  equipo.ClasificacionFinal)
+                                </td>
+                                <td class="@clase">
+                                    @Html.DisplayFor(modelItem =>  equipo.Nombre)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <table class="table table-fit" id="tablaPartidos">
+                    <caption style="caption-side:top;font-size:larger;font-weight:bold">Partidos</caption>
+                    <thead>
+                        <tr>
+                            <th>Jornada</th>
+                            <th>Nº Partido</th>
+                            <th>Ronda</th>
+                            <th>Fecha</th>
+                            <th>Pista</th>
+                            <th>Local</th>
+                            <th colspan="2">Resultado</th>
+                            <th>Visitante</th>
+                            <th>Sets</th>
+                            <th>Validar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var partido in grupo.Partidos)
+                        {
+                            var clase = "";
+                            @if (partido.RetiradoLocal || partido.RetiradoVisitante)
+                            {
+                                clase = "retirado";
+                            }
+                            <tr class="@clase">
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Jornada)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Label)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m =>partido.Ronda)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.FechaHora)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Pista)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Local)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Local)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Visitante)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Visitante)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>partido.Resultado.Set1.Local)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set1.Visitante)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set2.Visitante)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set3.Local)
+                                    @Html.DisplayFor(m=>partido.Resultado.Set3.Visitante)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
 
 @section scripts {

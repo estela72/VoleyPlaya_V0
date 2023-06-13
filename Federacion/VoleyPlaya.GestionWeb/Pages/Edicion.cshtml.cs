@@ -153,7 +153,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 }
                 GruposLiga = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Liga)).ToList();
                 GruposFF = Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).ToList();
-                EquiposCF = Edicion.Equipos.OrderBy(e => e.ClasificacionFinal).ToList();
+                EquiposCF = Edicion.Equipos.OrderBy(e=>e.ClasificacionFinal==0).ThenBy(e => e.ClasificacionFinal).ToList();
 
                 if (Edicion.Id != 0)
                     PasoActual = 1;
@@ -165,6 +165,9 @@ namespace VoleyPlaya.GestionWeb.Pages
                     PasoActual = 4;
                 if (Edicion.Grupos!.Exists(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)))
                     PasoActual = 5;
+                if (Edicion.Grupos!.Exists(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final))
+                    && Edicion.Grupos.Where(g => g.TipoGrupo.Equals(EnumTipoGrupo.Final)).FirstOrDefault().Equipos.Exists(e => e.ClasificacionFinal > 0))
+                    PasoActual = 6;
 
             }
             catch (Exception x)
@@ -390,13 +393,15 @@ namespace VoleyPlaya.GestionWeb.Pages
             try
             {
                 await ActualizarDatosPartidosAsync(GruposLiga);
-
-                await GetEdicion(Edicion.Nombre);
-                await Fill();
             }
             catch (Exception x)
             {
                 ErrorMessage = "Error guardando los partidos de la competición: " + x.Message;
+            }
+            finally
+            {
+                await GetEdicion(Edicion.Nombre);
+                await Fill();
             }
             return Page();
         }
