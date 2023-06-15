@@ -40,11 +40,11 @@
                                             <i class="fas fa-trash"></i> 
                                         </button>
                                     </td>
-                                    <td>@Model.Equipos[i].OrdenEntrada</td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].OrdenEntrada,new{@class="form-control"}) </td>
                                     @if (Model.Equipos[i].Retirado)
                                     {
-                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control col-4", @disabled = "disabled" } })</td>
-                                }
+                                        <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })</td>
+                                    }
                                     else
                                     {
                                         <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new{@class="form-control"})</td>
@@ -76,7 +76,7 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
-                                    <td>@Model.Equipos[i].OrdenEntrada</td>
+                                    <td>@Html.EditorFor(m=>Model.Equipos[i].OrdenEntrada,new{@class="form-control"}) </td>
                                     @if (Model.Equipos[i].Retirado)
                                     {
                                         <td>@Html.EditorFor(m=>Model.Equipos[i].Nombre, new { htmlAttributes = new { @class = "form-control col-4", @disabled = "disabled" } })</td>

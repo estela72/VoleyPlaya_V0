@@ -10,7 +10,6 @@ namespace VoleyPlaya.Repository.Services
 {
     public interface IVoleyPlayaService
     {
-        Task<bool> SaveEdicionAsync(string json);
         Task<bool> DeleteEdicionAsync(string nombre);
         Task<bool> DeleteEdicionAsync(int id);
         Task<List<Edicion>> GetAllEdicionesAsync();
@@ -18,17 +17,14 @@ namespace VoleyPlaya.Repository.Services
         Edicion GetEdicion(string name);
         Task<Edicion> GetEdicionByIdAsync(int id);
         Task<Edicion> GetBasicEdicionAsync(int id);
-        Task<bool> UpdateGrupoPartidosAsync(string jsonString);
-        Task<bool> UpdateDatosPartidosAsync(string json);
+        Task<bool> UpdateGrupoPartidosAsync(EdicionGrupo grupo);
+        Task<bool> UpdateDatosPartidosAsync(EdicionGrupo grupo);
         Task<EdicionGrupo> GetGrupoAsync(int id);
-        Task<bool> UpdateEquiposAsync(int idGrupo, string jsonEquipos);
+        Task<bool> UpdateEquiposAsync(int idGrupo, IEnumerable<Equipo> equipos);
         Task<bool> DeleteGrupoAsync(int id);
         Task<string> DeleteEquipoAsync(int equipoId);
         Task<string> DeletePartidoAsync(int partidoId);
-        Task<bool> UpdateEquiposEdicionAsync(int idEdicion, string jsonEquiposToAddOrUpdate, string jsonEquiposToRemove);
-        Task<bool> UpdateEquiposEdicionAsync(int edicionId, string json);
-        Task<bool> UpdateGruposAsync(int id, string json);
-        Task<bool> UpdateJornadasAsync(int id, string json);
+        Task<bool> UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equipos);
         Task<bool> UpdateTipoCalendarioEdicionAsync(int id, string tipoCalendario);
         Task<string> GetTipoCalendarioEdicion(int id);
         Task<List<EdicionGrupo>> GetAllGruposAsync(int? edicionId);
@@ -36,14 +32,13 @@ namespace VoleyPlaya.Repository.Services
         Task<Edicion> GetBasicAsync(int id);
         Task<EdicionGrupo> GetBasicGrupoAsync(int grupoId);
         Task<EdicionGrupo> GetGrupoWithEquiposYPartidosAsync(int grupoId);
-        Task<EdicionGrupo> UpdateResultadosPartidosAsync(string jsonString);
+        Task<EdicionGrupo> UpdateResultadosPartidosAsync(IEnumerable<Partido> partidos);
         Task<bool> AddEquipo(int edicionId, string nuevoEquipo);
-        Task<string> GetAllCompeticionesAsync(string idPrueba);
-        Task<string> GetAllCategoriasByEdicionAsync(string idPrueba, int idCompeticion);
-        Task<string> GetAllGenerosAsync(string idPrueba, int idCompeticion, int idCategoria);
-        Task<string> GetAllGruposAsync(string idPrueba, int idCompeticion, int idCategoria, string genero);
+        Task<IList<(int id, string nombre)>> GetAllCompeticionesAsync(string idPrueba);
+        Task<IList<(int id, string nombre)>> GetAllCategoriasByEdicionAsync(string idPrueba, int idCompeticion);
+        Task<IList<(string id, string nombre)>> GetAllGenerosAsync(string idPrueba, int idCompeticion, int idCategoria);
+        Task<IList<(int id, string nombre)>> GetAllGruposAsync(string idPrueba, int idCompeticion, int idCategoria, string genero);
         Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(string prueba,int idCompeticion, int idCategoria, string genero);
-
         Task<List<EdicionGrupo>> GetClasificacionesAsync(string prueba, int competicionSelected, int categoriaSelected, string generoSelected, string grupoSelected);
         Task<EdicionGrupo> RetirarEquipoAsync(int id);
         Task<List<Partido>> GetPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected);
@@ -52,14 +47,20 @@ namespace VoleyPlaya.Repository.Services
         Task<bool> SaveTablaCalendarios(List<TablaCalendario> partidos);
         Task<string> GetModeloCompeticionAsync(int id);
         Task<List<TablaCalendario>> GetCalendarioPartidosCircuito(int numEquipos);
-        Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int edicionId, string jsonGrupo);
         Task<List<TablaCalendario>> GetCalendarioPartidosCircuitoByNumGrupos(int numGrupos);
         Task<Edicion> GetEdicion(string pruebaId, int? competicionId, int? categoriaId, string generoId);
-        Task<string> ValidarPartidoAsync(int idPartido, bool activo);
+        Task<string> ValidarPartidoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V);
         Task ArreglarGruposEquipos();
         Task<string> ActualizarClasificacionFinal(int edicionId, List<VoleyPlaya.Repository.Models.Equipo> equipos);
-        Task<string> GetListaPruebasAsync();
+        Task<IList<(int id, string nombre)>> GetListaPruebasAsync();
         Task<string> ActualizarPistaGrupo(int id, string pistaGrupo, bool sobreescribirPistasGrupo);
         Task CambiarEstadoEdicion(int idEdicion, string nuevoEstado);
+        Task<bool> UpdateEdicionGenericoAsync(Edicion edi, string temporada, string competicion, string categoria);
+        Task<bool> UpdateEquiposEdicionAsync(int edicionId, List<Equipo> equiposToAdd, List<Equipo> equiposToRemove);
+        Task<bool> UpdateGruposAsync(int id, HashSet<EdicionGrupo> grupos);
+        Task<bool> UpdateJornadasAsync(int id, HashSet<Jornada> jornadas);
+        Task<bool> UpdatePosicionEquiposAsync(List<Equipo> equipos, int grupoId);
+        Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int id, EdicionGrupo edicionGrupo);
+        Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V);
     }
 }

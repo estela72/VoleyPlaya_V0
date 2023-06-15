@@ -73,6 +73,9 @@ namespace VoleyPlaya.Domain.Models
                 {
                     var fecha = jornadas.Where(j => j.Jornada == partido.Jornada).First().Fecha;
                     fecha = new DateTime(fecha.Year, fecha.Month, fecha.Day, 10, 0, 0);
+                    var local = equipos.Where(e => e.Posicion == partido.Local).FirstOrDefault();
+                    var visitante = equipos.Where(e => e.Posicion == partido.Visitante).FirstOrDefault();
+                    if (local == null || visitante == null) continue;
                     Partido nuevoPartido = new()
                     {
                         Jornada = partido.Jornada,
@@ -80,8 +83,10 @@ namespace VoleyPlaya.Domain.Models
                         NumPartido = numPartido++,
                         FechaHora = fecha,
                         Pista = string.Empty,
-                        Local = equipos.Where(e => e.Posicion == partido.Local).First().Nombre,
-                        Visitante = equipos.Where(e => e.Posicion == partido.Visitante).First().Nombre,
+                        EquipoLocalId = local.Id,
+                        Local = local.Nombre,
+                        EquipoVisitanteId = visitante.Id,
+                        Visitante = visitante.Nombre,
                         Resultado = new Resultado(),
                         Ronda = "I"
                     };

@@ -19,7 +19,8 @@ namespace VoleyPlaya.Repository
     public static class StartupExtension
     {
         public static void AddRepositoryStartup(this IServiceCollection services)
-        { 
+        {
+
             // Add framework services.
             services.AddDbContext<VoleyPlayaDbContext>(
                 options => options.ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))

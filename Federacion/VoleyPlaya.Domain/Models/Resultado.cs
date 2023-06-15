@@ -64,6 +64,7 @@ namespace VoleyPlaya.Domain.Models
 
         public void UpdateResultado()
         {
+            if (_set1 == null || _set2 == null || _set3 == null) return;
             _local = 0;
             if (_set1.Local > _set1.Visitante) _local++;
             if (_set2.Local > _set2.Visitante) _local++;
