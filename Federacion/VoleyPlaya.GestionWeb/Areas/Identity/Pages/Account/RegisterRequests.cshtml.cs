@@ -102,5 +102,25 @@ namespace VoleyPlaya.GestionWeb.Areas.Identity.Pages.Account
             await ObtenerListaUsuarios();
             return Page();
         }
+        public async Task<IActionResult> OnPostEliminarAsync(string? userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                // Maneja el caso en el que el usuario no sea encontrado
+                return NotFound();
+            }
+
+            await _userManager.DeleteAsync(user);
+            // Obtén la lista de usuarios pendientes de confirmación
+            await ObtenerListaUsuarios();
+            return Page();
+        }
     }
 }
