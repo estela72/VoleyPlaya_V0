@@ -284,7 +284,10 @@
                                     @Html.DisplayFor(m=>partido.Pista)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(m=>partido.Local)
+                                    @if (!string.IsNullOrEmpty(partido.Local))
+                                        @Html.DisplayFor(m=>partido.Local)
+                                    else
+                                        @Html.DisplayFor(m=>partido.NombreLocal)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(m=>partido.Resultado.Local)
@@ -293,7 +296,10 @@
                                     @Html.DisplayFor(m=>partido.Resultado.Visitante)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(m=>partido.Visitante)
+                                    @if (!string.IsNullOrEmpty(partido.Visitante))
+                                        @Html.DisplayFor(m=>partido.Visitante)
+                                    else
+                                        @Html.DisplayFor(m=>partido.NombreVisitante)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(m=>partido.Resultado.Set1.Local)

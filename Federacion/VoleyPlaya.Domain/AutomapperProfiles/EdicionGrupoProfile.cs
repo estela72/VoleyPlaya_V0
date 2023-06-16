@@ -17,6 +17,8 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
             CreateMap<VoleyPlaya.Repository.Models.EdicionGrupo, VoleyPlaya.Domain.Models.EdicionGrupo>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Nombre))
                 .ForMember(d => d.TipoGrupo, opt => opt.MapFrom(s => s.Tipo))
+                .ForPath(d => d.Partidos, opt => opt.MapFrom(s => s.Partidos))
+                .ForPath(d => d.Equipos, opt => opt.MapFrom(s => s.Equipos))
                 ;
 
             CreateMap<VoleyPlaya.Domain.Models.EdicionGrupo, VoleyPlaya.Repository.Models.EdicionGrupo>()

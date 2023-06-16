@@ -1,30 +1,15 @@
+using OfficeOpenXml;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.Identity.Client;
-
-using NPOI.HPSF;
-using NPOI.OpenXmlFormats.Spreadsheet;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using NPOI.XWPF.UserModel;
-
-using OfficeOpenXml;
-
-using System.IO;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using VoleyPlaya.Domain.Enums;
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
-using VoleyPlaya.GestionWeb.Data.Migrations;
-using VoleyPlaya.GestionWeb.Infrastructure;
-
-using ICell = NPOI.SS.UserModel.ICell;
+using iText.Kernel.Geom;
+using iText.Layout.Properties;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
@@ -102,8 +87,16 @@ namespace VoleyPlaya.GestionWeb.Pages
 
         private async Task<FileContentResult> RellenarActasCircuito(int? competicionId, int? categoriaId, string generoId)
         {
-            var fileName = $"ActasCircuito_"+ PruebaSelected + competicionId + " " + categoriaId + " " + generoId + ".xlsx";
-            GenerarExcelCircuito(Partidos.Count, fileName);
+            var prueba = Partidos.First().Prueba;
+            var comp = Partidos.First().Competicion;
+            var cat = Partidos.First().Categoria;
+            var gen = Partidos.First().Genero;
+            var ronda = Partidos.First().Ronda.Equals("I") ? "GRUPOS" : "FINALES";
+
+            var fName = $"ActasCircuito_" + prueba + "_" + comp + "_" + " " + cat + "_" + gen + "_" + ronda;
+            var fileName = fName + ".xlsx";
+            var fileNamePdf = fName + ".pdf";
+            GenerarExcelCircuito(Partidos.Count, fileName, fileNamePdf);
 
             // Escribir el libro de Excel en un MemoryStream
             // Obtén la ruta del directorio personal del usuario
@@ -157,7 +150,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 package.Save();
             }
         }
-        private void GenerarExcelCircuito(int numeroHojas, string destinationFilePath)
+        private void GenerarExcelCircuito(int numeroHojas, string destinationFilePath, string destinationFilePathPdf)
         {
             // Ruta de destino del archivo Excel
             string filePath = "wwwroot/excel/actaVoleyPlayaCircuito1Set.xlsx";
@@ -184,6 +177,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                 // Guardar los cambios en el archivo Excel
                 package.Save();
             }
+            ConvertExcelToPdf(destinationFilePath, destinationFilePathPdf);
         }
 
         private void RellenarActaJD(Partido partido, ExcelWorksheet nuevaHoja)
@@ -244,6 +238,42 @@ namespace VoleyPlaya.GestionWeb.Pages
                 }
             }
         }
+        public void ConvertExcelToPdf(string excelFilePath, string pdfFilePath)
+        {
+            //OfficeConverter.convertOfficeSpreadsheetToPdf(new FileInputStream(excelFilePath),
+            // new FileOutputStream(pdfFilePath));
 
+            //// Crear un documento PDF utilizando iText 7
+            ////PdfWriter writer = new PdfWriter(pdfFilePath);
+            //WriterProperties wp = new WriterProperties().UseSmartMode();
+            //PdfWriter writer = new PdfWriter(pdfFilePath,wp);
+            //PdfDocument pdfDocument = new PdfDocument(writer);
+            //Document document = new Document(pdfDocument);
+            //// Establecer la orientación del documento como horizontal (apaisada)
+            ////document.SetDefaultPageSize(PageSize.A4.Rotate());
+
+            //// Recorrer cada hoja del archivo Excel
+            //foreach (var worksheet in excelPackage.Workbook.Worksheets)
+            //{
+            //    // Crear una tabla para la hoja actual
+            //    Table table = new Table(worksheet.Dimension.Columns);
+
+            //    // Recorrer cada celda de la hoja y agregarla a la tabla
+            //    for (int row = worksheet.Dimension.Start.Row; row <= worksheet.Dimension.End.Row; row++)
+            //    {
+            //        for (int col = worksheet.Dimension.Start.Column; col <= worksheet.Dimension.End.Column; col++)
+            //        {
+            //            var cellValue = worksheet.Cells[row, col].Value;
+            //            table.AddCell(cellValue?.ToString() ?? "");
+            //        }
+            //    }
+
+            //    // Agregar la tabla al documento PDF
+            //    document.Add(table);
+            //}
+
+            //// Cerrar el documento PDF
+            //document.Close();
+        }
     }
 }
