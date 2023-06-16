@@ -155,10 +155,24 @@
                                 <td>@partido.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
                                 <td>@partido.Pista</td>
                                 <td>@partido.Ronda</td>
-                                <td class="@claseLocal">@partido.Local</td>
+                                @if (!string.IsNullOrEmpty(partido.Local)) 
+                                {
+                                    <td class="@claseLocal">@partido.Local</td>
+                                }
+                                else
+                                 {
+                                     <td class="@claseLocal">@partido.NombreLocal</td>
+                                 }
                                 <td>@partido.Resultado.Local</td>
                                 <td>@partido.Resultado.Visitante</td>
-                                <td class="@claseVisit">@partido.Visitante</td>
+                                @if (!string.IsNullOrEmpty(partido.Visitante))
+                                {
+                                    <td class="@claseVisit">@partido.Visitante</td>
+                                }
+                                else
+                                {    
+                                    <td class="@claseVisit">@partido.NombreVisitante</td>
+                                }
                                 <td>(@partido.Resultado.Set1.Local-@partido.Resultado.Set1.Visitante;@partido.Resultado.Set2.Local-@partido.Resultado.Set2.Visitante;@partido.Resultado.Set3.Local-@partido.Resultado.Set3.Visitante)</td>
                             </tr>
                         }

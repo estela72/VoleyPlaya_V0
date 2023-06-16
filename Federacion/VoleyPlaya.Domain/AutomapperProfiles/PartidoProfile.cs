@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Domain.Models;
+
 namespace VoleyPlaya.Domain.AutomapperProfiles
 {
     public class PartidoProfile : Profile
@@ -45,16 +47,56 @@ namespace VoleyPlaya.Domain.AutomapperProfiles
                 .ForPath(d => d.Resultado.Set3, o => o.MapFrom(ori => ori.Parciales.Last()))
                 .ReverseMap();
 
+            //CreateMap<VoleyPlaya.Domain.Models.Partido, VoleyPlaya.Repository.Models.Partido>()
+            //    .ForPath(d => d.Grupo?.Nombre, s => s.MapFrom(s => s.Grupo))
+            //    .ForPath(d => d.Parciales, s => s.MapFrom(s => s.Resultado.Sets))
+            //    .ForMember(d => d.RetiradoLocal, s => s.MapFrom(s => s.RetiradoLocal))
+            //    .ForMember(d => d.RetiradoVisitante, s => s.MapFrom(s => s.RetiradoVisitante))
+            //    .ForPath(d => d.Local?.Id, s => s.MapFrom(s => s.EquipoLocalId))
+            //    .ForPath(d => d.Local?.Nombre, s => s.MapFrom(s => s.Local))
+            //    .ForPath(d => d.Visitante?.Id, s => s.MapFrom(s => s.EquipoVisitanteId))
+            //    .ForPath(d => d.Visitante?.Nombre, s => s.MapFrom(s => s.Visitante))
+            //    .ForMember(d=>d.NombreLocal, s=>s.MapFrom(s=>s.NombreLocal))
+            //    .ForMember(d=>d.NombreVisitante, s=>s.MapFrom(s=>s.NombreVisitante))
+            //    ;
             CreateMap<VoleyPlaya.Domain.Models.Partido, VoleyPlaya.Repository.Models.Partido>()
-                .ForPath(d => d.Grupo.Nombre, s => s.MapFrom(s => s.Grupo))
-                .ForPath(d => d.Parciales, s => s.MapFrom(s => s.Resultado.Sets))
-                .ForMember(d => d.RetiradoLocal, s => s.MapFrom(s => s.RetiradoLocal))
-                .ForMember(d => d.RetiradoVisitante, s => s.MapFrom(s => s.RetiradoVisitante))
-                .ForPath(d => d.Local.Id, s => s.MapFrom(s => s.EquipoLocalId))
-                .ForPath(d => d.Local.Nombre, s => s.MapFrom(s => s.Local))
-                .ForPath(d => d.Visitante.Id, s => s.MapFrom(s => s.EquipoVisitanteId))
-                .ForPath(d => d.Visitante.Nombre, s => s.MapFrom(s => s.Visitante))
-                ;
+             .ForMember(d => d.Parciales, s => s.MapFrom(s => s.Resultado.Sets))
+             .ForMember(d => d.RetiradoLocal, s => s.MapFrom(s => s.RetiradoLocal))
+             .ForMember(d => d.RetiradoVisitante, s => s.MapFrom(s => s.RetiradoVisitante))
+             .ForMember(d => d.NombreLocal, s => s.MapFrom(s => s.NombreLocal))
+             .ForMember(d => d.NombreVisitante, s => s.MapFrom(s => s.NombreVisitante))
+             .ForPath(d => d.Grupo.Nombre, s => s.MapFrom(s => s.Grupo))
+             .ForPath(d => d.Local.Nombre, s => s.MapFrom(s => s.Local))
+             .ForPath(d => d.Visitante.Nombre, s => s.MapFrom(s => s.Visitante))
+             .ForPath(d => d.Local.Id, s => s.MapFrom(s => s.EquipoLocalId))
+             .ForPath(d => d.Visitante.Id, s => s.MapFrom(s => s.EquipoVisitanteId))
+
+             ;
+
+            //CreateMap<VoleyPlaya.Domain.Models.Partido, VoleyPlaya.Repository.Models.Equipo>()
+            //    .ConvertUsing((s, d, c) =>
+            //    {
+            //        var equipoId = c.Mapper.Map<int?>(s.EquipoLocalId);
+            //        var equipoNombre = c.Mapper.Map<string>(s.Local);
+            //        if (equipoId != null && equipoNombre != null)
+            //        {
+            //            return new Equipo { Id = equipoId, Nombre = equipoNombre };
+            //        }
+            //        return null;
+            //    });
+
+            //CreateMap<VoleyPlaya.Domain.Models.Partido, VoleyPlaya.Repository.Models.Equipo>()
+            //    .ConvertUsing((s, d, c) =>
+            //    {
+            //        var equipoId = c.Mapper.Map<int?>(s.EquipoVisitanteId);
+            //        var equipoNombre = c.Mapper.Map<string>(s.Visitante);
+            //        if (equipoId != null && equipoNombre != null)
+            //        {
+            //            return new Equipo { Id = equipoId, Nombre = equipoNombre };
+            //        }
+            //        return null;
+            //    });
+
         }
     }
 }

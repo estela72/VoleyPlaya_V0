@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+//using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.Identity.Client;
 
 using NPOI.OpenXmlFormats.Spreadsheet;
@@ -283,6 +283,7 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch (Exception x)
             {
                 ErrorMessage += "Se ha producido un error: " + x.Message;
+                throw x;
                 FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
                 return Page();
             }
