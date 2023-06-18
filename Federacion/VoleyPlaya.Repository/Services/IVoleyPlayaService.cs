@@ -61,6 +61,6 @@ namespace VoleyPlaya.Repository.Services
         Task<bool> UpdateJornadasAsync(int id, HashSet<Jornada> jornadas);
         Task<bool> UpdatePosicionEquiposAsync(List<Equipo> equipos, int grupoId);
         Task<bool> AddUpdateGrupoYPartidosFaseFinalAsync(int id, EdicionGrupo edicionGrupo);
-        Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V);
+        Task<(EdicionGrupo? grupo, string res)> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V);
     }
 }

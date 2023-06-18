@@ -280,7 +280,7 @@ namespace VoleyPlaya.Domain.Services
         }
         public async Task UpdatePartidosClasificacionAsync(List<Partido> partidos)
         {
-            string jsonString = System.Text.Json.JsonSerializer.Serialize(partidos);
+            //string jsonString = System.Text.Json.JsonSerializer.Serialize(partidos);
             var grupoDto = await _service.UpdateResultadosPartidosAsync(_mapper.Map<List<VoleyPlaya.Repository.Models.Partido>>(partidos));
             var grupo = _mapper.Map<EdicionGrupo>(grupoDto);//EdicionGrupo.FromJson(JsonNode.Parse(json)!);
             if (grupo.TipoGrupo.Equals(EnumTipoGrupo.Liga))
@@ -468,7 +468,17 @@ namespace VoleyPlaya.Domain.Services
         {
             Arguments.Check(new[] { idPartido });
 
-            return await _service.ConfirmarResultadoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
+            (VoleyPlaya.Repository.Models.EdicionGrupo? gr, string res) = await _service.ConfirmarResultadoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
+            if (gr != null)
+            {
+                var grupo = _mapper.Map<EdicionGrupo>(gr);
+                if (grupo!=null && grupo.TipoGrupo.Equals(EnumTipoGrupo.Liga))
+                {
+                    await UpdateClasificacion(grupo);
+                    await UpdateEquipsGrupoAsync(grupo.Id, grupo.Equipos);
+                }
+            }
+            return res;// await _service.ConfirmarResultadoAsync(idPartido, activo, set1L, set1V, set2L, set2V, set3L, set3V);
         }
     }
 }

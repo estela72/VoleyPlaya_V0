@@ -565,9 +565,10 @@ namespace VoleyPlaya.Repository.Services
 
             return true;
         }
-        public async Task<string> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
+        public async Task<(EdicionGrupo? grupo, string res)> ConfirmarResultadoAsync(int idPartido, bool activo, int set1L, int set1V, int set2L, int set2V, int set3L, int set3V)
         {
-            var partido = await _voleyPlayaUoW.PartidoRepository.GetByIdAsync(idPartido);
+            var partido = await _voleyPlayaUoW.PartidoRepository.FindIncludingAsync(p=>p.Id.Equals(idPartido), p=>p.Grupo, p=>p.Grupo.Equipos, p=>p.Grupo.Partidos);
+            var grupo = partido.Grupo;
             var local = 0;
             var visi = 0;
             local += set1L != 0 && set1L > set1V ? 1 : 0;
@@ -581,7 +582,7 @@ namespace VoleyPlaya.Repository.Services
             partido.AddResultado(local, visi, set1L, set1V, set2L, set2V, set3L, set3V, _voleyPlayaUoW.GetCurrentUser());
             partido.UserResultado = _voleyPlayaUoW.GetCurrentUser();
             await _voleyPlayaUoW.SaveEntitiesAsync();
-            return "Confirmado resultado del partido "+partido.Label;
+            return (grupo??null,"Confirmado resultado del partido "+partido.Label);
         }
     }
 }
