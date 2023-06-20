@@ -70,7 +70,8 @@ namespace VoleyPlaya.Repository
             PartidoRepository = partidoRepository;
             TemporadaRepository = temporadaRepository;
             JornadaRepository = jornadaRepository;
-            EdicionGrupoRepository = edicionGrupoRepository;            TablaCalendarioRepository = tablaCalendarioRepository;
+            EdicionGrupoRepository = edicionGrupoRepository;
+            TablaCalendarioRepository = tablaCalendarioRepository;
         }
     }
 }

@@ -134,7 +134,7 @@ namespace VoleyPlaya.Repository.Services
         public async Task<bool> DeleteGrupoAsync(int id)
         {
             await DeleteGrupoWithPartidos(id);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            return (await _voleyPlayaUoW.SaveEntitiesAsync()>0);
         }
         public async Task<bool> DeleteGrupoWithPartidos(int id)
         {
@@ -144,12 +144,12 @@ namespace VoleyPlaya.Repository.Services
                 await _voleyPlayaUoW.PartidoRepository.DeleteAsync(par.Id);
 
             await _voleyPlayaUoW.EdicionGrupoRepository.DeleteAsync(id);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            return (await _voleyPlayaUoW.SaveEntitiesAsync()>0);
         }
         public async Task<string> DeleteEquipoAsync(int id)
         {
             bool deleted = await _voleyPlayaUoW.EquipoRepository.DeleteAsync(id);
-            var str = (await _voleyPlayaUoW.SaveEntitiesAsync()) ? "": "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
+            var str = (await _voleyPlayaUoW.SaveEntitiesAsync()>0) ? "": "Se ha producido un error al borrar el equipo. Revise si el equipo está incluido en algún partido";
             return str;
         }
         public async Task<string> DeletePartidoAsync(int partidoId)
@@ -163,7 +163,7 @@ namespace VoleyPlaya.Repository.Services
             var edicionDto = await _voleyPlayaUoW.EdicionRepository.GetByIdAsync(id);
             edicionDto.TipoCalendario = tipoCalendario;
             await _voleyPlayaUoW.EdicionRepository.UpdateAsync(edicionDto);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            return (await _voleyPlayaUoW.SaveEntitiesAsync() > 0);
         }
         public async Task<string> GetTipoCalendarioEdicion(int id)
         {
@@ -215,7 +215,7 @@ namespace VoleyPlaya.Repository.Services
         {
             var edicion = await _voleyPlayaUoW.EdicionRepository.GetBasicAsync(edicionId);
             await _voleyPlayaUoW.EquipoRepository.CheckAddUpdate(edicion, 0, 0, equipo, 0, 0, 0, 0, 0, 0, 0,0);
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            return (await _voleyPlayaUoW.SaveEntitiesAsync() > 0);
         }
         public async Task<IList<(int id, string nombre)>> GetAllCompeticionesAsync(string idPrueba)
         {
@@ -297,8 +297,8 @@ namespace VoleyPlaya.Repository.Services
             {
                 await _voleyPlayaUoW.PartidoRepository.UpdateHoraYPista(partido);
             }
-            var msg = "Partidos actualizados";
-            await _voleyPlayaUoW.SaveEntitiesAsync();
+            var msg = string.Empty;
+            msg = await _voleyPlayaUoW.SaveEntitiesAsync() + " partidos actualizados";
             return msg;
         }
         public async Task<List<EdicionGrupo>> GetAllGruposFiltradosAsync(string prueba, int idCompeticion, int idCategoria, string genero)
@@ -334,7 +334,7 @@ namespace VoleyPlaya.Repository.Services
                 catch (Exception x)
                 { }
             }
-            return await _voleyPlayaUoW.SaveEntitiesAsync();
+            return (await _voleyPlayaUoW.SaveEntitiesAsync() > 0);
         }
         public async Task<List<TablaCalendario>> GetCalendarioPartidosCircuito(int numEquipos)
         {
