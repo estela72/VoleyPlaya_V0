@@ -18,9 +18,7 @@ namespace General.CrossCutting.Lib
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task<EntityEntry> GetEntityEntry(Entity entity);
-        Task<int> SaveMauiChangesAsync();
-        Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default);
         string GetCurrentUser();
     }
 
@@ -124,7 +122,7 @@ namespace General.CrossCutting.Lib
             }
         }
 
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             // Dispatch Domain Events collection.
             // Choices:
@@ -138,115 +136,7 @@ namespace General.CrossCutting.Lib
             // performed through the DbContext will be committed
             var result = await SaveChangesAsync(cancellationToken);
 
-            return result > 0;
-        }
-        public Task<int> SaveMauiChangesAsync()
-        {
-            try
-            {
-                var modifiedEntries = _context.ChangeTracker.Entries()
-                    .Where(x => x.Entity is IBaseEntity
-                        && (x.State == EntityState.Added || x.State == EntityState.Modified));
-
-                foreach (var entry in modifiedEntries)
-                {
-                    if (entry.Entity is IBaseEntity entity)
-                    {
-                        string userName = string.Empty;
-                        DateTime now = DateTime.UtcNow;
-
-                        if (entry.State == EntityState.Added)
-                        {
-                            entity.CreatedBy = userName;
-                            entity.CreatedDate = now;
-                        }
-                        else
-                        {
-                            _context.Entry(entity).Property(x => x.CreatedBy).IsModified = false;
-                            _context.Entry(entity).Property(x => x.CreatedDate).IsModified = false;
-                        }
-                        entity.UpdatedBy = userName;
-                        entity.UpdatedDate = now;
-                    }
-                }
-
-                var entities = from e in _context.ChangeTracker.Entries()
-                               where e.State == EntityState.Added
-                                   || e.State == EntityState.Modified
-                               select e.Entity;
-                foreach (var entity in entities)
-                {
-                    var validationContext = new ValidationContext(entity);
-                    Validator.ValidateObject(entity, validationContext);
-                }
-
-                return _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException updateConcException)
-            {
-                Console.WriteLine("error " + updateConcException);
-                return null;
-            }
-            catch (DbUpdateException updateException)
-            {
-                Console.WriteLine("error " + updateException);
-                return null;
-            }
-            catch (Exception x)
-            {
-                Console.WriteLine("error " + x);
-                return null;
-            }
-        }
-
-        public async Task<IDbContextTransaction> BeginTransactionAsync()
-        {
-            if (_currentTransaction != null) return null;
-
-            _currentTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
-
-            return _currentTransaction;
-        }
-
-        public async Task CommitTransactionAsync(IDbContextTransaction transaction)
-        {
-            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
-
-            try
-            {
-                await SaveChangesAsync();
-                transaction.Commit();
-            }
-            catch
-            {
-                RollbackTransaction();
-                throw;
-            }
-            finally
-            {
-                if (_currentTransaction != null)
-                {
-                    _currentTransaction.Dispose();
-                    _currentTransaction = null;
-                }
-            }
-        }
-
-        public void RollbackTransaction()
-        {
-            try
-            {
-                _currentTransaction?.Rollback();
-            }
-            finally
-            {
-                if (_currentTransaction != null)
-                {
-                    _currentTransaction.Dispose();
-                    _currentTransaction = null;
-                }
-            }
+            return result;
         }
 
         void IDisposable.Dispose()

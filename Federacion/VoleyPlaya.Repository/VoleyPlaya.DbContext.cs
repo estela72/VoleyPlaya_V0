@@ -25,6 +25,7 @@ namespace VoleyPlaya.Repository
         public DbSet<TablaCalendario> Tablas { get; set; }
 
         IHostingEnvironment _environment;
+        private readonly StreamWriter _logStream = new StreamWriter("databaseLog.txt", append: true);
 
         public VoleyPlayaDbContext(DbContextOptions<VoleyPlayaDbContext> options, IConfiguration configuration, IHostingEnvironment environment)
             : base(options)
@@ -36,6 +37,8 @@ namespace VoleyPlaya.Repository
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
+                .EnableSensitiveDataLogging()
+                .LogTo(_logStream.WriteLine)
                 .UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"),
                 x => x.MigrationsAssembly("VoleyPlaya.GestionWeb"))
             ;
@@ -46,7 +49,17 @@ namespace VoleyPlaya.Repository
             }
 
         }
+        public override void Dispose()
+        {
+            base.Dispose();
+            _logStream.Dispose();
+        }
 
+        public override async ValueTask DisposeAsync()
+        {
+            await base.DisposeAsync();
+            await _logStream.DisposeAsync();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null) return;

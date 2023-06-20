@@ -1,23 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.Identity.Client;
-
-using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using NPOI.XWPF.UserModel;
-
-using System.IO;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 
 using VoleyPlaya.Domain.Models;
 using VoleyPlaya.Domain.Services;
-using VoleyPlaya.GestionWeb.Infrastructure;
 
 namespace VoleyPlaya.GestionWeb.Pages
 {
@@ -273,7 +260,7 @@ namespace VoleyPlaya.GestionWeb.Pages
                         }
                     }
                 }
-                await _service.UpdatePartidosFromExcelAsync(partidos);
+                ErrorMessage = await _service.UpdatePartidosFromExcelAsync(partidos);
 
                 await FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
 
@@ -283,8 +270,8 @@ namespace VoleyPlaya.GestionWeb.Pages
             catch (Exception x)
             {
                 ErrorMessage += "Se ha producido un error: " + x.Message;
-                throw x;
                 FilterSelection(pruebaId, competicionId, categoriaId, generoId, grupoId);
+                await GetPartidosAsync();
                 return Page();
             }
         }

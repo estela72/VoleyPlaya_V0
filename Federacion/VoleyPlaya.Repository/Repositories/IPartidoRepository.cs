@@ -70,27 +70,40 @@ namespace VoleyPlaya.Repository.Repositories
 
         public async Task<List<Partido>> GetListaPartidosAsync(string pruebaSelected, int competicionSelected, int categoriaSelected, string generoSelected, int grupoSelected)
         {
-            var partidos = await FindAllIncludingAsync(p => p.Grupo.Edicion.Prueba.Equals(pruebaSelected), p=>p.Grupo.Edicion, p=>p.Grupo.Edicion.Competicion, p=>p.Grupo.Edicion.Categoria);
+            //var partidos = await FindAllIncludingAsync(p => p.Grupo.Edicion.Prueba.Equals(pruebaSelected), p=>p.Grupo.Edicion, p=>p.Grupo.Edicion.Competicion, p=>p.Grupo.Edicion.Categoria);
+
+            //if (competicionSelected > 0)
+            //    partidos = partidos.Where(p => p.Grupo.Edicion.Competicion.Id.Equals(competicionSelected)).ToList();
+            //if (categoriaSelected > 0)
+            //    partidos = partidos.Where(p => p.Grupo.Edicion.Categoria.Id.Equals(categoriaSelected)).ToList();
+
+            //if (!string.IsNullOrEmpty(generoSelected) && generoSelected!="0")
+            //    partidos = partidos.Where(p => p.Grupo.Edicion.Genero.Equals(generoSelected)).ToList();
+
+            //if (grupoSelected > 0)
+            //    partidos = partidos.Where(p => p.Grupo.Id.Equals(grupoSelected)).ToList();
+
+            //return partidos.ToList();
+
+            IQueryable<Partido> partidos = DbSet.Where(p => p.Grupo.Edicion.Prueba.Equals(pruebaSelected))
+                .Include(p => p.Grupo.Edicion)
+                .Include(p => p.Grupo.Edicion.Competicion)
+                .Include(p => p.Grupo.Edicion.Categoria);
 
             if (competicionSelected > 0)
-                partidos = partidos.Where(p => p.Grupo.Edicion.Competicion.Id.Equals(competicionSelected)).ToList();
+                partidos = partidos.Where(p => p.Grupo.Edicion.CompeticionId.Equals(competicionSelected));
             if (categoriaSelected > 0)
-                partidos = partidos.Where(p => p.Grupo.Edicion.Categoria.Id.Equals(categoriaSelected)).ToList();
-
-            if (!string.IsNullOrEmpty(generoSelected) && generoSelected!="0")
-                partidos = partidos.Where(p => p.Grupo.Edicion.Genero.Equals(generoSelected)).ToList();
-
-            if (grupoSelected > 0)
-                partidos = partidos.Where(p => p.Grupo.Id.Equals(grupoSelected)).ToList();
-
-            return partidos.ToList();
+                partidos = partidos.Where(p => p.Grupo.Edicion.CategoriaId.Equals(categoriaSelected));
+            if (!string.IsNullOrEmpty(generoSelected) && generoSelected != "0")
+                partidos = partidos.Where(p => p.Grupo.Edicion.Genero.Equals(generoSelected));
+            return await partidos.ToListAsync();
         }
 
         public async Task UpdateHoraYPista(Partido partido)
         {
             var part = await GetByIdAsync(partido.Id);
             if (part == null) return;
-            part.FechaHora = new DateTime(partido.FechaHora.Value.Year, partido.FechaHora.Value.Month, partido.FechaHora.Value.Day, partido.FechaHora.Value.Hour, partido.FechaHora.Value.Minute,0);
+            part.FechaHora = partido.FechaHora;// new DateTime(partido.FechaHora.Value.Year, partido.FechaHora.Value.Month, partido.FechaHora.Value.Day, partido.FechaHora.Value.Hour, partido.FechaHora.Value.Minute,0);
             part.Pista = partido.Pista;
             await UpdateAsync(part);
         }
