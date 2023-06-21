@@ -466,7 +466,7 @@ namespace VoleyPlaya.Domain.Models
             foreach (var par in partidosCalendario)
             {
                 var partido = grupo.Partidos.FirstOrDefault(p => p.NumPartido.Equals(par.NumPartido));
-                //if (partido!=null && partido.ConResultado && partido.Validado) continue;
+                if (partido!=null && partido.ConResultado && partido.Validado) continue;
                 var equipo1 = GetEquipo(par.Equipo1, grupo, out bool asignadoE1);
                 var equipo2 = GetEquipo(par.Equipo2, grupo, out bool asignadoE2);
                 var local = par.Equipo1;
@@ -525,14 +525,14 @@ namespace VoleyPlaya.Domain.Models
                 fechaHora = fechaHora.AddMinutes(intervaloMin);
             }
 
-            //var existeGrupo = Grupos.Where(g => g.Name.Equals(grupo.Name)).FirstOrDefault();
-            //if (existeGrupo == null)
-            //    Grupos.Add(grupo);
-            //else
-            //{
-            //    Grupos.Remove(existeGrupo);
-            //    Grupos.Add(grupo);// así lo tenemos siempre actualizado
-            //}
+            var existeGrupo = Grupos.Where(g => g.Name.Equals(grupo.Name)).FirstOrDefault();
+            if (existeGrupo == null)
+                Grupos.Add(grupo);
+            else
+            {
+                Grupos.Remove(existeGrupo);
+                Grupos.Add(grupo);// así lo tenemos siempre actualizado
+            }
             return true;
         }
 
