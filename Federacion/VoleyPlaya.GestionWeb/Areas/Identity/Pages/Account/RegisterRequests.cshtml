@@ -17,9 +17,10 @@
         </tr>
     </thead>
     <tbody>
-            @for(int u = 0; u < Model.Users.Count; u++)
-            {
-                <tr>
+        @for(int u = 0; u < Model.Users.Count; u++)
+        {
+            <form method="post">
+            <tr>
                     <td>@Model.Users[u].User.NormalizedUserName</td>
                     <td>@Model.Users[u].User.Email</td>
                     <td>
@@ -27,32 +28,29 @@
                         {
                             <div>
                                 <label>
-                                <input type="checkbox" name="RolesSeleccionados" value="@Model.RolesDisponibles[i]"
+                                <input type="checkbox" name="rolesSeleccionados" value="@Model.RolesDisponibles[i]"
                                     @(Model.Users[u].RolesAsignados.Contains(Model.RolesDisponibles[i]) ? "checked" : "")>
                                     @Model.RolesDisponibles[i]
                                 </label>
                             </div>
                         }
                     </td>
-                    <form method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="userId" value="@Model.Users[u].User.Id" />
-                        <td class="md-2">
-                            @{
-                                var accion = "Actualizar";
-                                if (!Model.Users[u].User.EmailConfirmed){ accion = "Confirmar"; }
-                            }
-                            <button class="btn btn-primary" type="submit">@accion</button>
-                        </td>
-                    </form>
-                    <form method="post" asp-page-handler="Eliminar">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="userId" value="@Model.Users[u].User.Id" />
-                        <td class="md-2">
-                            <button class="btn btn-danger" type="submit">Eliminar</button>
-                        </td>
-                    </form>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="userId" value="@Model.Users[u].User.Id" />
+                    <td class="md-2">
+                        @{
+                            var accion = "Actualizar";
+                            if (!Model.Users[u].User.EmailConfirmed){ accion = "Confirmar"; }
+                        }
+                        <button class="btn btn-primary" type="submit">@accion</button>
+                    </td>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="userId" value="@Model.Users[u].User.Id" />
+                    <td class="md-2">
+                        <button class="btn btn-danger" type="button" asp-page-handler="Eliminar">Eliminar</button>
+                    </td>
                 </tr>
-            }
+            </form>
+        }
     </tbody>
 </table>
