@@ -84,7 +84,7 @@ namespace PagosXml
                 // Leer el archivo seleccionado
                 try
                 {
-                    var arbitros = ExcelInterprete.ReadExcelPagosFile(selectedFile);
+                    var arbitros = ExcelInterprete.ReadExcelPagosPlayaJJDDFile(selectedFile);
                     foreach (ArbitroPlaya arbi in arbitros)
                     {
                         arbi.Cantidad1 = (arbi.JornadasSabado * 25) + (arbi.JornadasDomingo * 35);
@@ -101,6 +101,7 @@ namespace PagosXml
         {
             try
             {
+                if (personas == null) personas = new List<Persona>();
                 personas.Add(persona);
                 ListViewItem listViewItem = new ListViewItem(new string[] { persona.Nombre1, persona.Apellidos1, persona.Dni1, persona.Iban1, persona.Cantidad1.ToString() });
                 listViewItem.Name = persona.Dni1;
@@ -145,6 +146,7 @@ namespace PagosXml
 
         private void SaveXmlFile()
         {
+            if (personas == null) return;
             using (var stream = new MemoryStream(File.ReadAllBytes(".\\Infraestructura\\esquema_sepa_file1.xsd")))
             {
                 var schema = XmlSchema.Read(XmlReader.Create(stream), null);
@@ -167,7 +169,7 @@ namespace PagosXml
                     var p = new DocumentCstmrCdtTrfInitnPmtInfCdtTrfTxInf();
                     p.PmtId.EndToEndId = i++;
                     p.PmtTpInf.SvcLvl.Cd = "SEPA";
-                    p.Amt.InstdAmt.Value = persona.Cantidad1;
+                    p.Amt.InstdAmt.Value = (float)persona.Cantidad1;
                     p.Amt.InstdAmt.Ccy = "EUR";
                     p.Cdtr.Nm = persona.Apellidos1 + ", " + persona.Nombre1;
                     p.Cdtr.Id.PrvtId.Othr.Id = persona.Dni1;
@@ -191,11 +193,36 @@ namespace PagosXml
 
         private void RemovePersona(string dni)
         {
+            if (personas == null) return;
             var persona = personas.Where(p => p.Dni1.Equals(dni)).SingleOrDefault();
             if (persona != null)
                 personas.Remove(persona);
         }
 
+        private void importarExcelGeneral_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos de excel (*.xlsx)|*.xlsx|Todos los archivos (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFile = openFileDialog.FileName;
+
+                // Leer el archivo seleccionado
+                try
+                {
+                    var pagos = ExcelInterprete.ReadExcelPagosGeneralFile(selectedFile);
+                    foreach (Persona p in pagos)
+                    {
+                        AddPerson(p);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Error al leer el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }
