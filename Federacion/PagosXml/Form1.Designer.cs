@@ -46,6 +46,7 @@
             label1 = new Label();
             saveFileDialog1 = new SaveFileDialog();
             panel3 = new Panel();
+            button7 = new Button();
             btImportarExcel = new Button();
             openFile = new OpenFileDialog();
             listView1 = new ListView();
@@ -246,20 +247,32 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(button7);
             panel3.Controls.Add(btImportarExcel);
             panel3.Location = new Point(10, 12);
             panel3.Name = "panel3";
-            panel3.Size = new Size(505, 77);
+            panel3.Size = new Size(505, 92);
             panel3.TabIndex = 14;
+            // 
+            // button7
+            // 
+            button7.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            button7.Location = new Point(10, 49);
+            button7.Name = "button7";
+            button7.Size = new Size(472, 36);
+            button7.TabIndex = 1;
+            button7.Text = "Importar excel pagos";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += importarExcelGeneral_Click;
             // 
             // btImportarExcel
             // 
             btImportarExcel.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             btImportarExcel.Location = new Point(10, 7);
             btImportarExcel.Name = "btImportarExcel";
-            btImportarExcel.Size = new Size(472, 56);
+            btImportarExcel.Size = new Size(472, 36);
             btImportarExcel.TabIndex = 0;
-            btImportarExcel.Text = "Importar excel pagos arbitraje playa";
+            btImportarExcel.Text = "Importar excel pagos arbitraje playa JJDD";
             btImportarExcel.UseVisualStyleBackColor = true;
             btImportarExcel.Click += btImportarExcel_Click;
             // 
@@ -511,5 +524,6 @@
         private Label label7;
         private TextBox concepto;
         private TextBox nif;
+        private Button button7;
     }
 }

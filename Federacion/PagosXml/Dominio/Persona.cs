@@ -8,11 +8,11 @@ namespace PagosXml.Dominio
 {
     public class Persona
     {
-        string Nombre;
-        string Apellidos;
-        string Dni;
-        string Iban;
-        float Cantidad;
+        string Nombre = string.Empty;
+        string Apellidos = string.Empty;
+        string Dni = string.Empty;
+        string Iban = string.Empty;
+        double Cantidad = 0;
 
         public Persona() { }
 
@@ -30,6 +30,6 @@ namespace PagosXml.Dominio
         public string Apellidos1 { get => Apellidos; set => Apellidos = value; }
         public string Dni1 { get => Dni; set => Dni = value; }
         public string Iban1 { get => Iban; set => Iban = value; }
-        public float Cantidad1 { get => Cantidad; set => Cantidad = value; }
+        public double Cantidad1 { get => Cantidad; set => Cantidad = value; }
     }
 }
