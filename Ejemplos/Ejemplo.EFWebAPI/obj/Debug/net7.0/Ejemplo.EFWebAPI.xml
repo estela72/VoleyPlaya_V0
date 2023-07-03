@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ejemplo.EFWebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:Ejemplo.EFWebAPI.Controllers.DummiesController.PostDummy(Ejemplo.EFWebAPI.Model.Dummy)">
+            <summary>
+            Creates a Dummy
+            </summary>
+            <param name="dummy"></param>
+            <returns>A newly created Dummy</returns>
+            <remarks>
+                POST api/dummies
+                {
+                    "text": "New dummy"
+                }
+            </remarks>
+            <response code="201">Returns the newly created dummy</response>
+            <response code="400">If the item is null</response>
+            POST: api/Dummies
+        </member>
+    </members>
+</doc>
