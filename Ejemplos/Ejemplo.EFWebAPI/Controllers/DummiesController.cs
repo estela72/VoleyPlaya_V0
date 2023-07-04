@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ejemplo.EFWebAPI.Data;
 using Ejemplo.EFWebAPI.Model;
+using System.Net.Mime;
 
 namespace Ejemplo.EFWebAPI.Controllers
 {
@@ -99,10 +100,10 @@ namespace Ejemplo.EFWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Dummy>> PostDummy(Dummy dummy)
         {
-          if (_context.Dummies == null)
-          {
-              return Problem("Entity set 'DataContext.Dummies'  is null.");
-          }
+            if (_context.Dummies == null)
+            {
+                return Problem("Entity set 'DataContext.Dummies'  is null.");
+            }
             _context.Dummies.Add(dummy);
             await _context.SaveChangesAsync();
 

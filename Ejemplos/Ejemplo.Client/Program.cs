@@ -32,10 +32,18 @@ var client = new RestClient("http://localhost:9090/api");
 //var dummyResponse = await client.ExecuteAsync<Dummy?>(request3);
 //Dummy? dummy3 = dummyResponse.Data;
 //Console.WriteLine(dummy3);
+//Console.WriteLine("======================");
 
-var request4 = new RestRequest("dummies", Method.Post);
-request4.RequestFormat = DataFormat.Json;
-request4.AddJsonBody(new { Text = "New Anonymous Dummy Object" });
-var anonymousDummy = JsonConvert.DeserializeAnonymousType(
-    client.ExecuteAsync(request4).Result.Content, new { Id = 0, Text = "" });
-Console.WriteLine(anonymousDummy.Text);
+//var request4 = new RestRequest("dummies", Method.Post);
+//request4.RequestFormat = DataFormat.Json;
+//request4.AddJsonBody(new { Text = "New Anonymous Dummy Object" });
+//var anonymousDummy = JsonConvert.DeserializeAnonymousType(
+//    client.ExecuteAsync(request4).Result.Content, new { Id = 0, Text = "" });
+//Console.WriteLine(anonymousDummy.Text);
+//Console.WriteLine("======================");
+
+//var request5 = new RestRequest("dummies/{name}", Method.Get);
+//request5.AddParameter("name", "Estela", ParameterType.UrlSegment);
+//var resp = client.ExecuteAsync<Dummy?>(request5).Result.Data;
+//Console.Write(resp.ToString());
+////Console.WriteLine(client.ExecuteAsync<Dummy?>(request5).Result.Data);
