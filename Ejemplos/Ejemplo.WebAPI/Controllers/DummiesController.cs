@@ -27,5 +27,13 @@ namespace Ejemplo.WebAPI.Controllers
             dummy.Text += " created";
             return dummy;
         }
+        // GET: api/Dummies/{name}
+        [HttpGet("{name}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        public Dummy GetDummy(string name)
+        {
+            return new Dummy { Text = name };
+        }
+
     }
 }
