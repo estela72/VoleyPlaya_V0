@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\srcRepository\\Proyectos Estela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj": {}
+    "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj": {}
   },
   "projects": {
-    "D:\\srcRepository\\Proyectos Estela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj": {
+    "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj",
+        "projectUniqueName": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj",
         "projectName": "Ligamania.Generic.Lib",
-        "projectPath": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj",
+        "projectPath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Generic.Lib\\Ligamania.Generic.Lib.csproj",
         "packagesPath": "C:\\Users\\egonz\\.nuget\\packages\\",
-        "outputPath": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\Ligamania.Generic.Lib\\obj\\",
+        "outputPath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Generic.Lib\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
