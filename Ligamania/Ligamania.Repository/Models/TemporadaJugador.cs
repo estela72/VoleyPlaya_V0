@@ -7,6 +7,20 @@ namespace Ligamania.Repository.Models
     [Table("TemporadaJugador")]
     public partial class TemporadaJugadorDTO : BaseEntity
     {
+        public TemporadaJugadorDTO() { }
+        public TemporadaJugadorDTO(TemporadaJugadorDTO j)
+        {
+            VecesEliminado = 0;
+            VecesPreEliminado = 0;
+            Eliminado = false;
+            PreEliminado = false;
+            Activo = j.Activo;
+            Club = j.Club;
+            Puesto = j.Puesto;
+            Jugador = j.Jugador;
+            LastJornadaEliminacion = null;
+        }
+
         public int Temporada_ID { get; set; }
 
         public int Jugador_ID { get; set; }

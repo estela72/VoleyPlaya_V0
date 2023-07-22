@@ -39,13 +39,13 @@ namespace Ligamania.API.Lib.Services
             if (calendario.Any()) // ya existe un calendario con este nombre
                 return new Calendario("Ya existe un calendario con este nombre");
 
-            CalendarioDTO newCalendario = new CalendarioDTO { Nombre = calendarioToCreate.Nombre, NumEquipos = calendarioToCreate.NumEquipos };
+            CalendarioDTO newCalendario = new() { Nombre = calendarioToCreate.Nombre, NumEquipos = calendarioToCreate.NumEquipos };
             calendarioToCreate.Partidos.ForEach(cd =>
                 newCalendario.CalendarioDetalle.Add(new CalendarioDetalleDTO { Jornada = cd.Jornada, Local = cd.Local, Visitante = cd.Visitante })
                 );
             var calendarioCreated = await _ligamaniaUnitOfWork.CalendarioRepository.CreateAsync(newCalendario);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-            if (saved) return _mapper.Map<Calendario>(calendarioCreated);
+            if (saved>0) return _mapper.Map<Calendario>(calendarioCreated);
             return new Calendario("Se ha producido un error al crear el calendario");
         }
 
@@ -58,7 +58,7 @@ namespace Ligamania.API.Lib.Services
             var deleted = await _ligamaniaUnitOfWork.CalendarioRepository.DeleteAsync(id);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
 
-            if (saved) return new Calendario("Calendario eliminado correctamente");
+            if (saved > 0) return new Calendario("Calendario eliminado correctamente");
             return new Calendario("Se ha producido un error al eliminar el calendario");
         }
 
@@ -93,7 +93,7 @@ namespace Ligamania.API.Lib.Services
             calendario.NumEquipos = calendarioToUpdate.NumEquipos;
             var calendarioUpdated = await _ligamaniaUnitOfWork.CalendarioRepository.UpdateAsync(calendario);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-            if (saved) return _mapper.Map<Calendario>(calendarioUpdated);
+            if (saved > 0) return _mapper.Map<Calendario>(calendarioUpdated);
             return new Calendario("Se ha producido un error al actualizar el calendario");
         }
 
@@ -108,7 +108,7 @@ namespace Ligamania.API.Lib.Services
                 partido.Visitante = visitante;
                 var updated = await _ligamaniaUnitOfWork.CalendarioDetalleRepository.UpdateAsync(partido);
                 var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-                if (saved)
+                if (saved > 0)
                 {
                     var calendarioUpdated = await _ligamaniaUnitOfWork.CalendarioRepository.GetByIdAsync(calendarioId);
                     return _mapper.Map<Calendario>(calendarioUpdated);

@@ -13,6 +13,9 @@
     @await Html.PartialAsync("CreateClub",primera)
 </div>
 
+<div class="spinner-border spinner-border-sm" role="status" id="spinner">
+    <span class="visually-hidden">Cargando clubs...</span>
+</div>
 <div class="row">
     <div class="col">
         <form id="taClubsForm" action="#" method="post">
@@ -20,7 +23,7 @@
 
           </select>
           <br>
-          <button type="submit" class="btn btn-primary btn-block">Aplicar cambios</button>
+          @*<button type="submit" class="btn btn-primary btn-block">Aplicar cambios</button>*@
         </form>
     </div>
 </div>

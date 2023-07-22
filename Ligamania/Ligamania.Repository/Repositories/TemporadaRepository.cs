@@ -111,5 +111,13 @@ namespace Ligamania.Repository.Repositories
             var lista = await t.SelectMany(t => t.TemporadaJugador).ToListAsync();
             return lista;
         }
+
+        public async Task<ICollection<ClubDTO>> GetAllClubs(int idTemporada)
+        {
+
+            var jugadores = await GetJugadoresByTemporada(idTemporada);
+            var clubs = jugadores.Select(j=>j.Club).Distinct().ToList();
+            return clubs;
+        }
     }
 }

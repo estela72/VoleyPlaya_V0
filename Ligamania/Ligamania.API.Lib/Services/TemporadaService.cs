@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 
+using Azure;
+
 using Ligamania.API.Lib.Models;
 using Ligamania.Repository;
 using Ligamania.Repository.Models;
@@ -26,6 +28,8 @@ namespace Ligamania.API.Lib.Services
         Task<string> UpdateClubs(List<Club> listClubs);
         Task<IEnumerable<Jugador>> GetAllJugadores();
         Task<string> UpdateJugadores(List<Jugador> listJugadores);
+        Task<string> CopiarJugadoresTemporada(string temporada);
+        Task<string> CrearJugadorTemporada(Jugador jug);
     }
     internal class TemporadaService : ITemporadaService
     {
@@ -74,7 +78,7 @@ namespace Ligamania.API.Lib.Services
             return _mapper.Map<List<Competicion>>(competiciones);
         }
 
-        private ICollection<TemporadaCompeticionDTO> _formatCompeticiones(ICollection<TemporadaCompeticionDTO> competiciones)
+        private static ICollection<TemporadaCompeticionDTO> _formatCompeticiones(ICollection<TemporadaCompeticionDTO> competiciones)
         {
             competiciones.ToList().ForEach(c =>
                  c.DescripcionEstado = c.GetEstadoOperacion()
@@ -107,13 +111,16 @@ namespace Ligamania.API.Lib.Services
         {
             var allClubs = await _ligamaniaUnitOfWork.ClubRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<Club>>(allClubs);
+            //var temporada = await GetTemporadaEnCurso();
+            //if (temporada == null)
+            //    return new List<Club>();
+            //var allClubs = await _ligamaniaUnitOfWork.TemporadaRepository.GetAllClubs(temporada.Id);
+            //return _mapper.Map<IEnumerable<Club>>(allClubs);
         }
 
         private async Task<TemporadaDTO> GetTemporadaEnCurso()
         {
-            var ta = await _ligamaniaUnitOfWork.TemporadaRepository.GetActualAsync();
-            if (ta == null)
-                ta = await _ligamaniaUnitOfWork.TemporadaRepository.GetPreTemporada();
+            var ta = await _ligamaniaUnitOfWork.TemporadaRepository.GetActualAsync() ?? await _ligamaniaUnitOfWork.TemporadaRepository.GetPreTemporada();
             return ta;
         }
         /// <summary>
@@ -124,12 +131,19 @@ namespace Ligamania.API.Lib.Services
         public async Task<string> UpdateClubs(List<Club> listClubs)
         {
             var response = string.Empty;
-            var allClubs = await GetAllClubs();
-            foreach (var club in allClubs)
-                if (listClubs.Select(c => c.Alias).Contains(club.Alias))
+            foreach (var club in listClubs)
+            {
+                if (club.Baja)
                     await _ligamaniaUnitOfWork.ClubRepository.Baja(club.Alias);
                 else
                     await _ligamaniaUnitOfWork.ClubRepository.Alta(club.Alias);
+             };
+            //var allClubs = await GetAllClubs();
+            //foreach (var club in allClubs)
+            //    if (listClubs.Select(c => c.Alias).Contains(club.Alias))
+            //        await _ligamaniaUnitOfWork.ClubRepository.Baja(club.Alias);
+            //    else
+            //        await _ligamaniaUnitOfWork.ClubRepository.Alta(club.Alias);
 
             await _ligamaniaUnitOfWork.SaveEntitiesAsync();
             response = "Clubs dados de baja correctamente";
@@ -159,7 +173,6 @@ namespace Ligamania.API.Lib.Services
 
         public async Task<string> UpdateJugadores(List<Jugador> listJugadores)
         {
-            var response = string.Empty;
             var temporada = await GetTemporadaEnCurso();
             if (temporada == null)
                 return "No hay temporada en curso";
@@ -189,7 +202,7 @@ namespace Ligamania.API.Lib.Services
             }
 
             await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-            response = "Jugadores dados de alta correctamente";
+            string response = "Jugadores dados de alta correctamente";
             return response;
         }
 
@@ -199,6 +212,63 @@ namespace Ligamania.API.Lib.Services
             if (existe)
                 return await _ligamaniaUnitOfWork.TemporadaJugadorRepository.FindAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugadorDto.Id));
             return null;
+        }
+
+        public async Task<string> CopiarJugadoresTemporada(string temporada)
+        {
+            var response = string.Empty;
+            var temporadaActual = await GetTemporadaEnCurso();
+            var jugadoresACopiar = await _ligamaniaUnitOfWork.TemporadaJugadorRepository
+                .FindAllIncludingAsync(j => j.Temporada.Nombre.Equals(temporada) && j.Activo,
+                j=>j.Jugador, j=>j.Club, j=>j.Puesto);
+            jugadoresACopiar.ToList().ForEach(async j =>
+            {
+                var nuevoJug = new TemporadaJugadorDTO(j);
+                nuevoJug.Temporada = temporadaActual;
+                await _ligamaniaUnitOfWork.TemporadaJugadorRepository.AddAsyn(nuevoJug);
+            });
+            var njug = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+            response = njug + " Jugadores copiados";
+            return response;
+        }
+
+        public async Task<string> CrearJugadorTemporada(Jugador jug)
+        {
+            string response;
+            var temporada = await GetTemporadaEnCurso();
+            //var jugador = _mapper.Map<TemporadaJugadorDTO>(jug);
+            var jugadorExistente = await _ligamaniaUnitOfWork.JugadorRepository.GetByNameAsync(jug.Nombre);
+            if (jugadorExistente != null)
+            {
+                return "Ya existe un jugador con el nombre " + jug.Nombre;
+            }
+            else
+            {
+                JugadorDTO jugador = new JugadorDTO { Baja = false, Nombre = jug.Nombre };
+                var j = await _ligamaniaUnitOfWork.JugadorRepository.CreateAsync(jugador);
+
+                var club = await _ligamaniaUnitOfWork.ClubRepository.GetByAliasAsync(jug.Club);
+                var puesto = await _ligamaniaUnitOfWork.PuestoRepository.GetByNameAsync(jug.Puesto);
+                var jt = new TemporadaJugadorDTO()
+                {
+                    Activo = true,
+                    Club = club,
+                    Puesto = puesto,
+                    Jugador = jugador,
+                    Eliminado = false,
+                    LastJornadaEliminacion = null,
+                    PreEliminado = false,
+                    Temporada = temporada,
+                    VecesEliminado = 0,
+                    VecesPreEliminado = 0
+                };
+                jt = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.AddAsyn(jt);
+            }
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                response = "Jugador " + jug.Nombre + " creado";
+            else
+                response = "Error al crear el jugador " + jug.Nombre;
+            return response;
         }
     }
 }

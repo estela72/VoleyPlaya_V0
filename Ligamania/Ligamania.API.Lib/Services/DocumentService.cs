@@ -36,19 +36,19 @@ namespace Ligamania.API.Lib.Services
             if (documento.Any()) // ya existe un calendario con este nombre
                 return new Documento("Ya existe un documento con este nombre");
 
-            DocumentsDTO newDocumento = new DocumentsDTO { Nombre = docToCreate.Nombre, Description = docToCreate.Description, ContentType=docToCreate.ContentType, Content=docToCreate.Content};
+            DocumentsDTO newDocumento = new() { Nombre = docToCreate.Nombre, Description = docToCreate.Description, ContentType=docToCreate.ContentType, Content=docToCreate.Content};
             var documentoCreated = await _ligamaniaUnitOfWork.DocumentsRepository.CreateAsync(newDocumento);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-            if (saved) return _mapper.Map<Documento>(documentoCreated);
+            if (saved>0) return _mapper.Map<Documento>(documentoCreated);
             return new Documento("Se ha producido un error al crear el documento");
         }
 
         public async Task<Documento> DeleteById(int id)
         {
-            var deleted = await _ligamaniaUnitOfWork.DocumentsRepository.DeleteAsync(id);
+            _ = await _ligamaniaUnitOfWork.DocumentsRepository.DeleteAsync(id);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
 
-            if (saved) return new Documento("Documento eliminado correctamente");
+            if (saved > 0) return new Documento("Documento eliminado correctamente");
             return new Documento("Se ha producido un error al eliminar el documento");
         }
 
@@ -67,10 +67,10 @@ namespace Ligamania.API.Lib.Services
         public async Task<Documento> UpdateDocumento(int id, Documento docToUpdate)
         {
             var doc = _mapper.Map<DocumentsDTO>(docToUpdate);
-            var updated = await _ligamaniaUnitOfWork.DocumentsRepository.UpdateAsync(doc);
+            _ = await _ligamaniaUnitOfWork.DocumentsRepository.UpdateAsync(doc);
             var saved = await _ligamaniaUnitOfWork.SaveEntitiesAsync();
 
-            if (saved) return new Documento("Documento actualizado correctamente");
+            if (saved > 0) return new Documento("Documento actualizado correctamente");
             return new Documento("Se ha producido un error al actualizar el documento");
         }
     }

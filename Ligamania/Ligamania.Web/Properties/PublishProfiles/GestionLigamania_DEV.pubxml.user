@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Este archivo se usa en el proceso de publicación y empaquetado del proyecto web. Para personalizar el comportamiento de este proceso,
+edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 para obtener más información. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0u5TF1FVoEaIfNS0BIy79wAAAAACAAAAAAAQZgAAAAEAACAAAACRrSfdGQc6RCY+Y4N3tISUH4/1QInpx63vubsRLIFMngAAAAAOgAAAAAIAACAAAADkt3BAeSshOJeffPiiMqM2IF8V9B8NtXLA9opjbFTxKyAAAAAFoCT7scRdTKK4+DeoLIf6KGpMGLEzpyzHf1wGUJZZNEAAAAA8W21plq8adBYgbyX4TqOlcr+rRVa3LJT9UG+Dj6ryC+9SA0tumzsApWMhs1E3ViT6vJIJEKSidP54oZu2M1iD</EncryptedPassword>
+    <History>True|2023-07-06T15:27:00.4627508Z;True|2023-07-06T17:24:42.0827846+02:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DatabaseConnection">
+      <Value>Server=SQL5106.site4now.net%3bDatabase=db_9c4a5e_dev%3bTrusted_Connection=True%3bMultipleActiveResultSets=true%3bTrust Server Certificate=true</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

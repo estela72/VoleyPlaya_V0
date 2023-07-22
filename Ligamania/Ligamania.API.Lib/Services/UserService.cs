@@ -37,7 +37,7 @@ namespace Ligamania.API.Lib
 
         Task<User> NotConfirmUser(string id);
         Task<IEnumerable<Entrenador>> GetAllEntrenadores();
-
+        Task<User> BajaUserAsync(string id);
     }
 
     public class UserService : IUserService
@@ -205,6 +205,19 @@ namespace Ligamania.API.Lib
                 entrenador.Equipos = _mapper.Map<IEnumerable<Equipo>>(equipos);
             }
             return listEntrenadores;
+        }
+
+        public async Task<User> BajaUserAsync(string id)
+        {
+            var user = await _ligamaniaUnitOfWork.UserManager.FindByIdAsync(id);
+            user.UserState = Generic.Lib.Enums.EstadoUsuario.Removed;
+            var result = await _ligamaniaUnitOfWork.UserManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return new User();
+            var userRet = _mapper.Map<User>(user);
+            userRet.Error = true;
+            userRet.Message = "Error al dar de baja el usuario con id " + id;
+            return userRet;
         }
     }
 }

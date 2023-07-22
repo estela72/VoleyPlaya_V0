@@ -18,7 +18,7 @@ namespace Ligamania.Web.Controllers
     public class TemporadaActualController : BaseController<TemporadaActualController>
     {
         private readonly IMapper _mapper;
-        private IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IGestionTemporadaService _temporadaService;
         private readonly IPreparacionService _preparacionService;
 
@@ -32,16 +32,16 @@ namespace Ligamania.Web.Controllers
         }
         public IActionResult Clubs()
         {
-            ClubListVM model = new ClubListVM();
+            ClubListVM model = new();
             return View(model);
         }
         public async Task<IActionResult> Jugadores()
         {
-            JugadorListVM model = new JugadorListVM();
+            JugadorListVM model = new();
             //asignar un club y puesto por defecto
             var clubs = await _temporadaService.GetAllClubs();
             
-            ViewBag.Club = clubs.FirstOrDefault().Club;
+            ViewBag.Club = clubs.FirstOrDefault().Alias;
             ViewBag.Puesto = Enum.GetNames<PuestoJugador>().FirstOrDefault();
             return View(model);
         }
@@ -90,7 +90,7 @@ namespace Ligamania.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateClub(string club, string alias)
         {
-            ClubVM clubEnt = new ClubVM { Alias = alias, Baja = SiNo.NO.ToString(), Club = club };
+            ClubVM clubEnt = new() { Alias = alias, Baja = SiNo.NO.ToString(), Club = club };
             try
             {
                 if (ModelState.IsValid)
@@ -130,7 +130,7 @@ namespace Ligamania.Web.Controllers
         [HttpPost]
         public async Task<JsonResult> UpdateClubs([FromBody] List<ClubVM> clubs)
         {
-            var messageResult = string.Empty;
+            string messageResult;
             try
             {
                 var res = await _temporadaService.UpdateClubsTemporada(clubs);
@@ -147,12 +147,12 @@ namespace Ligamania.Web.Controllers
         [HttpPost]
         public async Task<JsonResult> UpdateJugadores([FromBody] List<JugadorVM> jugadores)
         {
-            var messageResult = string.Empty;
-            if (jugadores.Count>0)
+            if (jugadores.Count > 0)
             {
                 ViewBag.Club = jugadores.First().Club;
                 ViewBag.Puesto = jugadores.First().Puesto;
             }
+            string messageResult;
             try
             {
                 var res = await _temporadaService.UpdateJugadoresTemporada(jugadores);
@@ -164,6 +164,48 @@ namespace Ligamania.Web.Controllers
             }
             var result = new JsonResult(messageResult);
             // Return info.  
+            return result;
+        }
+        [HttpPost]
+        public async Task<JsonResult> CopiarJugadoresTemporada([FromBody] string temporada)
+        {
+            string messageResult;
+            if (string.IsNullOrEmpty(temporada))
+                messageResult = "Se debe indicar una temporada de la que copiar los jugadores";
+            else
+            {
+                try
+                {
+                    var res = await _temporadaService.CopiarJugadoresTemporada(temporada);
+                    messageResult = res;
+                }
+                catch(Exception x)
+                {
+                    messageResult="Error al copiar los jugadores de la temporada "+temporada+": "+x.Message;
+                }
+            }
+            var result = new JsonResult(messageResult);
+            return result;
+        }
+        [HttpPost]
+        public async Task<JsonResult> NuevoJugadorTemporada([FromBody] JugadorVM jugador)
+        {
+            string messageResult;
+            if (jugador==null)
+                messageResult = "Se debe indicar el jugador, club y puesto para dar un alta de jugador";
+            else
+            {
+                try
+                {
+                    var res = await _temporadaService.CrearJugadorTemporada(jugador);
+                    messageResult = res;
+                }
+                catch (Exception x)
+                {
+                    messageResult = "Error al crear el jugador " + jugador.Jugador + ": " + x.Message;
+                }
+            }
+            var result = new JsonResult(messageResult);
             return result;
         }
     }
