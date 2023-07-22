@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "56BbJDKeT2Az6oioa6iAmk3DgcRbfpn+Hv8B0327ujmkPinZ9hZiPWMjkkcgeVbhnJd4UWadaSQz1VSU/Ca4eg==",
+  "dgSpecHash": "JimXFxwxF1Bx7ekJGNUQPj9GIvppPXSvsm2BlpzZg9gCJ1TyRsNwnLqai6U56bmTQhAr9wUCWmD2g/24aRsZBQ==",
   "success": true,
-  "projectFilePath": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
+  "projectFilePath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\egonz\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\7.0.0\\automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",

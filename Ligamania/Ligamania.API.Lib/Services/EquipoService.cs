@@ -45,7 +45,7 @@ namespace Ligamania.API.Lib.Services
                     equipo.Baja = false;
                     break;
                 case "borrar":
-                    var removed = await _unitOfWork.EquipoRepository.DeleteAsync(equipoId);
+                    _ = await _unitOfWork.EquipoRepository.DeleteAsync(equipoId);
                     //return new Equipo { Message = "Equipo eliminado correctamente", Error = true };
                     break;
             }
@@ -53,7 +53,7 @@ namespace Ligamania.API.Lib.Services
             if (!accion.Equals("borrar"))
                 equipoUpdated = await _unitOfWork.EquipoRepository.UpdateAsync(equipo);
             var sync = await _unitOfWork.SaveEntitiesAsync();
-            if (sync)
+            if (sync>0)
                 return _mapper.Map<Equipo>(equipoUpdated);
             return new Equipo { Message = "Se ha producido un error al guardar los cambios", Error = true };
         }
@@ -63,7 +63,7 @@ namespace Ligamania.API.Lib.Services
             var user = await _unitOfWork.UserManager.FindByIdAsync(entrenadorId);
             var equipo = await _unitOfWork.EquipoRepository.AddNewEquipo(imagen, nombre, esBot, user);
             var saved = await _unitOfWork.SaveEntitiesAsync();
-            if (saved)
+            if (saved > 0)
                 return _mapper.Map<Equipo>(equipo);
             return new Equipo { Message = "Se ha producido un error al guardar los cambios", Error = true };
         }

@@ -15630,11 +15630,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
+      "projectUniqueName": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
       "projectName": "LigamaniaCoreApp",
-      "projectPath": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
+      "projectPath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\LigamaniaCoreApp\\LigamaniaCoreApp.csproj",
       "packagesPath": "C:\\Users\\egonz\\.nuget\\packages\\",
-      "outputPath": "D:\\srcRepository\\Proyectos Estela\\Ligamania\\LigamaniaCoreApp\\obj\\",
+      "outputPath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\LigamaniaCoreApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

@@ -23,12 +23,14 @@ namespace Ligamania.Web.Services
         Task<string> UpdateClubsTemporada(List<ClubVM> clubs);
         Task<IEnumerable<JugadorVM>> GetAllJugadores();
         Task<string> UpdateJugadoresTemporada(List<JugadorVM> jugadores);
+        Task<string> CopiarJugadoresTemporada(string temporada);
+        Task<string> CrearJugadorTemporada(JugadorVM jugador);
     }
     public class GestionTemporadaService : IGestionTemporadaService
     {
-        private ILocalStorageService _localStorageService;
-        private IMapper _mapper;
-        private ITemporadaService _temporadaService;
+        private readonly ILocalStorageService _localStorageService;
+        private readonly IMapper _mapper;
+        private readonly ITemporadaService _temporadaService;
 
         public GestionTemporadaService(
             ILocalStorageService localStorageService
@@ -38,6 +40,17 @@ namespace Ligamania.Web.Services
             _localStorageService = localStorageService;
             _mapper = mapper;
             _temporadaService = temporadaService;
+        }
+
+        public async Task<string> CopiarJugadoresTemporada(string temporada)
+        {
+            return await _temporadaService.CopiarJugadoresTemporada(temporada);
+        }
+
+        public async Task<string> CrearJugadorTemporada(JugadorVM jugador)
+        {
+            var jug = _mapper.Map<Jugador>(jugador);
+            return await _temporadaService.CrearJugadorTemporada(jug);
         }
 
         public async Task<TemporadaVM> CreateTemporada(TemporadaVM temporada)

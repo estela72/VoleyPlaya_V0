@@ -293,7 +293,46 @@ namespace Ligamania.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        // GET: UsersController/Baja/5
+        public async Task<IActionResult> Baja(string id)
+        {
+            UserVM model = new UserVM();
+            try
+            {
+                var user = await _gestionService.GetUserById(id);
+                model = _mapper.Map<UserVM>(user);
+            }
+            catch (Exception x)
+            {
+                model.Set(true, x.Message);
+            }
+            return View(model);
+        }
 
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Baja(string id, IFormCollection collection)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _gestionService.BajaUserById(id);
+                    if (result.Error)
+                        return View(result);
+                    else
+                        return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception x)
+            {
+                UserVM model = new UserVM();
+                model.Set(true, x.Message);
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
         public async Task<IActionResult> getListaRoles()
         {
             IEnumerable<RoleVM> roles = await _gestionService.GetAllRoles();

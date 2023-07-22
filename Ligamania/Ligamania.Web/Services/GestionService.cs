@@ -42,6 +42,7 @@ namespace Ligamania.Web.Services
         Task<IEnumerable<EntrenadorVM>> GetAllEntrenadores();
         Task<EquipoVM> AddEquipo(byte[] imagen, string nombre, bool esBot, string entrenadorId);
         Task<EquipoVM> AccionEquipo(int equipoId, string accion);
+        Task<UserVM> BajaUserById(string id);
     }
 
     public class GestionService : IGestionService
@@ -161,6 +162,12 @@ namespace Ligamania.Web.Services
         {
             var equipo = await _equipoService.AccionEquipo(equipoId, accion);
             return _mapper.Map<EquipoVM>(equipo);
+        }
+
+        public async Task<UserVM> BajaUserById(string id)
+        {
+            var userBaja = await _userService.BajaUserAsync(id);
+            return _mapper.Map<UserVM>(userBaja);
         }
     }
 }

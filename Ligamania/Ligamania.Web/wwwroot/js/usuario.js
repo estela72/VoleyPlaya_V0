@@ -34,6 +34,16 @@ $(document).ready(function () {
                     "data": null,
                     "defaultContent": '',
                     "width": "15px",
+                    //baja button creation
+                    "render": function (data, type, row) {
+                        return createButton('baja', row.id, 'editdelete');
+                    }
+                },
+                {
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": '',
+                    "width": "15px",
                     //delete button creation
                     "render": function (data, type, row) {
                         return createButton('delete', row.id, 'editdelete');
