@@ -13,51 +13,26 @@
     var colHor = String.Concat(col, " collapse-horizontal");
 }
 
-<div class="row p-2 m-2">
-    <div class="col card m-1 card-filter p-1">
-        <p class="m-1">Copiar jugadores de otra temporada</p>
-        <div class="form-control">
-            <select class="m-1" id="temporadas" name="temporadas">
-            </select>
-            <button class="btn btn-primary" type="button" id="copiarJug">Copiar</button>
-        </div>
-    </div>
-    <div class="col card m-1 card-filter p-1">
-        <p class="m-1">Exportar a excel los jugadores de la temporada actual</p>
-        <button class="btn btn-primary" type="button" id="exportar">Exportar</button>
-    </div>
-    <div class="col card m-1 card-filter p-1">
-        <p class="m-1">Importar desde excel jugadores de la temporada actual</p>
-        <form id="formCargarExcel" action="#" method="post" enctype="multipart/form-data">
-            <input type="file" id="fUpload" name="files" class="form-control" style="padding:2px" />
-            <button class="btn btn-primary m-2" type="button" id="cargarExcel">Importar</button>
-        </form>
-    </div>
-    <div class="col card m-1 card-filter p-1">
-        <p class="m-1">Nuevo jugador a incorporar a la temporada</p>
-        <div class="form-control">
-            <select class="m-1" id="clubsNuevo" name="clubsNuevo"></select>
-            <select class="m-2" id="puestosNuevo" name="puestosNuevo"></select>
-            <input class="m-2" type="text" id="nuevoJugador" name="nuevoJugador" />
-            <button class="btn btn-primary" type="button" id="crearJug">Crear jugador</button>
-        </div>
-    </div>
-</div>
-
 <div class="card p-2">
     <div class="card-header">
         <input type="hidden" value="@ViewBag.Club" id="selClub" name="selClub" />
         <input type="hidden" value="@ViewBag.Puesto" id="selPuesto" name="selPuesto" />
-        <p class="m-2">Seleccionar club y/o puesto para cargar lista de jugadores de la temporada actual:</p>
-        <label for="clubs">Club:</label>
-        <select id="clubs" name="clubs"></select>
-        <label for="puestos">Puesto:</label>
-        <select id="puestos" name="puestos"></select>
-        <input type="button" id="selForm" value="Filtrar" class="btn btn-primary m-2" />
 
-        <p>Utilizar ->-> para mover todos los jugadores de una tabla a otra. Utilizar -> para mover solo el jugador seleccionado</p>
+        <h5>Seleccionar jugadores a cargar</h5>
+        <div class="row g-3">
+            <div class="col-auto">
+                <label class="visually-hidden">Club</label>
+                <select class="form-control" id="clubs" name="clubs"></select>
+            </div>
+            <div class="col-auto">
+                <label class="visually-hidden">Puesto</label>
+                <select class="form-control" id="puestos" name="puestos"></select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary mb-3" id="selForm" name="selForm">Filtrar</button>
+            </div>
+        </div>
         <p>Al mover jugadores que están de baja a la temporada actual, se les asignará el club y puesto seleccionado justo aquí arriba</p>
-
         <div class="spinner-border spinner-border-sm" role="status" id="spinner">
             <span class="visually-hidden">Cargando jugadores...</span>
         </div>
@@ -70,25 +45,108 @@
         </form>
     </div>
     <div class="card-footer">
-        @*<div id="selectedItemsContainer"></div>
-        <div class="card m-3 card-filter p-2">
-            <input type="submit" value="Aplicar cambios" class="btn btn-primary m-2" />
+        <div class="row g-2">
+            <div class="col m-2" style="border:ridge">
+                <h5>Alta de nuevo jugador</h5>
+                <div class="row g-4">
+                    <div class="col-auto">
+                        <p>Seleccionar Club y Puesto</p>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Club</label>
+                        <select class="form-control" id="clubsNuevo" name="clubsNuevo"></select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Puesto</label>
+                        <select class="form-control" id="puestosNuevo" name="puestosNuevo"></select>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-auto">
+                        <label class="visually-hidden">Jugador</label>
+                        <input type="text" class="form-control" id="nuevoJugador" name="nuevoJugador" />
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3" id="crearJug" name="crearJug">Crear jugador</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-2" style="border:ridge">
+                <h5>Cambiar jugador de club y/o puesto</h5>
+                <div class="row g-4">
+                    <div class="col-auto">
+                        <p>Seleccionar Club, Puesto y Jugador a cambiar</p>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Club</label>
+                        <select class="form-control" id="clubsCambio" name="clubsCambio"></select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Puesto</label>
+                        <select class="form-control" id="puestosCambio" name="puestosCambio"></select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Jugador</label>
+                        <select class="form-control" id="jugadoresCambio" name="jugadoresCambio"></select>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-auto">
+                        <p>Seleccionar nuevo club y/o puesto</p>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Club</label>
+                        <select class="form-control" id="clubsCambiar" name="clubsCambiar"></select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Puesto</label>
+                        <select class="form-control" id="puestosCambiar" name="puestosCambiar"></select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3" id="cambiarJug" name="cambiarJug">Cambiar</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="label">
-            <p disabled id="cambios" name="cambios"></p>
-        </div>*@
+        <div class="row g-3">
+            <div class="col m-2" style="border:ridge">
+                <h5>Copiar jugadores de otra temporada</h5>
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <p>Seleccionar temporada</p>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden">Temporada</label>
+                        <select class="form-control" id="temporadas" name="temporadas"></select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3" id="copiarJug" name="copiarJug">Copiar jugadores</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-2" style="border:ridge">
+                <h5>Exportar a excel lista de jugadores de la temporada actual</h5>
+                <div class="row g-1">
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3" id="exportar" name="exportar">Exportar jugadores</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-2" style="border:ridge">
+                <h5>Importar lista de jugadores sobre la temporada actual</h5>
+                <div class="row g-1">
+                    <div class="col-auto">
+                        <input type="file" id="fUpload" name="files" class="form-control"/>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3" id="importar" name="importar">Cargar jugadores</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
-
-@*<style>
-    .label-info {
-        background-color: #5bc0de;
-        color: #fff;
-        margin-right: 5px;
-        padding: 2px 4px;
-        border-radius: 3px;
-    }
-</style>*@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/temporadaJugadores.js"></script>

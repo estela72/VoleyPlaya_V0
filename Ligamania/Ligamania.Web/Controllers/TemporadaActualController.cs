@@ -67,6 +67,17 @@ namespace Ligamania.Web.Controllers
             jugadores = jugadores.OrderBy(c => c.AliasClub).ThenBy(c=>c.OrdenPuesto).ThenBy(c=>c.Jugador);
             return Json(jugadores);
         }
+        public async Task<IActionResult> getListaJugadoresTemporadaClubPuesto(FiltroJugador filtro)
+        {
+            IEnumerable<JugadorVM> jugadores = await _temporadaService.GetAllJugadores();
+            if (filtro != null)
+            {
+                jugadores = string.IsNullOrEmpty(filtro.club) ? jugadores : jugadores.Where(j => (j.Activo.Equals(SiNo.SI.ToString()) && j.AliasClub.Equals(filtro.club)));
+                jugadores = string.IsNullOrEmpty(filtro.puesto) ? jugadores : jugadores.Where(j => (j.Activo.Equals(SiNo.SI.ToString()) && j.Puesto.Equals(filtro.puesto)));
+            }
+            jugadores = jugadores.OrderBy(c => c.Jugador);
+            return Json(jugadores);
+        }
         public async Task<IActionResult> getListaTemporadas()
         {
             IEnumerable<TemporadaVM> temporadas = await _temporadaService.GetAllTemporadas();
@@ -208,5 +219,31 @@ namespace Ligamania.Web.Controllers
             var result = new JsonResult(messageResult);
             return result;
         }
+        [HttpPost]
+        public async Task<JsonResult> CambiarJugadorTemporada([FromBody] JugadorVM jugador)
+        {
+            string messageResult;
+            if (jugador == null)
+                messageResult = "Se debe indicar el jugador, club y/o puesto para cambiar un jugador de club y/o puesto";
+            else if (string.IsNullOrEmpty(jugador.Jugador))
+                messageResult = "Se debe indicar el jugador para realizar el cambio";
+            else if (string.IsNullOrEmpty(jugador.Puesto) && string.IsNullOrEmpty(jugador.Club))
+                messageResult = "Se debe indicar al menos el puesto o el club para realizar el cambio";
+            else
+            {
+                try
+                {
+                    var res = await _temporadaService.CambiarJugadorTemporada(jugador);
+                    messageResult = res;
+                }
+                catch (Exception x)
+                {
+                    messageResult = "Error al crear el jugador " + jugador.Jugador + ": " + x.Message;
+                }
+            }
+            var result = new JsonResult(messageResult);
+            return result;
+        }
+        
     }
 }

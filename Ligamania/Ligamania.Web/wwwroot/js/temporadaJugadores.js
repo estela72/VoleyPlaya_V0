@@ -6,6 +6,11 @@ var listClubs = $('#clubs');
 var listPuestos = $('#puestos');
 var listClubsNuevo = $('#clubsNuevo');
 var listPuestosNuevo = $('#puestosNuevo');
+var listClubsCambio = $('#clubsCambio');
+var listPuestosCambio = $('#puestosCambio');
+var listJugadoresCambio = $('#jugadoresCambio');
+var listClubsCambiar = $('#clubsCambiar');
+var listPuestosCambiar = $('#puestosCambiar');
 var jugBaja = $('.jug_dualListBox').val();
 var spinner = document.getElementById("spinner");
 var selClub = "";
@@ -26,27 +31,37 @@ $(document).ready(function () {
     });
     $.getJSON('getListaClubs', function (clubs) {
         listClubs.append('<option value="   "></option>');
+        listClubsCambiar.append('<option value="   "></option>');
         clubs.forEach(function (club, index) {
             if (club.alias === selectedClub) {
                 listClubs.append('<option value=' + club.alias + ' selected>' + club.clubAlias + '</option>');
                 listClubsNuevo.append('<option value=' + club.alias + ' selected>' + club.clubAlias + '</option>');
+                listClubsCambio.append('<option value=' + club.alias + ' selected>' + club.clubAlias + '</option>');
+                listClubsCambiar.append('<option value=' + club.alias + ' selected>' + club.clubAlias + '</option>');
             }
             else {
                 listClubs.append('<option value=' + club.alias + '>' + club.clubAlias + '</option>');
                 listClubsNuevo.append('<option value=' + club.alias + '>' + club.clubAlias + '</option>');
+                listClubsCambio.append('<option value=' + club.alias + '>' + club.clubAlias + '</option>');
+                listClubsCambiar.append('<option value=' + club.alias + '>' + club.clubAlias + '</option>');
             }
         });
     });
     $.getJSON('getListaPuestos', function (puestos) {
         listPuestos.append('<option value="   "></option>');
+        listPuestosCambiar.append('<option value="   "></option>');
         puestos.forEach(function (puesto, index) {
             if (puesto === selectedPuesto) {
                 listPuestos.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
                 listPuestosNuevo.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
+                listPuestosCambio.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
+                listPuestosCambiar.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
             }
             else {
                 listPuestos.append('<option value=' + puesto + '>' + puesto + '</option>');
                 listPuestosNuevo.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
+                listPuestosCambio.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
+                listPuestosCambiar.append('<option value=' + puesto + ' selected>' + puesto + '</option>');
             }
         });
     });
@@ -79,6 +94,25 @@ $(document).ready(function () {
 
     spinner.style.visibility = 'hidden'; //'visible'
 });
+
+function loadJugadoresCambio(club, puesto) {
+    listJugadoresCambio.empty();
+    const filtro = {
+        "club": club,
+        "puesto": puesto
+    };
+    $.getJSON('getListaJugadoresTemporadaClubPuesto', filtro, function () {
+    }).done(function (jugadores) {
+        jugadores.forEach(function (jugador, index) {
+            listJugadoresCambio.append('<option value="' + jugador.jugador + '">'+jugador.jugador+'</option>');
+        });
+    }).fail(function () {
+        alert("error");
+    }).always(function () {
+
+    });
+}
+
 function loadJugadores(club, puesto) {
     listJugadores.empty();
     const filtro = {
@@ -128,6 +162,19 @@ function updateCambios() {
     $('#selectedItemsContainer').html(formattedItems);
 
 };
+
+$(document).on("change", "#clubsCambio", function () {
+    var club = listClubsCambio.val();
+    var puesto = listPuestosCambio.val();
+    //alert('Cambio club ' + club + ' ' + puesto);
+    loadJugadoresCambio(club, puesto);
+});
+$(document).on("change", "#puestosCambio", function () {
+    var club = listClubsCambio.val();
+    var puesto = listPuestosCambio.val();
+    //alert('Cambio puesto ' + club + ' ' + puesto);
+    loadJugadoresCambio(club, puesto);
+});
 
 // mueve de la lista derecha a la lista izquierda
 $(document).on("click", ".remove", function () {
@@ -252,7 +299,6 @@ $(document).on("click", ".removeAll", function () {
 
 });
 
-
 $('#copiarJug').on('click', function () {
     //alert('copiar jugadores sin implementar');
     var temporada = $('#temporadas').val();
@@ -295,6 +341,36 @@ $('#crearJug').on('click', function () {
         "jugador": jugador
     };
     var urlString = 'NuevoJugadorTemporada';
+
+    $.ajax({
+        type: 'POST',
+        url: urlString,
+        dataType: 'json',
+        data: JSON.stringify(item),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            alert(result);
+            location.reload();
+        },
+        error:
+            function (response) {
+                alert("Error: " + response);
+            }
+    });
+    return false;
+});
+
+$('#cambiarJug').on('click', function () {
+    //alert('crear jugador sin implementar');
+    var jugador = $('#jugadoresCambio').val();
+    var puesto = $('#puestosCambiar').val();
+    var club = $('#clubsCambiar').val();
+    const item = {
+        "club": club,
+        "puesto": puesto,
+        "jugador": jugador
+    };
+    var urlString = 'CambiarJugadorTemporada';
 
     $.ajax({
         type: 'POST',
