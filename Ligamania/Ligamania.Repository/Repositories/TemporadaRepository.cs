@@ -119,5 +119,22 @@ namespace Ligamania.Repository.Repositories
             var clubs = jugadores.Select(j=>j.Club).Distinct().ToList();
             return clubs;
         }
+
+        public async Task<TemporadaDTO> GetTemporadaHistorificarAsync(int id)
+        {
+            var t = await this.DbSet.Where(t => t.Id.Equals(id))
+               .Include(t => t.TemporadaCompeticion)
+                .ThenInclude(tc=>tc.Competicion)
+               .Include(t => t.TemporadaCompeticionCategoria)
+               .Include(t => t.TemporadaEquipo)
+                .ThenInclude(te=>te.Equipo)
+               .Include(t => t.TemporadaCompeticionJornada)
+                   .ThenInclude(tcj => tcj.TemporadaClasificacion)
+               .AsSplitQuery()
+               .FirstOrDefaultAsync();
+            return t;
+        }
+
+        
     }
 }

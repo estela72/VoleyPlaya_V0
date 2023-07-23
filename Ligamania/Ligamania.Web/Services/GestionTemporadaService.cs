@@ -25,6 +25,7 @@ namespace Ligamania.Web.Services
         Task<string> UpdateJugadoresTemporada(List<JugadorVM> jugadores);
         Task<string> CopiarJugadoresTemporada(string temporada);
         Task<string> CrearJugadorTemporada(JugadorVM jugador);
+        Task<string> HistorificarTemporadaById(int id);
     }
     public class GestionTemporadaService : IGestionTemporadaService
     {
@@ -106,6 +107,12 @@ namespace Ligamania.Web.Services
         {
             var temp = await _temporadaService.GetTemporadaById(id);
             return _mapper.Map<TemporadaVM>(temp);
+        }
+
+        public async Task<string> HistorificarTemporadaById(int id)
+        {
+            var response = await _temporadaService.HistorificarById(id);
+            return response;
         }
 
         public async Task<string> UpdateClubsTemporada(List<ClubVM> clubs)

@@ -22,5 +22,7 @@ namespace Ligamania.Web.Models.Temporada
         public string Estado { get; set; }
         [Display(Name = "Actual")]
         public string Actual { get; set; }
+        [Display(Name ="Historificada")]
+        public string Historificada { get; set; }
     }
 }

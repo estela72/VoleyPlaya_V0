@@ -8,8 +8,8 @@
 //        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 //    });
 //});
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+//const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+//const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 function createButton(buttonType, rowID, tag) {
     if (buttonType === "edit") {
@@ -32,6 +32,9 @@ function createButton(buttonType, rowID, tag) {
     }
     if (buttonType === "baja") {
         return '<a class="' + tag + '" href="Baja?id=' + rowID + '"><span class="bi bi-file-arrow-down-fill" style="color:orange" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Baja de usuario"></span></a>';
+    }
+    if (buttonType === "historia") {
+        return '<a class="' + tag + '" href="Historificar?id=' + rowID + '"><span class="bi bi-file-arrow-down-fill" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Historificar"></span></a>';
     }
 };
 

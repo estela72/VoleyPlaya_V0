@@ -29,6 +29,7 @@ namespace Ligamania.Repository
         ITemporadaRepository TemporadaRepository { get; }
         ITemporadaJugadorRepository TemporadaJugadorRepository { get; }
         IPuestoRepository PuestoRepository { get; }
+        IHistoricoRepository HistoricoRepository { get; }
     }
 
     public class LigamaniaUnitOfWork : UnitOfWork, ILigamaniaUnitOfWork
@@ -50,6 +51,8 @@ namespace Ligamania.Repository
         public ITemporadaJugadorRepository TemporadaJugadorRepository { get; private set; }
         public IPuestoRepository PuestoRepository { get; private set; }
 
+        public IHistoricoRepository HistoricoRepository { get; private set; }
+
         public LigamaniaUnitOfWork(IConfiguration configuration
             , LigamaniaDbContext context
             , ILoggerFactory loggerFactory
@@ -69,7 +72,7 @@ namespace Ligamania.Repository
             , ITemporadaRepository temporadaRepository
             , ITemporadaJugadorRepository temporadaJugadorRepository
             , IPuestoRepository puestoRepository
-
+            , IHistoricoRepository historicoRepository
             )
             : base(configuration, context, loggerFactory)
         {
@@ -89,6 +92,7 @@ namespace Ligamania.Repository
             TemporadaRepository = temporadaRepository;
             TemporadaJugadorRepository = temporadaJugadorRepository;
             PuestoRepository = puestoRepository;
+            HistoricoRepository = historicoRepository;
         }
     }
 }

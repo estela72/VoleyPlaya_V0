@@ -23,5 +23,6 @@ namespace Ligamania.API.Lib.Models
         public byte[] Clasificacion { get; set; }
         public EstadoTemporada Estado { get; set; }
         public bool Actual { get; set; }
+        public bool Historificada { get; set; }
     }
 }

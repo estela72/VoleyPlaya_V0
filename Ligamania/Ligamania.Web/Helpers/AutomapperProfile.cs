@@ -133,8 +133,10 @@ namespace Ligamania.Web.Helpers
             CreateMap<Temporada, TemporadaVM>()
                 .ForMember(e => e.Temporada, opt => opt.MapFrom(src => src.Nombre))
                 .ForMember(e => e.Actual, opt => opt.MapFrom(src => src.Actual ? SiNo.SI.ToString():SiNo.NO.ToString()))
+                .ForMember(e => e.Historificada, opt => opt.MapFrom(src => src.Historificada ? SiNo.SI.ToString() : SiNo.NO.ToString()))
                 .ReverseMap()
                 .ForMember(e => e.Actual, opt => opt.MapFrom(src => src.Actual.Equals(SiNo.SI.ToString())))
+                .ForMember(e => e.Historificada, opt => opt.MapFrom(src => src.Historificada.Equals(SiNo.SI.ToString())))
                 ;
         }
     }

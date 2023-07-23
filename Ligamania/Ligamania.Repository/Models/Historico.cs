@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ligamania.Repository.Models
 {
-    public partial class HistoricoDTO : Entity
+    public partial class HistoricoDTO : BaseEntity
     {
         public int Temporada_ID { get; set; }
         public int Equipo_ID { get; set; }

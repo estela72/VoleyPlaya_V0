@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface IHistoricoRepository : IRepository<HistoricoDTO>
+    public interface IHistoricoRepository : IBaseRepository<HistoricoDTO>
     {
         Task<ICollection<HistoricoDTO>> GetHistorial();
 

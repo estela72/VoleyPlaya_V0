@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface ITemporadaClasificacionRepository : IRepository<TemporadaClasificacionDTO>
+    public interface ITemporadaClasificacionRepository : IBaseRepository<TemporadaClasificacionDTO>
     {
         Task<ICollection<TemporadaClasificacionDTO>> GetClasificaciones(int competicionId, int categoriaId, int jornadaId);
 

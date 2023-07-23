@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class TemporadaClasificacionRepository : Repository<TemporadaClasificacionDTO>, ITemporadaClasificacionRepository
+    public class TemporadaClasificacionRepository : BaseRepository<TemporadaClasificacionDTO>, ITemporadaClasificacionRepository
     {
         public TemporadaClasificacionRepository(LigamaniaDbContext context)
             : base(context)

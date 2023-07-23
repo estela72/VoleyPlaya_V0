@@ -3,8 +3,11 @@
 using Azure;
 
 using Ligamania.API.Lib.Models;
+using Ligamania.Generic.Lib.Enums;
 using Ligamania.Repository;
 using Ligamania.Repository.Models;
+
+using MailKit;
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +33,7 @@ namespace Ligamania.API.Lib.Services
         Task<string> UpdateJugadores(List<Jugador> listJugadores);
         Task<string> CopiarJugadoresTemporada(string temporada);
         Task<string> CrearJugadorTemporada(Jugador jug);
+        Task<string> HistorificarById(int id);
     }
     internal class TemporadaService : ITemporadaService
     {
@@ -269,6 +273,110 @@ namespace Ligamania.API.Lib.Services
             else
                 response = "Error al crear el jugador " + jug.Nombre;
             return response;
+        }
+
+        public async Task<string> HistorificarById(int id)
+        {
+            var temporada = await _ligamaniaUnitOfWork.TemporadaRepository.GetTemporadaHistorificarAsync(id);
+            var competiciones = temporada.TemporadaCompeticion
+                .DistinctBy(tc => tc.Id);
+            // Necesitamos historificar todas las competiciones
+            foreach (var comp in competiciones)
+            {
+                if (comp.Competicion.Tipo.Equals(TipoCompeticion.Supercopa))
+                    continue;
+                // obtener la última jornada
+                var ultimaJornada = temporada.TemporadaCompeticionJornada
+                    .DistinctBy(tcj=>tcj.Id)
+                    .Where(tcj => tcj.CompeticionId.Equals(comp.CompeticionId))
+                    .OrderBy(tcj => tcj.Fecha).Last();
+                
+                var categorias = temporada.TemporadaCompeticionCategoria
+                    .DistinctBy(tcc=>tcc.Id)
+                    .Where(tcc => tcc.CompeticionId.Equals(comp.CompeticionId))
+                    ;
+                foreach (var cat in categorias)
+                {
+                    // obtener las clasificaciones de los equipos en la categoría
+                    var clasificaciones = ultimaJornada.TemporadaClasificacion
+                        .DistinctBy(tc => tc.Id)
+                        .Where(tc => tc.CategoriaId.Equals(cat.CategoriaId))
+                        .ToList();
+
+                    // no sé muy bien por qué, pero las clasificaciones no tienen puesto, así que antes de nada, calculo el puesto
+                    await CalcularPuestoClasificacion(clasificaciones, temporada);
+
+                    TemporadaClasificacionDTO pichichi = null;
+                    // si es la Liga, obtener pichichi
+                    if (comp.Competicion.Tipo.Equals(TipoCompeticion.Liga))
+                    {
+                        pichichi = clasificaciones
+                            .Where(c=>!c.Equipo.EsBot)
+                            .Where(c => c.Puesto > 3)
+                            .OrderByDescending(c => c.GolesFavor)
+                            .FirstOrDefault();
+                    }
+
+                    // para cada equipo, actualizar su historia
+                    foreach(var clasificacion in clasificaciones)
+                    {
+                        var tempEquipo = temporada.TemporadaEquipo
+                            .DistinctBy(te=>te.Id)
+                            .Where(te => te.EquipoId.Equals(clasificacion.EquipoId))
+                            .FirstOrDefault();
+                        var historico = new HistoricoDTO
+                        {
+                            Temporada = temporada,
+                            TemporadaCompeticionCategoria = cat,
+                            TemporadaEquipo = tempEquipo,
+                            Puesto = clasificacion.Puesto,
+                            Pichichi = pichichi != null && pichichi.Equals(tempEquipo) ? true : false
+                        };
+                        var existe = await _ligamaniaUnitOfWork.HistoricoRepository.ExistsAsync(h=>h.Temporada_ID.Equals(historico.Temporada.Id)
+                            && h.Categoria_ID.Equals(historico.TemporadaCompeticionCategoria.Id) 
+                            && h.Equipo_ID.Equals(historico.TemporadaEquipo.Id)
+                            && h.Puesto.Equals(historico.Puesto));
+                        if (!existe)
+                            await _ligamaniaUnitOfWork.HistoricoRepository.AddAsyn(historico);
+                        else
+                            await _ligamaniaUnitOfWork.HistoricoRepository.UpdateAsync(historico);
+                    }
+                    //await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+                }
+                //await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+            }
+            await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+
+            return "Temporada historificada";
+        }
+
+        private Task CalcularPuestoClasificacion(List<TemporadaClasificacionDTO> clasificaciones, TemporadaDTO temporada)
+        {
+            var competiciones = clasificaciones.Select(c => c.CompeticionId).Distinct();
+            foreach(var compId in competiciones)
+            {
+                var categorias = clasificaciones.Where(c => c.CompeticionId.Equals(compId)).Select(c => c.CategoriaId).Distinct();
+                foreach(var catId in categorias)
+                {
+                    var equipos = clasificaciones
+                        .Where(c => c.CompeticionId.Equals(compId) && c.CategoriaId.Equals(catId))
+                        .Select(c => new { Equipo = c.Equipo, Clasificacion=c });
+                    equipos = equipos.Where(e => !e.Equipo.EsBot)
+                        .OrderByDescending(e=>e.Clasificacion.Puntos)
+                        .ThenByDescending(e => e.Clasificacion.GolesFavor)
+                        .ThenBy(e => e.Clasificacion.GolesExtraFavor)
+                        .ThenBy(e => e.Clasificacion.GolesExtraContra)
+                        .ThenByDescending(e => e.Clasificacion.GolesContra)
+                        .ThenByDescending(e => e.Clasificacion.Ganados)
+                        .ToList();
+                    int puesto = 1;
+                    for(int i=0; i < equipos.Count();i++)
+                    {
+                        equipos.ToArray()[i].Clasificacion.Puesto = puesto++;
+                    }
+                }
+            }
+            return Task.CompletedTask;
         }
     }
 }

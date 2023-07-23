@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class TemporadaEquipoRepository : Repository<TemporadaEquipoDTO>, ITemporadaEquipoRepository
+    public class TemporadaEquipoRepository : BaseRepository<TemporadaEquipoDTO>, ITemporadaEquipoRepository
     {
         public TemporadaEquipoRepository(LigamaniaDbContext context)
             : base(context)

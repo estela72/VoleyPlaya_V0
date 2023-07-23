@@ -1,0 +1,963 @@
+2023-07-23 10:25:59.623 +02:00 [Information] In Development environment
+2023-07-23 10:26:01.435 +02:00 [Information] Request starting HTTP/1.1 DEBUG http://localhost:51912/  0
+2023-07-23 10:26:01.467 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/  
+2023-07-23 10:26:01.615 +02:00 [Information] Request finished in 141.5236ms 200 
+2023-07-23 10:26:02.793 +02:00 [Information] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "LigamaniaCoreApp.Controllers.HomeController" ("LigamaniaCoreApp").
+2023-07-23 10:26:07.414 +02:00 [Warning] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.
+2023-07-23 10:26:07.824 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:09.142 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:09.145 +02:00 [Information] Entrando en Ligamania:(
+2023-07-23 10:26:09.155 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 5.8594ms.
+2023-07-23 10:26:09.268 +02:00 [Information] Executing ViewResult, running view "Index".
+2023-07-23 10:26:10.110 +02:00 [Warning] Query: '"(from SettingsDTO <generated>_1 in DbSet<SettingsDTO> select [<generated>_1]).FirstOrDefault()"' uses First/FirstOrDefault/Last/LastOrDefault operation without OrderBy and filter which may lead to unpredictable results.
+2023-07-23 10:26:11.578 +02:00 [Information] Executed DbCommand ("260"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [s].[Id], [s].[Clasificacion_RotuloCopa], [s].[CreatedBy], [s].[CreatedDate], [s].[NotificacionClasificaciones], [s].[NumeroJornadasVolverEliminados], [s].[TemporadaPremios], [s].[UpdatedBy], [s].[UpdatedDate], [s].[Ver_CuadroCopa], [s].[Ver_EquiposPretemporada], [s].[Ver_Noticias]
+FROM [Settings] AS [s]"
+2023-07-23 10:26:12.693 +02:00 [Information] Executed DbCommand ("217"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:12.807 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:12.864 +02:00 [Information] Executed DbCommand ("12"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:12.877 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:12.893 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:13.178 +02:00 [Information] Executed ViewResult - view "Index" executed in 3974.8132ms.
+2023-07-23 10:26:13.458 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.HomeController.Index (LigamaniaCoreApp)" in 10384.6085ms
+2023-07-23 10:26:13.849 +02:00 [Information] Request finished in 12057.0544ms 200 text/html; charset=utf-8
+2023-07-23 10:26:15.649 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/js/bootstrap.js.map  
+2023-07-23 10:26:16.230 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js.map"'. Physical path: '"D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js.map"'
+2023-07-23 10:26:16.455 +02:00 [Information] Request finished in 707.3371ms 200 text/plain
+2023-07-23 10:26:20.479 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/Historial  
+2023-07-23 10:26:20.527 +02:00 [Information] Route matched with "{action = \"Historial\", controller = \"INVITADOH\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Historial()" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:20.553 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:20.558 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.Historial (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:21.284 +02:00 [Information] Executed DbCommand ("120"ms) [Parameters=["@__ToString_0='Cerrada' (Size = 4000), @__ToString_1='Finalizada' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [h].[Id], [h].[Categoria_ID], [h].[CreatedBy], [h].[CreatedDate], [h].[Equipo_ID], [h].[Pichichi], [h].[Puesto], [h].[Temporada_ID], [h].[UpdatedBy], [h].[UpdatedDate], [h.TemporadaCompeticionCategoria].[Id], [h.TemporadaCompeticionCategoria].[Categoria_ID], [h.TemporadaCompeticionCategoria].[Competicion_ID], [h.TemporadaCompeticionCategoria].[CreatedBy], [h.TemporadaCompeticionCategoria].[CreatedDate], [h.TemporadaCompeticionCategoria].[MarcarPichichi], [h.TemporadaCompeticionCategoria].[NumeroMaximoJugador_Eliminar], [h.TemporadaCompeticionCategoria].[Temporada_ID], [h.TemporadaCompeticionCategoria].[UpdatedBy], [h.TemporadaCompeticionCategoria].[UpdatedDate], [h.TemporadaCompeticionCategoria.Competicion].[Id], [h.TemporadaCompeticionCategoria.Competicion].[Competicion_CopiarAliIni], [h.TemporadaCompeticionCategoria.Competicion].[Copiar_AlineacionInicial], [h.TemporadaCompeticionCategoria.Competicion].[CreatedBy], [h.TemporadaCompeticionCategoria.Competicion].[CreatedDate], [h.TemporadaCompeticionCategoria.Competicion].[JornadaCuadro], [h.TemporadaCompeticionCategoria.Competicion].[Nombre], [h.TemporadaCompeticionCategoria.Competicion].[Orden], [h.TemporadaCompeticionCategoria.Competicion].[RepetirClubAliIni], [h.TemporadaCompeticionCategoria.Competicion].[Tipo], [h.TemporadaCompeticionCategoria.Competicion].[UpdatedBy], [h.TemporadaCompeticionCategoria.Competicion].[UpdatedDate], [h.TemporadaCompeticionCategoria.Categoria].[Id], [h.TemporadaCompeticionCategoria.Categoria].[Activa], [h.TemporadaCompeticionCategoria.Categoria].[CreatedBy], [h.TemporadaCompeticionCategoria.Categoria].[CreatedDate], [h.TemporadaCompeticionCategoria.Categoria].[Nombre], [h.TemporadaCompeticionCategoria.Categoria].[Orden], [h.TemporadaCompeticionCategoria.Categoria].[UpdatedBy], [h.TemporadaCompeticionCategoria.Categoria].[UpdatedDate], [h.TemporadaEquipo].[Id], [h.TemporadaEquipo].[AlineacionLibre], [h.TemporadaEquipo].[Baja], [h.TemporadaEquipo].[Categoria_ID], [h.TemporadaEquipo].[Competicion_ID], [h.TemporadaEquipo].[ConfirmadaTemporada], [h.TemporadaEquipo].[CreatedBy], [h.TemporadaEquipo].[CreatedDate], [h.TemporadaEquipo].[Diferencia], [h.TemporadaEquipo].[Equipo_ID], [h.TemporadaEquipo].[GolesContra], [h.TemporadaEquipo].[GolesExtraContra], [h.TemporadaEquipo].[GolesExtraFavor], [h.TemporadaEquipo].[GolesFavor], [h.TemporadaEquipo].[PagadaTemporada], [h.TemporadaEquipo].[PartidosEmpatados], [h.TemporadaEquipo].[PartidosGanados], [h.TemporadaEquipo].[PartidosJugados], [h.TemporadaEquipo].[PartidosPerdidos], [h.TemporadaEquipo].[Puntos], [h.TemporadaEquipo].[Temporada_ID], [h.TemporadaEquipo].[UpdatedBy], [h.TemporadaEquipo].[UpdatedDate], [h.TemporadaEquipo.Equipo].[Id], [h.TemporadaEquipo.Equipo].[ApplicationUserId], [h.TemporadaEquipo.Equipo].[Baja], [h.TemporadaEquipo.Equipo].[CreatedBy], [h.TemporadaEquipo.Equipo].[CreatedDate], [h.TemporadaEquipo.Equipo].[Entrenador_Id], [h.TemporadaEquipo.Equipo].[EsBOT], [h.TemporadaEquipo.Equipo].[EscudoImage], [h.TemporadaEquipo.Equipo].[Nombre], [h.TemporadaEquipo.Equipo].[UpdatedBy], [h.TemporadaEquipo.Equipo].[UpdatedDate], [h.Temporada].[Id], [h.Temporada].[Actual], [h.Temporada].[CreatedBy], [h.Temporada].[CreatedDate], [h.Temporada].[Estado], [h.Temporada].[Nombre], [h.Temporada].[UpdatedBy], [h.Temporada].[UpdatedDate]
+FROM [Historico] AS [h]
+INNER JOIN [TemporadaCompeticionCategoria] AS [h.TemporadaCompeticionCategoria] ON [h].[Categoria_ID] = [h.TemporadaCompeticionCategoria].[Id]
+INNER JOIN [Competicion] AS [h.TemporadaCompeticionCategoria.Competicion] ON [h.TemporadaCompeticionCategoria].[Competicion_ID] = [h.TemporadaCompeticionCategoria.Competicion].[Id]
+INNER JOIN [Categoria] AS [h.TemporadaCompeticionCategoria.Categoria] ON [h.TemporadaCompeticionCategoria].[Categoria_ID] = [h.TemporadaCompeticionCategoria.Categoria].[Id]
+INNER JOIN [TemporadaEquipo] AS [h.TemporadaEquipo] ON [h].[Equipo_ID] = [h.TemporadaEquipo].[Id]
+INNER JOIN [Equipo] AS [h.TemporadaEquipo.Equipo] ON [h.TemporadaEquipo].[Equipo_ID] = [h.TemporadaEquipo.Equipo].[Id]
+INNER JOIN [Temporada] AS [h.Temporada] ON [h].[Temporada_ID] = [h.Temporada].[Id]
+WHERE [h.Temporada].[Estado] IN (@__ToString_0, @__ToString_1)"
+2023-07-23 10:26:22.686 +02:00 [Information] Executed DbCommand ("13"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:22.882 +02:00 [Information] Executed DbCommand ("21"ms) [Parameters=["@__temporadaId_0='16', @__equipo_1='Real Zaragoza' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:22.953 +02:00 [Information] Executed DbCommand ("7"ms) [Parameters=["@__temporadaId_0='16', @__equipo_1='Real Zaragoza' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:22.974 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='16', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:22.983 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='16', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:22.993 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.004 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='17', @__equipo_1='Real Zaragoza' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.023 +02:00 [Information] Executed DbCommand ("7"ms) [Parameters=["@__temporadaId_0='17', @__equipo_1='Real Zaragoza' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.032 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='17', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.039 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='17', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.050 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.058 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='18', @__equipo_1='Los Willermos' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.068 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='18', @__equipo_1='Los Willermos' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.077 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='18', @__equipo_1='Puto Amo' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.092 +02:00 [Information] Executed DbCommand ("7"ms) [Parameters=["@__temporadaId_0='18', @__equipo_1='Puto Amo' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.103 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.116 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Fushi GT' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.125 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Fushi GT' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.136 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.145 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.152 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.167 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.173 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Maccabi de Levantar' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.184 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='19', @__equipo_1='Maccabi de Levantar' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.196 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.204 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Toritos Futboleros' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.210 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Toritos Futboleros' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.220 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Embrujadas FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.240 +02:00 [Information] Executed DbCommand ("15"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Embrujadas FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.248 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Tabarritos Botasnuevas' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.260 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Tabarritos Botasnuevas' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.272 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Txeiton FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.285 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='20', @__equipo_1='Txeiton FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.303 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.316 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='Gominola FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.327 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='Gominola FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.353 +02:00 [Information] Executed DbCommand ("12"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='VictorVal Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.367 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='VictorVal Team' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.376 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='Chiskawhiskys' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.388 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='21', @__equipo_1='Chiskawhiskys' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.401 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.412 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.463 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.478 +02:00 [Information] Executed DbCommand ("5"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='FC Kakosport' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.490 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='FC Kakosport' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.505 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Gavanova FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.515 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Gavanova FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.523 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Hornachos FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.531 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='22', @__equipo_1='Hornachos FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.540 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.552 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Nothingam Prisas' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.558 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Nothingam Prisas' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.568 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.575 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.584 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Gavanova FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.593 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Gavanova FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.601 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.608 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='23', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.621 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.629 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='24', @__equipo_1='Senyalemos al Jefe' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.637 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='24', @__equipo_1='Senyalemos al Jefe' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.643 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='24', @__equipo_1='Nothingam Prisas' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.660 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='24', @__equipo_1='Nothingam Prisas' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.675 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.685 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='25', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.692 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='25', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.708 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='25', @__equipo_1='Vilar de Milo' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.737 +02:00 [Information] Executed DbCommand ("6"ms) [Parameters=["@__temporadaId_0='25', @__equipo_1='Vilar de Milo' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.749 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.756 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='Disport Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.765 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='Disport Team' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.771 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.787 +02:00 [Information] Executed DbCommand ("10"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.796 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='SlamDunk' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.803 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='26', @__equipo_1='SlamDunk' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.812 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.820 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Cuadru Pena' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.827 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Cuadru Pena' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.836 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.844 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.856 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Tuercebotas' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.864 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='Tuercebotas' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.877 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='La Paisana!!' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.916 +02:00 [Information] Executed DbCommand ("6"ms) [Parameters=["@__temporadaId_0='27', @__equipo_1='La Paisana!!' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.923 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:23.934 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Atlético Bómbiala' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.940 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Atlético Bómbiala' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.951 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Atlético Tuning' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.958 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Atlético Tuning' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.965 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Jabalines FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.971 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Jabalines FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:23.981 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:23.987 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='1', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.006 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.026 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='2', @__equipo_1='ChemaSport FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.068 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='2', @__equipo_1='ChemaSport FC' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.078 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='2', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.109 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='2', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.142 +02:00 [Information] Executed DbCommand ("5"ms) [Parameters=["@__temporadaId_0='2', @__equipo_1='Sporting de Tuilla' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.171 +02:00 [Information] Executed DbCommand ("14"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.190 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='3', @__equipo_1='Atlético Kijote' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.202 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='3', @__equipo_1='Atlético Kijote' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.218 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='3', @__equipo_1='ChemaSport FC' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.229 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='3', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.238 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='3', @__equipo_1='Vikingos' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='0'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.254 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.266 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='28', @__equipo_1='Perdidos' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.283 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='28', @__equipo_1='FC Rodriloy' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.293 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='28', @__equipo_1='FC Rodriloy' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.305 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='28', @__equipo_1='ECM Reactiva' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.334 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='28', @__equipo_1='ECM Reactiva' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.350 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.358 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='FC Estrada' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.366 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='FC Estrada' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.373 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='Atlético Kijote' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.383 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='Atlético Kijote' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.390 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='Miramuma' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.398 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='29', @__equipo_1='Valen Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.410 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.419 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='Lagunak' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.426 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='Lagunak' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.434 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='Celta del Vico' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.441 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='Celta del Vico' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.451 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='FC Estrada' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.459 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='30', @__equipo_1='Ikerika' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.467 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.476 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='FC Estrada' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.486 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='FC Estrada' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.492 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='Detranqui' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.504 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.520 +02:00 [Information] Executed DbCommand ("4"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='Jinki Pinki' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.527 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='32', @__equipo_1='Luli Team' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.553 +02:00 [Information] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] <> 1) AND [c.EquipoOrigen].[EsBOT] IS NOT NULL"
+2023-07-23 10:26:24.583 +02:00 [Information] Executed DbCommand ("5"ms) [Parameters=["@__temporadaId_0='33', @__equipo_1='Atlético Tiberiades' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.597 +02:00 [Information] Executed DbCommand ("7"ms) [Parameters=["@__temporadaId_0='33', @__equipo_1='Zotz' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.607 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='33', @__equipo_1='Zotz' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.615 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='33', @__equipo_1='Los Socarraos del Allocino' (Size = 8000) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE ([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))"
+2023-07-23 10:26:24.624 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__temporadaId_0='33', @__equipo_1='Los Socarraos del Allocino' (Size = 8000) (DbType = AnsiString), @__maxRonda_2='7'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [tc].[Id], [tc].[Competicion_ID], [tc].[CreatedBy], [tc].[CreatedDate], [tc].[Criterio], [tc].[EquipoA_Categoria_ID], [tc].[EquipoA_Competicion_ID], [tc].[EquipoA_Puesto], [tc].[EquipoB_Categoria_ID], [tc].[EquipoB_Competicion_ID], [tc].[EquipoB_Puesto], [tc].[Nombre_EquipoA], [tc].[Nombre_EquipoB], [tc].[Nombre_Ganador], [tc].[Numero_Partido], [tc].[Orden], [tc].[Ronda], [tc].[Temporada_ID], [tc].[UpdatedBy], [tc].[UpdatedDate]
+FROM [TemporadaCuadro] AS [tc]
+WHERE (([tc].[Temporada_ID] = @__temporadaId_0) AND (([tc].[Nombre_EquipoA] = @__equipo_1) OR ([tc].[Nombre_EquipoB] = @__equipo_1))) AND ([tc].[Ronda] = @__maxRonda_2)"
+2023-07-23 10:26:24.632 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.Historial (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 4070.6719ms.
+2023-07-23 10:26:24.729 +02:00 [Information] Executing ViewResult, running view "Historial".
+2023-07-23 10:26:25.291 +02:00 [Information] Executed DbCommand ("22"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:25.301 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:25.310 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:25.317 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:25.325 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:26.226 +02:00 [Information] Executed ViewResult - view "Historial" executed in 1465.0119ms.
+2023-07-23 10:26:26.413 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.Historial (LigamaniaCoreApp)" in 5715.5556ms
+2023-07-23 10:26:26.439 +02:00 [Information] Request finished in 5944.2474ms 200 text/html; charset=utf-8
+2023-07-23 10:26:26.601 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/js/bootstrap.js.map  
+2023-07-23 10:26:26.622 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js.map"'. Physical path: '"D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js.map"'
+2023-07-23 10:26:26.692 +02:00 [Information] Request finished in 25.7804ms 200 text/plain
+2023-07-23 10:26:48.597 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/HistorialEquipo?equipo=Valen%20Team  
+2023-07-23 10:26:48.636 +02:00 [Information] Route matched with "{action = \"HistorialEquipo\", controller = \"INVITADOH\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] HistorialEquipo(System.String)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:48.641 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:48.686 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.HistorialEquipo (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:48.818 +02:00 [Information] Executed DbCommand ("22"ms) [Parameters=["@__equipo_0='Valen Team' (Size = 200) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [h].[Id], [h].[Categoria_ID], [h].[CreatedBy], [h].[CreatedDate], [h].[Equipo_ID], [h].[Pichichi], [h].[Puesto], [h].[Temporada_ID], [h].[UpdatedBy], [h].[UpdatedDate], [h.TemporadaCompeticionCategoria].[Id], [h.TemporadaCompeticionCategoria].[Categoria_ID], [h.TemporadaCompeticionCategoria].[Competicion_ID], [h.TemporadaCompeticionCategoria].[CreatedBy], [h.TemporadaCompeticionCategoria].[CreatedDate], [h.TemporadaCompeticionCategoria].[MarcarPichichi], [h.TemporadaCompeticionCategoria].[NumeroMaximoJugador_Eliminar], [h.TemporadaCompeticionCategoria].[Temporada_ID], [h.TemporadaCompeticionCategoria].[UpdatedBy], [h.TemporadaCompeticionCategoria].[UpdatedDate], [h.TemporadaCompeticionCategoria.Competicion].[Id], [h.TemporadaCompeticionCategoria.Competicion].[Competicion_CopiarAliIni], [h.TemporadaCompeticionCategoria.Competicion].[Copiar_AlineacionInicial], [h.TemporadaCompeticionCategoria.Competicion].[CreatedBy], [h.TemporadaCompeticionCategoria.Competicion].[CreatedDate], [h.TemporadaCompeticionCategoria.Competicion].[JornadaCuadro], [h.TemporadaCompeticionCategoria.Competicion].[Nombre], [h.TemporadaCompeticionCategoria.Competicion].[Orden], [h.TemporadaCompeticionCategoria.Competicion].[RepetirClubAliIni], [h.TemporadaCompeticionCategoria.Competicion].[Tipo], [h.TemporadaCompeticionCategoria.Competicion].[UpdatedBy], [h.TemporadaCompeticionCategoria.Competicion].[UpdatedDate], [h.TemporadaCompeticionCategoria.Categoria].[Id], [h.TemporadaCompeticionCategoria.Categoria].[Activa], [h.TemporadaCompeticionCategoria.Categoria].[CreatedBy], [h.TemporadaCompeticionCategoria.Categoria].[CreatedDate], [h.TemporadaCompeticionCategoria.Categoria].[Nombre], [h.TemporadaCompeticionCategoria.Categoria].[Orden], [h.TemporadaCompeticionCategoria.Categoria].[UpdatedBy], [h.TemporadaCompeticionCategoria.Categoria].[UpdatedDate], [h.Temporada].[Id], [h.Temporada].[Actual], [h.Temporada].[CreatedBy], [h.Temporada].[CreatedDate], [h.Temporada].[Estado], [h.Temporada].[Nombre], [h.Temporada].[UpdatedBy], [h.Temporada].[UpdatedDate], [h.TemporadaEquipo].[Id], [h.TemporadaEquipo].[AlineacionLibre], [h.TemporadaEquipo].[Baja], [h.TemporadaEquipo].[Categoria_ID], [h.TemporadaEquipo].[Competicion_ID], [h.TemporadaEquipo].[ConfirmadaTemporada], [h.TemporadaEquipo].[CreatedBy], [h.TemporadaEquipo].[CreatedDate], [h.TemporadaEquipo].[Diferencia], [h.TemporadaEquipo].[Equipo_ID], [h.TemporadaEquipo].[GolesContra], [h.TemporadaEquipo].[GolesExtraContra], [h.TemporadaEquipo].[GolesExtraFavor], [h.TemporadaEquipo].[GolesFavor], [h.TemporadaEquipo].[PagadaTemporada], [h.TemporadaEquipo].[PartidosEmpatados], [h.TemporadaEquipo].[PartidosGanados], [h.TemporadaEquipo].[PartidosJugados], [h.TemporadaEquipo].[PartidosPerdidos], [h.TemporadaEquipo].[Puntos], [h.TemporadaEquipo].[Temporada_ID], [h.TemporadaEquipo].[UpdatedBy], [h.TemporadaEquipo].[UpdatedDate], [h.TemporadaEquipo.Equipo].[Id], [h.TemporadaEquipo.Equipo].[ApplicationUserId], [h.TemporadaEquipo.Equipo].[Baja], [h.TemporadaEquipo.Equipo].[CreatedBy], [h.TemporadaEquipo.Equipo].[CreatedDate], [h.TemporadaEquipo.Equipo].[Entrenador_Id], [h.TemporadaEquipo.Equipo].[EsBOT], [h.TemporadaEquipo.Equipo].[EscudoImage], [h.TemporadaEquipo.Equipo].[Nombre], [h.TemporadaEquipo.Equipo].[UpdatedBy], [h.TemporadaEquipo.Equipo].[UpdatedDate]
+FROM [Historico] AS [h]
+INNER JOIN [TemporadaCompeticionCategoria] AS [h.TemporadaCompeticionCategoria] ON [h].[Categoria_ID] = [h.TemporadaCompeticionCategoria].[Id]
+INNER JOIN [Competicion] AS [h.TemporadaCompeticionCategoria.Competicion] ON [h.TemporadaCompeticionCategoria].[Competicion_ID] = [h.TemporadaCompeticionCategoria.Competicion].[Id]
+INNER JOIN [Categoria] AS [h.TemporadaCompeticionCategoria.Categoria] ON [h.TemporadaCompeticionCategoria].[Categoria_ID] = [h.TemporadaCompeticionCategoria.Categoria].[Id]
+INNER JOIN [Temporada] AS [h.Temporada] ON [h].[Temporada_ID] = [h.Temporada].[Id]
+INNER JOIN [TemporadaEquipo] AS [h.TemporadaEquipo] ON [h].[Equipo_ID] = [h.TemporadaEquipo].[Id]
+INNER JOIN [Equipo] AS [h.TemporadaEquipo.Equipo] ON [h.TemporadaEquipo].[Equipo_ID] = [h.TemporadaEquipo.Equipo].[Id]
+WHERE [h.TemporadaEquipo.Equipo].[Nombre] = @__equipo_0"
+2023-07-23 10:26:48.903 +02:00 [Information] Executed DbCommand ("12"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='3'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.943 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.947 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='2', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.954 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.965 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.972 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.978 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.984 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='2', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.991 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:48.998 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.022 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.033 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.041 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.052 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.060 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.069 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.077 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.086 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.112 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.120 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.129 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.136 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.146 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.155 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.165 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.172 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.180 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='2', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.187 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.194 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.203 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.214 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.223 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='2'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.233 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.252 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='3'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.263 +02:00 [Information] Executed DbCommand ("0"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.283 +02:00 [Information] Executed DbCommand ("6"ms) [Parameters=["@__competicionId_0='1', @__categoriaId_1='3'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.292 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__competicionId_0='3', @__categoriaId_1='5'"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(2) [ph].[Id], [ph].[Campeon], [ph].[Categoria_Id], [ph].[Competicion_Id], [ph].[CreatedBy], [ph].[CreatedDate], [ph].[Pichichi], [ph].[Subcampeon], [ph].[Tercero], [ph].[Todos], [ph].[UpdatedBy], [ph].[UpdatedDate]
+FROM [PuntuacionHistorica] AS [ph]
+WHERE ([ph].[Competicion_Id] = @__competicionId_0) AND ([ph].[Categoria_Id] = @__categoriaId_1)"
+2023-07-23 10:26:49.393 +02:00 [Information] Executed DbCommand ("18"ms) [Parameters=["@__equipo_0='Valen Team' (Size = 200) (DbType = AnsiString)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [c].[Id], [c].[CreatedBy], [c].[CreatedDate], [c].[Equipo_Destino_Id], [c].[Equipo_Origen_Id], [c].[Temporada_Id], [c].[UpdatedBy], [c].[UpdatedDate], [c.Temporada].[Id], [c.Temporada].[Actual], [c.Temporada].[CreatedBy], [c.Temporada].[CreatedDate], [c.Temporada].[Estado], [c.Temporada].[Nombre], [c.Temporada].[UpdatedBy], [c.Temporada].[UpdatedDate], [c.EquipoDestino].[Id], [c.EquipoDestino].[ApplicationUserId], [c.EquipoDestino].[Baja], [c.EquipoDestino].[CreatedBy], [c.EquipoDestino].[CreatedDate], [c.EquipoDestino].[Entrenador_Id], [c.EquipoDestino].[EsBOT], [c.EquipoDestino].[EscudoImage], [c.EquipoDestino].[Nombre], [c.EquipoDestino].[UpdatedBy], [c.EquipoDestino].[UpdatedDate], [c.EquipoOrigen].[Id], [c.EquipoOrigen].[ApplicationUserId], [c.EquipoOrigen].[Baja], [c.EquipoOrigen].[CreatedBy], [c.EquipoOrigen].[CreatedDate], [c.EquipoOrigen].[Entrenador_Id], [c.EquipoOrigen].[EsBOT], [c.EquipoOrigen].[EscudoImage], [c.EquipoOrigen].[Nombre], [c.EquipoOrigen].[UpdatedBy], [c.EquipoOrigen].[UpdatedDate]
+FROM [CambiosEquipo] AS [c]
+LEFT JOIN [Temporada] AS [c.Temporada] ON [c].[Temporada_Id] = [c.Temporada].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoDestino] ON [c].[Equipo_Destino_Id] = [c.EquipoDestino].[Id]
+LEFT JOIN [Equipo] AS [c.EquipoOrigen] ON [c].[Equipo_Origen_Id] = [c.EquipoOrigen].[Id]
+WHERE ([c.EquipoOrigen].[EsBOT] = 0) AND ([c.EquipoDestino].[Nombre] = @__equipo_0)"
+2023-07-23 10:26:49.410 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.HistorialEquipo (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 719.8461ms.
+2023-07-23 10:26:49.472 +02:00 [Information] Executing ViewResult, running view "HistorialEquipo".
+2023-07-23 10:26:49.855 +02:00 [Information] Executed DbCommand ("2"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:49.886 +02:00 [Information] Executed DbCommand ("8"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:49.902 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:49.913 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:49.923 +02:00 [Information] Executed DbCommand ("1"ms) [Parameters=["@__UserRole_0='Invitado' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [m].[MenuIdentity], [m].[CreatedDate], [m].[MenuFileName], [m].[MenuID], [m].[MenuName], [m].[MenuURL], [m].[Order], [m].[Parent_MenuID], [m].[USE_YN], [m].[User_Roll]
+FROM [MenuMaster] AS [m]
+WHERE (([m].[Order] <> -1) OR [m].[Order] IS NULL) AND ([m].[User_Roll] = @__UserRole_0)
+ORDER BY [m].[Order]"
+2023-07-23 10:26:49.943 +02:00 [Information] Executed ViewResult - view "HistorialEquipo" executed in 526.4976ms.
+2023-07-23 10:26:50.392 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.HistorialEquipo (LigamaniaCoreApp)" in 1307.3086ms
+2023-07-23 10:26:50.450 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Copa&puesto=1  
+2023-07-23 10:26:50.464 +02:00 [Information] Request finished in 1799.9737ms 200 text/html; charset=utf-8
+2023-07-23 10:26:50.512 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Golden&puesto=4  
+2023-07-23 10:26:50.552 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Golden&puesto=1  
+2023-07-23 10:26:50.558 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Silver%20A&puesto=3  
+2023-07-23 10:26:50.560 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:50.565 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:50.571 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:50.576 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:50.583 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:50.610 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:50.615 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:50.637 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Silver%20A&puesto=4  
+2023-07-23 10:26:50.722 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:50.746 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 118.6164ms.
+2023-07-23 10:26:50.780 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:50.806 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:50.856 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:50.813 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:50.890 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:50.923 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:50.933 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:50.958 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 382.4071ms
+2023-07-23 10:26:50.969 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:50.976 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 63.1663ms.
+2023-07-23 10:26:50.979 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 63.4324ms.
+2023-07-23 10:26:50.981 +02:00 [Information] Request finished in 493.6032ms 200 image/jpeg
+2023-07-23 10:26:50.990 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:50.991 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:50.993 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Golden&puesto=2  
+2023-07-23 10:26:50.995 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 29.8603ms.
+2023-07-23 10:26:51.002 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 25.1402ms.
+2023-07-23 10:26:51.009 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:51.020 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:51.039 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:51.069 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 426.3035ms
+2023-07-23 10:26:51.077 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 444.7078ms
+2023-07-23 10:26:51.080 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:51.085 +02:00 [Information] Request finished in 682.8074ms 200 image/jpeg
+2023-07-23 10:26:51.088 +02:00 [Information] Request finished in 676.5564ms 200 image/jpeg
+2023-07-23 10:26:51.093 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:51.098 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/lib/bootstrap4/js/bootstrap.js.map  
+2023-07-23 10:26:51.100 +02:00 [Information] Request starting HTTP/1.1 GET http://localhost:44363/InvitadoH/GetImagenCategoria?categoria=Supercopa&puesto=2  
+2023-07-23 10:26:51.102 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 134.7089ms
+2023-07-23 10:26:51.102 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 476.2662ms
+2023-07-23 10:26:51.137 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 20.2224ms.
+2023-07-23 10:26:51.140 +02:00 [Information] Route matched with "{action = \"GetImagenCategoria\", controller = \"INVITADOH\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetImagenCategoria(System.String, Int32)" on controller "LigamaniaCoreApp.Controllers.INVITADOHController" ("LigamaniaCoreApp").
+2023-07-23 10:26:51.147 +02:00 [Information] Request finished in 797.6226ms 200 image/jpeg
+2023-07-23 10:26:51.150 +02:00 [Information] Sending file. Request path: '"/lib/bootstrap4/js/bootstrap.js.map"'. Physical path: '"D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\wwwroot\lib\bootstrap4\js\bootstrap.js.map"'
+2023-07-23 10:26:51.152 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:51.161 +02:00 [Information] Entity Framework Core "2.2.6-servicing-10079" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "SensitiveDataLoggingEnabled "
+2023-07-23 10:26:51.168 +02:00 [Information] Request finished in 63.2476ms 200 text/plain
+2023-07-23 10:26:51.171 +02:00 [Information] Executing action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" - Validation state: Valid
+2023-07-23 10:26:51.177 +02:00 [Information] Request finished in 638.4518ms 200 image/jpeg
+2023-07-23 10:26:51.200 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 155.8333ms
+2023-07-23 10:26:51.365 +02:00 [Information] Executed action method "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)", returned result "Microsoft.AspNetCore.Mvc.FileStreamResult" in 17.5173ms.
+2023-07-23 10:26:51.370 +02:00 [Information] Request finished in 218.338ms 200 image/jpeg
+2023-07-23 10:26:51.372 +02:00 [Information] Executing "Microsoft.AspNetCore.Mvc.FileStreamResult", sending file with download name '""' ...
+2023-07-23 10:26:51.407 +02:00 [Information] Executed action "LigamaniaCoreApp.Controllers.INVITADOHController.GetImagenCategoria (LigamaniaCoreApp)" in 233.9517ms
+2023-07-23 10:26:51.421 +02:00 [Information] Request finished in 321.0091ms 200 image/jpeg

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class HistoricoRepository : Repository<HistoricoDTO>, IHistoricoRepository
+    public class HistoricoRepository : BaseRepository<HistoricoDTO>, IHistoricoRepository
     {
         public HistoricoRepository(LigamaniaDbContext context)
             : base(context)
