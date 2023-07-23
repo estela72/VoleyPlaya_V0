@@ -34,6 +34,7 @@ namespace Ligamania.API.Lib.Services
         Task<string> CopiarJugadoresTemporada(string temporada);
         Task<string> CrearJugadorTemporada(Jugador jug);
         Task<string> HistorificarById(int id);
+        Task<string> CambiarJugadorTemporada(Jugador jug);
     }
     internal class TemporadaService : ITemporadaService
     {
@@ -377,6 +378,48 @@ namespace Ligamania.API.Lib.Services
                 }
             }
             return Task.CompletedTask;
+        }
+
+        public async Task<string> CambiarJugadorTemporada(Jugador jug)
+        {
+            string response;
+            var temporada = await GetTemporadaEnCurso();
+
+            var jugadorExistente = await _ligamaniaUnitOfWork.JugadorRepository.GetByNameAsync(jug.Nombre);
+            if (jugadorExistente == null)
+            {
+                return "El jugador " + jug.Nombre + " debe existir para poder cambiarlo";
+            }
+            else
+            {
+                // buscarlo en la temporada actual y darlo de baja del club y puesto donde esté
+                var tempJug = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.FindAsync(tj => tj.Temporada.Actual && tj.Jugador_ID.Equals(jugadorExistente.Id));
+                if (tempJug != null)
+                    tempJug.Activo = false;
+
+                // creamos el alta del jugador con el nuevo club y/o puesto en la temporada actual
+                var club = await _ligamaniaUnitOfWork.ClubRepository.GetByAliasAsync(jug.Club);
+                var puesto = await _ligamaniaUnitOfWork.PuestoRepository.GetByNameAsync(jug.Puesto);
+                var jt = new TemporadaJugadorDTO()
+                {
+                    Activo = true,
+                    Club = club,
+                    Puesto = puesto,
+                    Jugador = jugadorExistente,
+                    Eliminado = false,
+                    LastJornadaEliminacion = null,
+                    PreEliminado = false,
+                    Temporada = temporada,
+                    VecesEliminado = 0,
+                    VecesPreEliminado = 0
+                };
+                jt = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.AddAsyn(jt);
+            }
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                response = "Jugador " + jug.Nombre + " actualizado";
+            else
+                response = "Error al cambiar el jugador " + jug.Nombre;
+            return response;
         }
     }
 }
