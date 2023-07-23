@@ -30,7 +30,7 @@ namespace Ligamania.Repository.Models
         public bool CopiarAlineacionInicial { get; set; }
         public string CompeticionCopiarAliIni { get; set; }
         public int Orden { get; set; }
-        public int? Tipo { get; set; }
+        public TipoCompeticion? Tipo { get; set; }
 
         public virtual ICollection<AlineacionDTO> Alineacion { get; set; }
         public virtual ICollection<AlineacionHistoricoDTO> AlineacionHistorica { get; set; }

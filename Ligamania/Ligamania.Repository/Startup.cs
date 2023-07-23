@@ -73,6 +73,7 @@ namespace Ligamania.Repository
                     .AddScoped<ITemporadaCompeticionRepository, TemporadaCompeticionRepository>()
                     .AddScoped<ITemporadaJugadorRepository, TemporadaJugadorRepository>()
                     .AddScoped<IPuestoRepository, PuestoRepository>()
+                    .AddScoped<IHistoricoRepository, HistoricoRepository>()
                     ;
             
             // configure DI for UnitOfWork

@@ -4,7 +4,7 @@ using System;
 
 namespace Ligamania.Repository.Models
 {
-    public partial class TemporadaClasificacionDTO : Entity
+    public partial class TemporadaClasificacionDTO : BaseEntity
     {
         public int TemporadaId { get; set; }
         public int CompeticionId { get; set; }
@@ -21,6 +21,8 @@ namespace Ligamania.Repository.Models
         public int GolesContra { get; set; }
         public int Diferencia { get; set; }
         public int Puntos { get; set; }
+        public int GolesExtraFavor { get; set; }
+        public int GolesExtraContra { get; set; }
 
         public virtual CategoriaDTO Categoria { get; set; }
         public virtual CompeticionDTO Competicion { get; set; }

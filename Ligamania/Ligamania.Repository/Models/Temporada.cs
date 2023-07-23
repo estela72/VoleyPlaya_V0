@@ -33,7 +33,7 @@ namespace Ligamania.Repository.Models
 
         public bool Actual { get; set; }
         public string Estado { get; set; }
-
+        public bool Historificada { get; set; }
         ////[NotMapped]
         public byte[] Img_Clasificacion { get; set; }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class TemporadaCompeticionJornadaRepository : Repository<TemporadaCompeticionJornadaDTO>, ITemporadaCompeticionJornadaRepository
+    public class TemporadaCompeticionJornadaRepository : BaseRepository<TemporadaCompeticionJornadaDTO>, ITemporadaCompeticionJornadaRepository
     {
         public TemporadaCompeticionJornadaRepository(LigamaniaDbContext context)
             : base(context)

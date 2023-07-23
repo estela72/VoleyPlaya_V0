@@ -195,5 +195,26 @@ namespace Ligamania.Web.Controllers
             IEnumerable<CategoriaVM> categorias = await _temporadaService.GetCategorias(idTemporada, idCompeticion);
             return categorias;
         }
+        // GET: Temporada/Historificar/5
+        [HttpGet]
+        public async Task<IActionResult> Historificar(int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _temporadaService.HistorificarTemporadaById(id);
+                   
+                        return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception x)
+            {
+                TemporadaVM model = new TemporadaVM();
+                model.Set(true, x.Message);
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

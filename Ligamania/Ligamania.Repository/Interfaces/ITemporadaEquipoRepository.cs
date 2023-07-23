@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface ITemporadaEquipoRepository : IRepository<TemporadaEquipoDTO>
+    public interface ITemporadaEquipoRepository : IBaseRepository<TemporadaEquipoDTO>
     {
         Task<ICollection<TemporadaEquipoDTO>> GetEquiposCompeticion(TemporadaCompeticionDTO temporadaCompeticion);
 

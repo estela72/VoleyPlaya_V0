@@ -18,6 +18,7 @@ $(document).ready(function () {
                 },                { "orderable": "true", "data": "temporada" },
                 { "orderable": "true", "data": "estado" },
                 { "orderable": "true", "data": "actual" },
+                { "orderable": "true", "data": "historificada" },
                 {
                     "orderable": false,
                     "data": null,
@@ -35,6 +36,16 @@ $(document).ready(function () {
                     //edit button creation
                     "render": function (data, type, row) {
                         return createButton('edit', row.id);
+                    }
+                },
+                {
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": '',
+                    "width": "15px",
+                    //edit button creation
+                    "render": function (data, type, row) {
+                        return createButton('historia', row.id);
                     }
                 },
                 {

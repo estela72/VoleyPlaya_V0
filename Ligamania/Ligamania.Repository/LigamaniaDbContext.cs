@@ -24,9 +24,11 @@ namespace Ligamania.Repository
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder == null) return;
-            optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.EnableSensitiveDataLogging();
             // connect to sql server database
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
+            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection")
+                //,o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+                );
 
             base.OnConfiguring(optionsBuilder);
         }

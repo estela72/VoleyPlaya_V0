@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ligamania.Repository.Models
 {
-    public partial class TemporadaCompeticionJornadaDTO : Entity
+    public partial class TemporadaCompeticionJornadaDTO : BaseEntity
     {
         public TemporadaCompeticionJornadaDTO()
         {

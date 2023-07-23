@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface ITemporadaCompeticionJornadaRepository : IRepository<TemporadaCompeticionJornadaDTO>
+    public interface ITemporadaCompeticionJornadaRepository : IBaseRepository<TemporadaCompeticionJornadaDTO>
     {
         Task<TemporadaCompeticionJornadaDTO> GetLastJornada(int competicionId, string nombreTemporada = "");
 
