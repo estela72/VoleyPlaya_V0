@@ -23,8 +23,8 @@ namespace Ligamania.API.Lib.Helpers
                 ;
             CreateMap<User, Entrenador>()
                 .ForMember(e => e.Estado, opt => opt.MapFrom(src => 
-                    src.UserState == EstadoUsuario.Removed || src.UserState==EstadoUsuario.SinDefinir ? EstadoEntrenador.Baja : 
-                    src.UserState == EstadoUsuario.Confirmed ? EstadoEntrenador.Pendiente : EstadoEntrenador.Activo))
+                    (src.UserState == EstadoUsuario.Removed || src.UserState==EstadoUsuario.SinDefinir) ? EstadoEntrenador.Baja : 
+                        (src.UserState == EstadoUsuario.Confirmed) ? EstadoEntrenador.Activo : EstadoEntrenador.Pendiente))
                 .ForMember(e => e.Tipo, opt => opt.MapFrom(src => src.IsBot ? TipoEntrenador.Bot : src.UserName.ToLower().Contains("filial") ? TipoEntrenador.Invitado : TipoEntrenador.Regular))
                 .ReverseMap()
                 ;
@@ -34,8 +34,8 @@ namespace Ligamania.API.Lib.Helpers
             CreateMap<LigamaniaApplicationUser, Entrenador>()
                 .ForMember(e => e.Nombre, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(e => e.Estado, opt => opt.MapFrom(src =>
-                    src.UserState == EstadoUsuario.Removed || src.UserState == EstadoUsuario.SinDefinir ? EstadoEntrenador.Baja :
-                    src.UserState == EstadoUsuario.Confirmed ? EstadoEntrenador.Pendiente : EstadoEntrenador.Activo))
+                    (src.UserState == EstadoUsuario.Removed || src.UserState == EstadoUsuario.SinDefinir) ? EstadoEntrenador.Baja :
+                        (src.UserState == EstadoUsuario.Confirmed) ? EstadoEntrenador.Activo : EstadoEntrenador.Pendiente))
                 .ForMember(e => e.Tipo, opt => opt.MapFrom(src => src.IsBot ? TipoEntrenador.Bot : src.UserName.ToLower().Contains("filial") ? TipoEntrenador.Invitado : TipoEntrenador.Regular))
                .ReverseMap()
                 ;
