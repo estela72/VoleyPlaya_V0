@@ -5,6 +5,7 @@ using Ligamania.Web.Services;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using System;
@@ -161,6 +162,12 @@ namespace Ligamania.Web.Controllers
                     else
                         return RedirectToAction(nameof(Index));
                 }
+            }
+            catch (DbUpdateException)
+            {
+                JugadorVM model = new JugadorVM();
+                model.Set(true, "- Borrado de jugador. Para poder borrar un jugador, éste no debe haber estado activo en ninguna temporada");
+                return View(model);
             }
             catch (Exception x)
             {

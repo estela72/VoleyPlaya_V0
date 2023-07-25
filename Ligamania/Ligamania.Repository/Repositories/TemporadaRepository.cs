@@ -85,31 +85,42 @@ namespace Ligamania.Repository.Repositories
         {
             var t = this.DbSet.Where(t => t.Id.Equals(idTemporada))
                 .Include(t => t.TemporadaCompeticion)
-                .ThenInclude(tc => tc.Competicion);
-            return await t.SelectMany(t=>t.TemporadaCompeticion).ToListAsync();
+                .ThenInclude(tc => tc.Competicion)
+                .FirstOrDefault();
+            var competiciones = t.TemporadaCompeticion.DistinctBy(tc => tc.Id).ToList();
+            return competiciones;
         }
 
         public async Task<ICollection<TemporadaCompeticionCategoriaDTO>> GetCategoriasByTemporadaAndCompeticion(int idTemporada, int idCompeticion)
         {
             var t = this.DbSet.Where(t => t.Id.Equals(idTemporada))
                 .Include(t => t.TemporadaCompeticionCategoria)
-                .ThenInclude(tc => tc.Categoria);
-            return await t.SelectMany(t => t.TemporadaCompeticionCategoria.Where(tcc=>tcc.CompeticionId.Equals(idCompeticion))).ToListAsync();
+                    .ThenInclude(tc => tc.Categoria)
+                .FirstOrDefault();
+            var categorias = t.TemporadaCompeticionCategoria
+                .DistinctBy(tcc => tcc.Id)
+                .Where(tcc => tcc.CompeticionId.Equals(idCompeticion))
+                .ToList();
+            return categorias;
+            //return await t.SelectMany(t => t.TemporadaCompeticionCategoria.Where(tcc=>tcc.CompeticionId.Equals(idCompeticion))).ToListAsync();
         }
 
         public async Task<ICollection<TemporadaJugadorDTO>> GetJugadoresByTemporada(int idTemporada)
         {
-            var t = this.DbSet.Where(t => t.Id.Equals(idTemporada))
+            var t = await this.DbSet.Where(t => t.Id.Equals(idTemporada))
                 .Include(t => t.TemporadaJugador)
                     .ThenInclude(tj => tj.Club)
                 .Include(t => t.TemporadaJugador)
                     .ThenInclude(tj => tj.Puesto)
                 .Include(t => t.TemporadaJugador)
-                    .ThenInclude(tj=>tj.Jugador)
-                ;
-            var t1 = t.First();
-            var lista = await t.SelectMany(t => t.TemporadaJugador).ToListAsync();
-            return lista;
+                    .ThenInclude(tj => tj.Jugador)
+               .AsSplitQuery()
+                .FirstOrDefaultAsync();
+                    ;
+            var jugadores = t.TemporadaJugador.DistinctBy(tj => tj.Id).ToList();
+            //var t1 = t.First();
+            //var lista = await t.DistinctBy(t => t.Id).SelectMany(t => t.TemporadaJugador).ToListAsync();
+            return jugadores;
         }
 
         public async Task<ICollection<ClubDTO>> GetAllClubs(int idTemporada)

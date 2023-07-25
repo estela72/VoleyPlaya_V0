@@ -29,6 +29,8 @@ namespace Ligamania.Web.Controllers
             _hostingEnvironment = hostingEnvironment;
             _temporadaService = temporadaService;
             _preparacionService = preparacionService;
+            ViewBag.Club = string.Empty;
+            ViewBag.Puesto = string.Empty;
         }
         public IActionResult Clubs()
         {
@@ -41,8 +43,6 @@ namespace Ligamania.Web.Controllers
             //asignar un club y puesto por defecto
             var clubs = await _temporadaService.GetAllClubs();
             
-            ViewBag.Club = clubs.FirstOrDefault().Alias;
-            ViewBag.Puesto = Enum.GetNames<PuestoJugador>().FirstOrDefault();
             return View(model);
         }
         public async Task<IActionResult> getListaClubsTemporada()
@@ -59,12 +59,17 @@ namespace Ligamania.Web.Controllers
                 ViewBag.Club = string.IsNullOrEmpty(filtro.club) ? "": filtro.club;
                 ViewBag.Puesto = string.IsNullOrEmpty(filtro.puesto) ? "": filtro.puesto;
             }
+            //var prueba1 = jugadores.Where(j => j.Jugador.Equals("Morlanes")).ToList();
             if (filtro != null)
             { 
                 jugadores = string.IsNullOrEmpty(filtro.club) ? jugadores : jugadores.Where(j => j.Activo.Equals(SiNo.NO.ToString()) || (j.Activo.Equals(SiNo.SI.ToString()) && j.AliasClub.Equals(filtro.club)));
                 jugadores = string.IsNullOrEmpty(filtro.puesto) ? jugadores : jugadores.Where(j => j.Activo.Equals(SiNo.NO.ToString()) || (j.Activo.Equals(SiNo.SI.ToString()) && j.Puesto.Equals(filtro.puesto)));
             }
             jugadores = jugadores.OrderBy(c => c.AliasClub).ThenBy(c=>c.OrdenPuesto).ThenBy(c=>c.Jugador);
+
+            //var prueba = jugadores.Where(j => j.Jugador.Equals("Morlanes")).ToList();
+            //var prueba2 = jugadores.Where(j => j.Activo.Equals("NO")).ToList();
+
             return Json(jugadores);
         }
         public async Task<IActionResult> getListaJugadoresTemporadaClubPuesto(FiltroJugador filtro)
@@ -87,7 +92,7 @@ namespace Ligamania.Web.Controllers
         public async Task<IActionResult> getListaClubs()
         {
             IEnumerable<ClubVM> clubs = await _temporadaService.GetAllClubs();
-            clubs = clubs.OrderBy(t => t.Alias);
+            clubs = clubs.Where(c=>c.Baja.Equals("NO")).OrderBy(t => t.Alias);
             return Json(clubs);
         }
         public async Task<IActionResult> getListaPuestos()
@@ -167,7 +172,7 @@ namespace Ligamania.Web.Controllers
             try
             {
                 var res = await _temporadaService.UpdateJugadoresTemporada(jugadores);
-                messageResult = "Jugadores actualizados en la temporada actual";
+                messageResult = res;
             }
             catch (Exception x)
             {

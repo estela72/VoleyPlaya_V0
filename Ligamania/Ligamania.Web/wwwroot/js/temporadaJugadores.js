@@ -91,7 +91,7 @@ $(document).ready(function () {
     listJugadores.bootstrapDualListbox('eventRemoveAllOverride', true);
     listJugadores.bootstrapDualListbox('eventMoveOverride', true);
     listJugadores.bootstrapDualListbox('eventMoveAllOverride', true);
-
+    loadJugadores('', '');
     spinner.style.visibility = 'hidden'; //'visible'
 });
 
