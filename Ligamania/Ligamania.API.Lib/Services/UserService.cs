@@ -147,7 +147,7 @@ namespace Ligamania.API.Lib
             {
                 var user = await _ligamaniaUnitOfWork.UserManager.FindByNameAsync(userName);
                 var result = await _ligamaniaUnitOfWork.UserManager.AddToRoleAsync(user, newRol);
-                if (!result.Succeeded)
+                if (!result.Succeeded && !result.Errors.First().Code.Equals("UserAlreadyInRole"))
                     return new GenericResponse { Error = true, Message = "Error asignando el rol " + newRol + " al usuario " + userName };
                 if (newRol.Equals("Entrenador"))
                 {
