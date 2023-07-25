@@ -162,15 +162,20 @@ namespace Ligamania.API.Lib.Services
                 return new List<Jugador>();
             var jugadores = await _ligamaniaUnitOfWork.TemporadaRepository.GetJugadoresByTemporada(temporada.Id);
             var jugRepo = await _ligamaniaUnitOfWork.JugadorRepository.GetAllAsync();
-            var list1 = _mapper.Map<List<Jugador>>(jugadores);
-            var list2 = _mapper.Map<List<Jugador>>(jugRepo);
-
-            var list = list2;
-            foreach(var jugA in list1)
+            var jTemporada = _mapper.Map<List<Jugador>>(jugadores);
+            var jRepositorio = _mapper.Map<List<Jugador>>(jugRepo);
+            jTemporada = jTemporada.Where(j => j.Activo).ToList();
+            // nos quedamos con todos los jugadores del repositorio
+            // para los que están activos en la temporada actual, nos quedamos con el formato club-puesto-jugador
+            var list = jRepositorio;
+            foreach(var jugA in jTemporada)
             {
-                var v = list.Find(j => j.Nombre.Equals(jugA.Nombre));
-                list.Remove(v);
-                list.Add(jugA);
+                var v = jRepositorio.Find(j => j.Nombre.Equals(jugA.Nombre));
+                if (!jugA.Baja)
+                {
+                    list.Remove(v);
+                    list.Add(jugA);
+                }
             }
 
             return list;
@@ -178,6 +183,7 @@ namespace Ligamania.API.Lib.Services
 
         public async Task<string> UpdateJugadores(List<Jugador> listJugadores)
         {
+            bool alta = false;
             var temporada = await GetTemporadaEnCurso();
             if (temporada == null)
                 return "No hay temporada en curso";
@@ -185,38 +191,65 @@ namespace Ligamania.API.Lib.Services
             if (listJugadores.Count == 0)
                 return "No hay jugadores para dar de alta";
 
-
+            // club y puesto al que queremos mover todos los jugadores de la lista dándolos de alta en la temporada actual
+            // si ya existen en la temporada actual, se les activa únicamente
             var clubDto = await _ligamaniaUnitOfWork.ClubRepository.GetByAliasAsync(listJugadores.First().Club);
             var puestoDto = await _ligamaniaUnitOfWork.PuestoRepository.GetByNameAsync(listJugadores.First().Puesto);
             foreach (var jug in listJugadores)
             {
                 var jugadorDto = await _ligamaniaUnitOfWork.JugadorRepository.GetByNameAsync(jug.Nombre);
-                var jugExiste = await ExisteJugadorTemporada(jugadorDto, temporada);
-                if (jugExiste != null)
-                    await _ligamaniaUnitOfWork.TemporadaJugadorRepository.Baja(jugExiste);
+                var existentes = await ExisteJugadorTemporada(jugadorDto, temporada);
+                bool encontrado = false;
+                foreach(var j in existentes)
+                {
+                    if (jug.Activo && (clubDto == null || puestoDto == null))
+                        return "No se seleccionó club y puesto para realizar la operación";
 
-                if (jug.Activo)
-                {
-                    await _ligamaniaUnitOfWork.TemporadaJugadorRepository.Alta(jugadorDto, clubDto, puestoDto, temporada);
-                    await _ligamaniaUnitOfWork.JugadorRepository.Alta(jugadorDto);
+                    if (jug.Activo && j.Club.Id.Equals(clubDto.Id) && j.Puesto.Id.Equals(puestoDto.Id))
+                    {
+                        alta = true;
+                        j.Activo = true;
+                        encontrado = true;
+                        if (j.Activo) await _ligamaniaUnitOfWork.JugadorRepository.Alta(jugadorDto);
+                        else await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                    }
+                    else
+                    {
+                        alta = false;
+                        j.Activo = false;
+                        //if (j.Activo) await _ligamaniaUnitOfWork.JugadorRepository.Alta(jugadorDto);
+                        //else 
+                            await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                    }
                 }
-                else
+                if (!encontrado)
                 {
-                    await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                    if (jug.Activo)
+                    {
+                        alta = true;
+                        await _ligamaniaUnitOfWork.TemporadaJugadorRepository.Alta(jugadorDto, clubDto, puestoDto, temporada);
+                        await _ligamaniaUnitOfWork.JugadorRepository.Alta(jugadorDto);
+                    }
+                    else
+                    {
+                        alta = false;
+                        await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                    }
                 }
             }
 
             await _ligamaniaUnitOfWork.SaveEntitiesAsync();
-            string response = "Jugadores dados de alta correctamente";
+            string response = alta ? "Jugadores dados de alta": "Jugadores dados de baja";
             return response;
         }
 
-        private async Task<TemporadaJugadorDTO> ExisteJugadorTemporada(JugadorDTO jugadorDto, TemporadaDTO temporada)
+        private async Task<IEnumerable<TemporadaJugadorDTO>> ExisteJugadorTemporada(JugadorDTO jugadorDto, TemporadaDTO temporada)
         {
-            var existe = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.ExistsAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugadorDto.Id));
-            if (existe)
-                return await _ligamaniaUnitOfWork.TemporadaJugadorRepository.FindAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugadorDto.Id));
-            return null;
+            //var existe = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.ExistsAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugadorDto.Id));
+            //if (existe)
+                return await _ligamaniaUnitOfWork.TemporadaJugadorRepository
+                    .FindAllIncludingAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugadorDto.Id), tj=>tj.Club, tj=>tj.Puesto);
+            //return null;
         }
 
         public async Task<string> CopiarJugadoresTemporada(string temporada)
@@ -393,27 +426,46 @@ namespace Ligamania.API.Lib.Services
             else
             {
                 // buscarlo en la temporada actual y darlo de baja del club y puesto donde esté
-                var tempJug = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.FindAsync(tj => tj.Temporada.Actual && tj.Jugador_ID.Equals(jugadorExistente.Id));
-                if (tempJug != null)
-                    tempJug.Activo = false;
+                var tempJug = await _ligamaniaUnitOfWork.TemporadaJugadorRepository
+                    .FindAllIncludingAsync(tj => tj.Temporada.Actual && tj.Jugador_ID.Equals(jugadorExistente.Id), tj=>tj.Club, tj=>tj.Puesto);
 
-                // creamos el alta del jugador con el nuevo club y/o puesto en la temporada actual
+                // club y puesto al que se quiere cambiar el jugador
                 var club = await _ligamaniaUnitOfWork.ClubRepository.GetByAliasAsync(jug.Club);
                 var puesto = await _ligamaniaUnitOfWork.PuestoRepository.GetByNameAsync(jug.Puesto);
-                var jt = new TemporadaJugadorDTO()
+
+                // todos los jugadores que encuentre, si ninguno es del club y puesto al que se quiere cambiar, los damos de baja
+                // y si es del mismo club y puesto lo activamos nuevamente
+                bool encontrado = false;
+                foreach (var tjug in tempJug)
                 {
-                    Activo = true,
-                    Club = club,
-                    Puesto = puesto,
-                    Jugador = jugadorExistente,
-                    Eliminado = false,
-                    LastJornadaEliminacion = null,
-                    PreEliminado = false,
-                    Temporada = temporada,
-                    VecesEliminado = 0,
-                    VecesPreEliminado = 0
-                };
-                jt = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.AddAsyn(jt);
+                    if (tjug.Club.Id.Equals(club.Id) && tjug.Puesto.Id.Equals(puesto.Id))
+                    {
+                        tjug.Activo = true;
+                        encontrado = true;
+                    }
+                    else
+                        tjug.Activo = false;
+                }
+                jugadorExistente.Baja = false;
+                // si no lo encontramos en la temporada actual, lo damos de alta
+                if (!encontrado)
+                {
+                    // creamos el alta del jugador con el nuevo club y/o puesto en la temporada actual
+                    var jt = new TemporadaJugadorDTO()
+                    {
+                        Activo = true,
+                        Club = club,
+                        Puesto = puesto,
+                        Jugador = jugadorExistente,
+                        Eliminado = false,
+                        LastJornadaEliminacion = null,
+                        PreEliminado = false,
+                        Temporada = temporada,
+                        VecesEliminado = 0,
+                        VecesPreEliminado = 0
+                    };
+                    jt = await _ligamaniaUnitOfWork.TemporadaJugadorRepository.AddAsyn(jt);
+                }
             }
             if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
                 response = "Jugador " + jug.Nombre + " actualizado";
