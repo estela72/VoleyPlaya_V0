@@ -4,7 +4,7 @@ using Ligamania.Repository.Models;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface ITemporadaPremiosPuestoRepository : IRepository<TemporadaPremiosPuestoDTO>
+    public interface ITemporadaPremiosPuestoRepository : IBaseRepository<TemporadaPremiosPuestoDTO>
     {
     }
 }

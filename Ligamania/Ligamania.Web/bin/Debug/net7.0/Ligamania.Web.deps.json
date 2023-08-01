@@ -17,7 +17,8 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "7.0.7",
           "NPOI": "2.6.0",
           "X.PagedList.Mvc.Core": "8.4.7",
-          "bootstrap": "5.3.0"
+          "bootstrap": "5.3.0",
+          "datatables.net-bs5": "1.13.5"
         },
         "runtime": {
           "Ligamania.Web.dll": {}
@@ -87,6 +88,17 @@
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.2.1.47552"
           }
+        }
+      },
+      "datatables.net/1.12.1": {
+        "dependencies": {
+          "jQuery": "1.7.0"
+        }
+      },
+      "datatables.net-bs5/1.13.5": {
+        "dependencies": {
+          "bootstrap": "5.3.0",
+          "datatables.net": "1.12.1"
         }
       },
       "Enums.NET/4.0.0": {
@@ -646,6 +658,7 @@
           }
         }
       },
+      "jQuery/1.7.0": {},
       "MailKit/4.1.0": {
         "dependencies": {
           "MimeKit": "4.1.0"
@@ -2965,6 +2978,20 @@
       "path": "bouncycastle.cryptography/2.2.1",
       "hashPath": "bouncycastle.cryptography.2.2.1.nupkg.sha512"
     },
+    "datatables.net/1.12.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7ArWbq7HCVj6uciLXUoFlW1ZvfYNbCPxFnniAjD4NKb/iAsTYWGZYRjdH3Ir8+0N8rR6muPTF5nZ4Mqf1nUn9A==",
+      "path": "datatables.net/1.12.1",
+      "hashPath": "datatables.net.1.12.1.nupkg.sha512"
+    },
+    "datatables.net-bs5/1.13.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VlUIqyYS6Lvi+y80nB9a1Iop97L2ERLUTI5lKwpV6/Yb37bjhi28h0BeNNl8Zq886vQHpIkmVXU5p4Agl2rhBg==",
+      "path": "datatables.net-bs5/1.13.5",
+      "hashPath": "datatables.net-bs5.1.13.5.nupkg.sha512"
+    },
     "Enums.NET/4.0.0": {
       "type": "package",
       "serviceable": true,
@@ -3335,6 +3362,13 @@
       "sha512": "sha512-11nsS3+lFICGkztVs9PP2NRItxf9fF+qD6xEW/T0YGto52zj07wseUeBdMAU1ah9HNVTDZyRC1u4NWdtJScwhw==",
       "path": "jetbrains.annotations/2022.3.1",
       "hashPath": "jetbrains.annotations.2022.3.1.nupkg.sha512"
+    },
+    "jQuery/1.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UEZuBreHZNLao3z9zNPeSadyoPwKDP/5kFh+Mn1Pm9ZS0czk7bv0O6RreloGSIMAfTLZCiigNkuPb2bXKtUM+g==",
+      "path": "jquery/1.7.0",
+      "hashPath": "jquery.1.7.0.nupkg.sha512"
     },
     "MailKit/4.1.0": {
       "type": "package",

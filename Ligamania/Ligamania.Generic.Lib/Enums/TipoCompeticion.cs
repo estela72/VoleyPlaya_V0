@@ -1,4 +1,6 @@
-﻿namespace Ligamania.Generic.Lib.Enums
+﻿using System.Collections.Generic;
+
+namespace Ligamania.Generic.Lib.Enums
 {
     public enum TipoCompeticion
     {

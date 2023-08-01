@@ -8,6 +8,7 @@ using Ligamania.Generic.Lib.Enums;
 using Ligamania.Web.Models;
 using Ligamania.Web.Models.Club;
 using Ligamania.Web.Models.Competicion;
+using Ligamania.Web.Models.Contabilidad;
 using Ligamania.Web.Models.Jugador;
 using Ligamania.Web.Models.Temporada;
 
@@ -18,12 +19,12 @@ namespace Ligamania.Web.Helpers
         // mappings between model and entity objects
         public AutoMapperProfile()
         {
-            
+
             CreateMap<Equipo, EquipoVM>()
                 .ReverseMap()
                 ;
             CreateMap<Entrenador, EntrenadorVM>()
-                .ForMember(e=>e.Equipos, opt=>opt.MapFrom(src => src.Equipos))
+                .ForMember(e => e.Equipos, opt => opt.MapFrom(src => src.Equipos))
                 .ReverseMap()
                 ;
             CreateMap<User, UserVM>()
@@ -67,12 +68,12 @@ namespace Ligamania.Web.Helpers
                 .ReverseMap()
                 ;
             CreateMap<Competicion, CompeticionVM>()
-                .ForMember(e => e.Competicion, opt=>opt.MapFrom(src => src.Nombre))
+                .ForMember(e => e.Competicion, opt => opt.MapFrom(src => src.Nombre))
                 .ForMember(e => e.AliInicial, opt => opt.MapFrom(src => src.CompeticionCopiarAliIni))
-                .ForMember(e => e.CopiarAliIni, opt => opt.MapFrom(src => src.CopiarAlineacionInicial? SiNo.SI.ToString() : SiNo.NO.ToString()))
-                .ForMember(e => e.RepetirClub, opt => opt.MapFrom(src => src.RepetirClubAliIni? SiNo.SI.ToString() : SiNo.NO.ToString()))
+                .ForMember(e => e.CopiarAliIni, opt => opt.MapFrom(src => src.CopiarAlineacionInicial ? SiNo.SI.ToString() : SiNo.NO.ToString()))
+                .ForMember(e => e.RepetirClub, opt => opt.MapFrom(src => src.RepetirClubAliIni ? SiNo.SI.ToString() : SiNo.NO.ToString()))
                 .ForMember(e => e.Tipo, opt => opt.MapFrom(src => src.Tipo.ToString()))
-                .ForMember(e => e.Activa, opt => opt.MapFrom(src => src.Activa?SiNo.SI.ToString():SiNo.NO.ToString()))
+                .ForMember(e => e.Activa, opt => opt.MapFrom(src => src.Activa ? SiNo.SI.ToString() : SiNo.NO.ToString()))
                 .ReverseMap()
                 .ForMember(e => e.CopiarAlineacionInicial, opt => opt.MapFrom(src => src.CopiarAliIni.Equals(SiNo.SI.ToString())))
                 .ForMember(e => e.RepetirClubAliIni, opt => opt.MapFrom(src => src.RepetirClub.Equals(SiNo.SI.ToString())))
@@ -103,7 +104,7 @@ namespace Ligamania.Web.Helpers
                 .ForMember(c => c.Activo, opt => opt.MapFrom(src => src.Activo.Equals(SiNo.SI.ToString())))
                 ;
             CreateMap<Calendario, CalendarioVM>()
-                .ForMember(c => c.Calendario, opt =>opt.MapFrom(src => src.Nombre))
+                .ForMember(c => c.Calendario, opt => opt.MapFrom(src => src.Nombre))
                 .ForMember(a => a.Partidos, map => map.MapFrom(src => src.Partidos))
                 .ReverseMap()
                 ;
@@ -132,12 +133,31 @@ namespace Ligamania.Web.Helpers
                 ;
             CreateMap<Temporada, TemporadaVM>()
                 .ForMember(e => e.Temporada, opt => opt.MapFrom(src => src.Nombre))
-                .ForMember(e => e.Actual, opt => opt.MapFrom(src => src.Actual ? SiNo.SI.ToString():SiNo.NO.ToString()))
+                .ForMember(e => e.Actual, opt => opt.MapFrom(src => src.Actual ? SiNo.SI.ToString() : SiNo.NO.ToString()))
                 .ForMember(e => e.Historificada, opt => opt.MapFrom(src => src.Historificada ? SiNo.SI.ToString() : SiNo.NO.ToString()))
                 .ReverseMap()
                 .ForMember(e => e.Actual, opt => opt.MapFrom(src => src.Actual.Equals(SiNo.SI.ToString())))
                 .ForMember(e => e.Historificada, opt => opt.MapFrom(src => src.Historificada.Equals(SiNo.SI.ToString())))
                 ;
+            CreateMap<ContabilidadDto, ConceptoContabilidad>()
+                .ForMember(c => c.PorEquipo, opt => opt.MapFrom(src => src.PorEquipo ? SiNo.SI.ToString() : SiNo.NO.ToString()))
+                .ForMember(c => c.ConcGasto, opt => opt.MapFrom(src => src.Gasto ? src.Valor : 0))
+                .ForMember(c => c.ConcIngreso, opt => opt.MapFrom(src => src.Gasto ? 0 : src.Valor))
+                .ReverseMap()
+                .ForMember(e => e.PorEquipo, opt => opt.MapFrom(src => src.PorEquipo.Equals(SiNo.SI.ToString())))
+                .ForMember(e => e.Valor, opt => opt.MapFrom(src => src.ConcGasto != 0 ? src.ConcGasto : src.ConcIngreso))
+                .ForMember(e => e.Gasto, opt => opt.MapFrom(src => src.ConcGasto != 0 ? true : false))
+                ;
+            CreateMap<PremioDto, PremioContabilidadVM>()
+                .ForMember(p => p.Categoria, opt => opt.MapFrom(src => src.Categoria.Equals("Sin Categoria") ? "" : src.Categoria))
+                .ForMember(p => p.PuestoStr, opt => opt.MapFrom(src =>
+                        src.Puesto.Equals(PuestoCompeticion.Primero) ? "Campeón" :
+                        src.Puesto.Equals(PuestoCompeticion.Segundo) ? "Subcampeón" :
+                        src.Puesto.Equals(PuestoCompeticion.Tercero) ? "Tercero" :
+                        src.Puesto.Equals(PuestoCompeticion.Pichichi) ? "Pichichi" : ""))
+                ;
+
+            CreateMap<PremioContabilidadVM, PremioDto>();
         }
     }
 }

@@ -4,6 +4,7 @@ using General.CrossCutting.Lib.Enums;
 
 using Ligamania.Generic.Lib.Enums;
 using Ligamania.Web.Models.Club;
+using Ligamania.Web.Models.Contabilidad;
 using Ligamania.Web.Models.Jugador;
 using Ligamania.Web.Models.Temporada;
 using Ligamania.Web.Services;
@@ -59,15 +60,20 @@ namespace Ligamania.Web.Controllers
                 ViewBag.Club = string.IsNullOrEmpty(filtro.club) ? "": filtro.club;
                 ViewBag.Puesto = string.IsNullOrEmpty(filtro.puesto) ? "": filtro.puesto;
             }
-            //var prueba1 = jugadores.Where(j => j.Jugador.Equals("Morlanes")).ToList();
+            //var prueba1 = jugadores.Where(j => j.Jugador.Equals("Nolito")).ToList();
             if (filtro != null)
-            { 
+            {
                 jugadores = string.IsNullOrEmpty(filtro.club) ? jugadores : jugadores.Where(j => j.Activo.Equals(SiNo.NO.ToString()) || (j.Activo.Equals(SiNo.SI.ToString()) && j.AliasClub.Equals(filtro.club)));
                 jugadores = string.IsNullOrEmpty(filtro.puesto) ? jugadores : jugadores.Where(j => j.Activo.Equals(SiNo.NO.ToString()) || (j.Activo.Equals(SiNo.SI.ToString()) && j.Puesto.Equals(filtro.puesto)));
             }
+            //if (filtro != null)
+            //{
+            //    jugadores = string.IsNullOrEmpty(filtro.club) ? jugadores : jugadores.Where(j => j.AliasClub.Equals(filtro.club));
+            //    jugadores = string.IsNullOrEmpty(filtro.puesto) ? jugadores : jugadores.Where(j => j.Puesto.Equals(filtro.puesto));
+            //}
             jugadores = jugadores.OrderBy(c => c.AliasClub).ThenBy(c=>c.OrdenPuesto).ThenBy(c=>c.Jugador);
 
-            //var prueba = jugadores.Where(j => j.Jugador.Equals("Morlanes")).ToList();
+            //var prueba = jugadores.Where(j => j.Jugador.Equals("Nolito")).ToList();
             //var prueba2 = jugadores.Where(j => j.Activo.Equals("NO")).ToList();
 
             return Json(jugadores);
@@ -249,6 +255,5 @@ namespace Ligamania.Web.Controllers
             var result = new JsonResult(messageResult);
             return result;
         }
-        
     }
 }

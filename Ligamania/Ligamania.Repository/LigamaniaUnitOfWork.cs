@@ -30,6 +30,9 @@ namespace Ligamania.Repository
         ITemporadaJugadorRepository TemporadaJugadorRepository { get; }
         IPuestoRepository PuestoRepository { get; }
         IHistoricoRepository HistoricoRepository { get; }
+        ITemporadaContabilidadRepository TemporadaContabilidadRepository { get; }
+        ITemporadaPremiosRepository TemporadaPremiosRepository { get; }
+        ITemporadaPremiosPuestoRepository TemporadaPremiosPuestoRepository { get; }
     }
 
     public class LigamaniaUnitOfWork : UnitOfWork, ILigamaniaUnitOfWork
@@ -53,6 +56,11 @@ namespace Ligamania.Repository
 
         public IHistoricoRepository HistoricoRepository { get; private set; }
 
+        public ITemporadaContabilidadRepository TemporadaContabilidadRepository {get; private set; }
+
+        public ITemporadaPremiosRepository TemporadaPremiosRepository { get; private set; }
+        public ITemporadaPremiosPuestoRepository TemporadaPremiosPuestoRepository { get; private set; }
+
         public LigamaniaUnitOfWork(IConfiguration configuration
             , LigamaniaDbContext context
             , ILoggerFactory loggerFactory
@@ -73,6 +81,9 @@ namespace Ligamania.Repository
             , ITemporadaJugadorRepository temporadaJugadorRepository
             , IPuestoRepository puestoRepository
             , IHistoricoRepository historicoRepository
+            , ITemporadaContabilidadRepository temporadaContabilidadRepository
+            , ITemporadaPremiosRepository temporadaPremiosRepository
+            , ITemporadaPremiosPuestoRepository temporadaPremiosPuestoRepository
             )
             : base(configuration, context, loggerFactory)
         {
@@ -93,6 +104,9 @@ namespace Ligamania.Repository
             TemporadaJugadorRepository = temporadaJugadorRepository;
             PuestoRepository = puestoRepository;
             HistoricoRepository = historicoRepository;
+            TemporadaContabilidadRepository = temporadaContabilidadRepository;
+            TemporadaPremiosRepository = temporadaPremiosRepository;
+            TemporadaPremiosPuestoRepository = temporadaPremiosPuestoRepository;
         }
     }
 }

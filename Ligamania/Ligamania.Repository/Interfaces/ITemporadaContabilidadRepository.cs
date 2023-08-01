@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface ITemporadaContabilidadRepository : IRepository<TemporadaContabilidadDTO>
+    public interface ITemporadaContabilidadRepository : IBaseRepository<TemporadaContabilidadDTO>
     {
         Task<ICollection<TemporadaContabilidadDTO>> GetContabilidadByTemporada(int id);
+        Task<ICollection<TemporadaContabilidadDTO>> GetContabilidades();
     }
 }

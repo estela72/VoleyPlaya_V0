@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class TemporadaPremiosRepository : Repository<TemporadaPremiosDTO>, ITemporadaPremiosRepository
+    public class TemporadaPremiosRepository : BaseRepository<TemporadaPremiosDTO>, ITemporadaPremiosRepository
     {
         public TemporadaPremiosRepository(LigamaniaDbContext context) : base(context)
         {
@@ -27,7 +27,7 @@ namespace Ligamania.Repository.Repositories
                     .Include(tp => tp.Categoria).ThenInclude(tcc => tcc.Categoria)
                     .Include(tp => tp.TemporadaPremiosPuesto)
                     ;
-                return await premios.ToListAsync().ConfigureAwait(false);
+                return await premios.ToListAsync();
             }
             return null;
         }
