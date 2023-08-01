@@ -1,0 +1,37 @@
+﻿@model ContabilidadListVM
+
+@{
+
+    ViewData["Title"] = "Contabilidades";
+    var contabilidades = Model.Contabilidad;
+    var primera = contabilidades.FirstOrDefault();
+    var col = "collapse";
+    if (Model.Error) { col = "show"; }
+    var colHor = String.Concat(col, " collapse-horizontal");
+}
+
+@*<div class="card m-3 card-filter p-2">
+    @await Html.PartialAsync("CreateContabilidad", primera)
+</div>*@
+
+<div class="container-fluid">
+    <h4>Contabilidad de cada temporada</h4>
+    <table id="tbContabilidad"  class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Contabilidad</th>
+                <th>Nº de Equipos</th>
+                <th>Gastos</th>
+                <th>Ingresos</th>
+                <th>Premios</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/contabilidad.js"></script>
+}

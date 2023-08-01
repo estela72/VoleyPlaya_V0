@@ -5,7 +5,7 @@ using Ligamania.Repository.Models;
 
 namespace Ligamania.Repository.Repositories
 {
-    public class TemporadaPremiosPuestoRepository : Repository<TemporadaPremiosPuestoDTO>, ITemporadaPremiosPuestoRepository
+    public class TemporadaPremiosPuestoRepository : BaseRepository<TemporadaPremiosPuestoDTO>, ITemporadaPremiosPuestoRepository
     {
         public TemporadaPremiosPuestoRepository(LigamaniaDbContext context) : base(context)
         {

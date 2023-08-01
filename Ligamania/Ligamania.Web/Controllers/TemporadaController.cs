@@ -183,7 +183,7 @@ namespace Ligamania.Web.Controllers
         public async Task<IActionResult> getListaCompeticiones(int idTemporada)
         {
             IEnumerable<CompeticionVM> competiciones = await _temporadaService.GetCompeticiones(idTemporada);
-            foreach(var comp in competiciones)
+            foreach (var comp in competiciones)
             {
                 var categorias = await getListaCategorias(idTemporada, comp.Id);
                 comp.AddCategorias(categorias);

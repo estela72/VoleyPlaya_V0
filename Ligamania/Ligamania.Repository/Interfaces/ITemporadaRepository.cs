@@ -28,5 +28,6 @@ namespace Ligamania.Repository.Interfaces
         Task<ICollection<TemporadaJugadorDTO>> GetJugadoresByTemporada(int id);
         Task<ICollection<ClubDTO>> GetAllClubs(int idTemporada);
         Task<TemporadaDTO> GetTemporadaHistorificarAsync(int id);
+        Task<TemporadaDTO> GetTemporadaClasificacionAsync(string nombre);
     }
 }

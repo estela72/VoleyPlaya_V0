@@ -177,6 +177,22 @@
       "PackagePath": "staticwebassets\\js\\bootstrap.min.js.map"
     },
     {
+      "Id": "C:\\Users\\egonz\\.nuget\\packages\\datatables.net-bs5\\1.13.5\\contentFiles\\any\\any\\wwwroot\\css\\dataTables.bootstrap5.css",
+      "PackagePath": "staticwebassets\\css\\dataTables.bootstrap5.css"
+    },
+    {
+      "Id": "C:\\Users\\egonz\\.nuget\\packages\\datatables.net-bs5\\1.13.5\\contentFiles\\any\\any\\wwwroot\\css\\dataTables.bootstrap5.min.css",
+      "PackagePath": "staticwebassets\\css\\dataTables.bootstrap5.min.css"
+    },
+    {
+      "Id": "C:\\Users\\egonz\\.nuget\\packages\\datatables.net-bs5\\1.13.5\\contentFiles\\any\\any\\wwwroot\\js\\dataTables.bootstrap5.js",
+      "PackagePath": "staticwebassets\\js\\dataTables.bootstrap5.js"
+    },
+    {
+      "Id": "C:\\Users\\egonz\\.nuget\\packages\\datatables.net-bs5\\1.13.5\\contentFiles\\any\\any\\wwwroot\\js\\dataTables.bootstrap5.min.js",
+      "PackagePath": "staticwebassets\\js\\dataTables.bootstrap5.min.js"
+    },
+    {
       "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\Upload\\Calendario pretemporada 3 jornadas.xlsx",
       "PackagePath": "staticwebassets\\Upload\\Calendario pretemporada 3 jornadas.xlsx"
     },
@@ -209,6 +225,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\extensions\\Editor\\js\\dataTables.editor.min.js",
+      "PackagePath": "staticwebassets\\extensions\\Editor\\js\\dataTables.editor.min.js"
+    },
+    {
       "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
@@ -235,6 +255,22 @@
     {
       "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\competicion.js",
       "PackagePath": "staticwebassets\\js\\competicion.js"
+    },
+    {
+      "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\contabilidad-nested.js",
+      "PackagePath": "staticwebassets\\js\\contabilidad-nested.js"
+    },
+    {
+      "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\contabilidad-no.js",
+      "PackagePath": "staticwebassets\\js\\contabilidad-no.js"
+    },
+    {
+      "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\contabilidad.js",
+      "PackagePath": "staticwebassets\\js\\contabilidad.js"
+    },
+    {
+      "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\dataTables.rowsGroup.js",
+      "PackagePath": "staticwebassets\\js\\dataTables.rowsGroup.js"
     },
     {
       "Id": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\wwwroot\\js\\documento.js",

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HVApeukAWy1cwLhln9pjnQbjNlH7yhGc9bfppYK1O7g07Dx2P7mttzkp8yric2pN+xS8DJpQ7Z1xm7hAldrK3g==",
+  "dgSpecHash": "4R1teDnSvyLEyS9pMK0BLDLX84rEOogYch+wvtlTvJUVDcqFtm5Cd30TfHoWBqYdERENa0Fng+3lwCNNTtoY7w==",
   "success": true,
   "projectFilePath": "D:\\srcRepository\\ProyectosEstela\\Ligamania\\Ligamania.Web\\Ligamania.Web.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,8 @@
     "C:\\Users\\egonz\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\bootstrap\\5.3.0\\bootstrap.5.3.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
+    "C:\\Users\\egonz\\.nuget\\packages\\datatables.net\\1.12.1\\datatables.net.1.12.1.nupkg.sha512",
+    "C:\\Users\\egonz\\.nuget\\packages\\datatables.net-bs5\\1.13.5\\datatables.net-bs5.1.13.5.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\enums.net\\4.0.0\\enums.net.4.0.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\font.awesome\\5.15.4\\font.awesome.5.15.4.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
@@ -63,6 +65,7 @@
     "C:\\Users\\egonz\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\jetbrains.annotations\\2022.3.1\\jetbrains.annotations.2022.3.1.nupkg.sha512",
+    "C:\\Users\\egonz\\.nuget\\packages\\jquery\\1.7.0\\jquery.1.7.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\mailkit\\4.1.0\\mailkit.4.1.0.nupkg.sha512",
     "C:\\Users\\egonz\\.nuget\\packages\\mathnet.numerics.signed\\4.15.0\\mathnet.numerics.signed.4.15.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

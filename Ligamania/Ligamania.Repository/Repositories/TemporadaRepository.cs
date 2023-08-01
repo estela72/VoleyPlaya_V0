@@ -145,7 +145,17 @@ namespace Ligamania.Repository.Repositories
                .FirstOrDefaultAsync();
             return t;
         }
-
+        public async Task<TemporadaDTO> GetTemporadaClasificacionAsync(string nombre)
+        {
+            var t = await this.DbSet.Where(t => t.Nombre.Equals(nombre))
+                .Include(t => t.TemporadaClasificacion).ThenInclude(tc=>tc.Competicion)
+                .Include(t => t.TemporadaClasificacion).ThenInclude(tc => tc.Categoria)
+                .Include(t => t.TemporadaCompeticionJornada).ThenInclude(tcj=>tcj.Competicion)
+                .Include(t => t.TemporadaEquipo).ThenInclude(te=>te.Equipo)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync();
+            return t;
+        }
         
     }
 }

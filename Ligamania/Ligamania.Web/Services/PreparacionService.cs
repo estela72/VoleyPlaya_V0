@@ -5,6 +5,7 @@ using Ligamania.API.Lib.Services;
 using Ligamania.Web.Models;
 using Ligamania.Web.Models.Club;
 using Ligamania.Web.Models.Competicion;
+using Ligamania.Web.Models.Contabilidad;
 using Ligamania.Web.Models.Jugador;
 
 using System;
@@ -48,6 +49,11 @@ namespace Ligamania.Web.Services
         Task<DocumentoVM> CreateDocumento(DocumentoVM documento);
         Task<DocumentoVM> DeleteDocumentoById(int id);
         Task<DocumentoVM> UpdateDocumento(int id, DocumentoVM documento);
+        Task<IEnumerable<ContabilidadVM>> GetContabilidades();
+        Task<string> UpdateContabilidadTemporadaAsync(ConceptoContabilidad contabilidad);
+        Task<string> RemoveContabilidadTemporada(int id);
+        Task<string> UpdatePremioTemporadaAsync(PremioContabilidadVM premio);
+        Task<string> RemovePremioTemporada(int id);
     }
     public class PreparacionService : IPreparacionService
     {
@@ -60,6 +66,7 @@ namespace Ligamania.Web.Services
         private readonly ICalendarioService _calendarioService;
         private readonly IDocumentService _documentService;
         private readonly IParametrosService _parametrosService;
+        private readonly ITemporadaService _temporadaService;
 
         public PreparacionService(
             ILocalStorageService localStorageService
@@ -70,6 +77,7 @@ namespace Ligamania.Web.Services
             , ICalendarioService calendarioService
             , IDocumentService documentService
             , IParametrosService parametrosService
+            , ITemporadaService temporadaService
         )
         {
             _localStorageService = localStorageService;
@@ -80,6 +88,7 @@ namespace Ligamania.Web.Services
             _calendarioService = calendarioService;
             _documentService = documentService;
             _parametrosService = parametrosService;
+            _temporadaService = temporadaService;
         }
 
         public async Task<IEnumerable<CompeticionVM>> GetAllCompeticiones()
@@ -283,6 +292,49 @@ namespace Ligamania.Web.Services
             var param = _mapper.Map<Parametro>(parametro);
             var parametroUpdated = await _parametrosService.UpdateParametros(param);
             return _mapper.Map<ParametroVM>(parametroUpdated);
+        }
+
+        public async Task<IEnumerable<ContabilidadVM>> GetContabilidades()
+        {
+            List<ContabilidadVM> lista = new List<ContabilidadVM>();
+            var list = await _temporadaService.GetContabilidades();
+            var temporadas = list.Select(c => c.Temporada).Distinct();
+            foreach (var temporada in temporadas)
+            {
+                var conceptos = list.Where(c => c.Temporada.Equals(temporada)).ToList();
+                var premios = await _temporadaService.GetPremiosTemporadaAsync(temporada);
+                var contabilidad = new ContabilidadVM
+                {
+                    Temporada = temporada,
+                    Equipos = conceptos.First().Equipos,
+                    Conceptos = _mapper.Map<List<ConceptoContabilidad>>(conceptos),
+                    RepartoPremios = _mapper.Map<List<PremioContabilidadVM>>(premios)
+                };
+                lista.Add(contabilidad);
+            }
+            return lista;
+        }
+
+        public async Task<string> UpdateContabilidadTemporadaAsync(ConceptoContabilidad contabilidad)
+        {
+            var concepto = _mapper.Map<ContabilidadDto>(contabilidad);
+            var updated = await _temporadaService.UpdateConceptoContabilidad(concepto);
+            return updated;
+        }
+
+        public async Task<string> RemoveContabilidadTemporada(int id)
+        {
+            return await _temporadaService.RemoveConceptoContabilidad(id);
+        }
+
+        public async Task<string> UpdatePremioTemporadaAsync(PremioContabilidadVM premio)
+        {
+            return await _temporadaService.UpdatePremioTemporadaAsync(_mapper.Map<PremioDto>(premio));
+        }
+
+        public async Task<string> RemovePremioTemporada(int id)
+        {
+            return await _temporadaService.RemovePremioTemporadaAsynd(id);
         }
     }
 }
