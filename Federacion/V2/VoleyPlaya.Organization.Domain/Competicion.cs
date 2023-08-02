@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GenericLib;
 
-using VoleyPlaya.Organization.Domain.Common;
+using System;
+using System.Collections.Generic;
 
 namespace VoleyPlaya.Organization.Domain;
 
-public partial class Competicion : IAggregateRoot
+public partial class Competicion : BaseDomain, IAggregateRoot
 {
-    public int Id { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public DateTime UpdatedDate { get; set; }
-
-    public string? CreatedBy { get; set; }
-
-    public string? UpdatedBy { get; set; }
-
     public string? Nombre { get; set; }
-
-    //public virtual ICollection<Edicione> Ediciones { get; set; } = new List<Edicione>();
 }
