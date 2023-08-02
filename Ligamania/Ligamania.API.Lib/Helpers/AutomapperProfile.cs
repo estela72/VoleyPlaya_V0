@@ -94,7 +94,7 @@ namespace Ligamania.API.Lib.Helpers
                 .ForMember(a => a.VerRotuloCopa, map => map.MapFrom(src => true))
                 .ForMember(a => a.AvisoClasificaciones, map => map.MapFrom(src => src.NotificacionClasificaciones))
                 .ForMember(a => a.NumJorVueltaJugadorEliminado, map=>map.MapFrom(src => src.NumeroJornadasVolverEliminados))
-                .ForMember(a =>a.RotuloCopa, map => map.MapFrom(src => src.TemporadaPremios))
+                .ForMember(a => a.RotuloCopa, map => map.MapFrom(src => src.TemporadaPremios))
                 .ReverseMap()
                 ;
 
@@ -102,7 +102,21 @@ namespace Ligamania.API.Lib.Helpers
                 .ForMember(a => a.Clasificacion, map => map.MapFrom(src => src.Img_Clasificacion))
                 .ReverseMap()
                 ;
-
+            CreateMap<TemporadaContabilidadDTO, ContabilidadDto>()
+                .ForMember(a => a.PorEquipo, map => map.MapFrom(src => src.Equipo))
+                .ForMember(a => a.Temporada, map => map.MapFrom(src => src.Temporada.Nombre))
+                .ReverseMap()
+                .ForMember(a => a.Equipo, map => map.MapFrom(src => src.PorEquipo))
+                .ForMember(a => a.Gasto, map => map.MapFrom(src => src.Gasto))
+                ;
+            CreateMap<TemporadaPremiosPuestoDTO, PremioDto>()
+                .ForMember(p => p.Categoria, map => map.MapFrom(src => src.PremioCategoria.Categoria.Categoria.Nombre))
+                .ForMember(p => p.Competicion, map => map.MapFrom(src => src.PremioCategoria.Categoria.Competicion.Nombre))
+                .ForMember(p => p.Porcentaje, map => map.MapFrom(src => src.Porcentaje))
+                .ForMember(p => p.Puesto, map => map.MapFrom(src => src.Puesto))
+                .ForMember(p => p.Premio, map => map.MapFrom(src => src.Importe))
+                .ReverseMap()
+                ;
         }
     }
 }

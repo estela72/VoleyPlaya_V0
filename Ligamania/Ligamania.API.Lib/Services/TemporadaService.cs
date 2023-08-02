@@ -35,6 +35,13 @@ namespace Ligamania.API.Lib.Services
         Task<string> CrearJugadorTemporada(Jugador jug);
         Task<string> HistorificarById(int id);
         Task<string> CambiarJugadorTemporada(Jugador jug);
+        Task<IEnumerable<ContabilidadDto>> GetContabilidadTemporadaAsync();
+        Task<IEnumerable<ContabilidadDto>> GetContabilidades();
+        Task<string> UpdateConceptoContabilidad(ContabilidadDto concepto);
+        Task<string> RemoveConceptoContabilidad(int id);
+        Task<IEnumerable<PremioDto>> GetPremiosTemporadaAsync(string temporada);
+        Task<string> UpdatePremioTemporadaAsync(PremioDto premioDto);
+        Task<string> RemovePremioTemporadaAsynd(int id);
     }
     internal class TemporadaService : ITemporadaService
     {
@@ -162,15 +169,31 @@ namespace Ligamania.API.Lib.Services
                 return new List<Jugador>();
             var jugadores = await _ligamaniaUnitOfWork.TemporadaRepository.GetJugadoresByTemporada(temporada.Id);
             var jugRepo = await _ligamaniaUnitOfWork.JugadorRepository.GetAllAsync();
+
+            //var prueba1 = jugadores.Where(j => j.Jugador.Equals("Nolito")).ToList();
+            //var prueba2 = jugRepo.Where(j => j.Nombre.Equals("Nolito")).ToList();
+
+
+            //var prueba3 = jugadores.Where(j => !j.Activo).ToList();
+            //var prueba4 = jugadores.Where(j => j.Activo).ToList();
+
+            // todos los jugadores de la temporada actual (activos y no activos)
             var jTemporada = _mapper.Map<List<Jugador>>(jugadores);
+            // todos los jugadores del repositorio (baja y no baja)
             var jRepositorio = _mapper.Map<List<Jugador>>(jugRepo);
+
+
+            // todos los jugadores de la temporada actual ACTIVOS
             jTemporada = jTemporada.Where(j => j.Activo).ToList();
-            // nos quedamos con todos los jugadores del repositorio
-            // para los que están activos en la temporada actual, nos quedamos con el formato club-puesto-jugador
+
+            // metemos en list todos los jugadores del repositorio (baja y no baja)
             var list = jRepositorio;
+            // recorro todos los jugadores activos de la temporada actual
             foreach(var jugA in jTemporada)
             {
+                // busco el jugador en el repositorio
                 var v = jRepositorio.Find(j => j.Nombre.Equals(jugA.Nombre));
+                // si no está de baja lo cambio por el jugador activo de la temporada
                 if (!jugA.Baja)
                 {
                     list.Remove(v);
@@ -475,6 +498,117 @@ namespace Ligamania.API.Lib.Services
             else
                 response = "Error al cambiar el jugador " + jug.Nombre;
             return response;
+        }
+
+        public async Task<IEnumerable<ContabilidadDto>> GetContabilidadTemporadaAsync()
+        {
+            var contabilidades = await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.FindAllAsync(tc => tc.Temporada.Actual);
+            return _mapper.Map<IEnumerable<ContabilidadDto>>(contabilidades);
+        }
+
+        public async Task<IEnumerable<ContabilidadDto>> GetContabilidades()
+        {
+            var contabilidades = await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.GetContabilidades();
+            var lista = _mapper.Map<List<ContabilidadDto>>(contabilidades.ToList());
+            var temporadas = contabilidades.Select(c => c.Temporada.Nombre).Distinct();
+
+            foreach (var temp in temporadas)
+            {
+                var temporada = contabilidades.FirstOrDefault(c => c.Temporada.Nombre.Equals(temp)).Temporada;
+                var equipos = temporada.TemporadaEquipo.DistinctBy(te=>te.Id)
+                    .Where(te => te.CompeticionId==1 && !te.Equipo.EsBot && !te.Baja)
+                    .Count();
+                UpdateNumEquipos(lista.Where(c=>c.Temporada.Equals(temp)).ToList(), equipos);
+            }
+            return lista;
+        }
+        public async Task<IEnumerable<PremioDto>> GetPremiosTemporadaAsync(string temporada)
+        {
+
+            var temp = await _ligamaniaUnitOfWork.TemporadaRepository.GetTemporadaClasificacionAsync(temporada);
+            var premios = await _ligamaniaUnitOfWork.TemporadaPremiosRepository.GetPremiosByTemporada(temp.Id);
+            premios = premios.DistinctBy(p => p.Id).ToList();
+            var lista = new List<PremioDto>();
+
+            foreach(var premio in premios)
+            {
+                lista.AddRange(_mapper.Map<List<PremioDto>>(premio.TemporadaPremiosPuesto.DistinctBy(pp=>pp.Id)));
+            }
+            lista.ForEach(async l => l.Equipo = await GetEquipo(temp, l.Competicion, l.Categoria, l.Puesto));
+            return lista;
+        }
+        private async Task<string> GetEquipo(TemporadaDTO temporada, string competicion, string categoria, PuestoCompeticion puesto)
+        {
+           string equipo = string.Empty;
+            var jornadaId = temporada.TemporadaCompeticionJornada.Where(tcj => tcj.Competicion.Nombre.Equals(competicion)).OrderByDescending(tcj=>tcj.NumeroJornada).First().Id;
+            var equi = temporada.TemporadaClasificacion.Where(tc => tc.Competicion.Nombre.Equals(competicion)
+                && tc.Categoria.Nombre.Equals(categoria) && tc.JornadaId.Equals(jornadaId) && tc.Puesto.Equals((int)puesto+1)).FirstOrDefault();
+            if (equi!=null) equipo = equi.Equipo.Nombre;
+            return equipo;
+        }
+        private void UpdateNumEquipos(List<ContabilidadDto> lista,int equipos)
+        {
+            lista.ForEach(cont =>
+                cont.Equipos = equipos
+            );
+        }
+
+        public async Task<string> UpdateConceptoContabilidad(ContabilidadDto concepto)
+        {
+            var item = await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.GetByIdAsync(concepto.Id);
+            if (item == null)
+                return await AddConceptoContabilidad(concepto);
+            
+            item.Concepto = concepto.Concepto;
+            item.Equipo = concepto.PorEquipo;
+            item.Gasto = concepto.Gasto;
+            item.Valor = concepto.Valor;
+            await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.UpdateAsync(item);
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync()>0)
+                return "Concepto actualizado";
+            return "No se pudo actualizar el concepto";
+        }
+        private async Task<string> AddConceptoContabilidad(ContabilidadDto concepto)
+        {
+            var temporada = await _ligamaniaUnitOfWork.TemporadaRepository.GetByNameAsync(concepto.Temporada);
+            var id = temporada.Id;
+            var item = new TemporadaContabilidadDTO
+            {
+                TemporadaId = id,
+                Concepto = concepto.Concepto,
+                Equipo = concepto.PorEquipo,
+                Gasto = concepto.Gasto,
+                Valor = concepto.Valor
+            };
+            await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.AddAsyn(item);
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                return "Concepto añadido";
+            return "No se pudo añadir el nuevo concepto";
+        }
+        public async Task<string> RemoveConceptoContabilidad(int id)
+        {
+            await _ligamaniaUnitOfWork.TemporadaContabilidadRepository.DeleteAsync(id);
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                return "Concepto eliminado";
+            return "No se pudo eliminar el concepto";
+        }
+
+        public async Task<string> UpdatePremioTemporadaAsync(PremioDto premioDto)
+        {
+            var premio = await _ligamaniaUnitOfWork.TemporadaPremiosPuestoRepository.GetByIdAsync(premioDto.Id);
+            premio.Importe = premioDto.Premio;
+            await _ligamaniaUnitOfWork.TemporadaPremiosPuestoRepository.UpdateAsync(premio);
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                return "Premio actualizado";
+            return "El premio no se pudo actualizar debido a algún error";
+        }
+
+        public async Task<string> RemovePremioTemporadaAsynd(int id)
+        {
+            await _ligamaniaUnitOfWork.TemporadaPremiosPuestoRepository.DeleteAsync(id);
+            if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
+                return "Premio eliminado";
+            return "El premio no se pudo eliminar debido a algún error";
         }
     }
 }

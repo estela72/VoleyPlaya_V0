@@ -596,3 +596,4 @@ D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligama
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.genruntimeconfig.cache
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\ref\Ligamania.Web.dll
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\appsettings.Production.json
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\libman.json

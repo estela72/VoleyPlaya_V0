@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Ligamania.Repository.Models
 {
-    public partial class TemporadaPremiosDTO : Entity
+    public partial class TemporadaPremiosDTO : BaseEntity
     {
         public TemporadaPremiosDTO()
         {

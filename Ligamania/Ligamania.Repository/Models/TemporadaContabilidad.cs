@@ -2,7 +2,7 @@
 
 namespace Ligamania.Repository.Models
 {
-    public partial class TemporadaContabilidadDTO : Entity
+    public partial class TemporadaContabilidadDTO : BaseEntity
     {
         public int TemporadaId { get; set; }
         public string Concepto { get; set; }
