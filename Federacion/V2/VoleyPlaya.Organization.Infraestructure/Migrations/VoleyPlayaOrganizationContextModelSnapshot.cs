@@ -154,7 +154,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .IsUnique()
                         .HasFilter("[Nombre] IS NOT NULL");
 
-                    b.ToTable("Equipo");
+                    b.ToTable("Equipos");
                 });
 
             modelBuilder.Entity("VoleyPlaya.Organization.Domain.Tabla", b =>

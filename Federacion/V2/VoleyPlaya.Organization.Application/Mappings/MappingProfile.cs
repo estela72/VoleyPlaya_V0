@@ -17,11 +17,7 @@ namespace VoleyPlaya.Organization.Application.Mappings
         {
             CreateMap<Categoria, CategoriaDto>();
             CreateMap<Competicion, CompeticionDto>();
-            //    .ForMember(c => c.Name, map => map.MapFrom(cat => cat.Nombre))
-            //    .ReverseMap();
-            //CreateMap<Equipo, EquipoDto>()
-            //    .ForMember(c => c.Name, map => map.MapFrom(cat => cat.Nombre))
-            //    .ReverseMap();
+            CreateMap<Equipo, EquipoDto>();
             //CreateMap<Tabla, TablaDto>()
             //    .ForMember(c => c.Name, map => map.MapFrom(cat => cat.Nombre))
             //    .ReverseMap();

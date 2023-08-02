@@ -29,6 +29,7 @@ namespace VoleyPlaya.Organization.Test.Mocks
             _dataContextFake.Database.EnsureDeleted();
             AddDataCategoriaRepository(_dataContextFake);
             AddDataCompeticionRepository(_dataContextFake);
+            AddDataEquipoRepository(_dataContextFake);
             return new Mock<UnitOfWork>(_dataContextFake);
         }
         private static void AddDataCategoriaRepository(VoleyPlayaOrganizationContext dataContextFake)
@@ -45,6 +46,14 @@ namespace VoleyPlaya.Organization.Test.Mocks
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var list = fixture.CreateMany<Competicion>(5).ToList();
             dataContextFake.Competiciones.AddRange(list);
+            dataContextFake.SaveChanges();
+        }
+        private static void AddDataEquipoRepository(VoleyPlayaOrganizationContext dataContextFake)
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var list = fixture.CreateMany<Equipo>(5).ToList();
+            dataContextFake.Equipos.AddRange(list);
             dataContextFake.SaveChanges();
         }
         public void Dispose()
