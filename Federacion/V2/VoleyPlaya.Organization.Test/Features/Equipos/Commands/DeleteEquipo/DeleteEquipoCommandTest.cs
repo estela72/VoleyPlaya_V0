@@ -39,8 +39,7 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Commands.DeleteEquipo
             var existente = (await _unitOfWork.Object.EquipoRepository.GetAllAsync()).FirstOrDefault();
 
             var handler = new DeleteEquipoCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteEquipoCommand();
-            request.Id = existente.Id;
+            var request = new DeleteEquipoCommand(existente.Id);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.True(result);
         }
@@ -48,8 +47,7 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Commands.DeleteEquipo
         public async Task DeleteNonExistentEquipo()
         {
             var handler = new DeleteEquipoCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteEquipoCommand();
-            request.Id = 444;
+            var request = new DeleteEquipoCommand(666);
             await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }

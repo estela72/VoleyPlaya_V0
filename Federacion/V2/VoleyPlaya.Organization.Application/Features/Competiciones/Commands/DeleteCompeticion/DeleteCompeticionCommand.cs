@@ -10,6 +10,11 @@ namespace VoleyPlaya.Organization.Application.Features.Competiciones.Commands.De
 {
     public class DeleteCompeticionCommand : IRequest<bool>
     {
+        public DeleteCompeticionCommand(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }

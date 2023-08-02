@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.AddCategoria;
+using VoleyPlaya.Organization.Application.Features.Categorias.Commands.DeleteCategoria;
+using VoleyPlaya.Organization.Application.Features.Categorias.Commands.UpdateCategoria;
 using VoleyPlaya.Organization.Application.Features.Categorias.Queries.GetCategoria;
 using VoleyPlaya.Organization.Application.Features.Categorias.Queries.GetCategorias;
 
@@ -18,22 +20,11 @@ namespace VoleyPlaya.Organization.API.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
-        public CategoriasController(IUnitOfWork unitOfWork, IMediator mediator)
+        public CategoriasController(IMediator mediator)
         {
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
-        
-        //[HttpPost]
-        //public async Task<ActionResult<DepartmentDto>> PostDepartment([FromBody, Bind("Name")] AddDepartmentCommand request)
-        //{
-        //    var department = await _mediator.Send(request);
-        //    if (department == null)
-        //        return NotFound();
-        //    return CreatedAtAction("GetDepartment", new { id = department.DepartmentId }, department);
-        //}
 
         // GET: api/<CategoriasController>
         [HttpGet]
@@ -46,7 +37,9 @@ namespace VoleyPlaya.Organization.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoriaDto>> Get(int id)
         {
-            return Ok(await _mediator.Send(new GetCategoriaQuery(id)));
+            var categoria = await _mediator.Send(new GetCategoriaQuery(id));
+            if (categoria == null) return NotFound();
+            return Ok(categoria);
         }
 
         // POST api/<CategoriasController>
@@ -61,14 +54,27 @@ namespace VoleyPlaya.Organization.API.Controllers
 
         // PUT api/<CategoriasController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody, Bind("Nombre")] UpdateCategoriaCommand request)
         {
+            request.Id = id;
+            var categoria = await _mediator.Send(request);
+            if (categoria == null)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
 
         // DELETE api/<CategoriasController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var categoria = await _mediator.Send(new DeleteCategoriaCommand(id));
+            if (!categoria)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

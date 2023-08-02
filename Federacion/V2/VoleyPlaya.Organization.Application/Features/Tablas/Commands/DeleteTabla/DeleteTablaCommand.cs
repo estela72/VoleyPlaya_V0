@@ -10,6 +10,11 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.DeleteTab
 {
     public class DeleteTablaCommand : IRequest<bool>
     {
+        public DeleteTablaCommand(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }

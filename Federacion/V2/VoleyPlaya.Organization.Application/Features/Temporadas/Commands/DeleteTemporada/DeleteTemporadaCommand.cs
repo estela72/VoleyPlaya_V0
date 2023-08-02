@@ -10,6 +10,11 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.Delet
 {
     public class DeleteTemporadaCommand : IRequest<bool>
     {
+        public DeleteTemporadaCommand(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }

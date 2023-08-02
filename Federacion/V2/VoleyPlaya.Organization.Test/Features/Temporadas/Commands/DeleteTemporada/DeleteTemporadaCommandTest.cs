@@ -40,8 +40,7 @@ namespace VoleyPlaya.Organization.Test.Features.Temporadas.Commands.DeleteTempor
             var existente = (await _unitOfWork.Object.TemporadaRepository.GetAllAsync()).FirstOrDefault();
 
             var handler = new DeleteTemporadaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteTemporadaCommand();
-            request.Id = existente.Id;
+            var request = new DeleteTemporadaCommand(existente.Id);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.True(result);
         }
@@ -49,8 +48,7 @@ namespace VoleyPlaya.Organization.Test.Features.Temporadas.Commands.DeleteTempor
         public async Task DeleteNonExistentTemporada()
         {
             var handler = new DeleteTemporadaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteTemporadaCommand();
-            request.Id = 444;
+            var request = new DeleteTemporadaCommand(888);
             await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }

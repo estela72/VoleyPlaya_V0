@@ -47,7 +47,7 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Queries.GetEquipo
         public async Task GetEquipoNotExistent()
         {
             var handler = new GetEquipoQueryHandler(_unitOfWork.Object.EquipoRepository, _mapper);
-            var request = new GetEquipoQuery(33);
+            var request = new GetEquipoQuery(999);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.Null(result);
         }

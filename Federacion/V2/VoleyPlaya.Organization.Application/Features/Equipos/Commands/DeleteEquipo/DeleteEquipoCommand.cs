@@ -10,6 +10,11 @@ namespace VoleyPlaya.Organization.Application.Features.Equipos.Commands.DeleteEq
 {
     public class DeleteEquipoCommand : IRequest<bool>
     {
+        public DeleteEquipoCommand(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }

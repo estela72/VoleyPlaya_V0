@@ -306,21 +306,11 @@ D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Web\obj\Debug\net7.0\refin
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.pdb
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.genruntimeconfig.cache
 D:\srcRepository\Proyectos Estela\Ligamania\Ligamania.Web\obj\Debug\net7.0\ref\Ligamania.Web.dll
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.csproj.AssemblyReference.cache
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.GeneratedMSBuildEditorConfig.editorconfig
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.AssemblyInfoInputs.cache
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.AssemblyInfo.cs
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.csproj.CoreCompileInputs.cache
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.MvcApplicationPartsAssemblyInfo.cs
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.MvcApplicationPartsAssemblyInfo.cache
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.RazorAssemblyInfo.cache
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.RazorAssemblyInfo.cs
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.dll
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\refint\Ligamania.Web.dll
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.pdb
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\web.config
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\appsettings.Development.json
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\appsettings.json
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\web.config
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\appsettings.Production.json
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\libman.json
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\Ligamania.Web.staticwebassets.runtime.json
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\Ligamania.Web.exe
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\Ligamania.Web.deps.json
@@ -584,6 +574,15 @@ D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\Ligama
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\General.CrossCutting.Lib.pdb
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\General.CrossCutting.Lib.xml
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\Ligamania.Repository.pdb
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.csproj.AssemblyReference.cache
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.GeneratedMSBuildEditorConfig.editorconfig
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.AssemblyInfoInputs.cache
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.AssemblyInfo.cs
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.csproj.CoreCompileInputs.cache
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.MvcApplicationPartsAssemblyInfo.cs
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.MvcApplicationPartsAssemblyInfo.cache
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.RazorAssemblyInfo.cache
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.RazorAssemblyInfo.cs
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\staticwebassets\msbuild.Ligamania.Web.Microsoft.AspNetCore.StaticWebAssets.props
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\staticwebassets\msbuild.build.Ligamania.Web.props
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.Ligamania.Web.props
@@ -593,7 +592,8 @@ D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\static
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\staticwebassets.development.json
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\scopedcss\bundle\Ligamania.Web.styles.css
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.csproj.CopyComplete
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.dll
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\refint\Ligamania.Web.dll
+D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.pdb
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\Ligamania.Web.genruntimeconfig.cache
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\obj\Debug\net7.0\ref\Ligamania.Web.dll
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\appsettings.Production.json
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Web\bin\Debug\net7.0\libman.json
