@@ -42,8 +42,7 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.DeleteCatego
             var categoriaExistente = (await _unitOfWork.Object.CategoriaRepository.GetAllAsync()).FirstOrDefault();
 
             var handler = new DeleteCategoriaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteCategoriaCommand();
-            request.Id = categoriaExistente.Id;
+            var request = new DeleteCategoriaCommand(categoriaExistente.Id);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.True(result);
         }
@@ -51,8 +50,7 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.DeleteCatego
         public async Task DeleteNonExistentCategoria()
         {
             var handler = new DeleteCategoriaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteCategoriaCommand();
-            request.Id = 444;
+            var request = new DeleteCategoriaCommand(444);
             await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }

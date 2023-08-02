@@ -13,6 +13,11 @@ namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.Delet
 {
     public class DeleteCategoriaCommand : IRequest<bool>
     {
+        public DeleteCategoriaCommand(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }

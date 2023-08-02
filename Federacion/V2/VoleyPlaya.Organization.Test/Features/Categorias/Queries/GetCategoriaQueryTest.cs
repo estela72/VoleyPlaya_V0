@@ -45,7 +45,7 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Queries
         public async Task GetCategoriaNotExistent()
         {
             var handler = new GetCategoriaQueryHandler(_unitOfWork.Object.CategoriaRepository, _mapper);
-            var request = new GetCategoriaQuery(33);
+            var request = new GetCategoriaQuery(999);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.Null(result);
         }

@@ -39,8 +39,7 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.DeleteCom
             var existente = (await _unitOfWork.Object.CompeticionRepository.GetAllAsync()).FirstOrDefault();
 
             var handler = new DeleteCompeticionCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteCompeticionCommand();
-            request.Id = existente.Id;
+            var request = new DeleteCompeticionCommand(existente.Id);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.True(result);
         }
@@ -48,7 +47,7 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.DeleteCom
         public async Task DeleteNonExistentCategoria()
         {
             var handler = new DeleteCompeticionCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteCompeticionCommand();
+            var request = new DeleteCompeticionCommand(555);
             request.Id = 444;
             await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }

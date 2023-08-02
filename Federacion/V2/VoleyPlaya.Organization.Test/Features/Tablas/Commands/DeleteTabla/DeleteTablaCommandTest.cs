@@ -40,8 +40,7 @@ namespace VoleyPlaya.Organization.Test.Features.Tablas.Commands.DeleteTabla
             var existente = (await _unitOfWork.Object.TablaRepository.GetAllAsync()).FirstOrDefault();
 
             var handler = new DeleteTablaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteTablaCommand();
-            request.Id = existente.Id;
+            var request = new DeleteTablaCommand(existente.Id);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.True(result);
         }
@@ -49,8 +48,7 @@ namespace VoleyPlaya.Organization.Test.Features.Tablas.Commands.DeleteTabla
         public async Task DeleteNonExistentTabla()
         {
             var handler = new DeleteTablaCommandHandler(_unitOfWork.Object, _mapper);
-            var request = new DeleteTablaCommand();
-            request.Id = 444;
+            var request = new DeleteTablaCommand(777);
             await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
