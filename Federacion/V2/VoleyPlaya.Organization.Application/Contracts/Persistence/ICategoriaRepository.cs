@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenericLib;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ namespace VoleyPlaya.Organization.Application.Contracts.Persistence
 {
     public interface ICategoriaRepository: IAsyncRepository<Categoria>
     {
-        //Task<Employee?> GetEmployeeByIdWithDepartmentAsync(int id);
+        //Task<Categoria?> GetCategoriaByIdWithDepartmentAsync(int id);
         //Task<IList<Employee>> GetEmployeesWithDepartmentAsync();
     }
 }

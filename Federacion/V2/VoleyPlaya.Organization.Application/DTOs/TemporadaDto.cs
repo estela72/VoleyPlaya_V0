@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Organization.Application.DTOs
 {
-    public record TemporadaDto
-    {
-    }
+    public record TemporadaDto(int Id, string Nombre);
 }

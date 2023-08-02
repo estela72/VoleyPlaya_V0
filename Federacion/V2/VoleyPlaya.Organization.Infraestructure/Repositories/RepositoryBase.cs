@@ -1,8 +1,7 @@
-﻿using VoleyPlaya.Organization.Application.Contracts.Persistence;
-using VoleyPlaya.Organization.Domain.Common;
-using VoleyPlaya.Organization.Infraestructure.Persistence;
+﻿using VoleyPlaya.Organization.Infraestructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using GenericLib;
 
 namespace VoleyPlaya.Organization.Infraestructure.Repositories
 {
@@ -45,10 +44,10 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
             return entity;
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public T AddEntity(T entity)
@@ -63,9 +62,19 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void DeleteEntity(T entity)
+        public bool DeleteEntity(T entity)
         {
-            _context.Set<T>().Remove(entity);
+            return (_context.Set<T>().Remove(entity)).State.Equals(EntityState.Deleted);
+        }
+
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().AnyAsync(predicate);
+        }
+
+        public bool Exists(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Any(predicate);
         }
     }
 }

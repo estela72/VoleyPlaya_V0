@@ -23,7 +23,10 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
         {
             _context = context;
         }
-
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
         public VoleyPlayaOrganizationContext DataContext => _context;
 
         public ITemporadaRepository TemporadaRepository => _temporadaRepository ??= new TemporadaRepository(_context);
@@ -46,11 +49,6 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
             {
                 throw new Exception("An error occurred saving changes", ex);
             }
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

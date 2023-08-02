@@ -67,25 +67,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{442084A2-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{D2D56E66-41C2-4BC1-8DDE-A3D3F87BB304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Management.Domain", "Federacion\V2\VoleyPlaya.Management.Domain\VoleyPlaya.Management.Domain.csproj", "{37E54D7E-289D-4C78-88BA-5E06468215E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Management.Domain", "Federacion\V2\VoleyPlaya.Management.Domain\VoleyPlaya.Management.Domain.csproj", "{37E54D7E-289D-4C78-88BA-5E06468215E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Management.Application", "Federacion\V2\VoleyPlaya.Management.Application\VoleyPlaya.Management.Application.csproj", "{4C8F7599-E19E-468C-93D2-37C7B30D582D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Management.Application", "Federacion\V2\VoleyPlaya.Management.Application\VoleyPlaya.Management.Application.csproj", "{4C8F7599-E19E-468C-93D2-37C7B30D582D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Organization.Domain", "Federacion\V2\VoleyPlaya.Organization.Domain\VoleyPlaya.Organization.Domain.csproj", "{6D093FC1-1498-4603-92CA-83EDFA632A01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Organization.Domain", "Federacion\V2\VoleyPlaya.Organization.Domain\VoleyPlaya.Organization.Domain.csproj", "{6D093FC1-1498-4603-92CA-83EDFA632A01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Organization.Application", "Federacion\V2\VoleyPlaya.Organization.Application\VoleyPlaya.Organization.Application.csproj", "{AA6D7FF8-F795-4536-88C1-1B96D150A524}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Organization.Application", "Federacion\V2\VoleyPlaya.Organization.Application\VoleyPlaya.Organization.Application.csproj", "{AA6D7FF8-F795-4536-88C1-1B96D150A524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Management.Infraestructure", "Federacion\V2\VoleyPlaya.Management.Infraestructure\VoleyPlaya.Management.Infraestructure.csproj", "{106609BE-2E63-4E0F-B48F-E895D3197592}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Management.Infraestructure", "Federacion\V2\VoleyPlaya.Management.Infraestructure\VoleyPlaya.Management.Infraestructure.csproj", "{106609BE-2E63-4E0F-B48F-E895D3197592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Organization.Infraestructure", "Federacion\V2\VoleyPlaya.Organization.Infraestructure\VoleyPlaya.Organization.Infraestructure.csproj", "{6428E609-71AA-4B0F-8451-2E9EAE4E0E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Organization.Infraestructure", "Federacion\V2\VoleyPlaya.Organization.Infraestructure\VoleyPlaya.Organization.Infraestructure.csproj", "{6428E609-71AA-4B0F-8451-2E9EAE4E0E8D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C1ED3FB4-342C-4465-9772-CFD275710E31}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5FC0E212-D279-4386-86E3-9E3CE0EC2CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Management.API", "Federacion\V2\VoleyPlaya.Management.API\VoleyPlaya.Management.API.csproj", "{D108C0E1-DD83-4429-89C2-9F6E179B63A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Management.API", "Federacion\V2\VoleyPlaya.Management.API\VoleyPlaya.Management.API.csproj", "{D108C0E1-DD83-4429-89C2-9F6E179B63A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Organization.API", "Federacion\V2\VoleyPlaya.Organization.API\VoleyPlaya.Organization.API.csproj", "{5AE51DC4-82AE-4984-AC19-70CD70240A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Organization.API", "Federacion\V2\VoleyPlaya.Organization.API\VoleyPlaya.Organization.API.csproj", "{5AE51DC4-82AE-4984-AC19-70CD70240A70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoleyPlaya.Organization.Test", "Federacion\V2\VoleyPlaya.Organization.Test\VoleyPlaya.Organization.Test.csproj", "{347EBB23-0E15-4A3D-9820-44DD6D2B6858}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GenericLibraries", "GenericLibraries", "{FE872301-DCC9-4E03-A1E5-0381EDC47AE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericLib", "Federacion\V2\GenericLib\GenericLib.csproj", "{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +233,18 @@ Global
 		{5AE51DC4-82AE-4984-AC19-70CD70240A70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5AE51DC4-82AE-4984-AC19-70CD70240A70}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AE51DC4-82AE-4984-AC19-70CD70240A70}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -268,6 +286,9 @@ Global
 		{5FC0E212-D279-4386-86E3-9E3CE0EC2CBD} = {AA5F5F0E-044E-48BB-A23B-130A9BBFFC5C}
 		{D108C0E1-DD83-4429-89C2-9F6E179B63A5} = {0FB6D46A-2D54-46C3-B670-095D0AF094D1}
 		{5AE51DC4-82AE-4984-AC19-70CD70240A70} = {1EDE0F38-37CC-4E40-A0D0-56C586F5F9EC}
+		{347EBB23-0E15-4A3D-9820-44DD6D2B6858} = {5FC0E212-D279-4386-86E3-9E3CE0EC2CBD}
+		{FE872301-DCC9-4E03-A1E5-0381EDC47AE2} = {5A4C348B-4A40-4403-A0F7-D07702B60B4E}
+		{90ABBE3E-52B2-4C25-85DD-CF19D3DD3D4A} = {FE872301-DCC9-4E03-A1E5-0381EDC47AE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {540FF9B9-61AA-4A24-9683-26130E63A018}
