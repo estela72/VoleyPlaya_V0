@@ -47,7 +47,7 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Queries.GetCompeti
         public async Task GetCompeticionNotExistent()
         {
             var handler = new GetCompeticionQueryHandler(_unitOfWork.Object.CompeticionRepository, _mapper);
-            var request = new GetCompeticionQuery(33);
+            var request = new GetCompeticionQuery(999);
             var result = await handler.Handle(request, CancellationToken.None);
             Assert.Null(result);
         }

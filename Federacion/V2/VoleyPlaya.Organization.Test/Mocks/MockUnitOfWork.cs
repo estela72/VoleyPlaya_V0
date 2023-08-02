@@ -30,6 +30,8 @@ namespace VoleyPlaya.Organization.Test.Mocks
             AddDataCategoriaRepository(_dataContextFake);
             AddDataCompeticionRepository(_dataContextFake);
             AddDataEquipoRepository(_dataContextFake);
+            AddDataTablaRepository(_dataContextFake);
+            AddDataTemporadaRepository(_dataContextFake);
             return new Mock<UnitOfWork>(_dataContextFake);
         }
         private static void AddDataCategoriaRepository(VoleyPlayaOrganizationContext dataContextFake)
@@ -54,6 +56,22 @@ namespace VoleyPlaya.Organization.Test.Mocks
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var list = fixture.CreateMany<Equipo>(5).ToList();
             dataContextFake.Equipos.AddRange(list);
+            dataContextFake.SaveChanges();
+        }
+        private static void AddDataTablaRepository(VoleyPlayaOrganizationContext dataContextFake)
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var list = fixture.CreateMany<Tabla>(5).ToList();
+            dataContextFake.Tablas.AddRange(list);
+            dataContextFake.SaveChanges();
+        }
+        private static void AddDataTemporadaRepository(VoleyPlayaOrganizationContext dataContextFake)
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var list = fixture.CreateMany<Temporada>(5).ToList();
+            dataContextFake.Temporadas.AddRange(list);
             dataContextFake.SaveChanges();
         }
         public void Dispose()
