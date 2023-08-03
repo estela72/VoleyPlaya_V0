@@ -375,10 +375,10 @@ namespace Ligamania.API.Lib.Services
                     }
 
                     // para cada equipo, actualizar su historia
-                    foreach(var clasificacion in clasificaciones)
+                    foreach (var clasificacion in clasificaciones)
                     {
                         var tempEquipo = temporada.TemporadaEquipo
-                            .DistinctBy(te=>te.Id)
+                            .DistinctBy(te => te.Id)
                             .Where(te => te.EquipoId.Equals(clasificacion.EquipoId))
                             .FirstOrDefault();
                         var historico = new HistoricoDTO
@@ -387,16 +387,19 @@ namespace Ligamania.API.Lib.Services
                             TemporadaCompeticionCategoria = cat,
                             TemporadaEquipo = tempEquipo,
                             Puesto = clasificacion.Puesto,
-                            Pichichi = pichichi != null && pichichi.Equals(tempEquipo) ? true : false
+                            Pichichi = pichichi != null && pichichi.Equipo.Nombre.Equals(tempEquipo.Equipo.Nombre) ? true : false
                         };
-                        var existe = await _ligamaniaUnitOfWork.HistoricoRepository.ExistsAsync(h=>h.Temporada_ID.Equals(historico.Temporada.Id)
-                            && h.Categoria_ID.Equals(historico.TemporadaCompeticionCategoria.Id) 
+                        var existe = await _ligamaniaUnitOfWork.HistoricoRepository.FindAsync(h => h.Temporada_ID.Equals(historico.Temporada.Id)
+                            && h.Categoria_ID.Equals(historico.TemporadaCompeticionCategoria.Id)
                             && h.Equipo_ID.Equals(historico.TemporadaEquipo.Id)
                             && h.Puesto.Equals(historico.Puesto));
-                        if (!existe)
+                        if (existe == null)
                             await _ligamaniaUnitOfWork.HistoricoRepository.AddAsyn(historico);
                         else
+                        {
+                            historico.Id = existe.Id;
                             await _ligamaniaUnitOfWork.HistoricoRepository.UpdateAsync(historico);
+                        }
                     }
                     //await _ligamaniaUnitOfWork.SaveEntitiesAsync();
                 }
