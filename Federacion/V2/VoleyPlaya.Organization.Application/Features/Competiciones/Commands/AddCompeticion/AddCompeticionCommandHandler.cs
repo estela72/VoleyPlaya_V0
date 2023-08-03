@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -17,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Competiciones.Commands.Ad
 {
     public class AddCompeticionCommandHandler : IRequestHandler<AddCompeticionCommand, CompeticionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public AddCompeticionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddCompeticionCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Competiciones.Commands.Ad
         {
             Competicion competicion = new Competicion() { Nombre = request.Nombre };
             if (await _unitOfWork.CompeticionRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new VoleyPlayaDomainException("Ya existe una competición con el nombre " + request.Nombre);
+                throw new GenericDomainException("Ya existe una competición con el nombre " + request.Nombre);
 
             competicion = await _unitOfWork.CompeticionRepository.AddAsync(competicion);
             return _mapper.Map<CompeticionDto>(competicion);

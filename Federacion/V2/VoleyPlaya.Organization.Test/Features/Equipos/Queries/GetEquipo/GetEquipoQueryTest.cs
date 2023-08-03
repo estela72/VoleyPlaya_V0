@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 
+using GenericLib;
+
 using MediatR;
 
 using Moq;
@@ -14,7 +16,7 @@ using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Competiciones.Queries.GetCompeticion;
 using VoleyPlaya.Organization.Application.Features.Equipos.Queries.GetEquipo;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Equipos.Queries.GetEquipo
@@ -22,10 +24,10 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Queries.GetEquipo
     public class GetEquipoQueryTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public GetEquipoQueryTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();

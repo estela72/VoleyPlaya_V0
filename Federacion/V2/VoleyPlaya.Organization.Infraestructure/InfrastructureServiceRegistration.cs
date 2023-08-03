@@ -25,6 +25,7 @@ namespace VoleyPlaya.Organization.Infraestructure
             );
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWorkOrganization, UnitOfWorkOrganization>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
 
             services.AddScoped<ITemporadaRepository, TemporadaRepository>();

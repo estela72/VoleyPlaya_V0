@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -16,9 +18,9 @@ namespace VoleyPlaya.Organization.Application.Features.Competiciones.Commands.De
 {
     public class DeleteCompeticionCommandHandler : IRequestHandler<DeleteCompeticionCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public DeleteCompeticionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteCompeticionCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,7 +29,7 @@ namespace VoleyPlaya.Organization.Application.Features.Competiciones.Commands.De
         {
             Competicion competicion = await _unitOfWork.CompeticionRepository.GetByIdAsync(request.Id);
             if (competicion == null)
-                throw new VoleyPlayaDomainException("La competición no existe");
+                throw new GenericDomainException("La competición no existe");
 
             return await _unitOfWork.CompeticionRepository.DeleteAsync(competicion);
         }

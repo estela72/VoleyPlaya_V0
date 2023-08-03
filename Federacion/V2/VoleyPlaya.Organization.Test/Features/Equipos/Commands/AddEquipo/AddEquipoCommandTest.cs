@@ -12,10 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Equipos.Commands.AddEquipo;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Equipos.Commands.AddEquipo
@@ -23,10 +24,10 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Commands.AddEquipo
     public class AddEquipoCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public AddEquipoCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -52,7 +53,7 @@ namespace VoleyPlaya.Organization.Test.Features.Equipos.Commands.AddEquipo
             var handler = new AddEquipoCommandHandler(_unitOfWork.Object, _mapper);
             var request = new AddEquipoCommand();
             request.Nombre = existente.Nombre;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

@@ -19,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.Updat
 {
     public class UpdateCategoriaCommandHandler : IRequestHandler<UpdateCategoriaCommand, CategoriaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateCategoriaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateCategoriaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -30,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.Updat
         {
             Categoria categoria = await _unitOfWork.CategoriaRepository.GetByIdAsync(request.Id);
             if (categoria == null)
-                throw new VoleyPlayaDomainException("La categoría no existe");
+                throw new GenericDomainException("La categoría no existe");
 
             categoria.Nombre = request.Nombre;
             categoria = await _unitOfWork.CategoriaRepository.UpdateAsync(categoria);

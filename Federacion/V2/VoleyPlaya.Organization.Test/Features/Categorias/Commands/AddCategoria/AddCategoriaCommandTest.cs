@@ -13,11 +13,12 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.AddCategoria;
 using VoleyPlaya.Organization.Application.Features.Categorias.Queries.GetCategoria;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.AddCategoria
@@ -25,10 +26,10 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.AddCategoria
     public class AddCategoriaCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public AddCategoriaCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -54,7 +55,7 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.AddCategoria
             var handler = new AddCategoriaCommandHandler(_unitOfWork.Object, _mapper);
             var request = new AddCategoriaCommand();
             request.Nombre = categoriaExistente.Nombre;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

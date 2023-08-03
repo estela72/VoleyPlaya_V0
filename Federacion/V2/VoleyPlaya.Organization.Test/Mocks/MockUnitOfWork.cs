@@ -1,5 +1,7 @@
 ﻿using AutoFixture;
 
+using GenericLib;
+
 using Microsoft.EntityFrameworkCore;
 
 using Moq;
@@ -12,27 +14,25 @@ using System.Threading.Tasks;
 
 using VoleyPlaya.Organization.Domain;
 using VoleyPlaya.Organization.Infraestructure.Persistence;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
 
 namespace VoleyPlaya.Organization.Test.Mocks
 {
-    public  class MockUnitOfWork : IDisposable
+    public  static class MockUnitOfWork
     {
-        VoleyPlayaOrganizationContext _dataContextFake;
-        public  Mock<UnitOfWork> GetUnitOfWork()
+        public static Mock<UnitOfWorkOrganization> GetUnitOfWork()
         {
             var options = new DbContextOptionsBuilder<VoleyPlayaOrganizationContext>()
                 .UseInMemoryDatabase(databaseName: $"VoleyPlaya-{Guid.NewGuid()}")
                 //.UseSqlServer("Data Source =DESKTOP-D09LJDB\\MSSQLSERVER01; Initial Catalog = VoleyPlaya.Organization; Integrated Security = True; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False")
             .Options;
-            _dataContextFake = new VoleyPlayaOrganizationContext(options);
+            var _dataContextFake = new VoleyPlayaOrganizationContext(options);
             _dataContextFake.Database.EnsureDeleted();
             AddDataCategoriaRepository(_dataContextFake);
             AddDataCompeticionRepository(_dataContextFake);
             AddDataEquipoRepository(_dataContextFake);
             AddDataTablaRepository(_dataContextFake);
             AddDataTemporadaRepository(_dataContextFake);
-            return new Mock<UnitOfWork>(_dataContextFake);
+            return new Mock<UnitOfWorkOrganization>(_dataContextFake);
         }
         private static void AddDataCategoriaRepository(VoleyPlayaOrganizationContext dataContextFake)
         {
@@ -73,10 +73,6 @@ namespace VoleyPlaya.Organization.Test.Mocks
             var list = fixture.CreateMany<Temporada>(5).ToList();
             dataContextFake.Temporadas.AddRange(list);
             dataContextFake.SaveChanges();
-        }
-        public void Dispose()
-        {
-            _dataContextFake.Dispose();
         }
     }
 }

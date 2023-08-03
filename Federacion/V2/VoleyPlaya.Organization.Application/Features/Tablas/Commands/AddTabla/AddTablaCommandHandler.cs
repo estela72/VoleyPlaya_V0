@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -17,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.AddTabla
 {
     public class AddTablaCommandHandler : IRequestHandler<AddTablaCommand, TablaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public AddTablaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddTablaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.AddTabla
         {
             Tabla tabla = new Tabla() { Nombre = request.Nombre, Equipo1=request.Equipo1, Equipo2=request.Equipo2, Ronda=request.Ronda };
             if (await _unitOfWork.TablaRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new VoleyPlayaDomainException("Ya existe una tabla con el nombre " + request.Nombre);
+                throw new GenericDomainException("Ya existe una tabla con el nombre " + request.Nombre);
 
             tabla = await _unitOfWork.TablaRepository.AddAsync(tabla);
             return _mapper.Map<TablaDto>(tabla);

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
+using GenericLib;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -9,7 +11,7 @@ using VoleyPlaya.Organization.Domain;
 
 namespace VoleyPlaya.Organization.Infraestructure.Persistence;
 
-public partial class VoleyPlayaOrganizationContext : DbContext
+public partial class VoleyPlayaOrganizationContext : GenericDbContext
 {
     public VoleyPlayaOrganizationContext(DbContextOptions<VoleyPlayaOrganizationContext> options)
         : base(options)
