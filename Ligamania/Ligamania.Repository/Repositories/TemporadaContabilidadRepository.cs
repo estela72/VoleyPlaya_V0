@@ -32,6 +32,7 @@ namespace Ligamania.Repository.Repositories
                         .ThenInclude(te => te.Equipo)
                     .ThenInclude(te => te.TemporadaEquipo)
                             .ThenInclude(te=>te.Competicion)
+              .AsSplitQuery()
               .ToListAsync();
 
             return lista;
