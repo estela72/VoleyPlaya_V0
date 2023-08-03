@@ -49,7 +49,7 @@ namespace VoleyPlaya.Organization.API.Controllers
             EquipoDto equipo = await _mediator.Send(request);
             if (equipo == null)
                 return NotFound();
-            return CreatedAtAction("PostEquipo", new { id = equipo.Nombre }, equipo);
+            return CreatedAtAction("Get", new { id = equipo.Nombre }, equipo);
         }
 
         // PUT api/<EquiposController>/5

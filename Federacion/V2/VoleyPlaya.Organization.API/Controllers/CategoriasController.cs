@@ -49,7 +49,7 @@ namespace VoleyPlaya.Organization.API.Controllers
             CategoriaDto categoria = await _mediator.Send(request);
             if (categoria == null)
                 return NotFound();
-            return CreatedAtAction("PostCategoria", new { id = categoria.Nombre}, categoria);
+            return CreatedAtAction("Get", new { id = categoria.Id}, categoria);
         }
 
         // PUT api/<CategoriasController>/5

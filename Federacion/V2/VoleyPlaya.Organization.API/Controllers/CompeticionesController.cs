@@ -50,7 +50,7 @@ namespace VoleyPlaya.Organization.API.Controllers
             CompeticionDto competicion = await _mediator.Send(request);
             if (competicion == null)
                 return NotFound();
-            return CreatedAtAction("PostCompeticion", new { id = competicion.Nombre }, competicion);
+            return CreatedAtAction("Get", new { id = competicion.Nombre }, competicion);
         }
 
         // PUT api/<CompeticionesController>/5

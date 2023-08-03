@@ -49,7 +49,7 @@ namespace VoleyPlaya.Organization.API.Controllers
             TablaDto tabla = await _mediator.Send(request);
             if (tabla == null)
                 return NotFound();
-            return CreatedAtAction("PostTabla", new { id = tabla.Nombre }, tabla);
+            return CreatedAtAction("Get", new { id = tabla.Nombre }, tabla);
         }
 
         // PUT api/<TablasController>/5
