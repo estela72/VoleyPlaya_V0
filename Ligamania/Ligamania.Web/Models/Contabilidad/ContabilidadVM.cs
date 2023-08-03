@@ -14,7 +14,7 @@ namespace Ligamania.Web.Models.Contabilidad
         { 
             get 
             {
-                var gastos = Conceptos.Sum(c => c.Gasto ? c.Valor : 0);
+                var gastos = Conceptos.Sum(c => c.Gasto && c.PorEquipo.ToUpper().Equals("NO") ? c.Valor : 0);
                 var porequi = Conceptos.Where(c => c.PorEquipo.ToUpper().Equals("SI")).Sum(c => c.Gasto ? c.Valor * Equipos : 0);
                 return gastos + porequi; 
             }
@@ -24,7 +24,7 @@ namespace Ligamania.Web.Models.Contabilidad
         {
             get 
             {
-                var ingresos = Conceptos.Sum(c => c.Gasto ? 0: c.Valor);
+                var ingresos = Conceptos.Sum(c => c.Gasto && c.PorEquipo.ToUpper().Equals("NO") ? 0: c.Valor);
                 var porequi = Conceptos.Where(c => c.PorEquipo.ToUpper().Equals("SI")).Sum(c => c.Gasto ? 0: c.Valor * Equipos);
                 return ingresos + porequi;
             }
