@@ -52,7 +52,7 @@ namespace VoleyPlaya.Organization.API.Controllers
             TemporadaDto temporada = await _mediator.Send(request);
             if (temporada == null)
                 return NotFound();
-            return CreatedAtAction("PostTemporada", new { id = temporada.Nombre }, temporada);
+            return CreatedAtAction("Get", new { id = temporada.Nombre }, temporada);
         }
 
         // PUT api/<TemporadasController>/5
