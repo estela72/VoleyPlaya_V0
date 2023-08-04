@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Management.Application.DTOs
 {
-    public record JornadaDto
-    {
-    }
+    public record JornadaDto(int Id, int EdicionId, string Nombre, int Numero, DateTime Fecha);
 }

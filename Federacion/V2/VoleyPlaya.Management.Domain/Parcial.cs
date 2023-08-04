@@ -1,30 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GenericLib;
 
-using VoleyPlaya.Management.Domain.Common;
+using System;
+using System.Collections.Generic;
 
 namespace VoleyPlaya.Management.Domain;
 
-public partial class Parcial
+public partial class Parcial : BaseDomain
 {
-    public int Id { get; set; }
-
     public int PartidoId { get; set; }
-
+    private Partido? _partido;
+    public Partido Partido
+    {
+        get { return _partido ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Partido)); }
+        set { _partido = value; }
+    }
     public int? ResultadoLocal { get; set; }
 
     public int? ResultadoVisitante { get; set; }
-
-    public DateTime CreatedDate { get; set; }
-
-    public DateTime UpdatedDate { get; set; }
-
-    public string? CreatedBy { get; set; }
-
-    public string? UpdatedBy { get; set; }
-
-    public string? Nombre { get; set; }
-
-    public virtual Partido Partido { get; set; } = null!;
-
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,5 @@ using System.Threading.Tasks;
 
 namespace VoleyPlaya.Management.Application.DTOs
 {
-    public record ParcialDto
-    {
-    }
+    public record ParcialDto(int Id, int PartidoId);
 }

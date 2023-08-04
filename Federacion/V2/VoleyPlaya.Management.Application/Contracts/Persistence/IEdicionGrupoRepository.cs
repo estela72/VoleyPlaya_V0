@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenericLib;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ using VoleyPlaya.Management.Domain;
 
 namespace VoleyPlaya.Management.Application.Contracts.Persistence
 {
-    public interface IEdicionGrupoRepository:IAsyncRepository<EdicionGrupo>
+    public interface IEdicionGrupoRepository : IAsyncRepository<EdicionGrupo>
     {
     }
 }

@@ -1,15 +1,20 @@
-﻿using System;
+﻿using GenericLib;
+
+using System;
 using System.Collections.Generic;
 
-using VoleyPlaya.Management.Domain.Common;
 
 namespace VoleyPlaya.Management.Domain;
 
-public partial class Partido:IAggregateRoot
+public partial class Partido : BaseDomain, IAggregateRoot
 {
-    public int Id { get; set; }
-
-    public int? GrupoId { get; set; }
+    public int EdicionGrupoId { get; set; }
+    private EdicionGrupo? _edicionGrupo;
+    public EdicionGrupo EdicionGrupo
+    {
+        get { return _edicionGrupo ?? throw new InvalidOperationException("Uninitialized property: " + nameof(EdicionGrupo)); }
+        set { _edicionGrupo = value; }
+    }
 
     public int? EquipoLocalId { get; set; }
 
@@ -29,16 +34,6 @@ public partial class Partido:IAggregateRoot
 
     public string? Label { get; set; }
 
-    public DateTime CreatedDate { get; set; }
-
-    public DateTime UpdatedDate { get; set; }
-
-    public string? CreatedBy { get; set; }
-
-    public string? UpdatedBy { get; set; }
-
-    public string? Nombre { get; set; }
-
     public bool? Validado { get; set; }
 
     public string? NombreLocal { get; set; }
@@ -53,11 +48,5 @@ public partial class Partido:IAggregateRoot
 
     public string UserValidador { get; set; } = null!;
 
-    //public virtual Equipo? EquipoLocal { get; set; }
-
-    //public virtual Equipo? EquipoVisitante { get; set; }
-
-    public virtual EdicionGrupo? Grupo { get; set; }
-
-    public virtual ICollection<Parcial> Parciales { get; set; } = new List<Parcial>();
+    public ICollection<Parcial> Parciales { get; set; } = new List<Parcial>();
 }

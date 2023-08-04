@@ -7,19 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Ediciones\Commands\" />
-    <Folder Include="Features\Ediciones\Queries\" />
-    <Folder Include="Features\EdicionGrupos\Commands\" />
-    <Folder Include="Features\EdicionGrupos\Queries\" />
-    <Folder Include="Features\Jornadas\Commands\" />
-    <Folder Include="Features\Jornadas\Queries\" />
     <Folder Include="Features\Parciales\Commands\" />
     <Folder Include="Features\Parciales\Queries\" />
     <Folder Include="Features\PartidoConParciales\Commands\" />
     <Folder Include="Features\PartidoConParciales\Queries\" />
-    <Folder Include="Features\Partidos\Commands\" />
-    <Folder Include="Features\Partidos\Queries\" />
-    <Folder Include="Mappings\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GenericLib\GenericLib.csproj" />
     <ProjectReference Include="..\VoleyPlaya.Management.Domain\VoleyPlaya.Management.Domain.csproj" />
   </ItemGroup>
 
