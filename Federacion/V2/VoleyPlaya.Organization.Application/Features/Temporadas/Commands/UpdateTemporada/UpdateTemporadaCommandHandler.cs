@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -18,9 +20,9 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.Updat
 {
     public class UpdateTemporadaCommandHandler : IRequestHandler<UpdateTemporadaCommand, TemporadaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateTemporadaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateTemporadaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -29,7 +31,7 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.Updat
         {
             Temporada temporada = await _unitOfWork.TemporadaRepository.GetByIdAsync(request.Id);
             if (temporada == null)
-                throw new VoleyPlayaDomainException("La temporada no existe");
+                throw new GenericDomainException("La temporada no existe");
 
             temporada.Nombre = request.Nombre;
             temporada = await _unitOfWork.TemporadaRepository.UpdateAsync(temporada);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenericLib;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +14,7 @@ namespace VoleyPlaya.Management.Infraestructure.Repositories
 {
     public class PartidoRepository : RepositoryBase<Partido>, IPartidoRepository
     {
-        public PartidoRepository(VoleyPlayaManagementContext context) : base(context)
+        public PartidoRepository(GenericDbContext context) : base(context)
         {
         }
     }

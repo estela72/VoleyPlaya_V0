@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 
+using GenericLib;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +22,7 @@ using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Equipos.Commands.AddEquipo;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Controllers
@@ -31,7 +33,7 @@ namespace VoleyPlaya.Organization.Test.Controllers
 
         public EquiposControllerTest()
         {
-            Mock<UnitOfWork> unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            Mock<UnitOfWorkOrganization> unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -40,7 +42,7 @@ namespace VoleyPlaya.Organization.Test.Controllers
 
             IServiceCollection _services = new ServiceCollection();
             _services.AddSingleton(new ConfigurationBuilder().Build());
-            _services.AddScoped(x => (IUnitOfWork)unitOfWork.Object);
+            _services.AddScoped(x => (IUnitOfWorkOrganization)unitOfWork.Object);
             _services.AddScoped(x => unitOfWork.Object.EquipoRepository);
             _services.AddScoped(x => mapper);
             _services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("VoleyPlaya.Organization.Application")));

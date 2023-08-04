@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -17,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Equipos.Commands.AddEquip
 {
     public class AddEquipoCommandHandler : IRequestHandler<AddEquipoCommand, EquipoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public AddEquipoCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddEquipoCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Equipos.Commands.AddEquip
         {
             Equipo equipo = new Equipo() { Nombre = request.Nombre };
             if (await _unitOfWork.EquipoRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new VoleyPlayaDomainException("Ya existe un equipo con el nombre " + request.Nombre);
+                throw new GenericDomainException("Ya existe un equipo con el nombre " + request.Nombre);
 
             equipo = await _unitOfWork.EquipoRepository.AddAsync(equipo);
             return _mapper.Map<EquipoDto>(equipo);

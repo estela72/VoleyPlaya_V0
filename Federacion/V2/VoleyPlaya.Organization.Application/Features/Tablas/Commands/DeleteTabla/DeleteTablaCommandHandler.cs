@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -16,9 +18,9 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.DeleteTab
 {
     public class DeleteTablaCommandHandler : IRequestHandler<DeleteTablaCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public DeleteTablaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteTablaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,7 +29,7 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.DeleteTab
         {
             Tabla tabla = await _unitOfWork.TablaRepository.GetByIdAsync(request.Id);
             if (tabla == null)
-                throw new VoleyPlayaDomainException("La tabla no existe");
+                throw new GenericDomainException("La tabla no existe");
 
             return await _unitOfWork.TablaRepository.DeleteAsync(tabla);
         }

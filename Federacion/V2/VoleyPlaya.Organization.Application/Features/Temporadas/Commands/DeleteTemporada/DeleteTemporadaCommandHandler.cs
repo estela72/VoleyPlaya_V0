@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -16,9 +18,9 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.Delet
 {
     public class DeleteTemporadaCommandHandler : IRequestHandler<DeleteTemporadaCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public DeleteTemporadaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteTemporadaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,7 +29,7 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.Delet
         {
             Temporada temporada = await _unitOfWork.TemporadaRepository.GetByIdAsync(request.Id);
             if (temporada == null)
-                throw new VoleyPlayaDomainException("La temporada no existe");
+                throw new GenericDomainException("La temporada no existe");
 
             return await _unitOfWork.TemporadaRepository.DeleteAsync(temporada);
         }

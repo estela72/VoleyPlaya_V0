@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\VoleyPlaya.Management.Infraestructure\VoleyPlaya.Management.Infraestructure.csproj" />
   </ItemGroup>
 

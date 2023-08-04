@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -17,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.UpdateTab
 {
     public class UpdateTablaCommandHandler : IRequestHandler<UpdateTablaCommand, TablaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateTablaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateTablaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Tablas.Commands.UpdateTab
         {
             Tabla tabla = await _unitOfWork.TablaRepository.GetByIdAsync(request.Id);
             if (tabla == null)
-                throw new VoleyPlayaDomainException("La tabla no existe");
+                throw new GenericDomainException("La tabla no existe");
 
             tabla.Nombre = request.Nombre;
             tabla = await _unitOfWork.TablaRepository.UpdateAsync(tabla);

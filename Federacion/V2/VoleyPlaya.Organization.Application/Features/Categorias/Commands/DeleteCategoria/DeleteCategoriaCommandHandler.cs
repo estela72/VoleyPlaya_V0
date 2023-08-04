@@ -19,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.Delet
 {
     public class DeleteCategoriaCommandHandler : IRequestHandler<DeleteCategoriaCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public DeleteCategoriaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteCategoriaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -30,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.Delet
         {
             Categoria categoria = await _unitOfWork.CategoriaRepository.GetByIdAsync(request.Id);
             if (categoria == null)
-                throw new VoleyPlayaDomainException("La categoria no existe");
+                throw new GenericDomainException("La categoria no existe");
 
             return await _unitOfWork.CategoriaRepository.DeleteAsync(categoria);
         }

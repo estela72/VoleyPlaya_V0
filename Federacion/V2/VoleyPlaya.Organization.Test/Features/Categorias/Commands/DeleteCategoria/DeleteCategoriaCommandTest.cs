@@ -17,7 +17,7 @@ using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.AddCategoria;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.DeleteCategoria;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.DeleteCategoria
@@ -25,10 +25,10 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.DeleteCatego
     public class DeleteCategoriaCommandTest 
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public DeleteCategoriaCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -51,7 +51,7 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Commands.DeleteCatego
         {
             var handler = new DeleteCategoriaCommandHandler(_unitOfWork.Object, _mapper);
             var request = new DeleteCategoriaCommand(444);
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

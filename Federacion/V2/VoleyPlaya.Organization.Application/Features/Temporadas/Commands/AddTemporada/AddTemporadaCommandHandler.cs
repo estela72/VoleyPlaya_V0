@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -18,9 +20,9 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.AddTe
 {
     public class AddTemporadaCommandHandler : IRequestHandler<AddTemporadaCommand, TemporadaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public AddTemporadaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddTemporadaCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -29,7 +31,7 @@ namespace VoleyPlaya.Organization.Application.Features.Temporadas.Commands.AddTe
         {
             Temporada temporada = new Temporada() { Nombre = request.Nombre };
             if (await _unitOfWork.TemporadaRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new VoleyPlayaDomainException("Ya existe una temporada con el nombre " + request.Nombre);
+                throw new GenericDomainException("Ya existe una temporada con el nombre " + request.Nombre);
 
             temporada = await _unitOfWork.TemporadaRepository.AddAsync(temporada);
             return _mapper.Map<TemporadaDto>(temporada);

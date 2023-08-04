@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using GenericLib;
 
 using MediatR;
@@ -11,11 +12,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.UpdateCategoria;
 using VoleyPlaya.Organization.Application.Features.Competiciones.Commands.UpdateCompeticion;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.UpdateCompeticion
@@ -23,10 +25,10 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.UpdateCom
     public class UpdateCompeticionCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public UpdateCompeticionCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -55,7 +57,7 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.UpdateCom
             var request = new UpdateCompeticionCommand();
             request.Nombre = existente.Nombre + "_modificado";
             request.Id = 444;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

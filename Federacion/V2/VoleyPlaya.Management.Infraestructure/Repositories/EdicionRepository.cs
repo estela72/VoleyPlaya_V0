@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenericLib;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +14,7 @@ namespace VoleyPlaya.Management.Infraestructure.Repositories
 {
     public class EdicionRepository : RepositoryBase<Edicion>, IEdicionRepository
     {
-        public EdicionRepository(VoleyPlayaManagementContext context) : base(context)
+        public EdicionRepository(GenericDbContext context) : base(context)
         {
         }
     }

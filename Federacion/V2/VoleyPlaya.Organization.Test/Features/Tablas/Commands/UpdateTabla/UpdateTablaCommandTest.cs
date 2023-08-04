@@ -16,7 +16,7 @@ using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Competiciones.Commands.UpdateCompeticion;
 using VoleyPlaya.Organization.Application.Features.Tablas.Commands.UpdateTabla;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Tablas.Commands.UpdateTabla
@@ -24,10 +24,10 @@ namespace VoleyPlaya.Organization.Test.Features.Tablas.Commands.UpdateTabla
     public class UpdateTablaCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public UpdateTablaCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -56,7 +56,7 @@ namespace VoleyPlaya.Organization.Test.Features.Tablas.Commands.UpdateTabla
             var request = new UpdateTablaCommand();
             request.Nombre = existente.Nombre + "_modificado";
             request.Id = 444;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

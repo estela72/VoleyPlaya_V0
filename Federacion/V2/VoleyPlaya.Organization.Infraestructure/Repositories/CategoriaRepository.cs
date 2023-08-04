@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GenericLib;
+
+using Microsoft.EntityFrameworkCore;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +16,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
 {
     public class CategoriaRepository : RepositoryBase<Categoria>, ICategoriaRepository
     {
-        public CategoriaRepository(VoleyPlayaOrganizationContext context) : base(context)
+        public CategoriaRepository(GenericDbContext context) : base(context)
         {
         }
     }

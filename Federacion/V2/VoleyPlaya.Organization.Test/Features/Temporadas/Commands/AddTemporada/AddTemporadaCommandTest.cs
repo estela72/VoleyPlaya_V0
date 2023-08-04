@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Temporadas.Commands.AddTemporada;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Temporadas.Commands.AddTemporada
@@ -23,10 +23,10 @@ namespace VoleyPlaya.Organization.Test.Features.Temporadas.Commands.AddTemporada
     public class AddTemporadaCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public AddTemporadaCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -52,7 +52,7 @@ namespace VoleyPlaya.Organization.Test.Features.Temporadas.Commands.AddTemporada
             var handler = new AddTemporadaCommandHandler(_unitOfWork.Object, _mapper);
             var request = new AddTemporadaCommand();
             request.Nombre = existente.Nombre;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

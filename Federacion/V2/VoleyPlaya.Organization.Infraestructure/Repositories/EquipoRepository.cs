@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GenericLib;
+
+using Microsoft.EntityFrameworkCore;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +16,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Repositories
 {
     public class EquipoRepository : RepositoryBase<Equipo>, IEquipoRepository
     {
-        public EquipoRepository(VoleyPlayaOrganizationContext context) : base(context)
+        public EquipoRepository(GenericDbContext context) : base(context)
         {
         }
     }

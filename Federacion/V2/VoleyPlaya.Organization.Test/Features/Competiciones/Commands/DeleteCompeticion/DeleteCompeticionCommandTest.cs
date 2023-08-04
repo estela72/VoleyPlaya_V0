@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using GenericLib;
 
 using MediatR;
@@ -11,10 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using VoleyPlaya.Organization.Application.Contracts.Persistence;
 using VoleyPlaya.Organization.Application.Features.Categorias.Commands.DeleteCategoria;
 using VoleyPlaya.Organization.Application.Features.Competiciones.Commands.DeleteCompeticion;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.DeleteCompeticion
@@ -22,10 +24,10 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.DeleteCom
     public class DeleteCompeticionCommandTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public DeleteCompeticionCommandTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();
@@ -49,7 +51,7 @@ namespace VoleyPlaya.Organization.Test.Features.Competiciones.Commands.DeleteCom
             var handler = new DeleteCompeticionCommandHandler(_unitOfWork.Object, _mapper);
             var request = new DeleteCompeticionCommand(555);
             request.Id = 444;
-            await Assert.ThrowsAsync<VoleyPlayaDomainException>(async () => await handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsAsync<GenericDomainException>(async () => await handler.Handle(request, CancellationToken.None));
         }
     }
 }

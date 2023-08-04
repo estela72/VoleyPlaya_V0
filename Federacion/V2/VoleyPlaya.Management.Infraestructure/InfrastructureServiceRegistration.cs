@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GenericLib;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 using VoleyPlaya.Management.Application.Contracts.Persistence;
 using VoleyPlaya.Management.Infraestructure.Persistence;
 using VoleyPlaya.Management.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 
 namespace VoleyPlaya.Management.Infraestructure
 {
@@ -23,6 +26,7 @@ namespace VoleyPlaya.Management.Infraestructure
             );
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWorkManagement, UnitOfWorkManagement>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
 
             services.AddScoped<IEdicionGrupoRepository, EdicionGrupoRepository>();

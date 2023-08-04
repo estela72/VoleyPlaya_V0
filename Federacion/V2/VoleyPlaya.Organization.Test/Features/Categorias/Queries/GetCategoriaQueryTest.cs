@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+
+using GenericLib;
+
 using Moq;
 
 using System;
@@ -11,7 +14,7 @@ using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Application.Features.Categorias.Queries.GetCategoria;
 using VoleyPlaya.Organization.Application.Features.Categorias.Queries.GetCategorias;
 using VoleyPlaya.Organization.Application.Mappings;
-using VoleyPlaya.Organization.Infraestructure.Repositories;
+using VoleyPlaya.Organization.Infraestructure.Persistence;
 using VoleyPlaya.Organization.Test.Mocks;
 
 namespace VoleyPlaya.Organization.Test.Features.Categorias.Queries
@@ -19,10 +22,10 @@ namespace VoleyPlaya.Organization.Test.Features.Categorias.Queries
     public class GetCategoriaQueryTest 
     {
         private readonly IMapper _mapper;
-        private readonly Mock<UnitOfWork> _unitOfWork;
+        private readonly Mock<UnitOfWorkOrganization> _unitOfWork;
         public GetCategoriaQueryTest()
         {
-            _unitOfWork = new MockUnitOfWork().GetUnitOfWork();
+            _unitOfWork = MockUnitOfWork.GetUnitOfWork();
             var mapperConfig = new MapperConfiguration(c =>
             {
                 c.AddProfile<MappingProfile>();

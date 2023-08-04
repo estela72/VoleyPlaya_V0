@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using GenericLib;
+
 using MediatR;
 
 using System;
@@ -17,9 +19,9 @@ namespace VoleyPlaya.Organization.Application.Features.Equipos.Commands.UpdateEq
 {
     public class UpdateEquipoCommandHandler : IRequestHandler<UpdateEquipoCommand, EquipoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkOrganization _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateEquipoCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateEquipoCommandHandler(IUnitOfWorkOrganization unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace VoleyPlaya.Organization.Application.Features.Equipos.Commands.UpdateEq
         {
             Equipo equipo = await _unitOfWork.EquipoRepository.GetByIdAsync(request.Id);
             if (equipo == null)
-                throw new VoleyPlayaDomainException("La competición no existe");
+                throw new GenericDomainException("La competición no existe");
 
             equipo.Nombre = request.Nombre;
             equipo = await _unitOfWork.EquipoRepository.UpdateAsync(equipo);
