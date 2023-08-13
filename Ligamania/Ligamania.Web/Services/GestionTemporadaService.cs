@@ -28,6 +28,7 @@ namespace Ligamania.Web.Services
         Task<string> CrearJugadorTemporada(JugadorVM jugador);
         Task<string> HistorificarTemporadaById(int id);
         Task<string> CambiarJugadorTemporada(JugadorVM jugador);
+        Task<List<JugadorVM>> GetJugadoresPendientesBaja();
     }
     public class GestionTemporadaService : IGestionTemporadaService
     {
@@ -109,6 +110,12 @@ namespace Ligamania.Web.Services
         {
             var list = await _temporadaService.GetCompeticiones(idTemporada);
             return _mapper.Map<IEnumerable<CompeticionVM>>(list);
+        }
+
+        public async Task<List<JugadorVM>> GetJugadoresPendientesBaja()
+        {
+            var list = await _temporadaService.GetJugadoresPendientesBaja();
+            return _mapper.Map<List<JugadorVM>>(list);
         }
 
         public async Task<TemporadaVM> GetTemporadaById(int id)

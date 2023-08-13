@@ -42,6 +42,7 @@ namespace Ligamania.API.Lib.Services
         Task<IEnumerable<PremioDto>> GetPremiosTemporadaAsync(string temporada);
         Task<string> UpdatePremioTemporadaAsync(PremioDto premioDto);
         Task<string> RemovePremioTemporadaAsynd(int id);
+        Task<IEnumerable<Jugador>> GetJugadoresPendientesBaja();
     }
     internal class TemporadaService : ITemporadaService
     {
@@ -212,7 +213,7 @@ namespace Ligamania.API.Lib.Services
                 return "No hay temporada en curso";
 
             if (listJugadores.Count == 0)
-                return "No hay jugadores para dar de alta";
+                return "No hay jugadores para dar de alta o baja";
 
             // club y puesto al que queremos mover todos los jugadores de la lista dándolos de alta en la temporada actual
             // si ya existen en la temporada actual, se les activa únicamente
@@ -238,11 +239,23 @@ namespace Ligamania.API.Lib.Services
                     }
                     else
                     {
-                        alta = false;
-                        j.Activo = false;
-                        //if (j.Activo) await _ligamaniaUnitOfWork.JugadorRepository.Alta(jugadorDto);
-                        //else 
+                        var equiposConJugador = await _ligamaniaUnitOfWork.AlineacionRepository.GetEquiposConJugadorAlineado(j.Jugador_ID);
+                        if (!equiposConJugador.Any())
+                        {
+                            alta = false;
+                            j.Activo = false;
+                            jugadorDto.PendienteBaja = false;
                             await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                        }
+                        else
+                        {
+                            jugadorDto.PendienteBaja = true;
+                            var str = "El jugador no se puede dar de baja por estar alineado con los siguientes equipos: ";
+                            foreach (var equi in equiposConJugador)
+                                str += equi + "; ";
+                            await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+                            return str;
+                        }
                     }
                 }
                 if (!encontrado)
@@ -255,8 +268,22 @@ namespace Ligamania.API.Lib.Services
                     }
                     else
                     {
-                        alta = false;
-                        await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                        var equiposConJugador = await _ligamaniaUnitOfWork.AlineacionRepository.GetEquiposConJugadorAlineado(jugadorDto.Id);
+                        if (!equiposConJugador.Any())
+                        {
+                            alta = false;
+                            jugadorDto.PendienteBaja = false;
+                            await _ligamaniaUnitOfWork.JugadorRepository.Baja(jugadorDto);
+                        }
+                        else
+                        {
+                            jugadorDto.PendienteBaja = true;
+                            var str = "El jugador no se puede dar de baja por estar alineado con los siguientes equipos: ";
+                            foreach (var equi in equiposConJugador)
+                                str += equi + "; ";
+                            await _ligamaniaUnitOfWork.SaveEntitiesAsync();
+                            return str;
+                        }
                     }
                 }
             }
@@ -609,6 +636,12 @@ namespace Ligamania.API.Lib.Services
             if (await _ligamaniaUnitOfWork.SaveEntitiesAsync() > 0)
                 return "Premio eliminado";
             return "El premio no se pudo eliminar debido a algún error";
+        }
+
+        public async Task<IEnumerable<Jugador>> GetJugadoresPendientesBaja()
+        {
+            var list = await _ligamaniaUnitOfWork.JugadorRepository.FindAllAsync(j => j.PendienteBaja);
+            return _mapper.Map<IEnumerable<Jugador>>(list);
         }
     }
 }

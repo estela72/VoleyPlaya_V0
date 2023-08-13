@@ -43,6 +43,7 @@ namespace Ligamania.Web.Controllers
             JugadorListVM model = new();
             //asignar un club y puesto por defecto
             var clubs = await _temporadaService.GetAllClubs();
+            model.jugadoresPdtesBaja = await _temporadaService.GetJugadoresPendientesBaja();
             
             return View(model);
         }
@@ -254,6 +255,11 @@ namespace Ligamania.Web.Controllers
             }
             var result = new JsonResult(messageResult);
             return result;
+        }
+        [HttpPost]
+        public async Task<ActionResult> BajaJugador([FromBody] JugadorListVM jugador)
+        {
+            return View(typeof(Index));
         }
     }
 }

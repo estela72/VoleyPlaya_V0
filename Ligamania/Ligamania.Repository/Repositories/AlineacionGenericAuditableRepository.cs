@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Ligamania.Repository.Repositories
 {
-    public abstract class AlineacionRepository<T> : Repository<T>, IAlineacionRepository<T> where T : Entity
+    public abstract class AlineacionRepository<T> : BaseRepository<T>, IAlineacionRepository<T> where T : BaseEntity
     {
         public AlineacionRepository(LigamaniaDbContext context) : base(context)
         {

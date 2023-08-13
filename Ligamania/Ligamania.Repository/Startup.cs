@@ -77,6 +77,7 @@ namespace Ligamania.Repository
                     .AddScoped<ITemporadaContabilidadRepository, TemporadaContabilidadRepository>()
                     .AddScoped<ITemporadaPremiosRepository, TemporadaPremiosRepository>()
                     .AddScoped<ITemporadaPremiosPuestoRepository, TemporadaPremiosPuestoRepository>()
+                    .AddScoped<IAlineacionRepository, AlineacionRepository>()
                     ;
             
             // configure DI for UnitOfWork

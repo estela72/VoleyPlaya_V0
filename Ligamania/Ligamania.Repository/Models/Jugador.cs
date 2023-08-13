@@ -22,7 +22,7 @@ namespace Ligamania.Repository.Models
 
         //public string Nombre { get; set; }
         public bool Baja { get; set; }
-
+        public bool PendienteBaja { get; set; }
         public virtual ICollection<AlineacionDTO> Alineacion { get; set; }
         public virtual ICollection<AlineacionHistoricoDTO> AlineacionHistorica { get; set; }
         public virtual ICollection<AlineacionCambioDTO> AlineacionCambioJugador { get; set; }

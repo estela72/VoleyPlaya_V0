@@ -2,7 +2,7 @@
 
 namespace Ligamania.Repository.Models
 {
-    public interface IAuditableAlineacionEntity : IEntity
+    public interface IAuditableAlineacionEntity : IBaseEntity
     {
         int Temporada_ID { get; set; }
         int Competicion_ID { get; set; }
