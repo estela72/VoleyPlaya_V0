@@ -2,7 +2,7 @@
 
 namespace Ligamania.Repository.Models
 {
-    public partial class AlineacionHistoricoDTO : Entity, IAuditableAlineacionEntity
+    public partial class AlineacionHistoricoDTO : BaseEntity, IAuditableAlineacionEntity
     {
         public int Temporada_ID { get; set; }
         public int Competicion_ID { get; set; }

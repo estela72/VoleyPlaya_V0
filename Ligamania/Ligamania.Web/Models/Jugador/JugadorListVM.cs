@@ -9,7 +9,8 @@ namespace Ligamania.Web.Models.Jugador
     {
         public List<JugadorVM> jugadores { get; set; }
         public JugadorVM nuevoJugador { get; set; }
-
+        public List<JugadorVM> jugadoresPdtesBaja { get; set; }
+        public JugadorVM jugadorSelected { get; set; }
         public JugadorListVM() : base()
         {
             Inicializar();

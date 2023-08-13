@@ -33,6 +33,7 @@ namespace Ligamania.Repository
         ITemporadaContabilidadRepository TemporadaContabilidadRepository { get; }
         ITemporadaPremiosRepository TemporadaPremiosRepository { get; }
         ITemporadaPremiosPuestoRepository TemporadaPremiosPuestoRepository { get; }
+        IAlineacionRepository AlineacionRepository { get; }
     }
 
     public class LigamaniaUnitOfWork : UnitOfWork, ILigamaniaUnitOfWork
@@ -61,6 +62,8 @@ namespace Ligamania.Repository
         public ITemporadaPremiosRepository TemporadaPremiosRepository { get; private set; }
         public ITemporadaPremiosPuestoRepository TemporadaPremiosPuestoRepository { get; private set; }
 
+        public IAlineacionRepository AlineacionRepository { get; private set; }
+
         public LigamaniaUnitOfWork(IConfiguration configuration
             , LigamaniaDbContext context
             , ILoggerFactory loggerFactory
@@ -84,6 +87,7 @@ namespace Ligamania.Repository
             , ITemporadaContabilidadRepository temporadaContabilidadRepository
             , ITemporadaPremiosRepository temporadaPremiosRepository
             , ITemporadaPremiosPuestoRepository temporadaPremiosPuestoRepository
+            , IAlineacionRepository alineacionRepository
             )
             : base(configuration, context, loggerFactory)
         {
@@ -107,6 +111,7 @@ namespace Ligamania.Repository
             TemporadaContabilidadRepository = temporadaContabilidadRepository;
             TemporadaPremiosRepository = temporadaPremiosRepository;
             TemporadaPremiosPuestoRepository = temporadaPremiosPuestoRepository;
+            AlineacionRepository = alineacionRepository;
         }
     }
 }

@@ -15,23 +15,35 @@
 
 <div class="card p-2">
     <div class="card-header">
-        <input type="hidden" value="@ViewBag.Club" id="selClub" name="selClub" />
-        <input type="hidden" value="@ViewBag.Puesto" id="selPuesto" name="selPuesto" />
-
-        <h5>Seleccionar jugadores a cargar</h5>
-        <div class="row g-3">
-            <div class="col-auto">
-                <label class="visually-hidden">Club</label>
-                <select class="form-control" id="clubs" name="clubs"></select>
-            </div>
-            <div class="col-auto">
-                <label class="visually-hidden">Puesto</label>
-                <select class="form-control" id="puestos" name="puestos"></select>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary mb-3" id="selForm" name="selForm">Filtrar</button>
-            </div>
-        </div>
+            <input type="hidden" value="@ViewBag.Club" id="selClub" name="selClub" />
+            <input type="hidden" value="@ViewBag.Puesto" id="selPuesto" name="selPuesto" />
+            <div class="row g-3">
+                <div class="col">
+                    <h5>Seleccionar club y puesto para cargar los jugadores</h5>
+                    <div class="col-auto m-2">
+                        <label class="visually-hidden">Club</label>
+                        <select class="form-control" id="clubs" name="clubs"></select>
+                    </div>
+                    <div class="col-auto m-2">
+                        <label class="visually-hidden">Puesto</label>
+                        <select class="form-control" id="puestos" name="puestos"></select>
+                    </div>
+                    <div class="col-auto m-2">
+                        <button class="btn btn-primary mb-3" id="selForm" name="selForm">Filtrar</button>
+                    </div>
+                </div>
+@*                 <form method="post" action="BajaJugador" asp-controller="TemporadaActual">
+ *@                    <div class="col">
+                        <h5>Jugadores pendientes de baja.</h5>
+                        <div id="jugPendientes" class="m-2">
+                            @Html.ListBoxFor(m=>m.jugadorSelected, new SelectList(Model.jugadoresPdtesBaja, "Id", "Jugador"), htmlAttributes: new {@class="form-control"})
+                        </div>
+@*                         <div class="col-auto m-2">
+                            <button class="btn btn-primary mb-3" type="submit">Baja</button>
+                        </div>
+ *@                    </div>
+@*                 </form>
+ *@        </div>
         <p>Al mover jugadores que están de baja a la temporada actual, se les asignará el club y puesto seleccionado justo aquí arriba</p>
         <div class="spinner-border spinner-border-sm" role="status" id="spinner">
             <span class="visually-hidden">Cargando jugadores...</span>

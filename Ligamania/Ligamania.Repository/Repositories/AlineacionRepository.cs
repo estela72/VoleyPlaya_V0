@@ -83,5 +83,19 @@ namespace Ligamania.Repository.Repositories
                 .Include(h => h.Puesto);
             return await alineaciones.ToListAsync().ConfigureAwait(false);
         }
+
+        public async Task<List<string>> GetEquiposConJugadorAlineado(int jugadorId)
+        {
+            var equipos = new List<string>();
+
+            var encontrados = FindAllQueryable(a => a.Temporada.Actual && a.Jornada.Actual && a.Jugador_ID.Equals(jugadorId));
+            encontrados = encontrados.Include(a => a.Equipo).ThenInclude(e => e.Equipo);
+
+            if (encontrados.Any())
+            {
+                equipos = await encontrados.Select(a=>a.Equipo.Equipo.Nombre).ToListAsync();
+            }
+            return equipos;
+        }
     }
 }

@@ -1,7 +1,6 @@
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\bin\Release\net7.0\Ligamania.Generic.Lib.deps.json
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\bin\Release\net7.0\Ligamania.Generic.Lib.dll
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\bin\Release\net7.0\Ligamania.Generic.Lib.pdb
-D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\obj\Release\net7.0\Ligamania.Generic.Lib.csproj.AssemblyReference.cache
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\obj\Release\net7.0\Ligamania.Generic.Lib.GeneratedMSBuildEditorConfig.editorconfig
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\obj\Release\net7.0\Ligamania.Generic.Lib.AssemblyInfoInputs.cache
 D:\srcRepository\ProyectosEstela\Ligamania\Ligamania.Generic.Lib\obj\Release\net7.0\Ligamania.Generic.Lib.AssemblyInfo.cs

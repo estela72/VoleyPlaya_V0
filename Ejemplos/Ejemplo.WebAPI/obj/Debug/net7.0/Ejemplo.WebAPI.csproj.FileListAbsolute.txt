@@ -5,7 +5,6 @@ D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\bin\Debug\net7.0\Ejempl
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\bin\Debug\net7.0\Ejemplo.WebAPI.runtimeconfig.json
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\bin\Debug\net7.0\Ejemplo.WebAPI.dll
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\bin\Debug\net7.0\Ejemplo.WebAPI.pdb
-D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\obj\Debug\net7.0\Ejemplo.WebAPI.csproj.AssemblyReference.cache
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\obj\Debug\net7.0\Ejemplo.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\obj\Debug\net7.0\Ejemplo.WebAPI.AssemblyInfoInputs.cache
 D:\srcRepository\ProyectosEstela\Ejemplos\Ejemplo.WebAPI\obj\Debug\net7.0\Ejemplo.WebAPI.AssemblyInfo.cs

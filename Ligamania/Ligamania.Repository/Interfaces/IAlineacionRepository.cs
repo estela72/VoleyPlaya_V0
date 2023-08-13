@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ligamania.Repository.Interfaces
 {
-    public interface IAlineacionRepository : IRepository<AlineacionDTO>
+    public interface IAlineacionRepository : IBaseRepository<AlineacionDTO>
     {
         Task<ICollection<AlineacionDTO>> GetAlineaciones(TemporadaDTO temporada, TemporadaCompeticionDTO temporadaCompeticion, TemporadaCompeticionJornadaDTO jornada);
 
@@ -16,5 +16,6 @@ namespace Ligamania.Repository.Interfaces
         Task<ICollection<AlineacionDTO>> GetAlineaciones(TemporadaDTO temporada, TemporadaCompeticionDTO temporadaCompeticion, TemporadaCompeticionJornadaDTO jornada, List<string> equipos);
 
         Task<List<AlineacionDTO>> GetAllAlineacionesEquipo(int competicionId, string nombreEquipo);
+        Task<List<string>> GetEquiposConJugadorAlineado(int jugadorId);
     }
 }

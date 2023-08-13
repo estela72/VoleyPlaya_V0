@@ -4,7 +4,7 @@ using System;
 
 namespace Ligamania.Repository.Models
 {
-    public partial class AlineacionCambioDTO : Entity, IAuditableAlineacionEntity
+    public partial class AlineacionCambioDTO : BaseEntity, IAuditableAlineacionEntity
     {
         public int Temporada_ID { get; set; }
         public int Competicion_ID { get; set; }
