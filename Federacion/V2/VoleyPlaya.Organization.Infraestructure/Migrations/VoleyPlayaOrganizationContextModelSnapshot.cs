@@ -31,15 +31,18 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -49,8 +52,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Categorias");
                 });
@@ -64,15 +66,18 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -82,8 +87,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Competiciones");
                 });
@@ -103,6 +107,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -118,6 +123,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("OrdenCalendario")
@@ -142,6 +148,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -151,8 +158,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Equipos");
                 });
@@ -166,6 +172,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -183,6 +190,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("NumEquipos")
@@ -199,6 +207,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -208,8 +217,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Tablas");
                 });
@@ -226,15 +234,18 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -244,8 +255,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique()
-                        .HasFilter("[Nombre] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Temporadas");
                 });

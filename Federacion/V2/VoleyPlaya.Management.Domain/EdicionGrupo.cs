@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Domain;
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ public partial class EdicionGrupo : BaseDomain, IAggregateRoot
     }
     public string Tipo { get; set; } = null!;
 
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
 
     public ICollection<Partido> Partidos { get; set; } = new List<Partido>();
 

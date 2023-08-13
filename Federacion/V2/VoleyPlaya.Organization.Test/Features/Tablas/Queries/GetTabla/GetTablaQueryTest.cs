@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 
-using GenericLib;
-
 using MediatR;
 
 using Moq;

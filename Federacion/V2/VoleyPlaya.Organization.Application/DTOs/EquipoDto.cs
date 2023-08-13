@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoleyPlaya.Organization.Application.DTOs
-{
-    public record EquipoDto(int Id, string Nombre);
-}
+namespace VoleyPlaya.Organization.Application.DTOs;
+
+public record EquipoDto(int Id, string Nombre);

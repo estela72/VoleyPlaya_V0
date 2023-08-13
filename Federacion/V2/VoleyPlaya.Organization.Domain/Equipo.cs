@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Domain;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace VoleyPlaya.Organization.Domain;
 
 public partial class Equipo : BaseDomain, IAggregateRoot
 {
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
     public int? EdicionId { get; set; }
 
     public int? OrdenCalendario { get; set; }

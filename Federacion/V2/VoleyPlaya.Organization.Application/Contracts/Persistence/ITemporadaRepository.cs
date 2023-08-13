@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using VoleyPlaya.Organization.Domain;
-using GenericLib;
+using Common.Application.Contracts.Persistence;
 
 namespace VoleyPlaya.Organization.Application.Contracts.Persistence
 {

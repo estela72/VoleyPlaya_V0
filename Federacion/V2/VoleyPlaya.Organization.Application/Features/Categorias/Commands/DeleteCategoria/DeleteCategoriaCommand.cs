@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 using VoleyPlaya.Organization.Application.DTOs;
 
-namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.DeleteCategoria
-{
-    public class DeleteCategoriaCommand : IRequest<bool>
-    {
-        public DeleteCategoriaCommand(int id)
-        {
-            Id = id;
-        }
+namespace VoleyPlaya.Organization.Application.Features.Categorias.Commands.DeleteCategoria;
 
-        public int Id { get; set; }
+public class DeleteCategoriaCommand : IRequest<bool>
+{
+    public DeleteCategoriaCommand(int id)
+    {
+        Id = id;
     }
+
+    public int Id { get; set; }
 }

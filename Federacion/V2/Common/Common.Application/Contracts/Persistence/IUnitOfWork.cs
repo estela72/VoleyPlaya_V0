@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenericLib
+namespace Common.Application.Contracts.Persistence;
+
+public interface IUnitOfWork : IDisposable
 {
-    public interface IAggregateRoot
-    {
-    }
+    Task<int> Complete();
 }

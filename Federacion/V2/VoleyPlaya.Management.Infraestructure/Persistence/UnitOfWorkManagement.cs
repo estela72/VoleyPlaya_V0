@@ -1,4 +1,5 @@
-﻿using GenericLib;
+﻿
+using Common.Infraestructure.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 

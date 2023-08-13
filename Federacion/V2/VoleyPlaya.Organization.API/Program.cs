@@ -1,5 +1,8 @@
+using Common.Infraestructure;
+
 using Microsoft.EntityFrameworkCore;
 
+using System.Configuration;
 using System.Text.Json.Serialization;
 
 using VoleyPlaya.Organization.Application;
@@ -17,6 +20,7 @@ builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttri
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCommonInfrastructureServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 

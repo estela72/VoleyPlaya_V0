@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Domain;
 
 using System;
 using System.Collections.Generic;
@@ -21,5 +21,5 @@ public partial class Jornada : BaseDomain, IAggregateRoot
         set { _edicion = value; }
     }
 
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
 }

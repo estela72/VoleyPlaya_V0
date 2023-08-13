@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Domain;
 
 using System;
 using System.Collections.Generic;
