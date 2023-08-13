@@ -1,7 +1,5 @@
 ﻿using AutoFixture;
 
-using GenericLib;
-
 using Microsoft.EntityFrameworkCore;
 
 using Moq;
@@ -25,7 +23,7 @@ namespace VoleyPlaya.Organization.Test.Mocks
                 .UseInMemoryDatabase(databaseName: $"VoleyPlaya-{Guid.NewGuid()}")
                 //.UseSqlServer("Data Source =DESKTOP-D09LJDB\\MSSQLSERVER01; Initial Catalog = VoleyPlaya.Organization; Integrated Security = True; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False")
             .Options;
-            var _dataContextFake = new VoleyPlayaOrganizationContext(options);
+            var _dataContextFake = new VoleyPlayaOrganizationContext(options/*,null*/);
             _dataContextFake.Database.EnsureDeleted();
             AddDataCategoriaRepository(_dataContextFake);
             AddDataCompeticionRepository(_dataContextFake);

@@ -6,21 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenericLib
+namespace Common.Domain
 {
     public class BaseDomain
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
 
-        public string UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; } = string.Empty;
 
     }
 }

@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 using VoleyPlaya.Organization.Application.DTOs;
 using VoleyPlaya.Organization.Domain;
 
-namespace VoleyPlaya.Organization.Application.Mappings
+namespace VoleyPlaya.Organization.Application.Mappings;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<Categoria, CategoriaDto>();
-            CreateMap<Competicion, CompeticionDto>();
-            CreateMap<Equipo, EquipoDto>();
-            CreateMap<Tabla, TablaDto>();
-            CreateMap<Temporada, TemporadaDto>();
-        }
+        CreateMap<Categoria, CategoriaDto>();
+        CreateMap<Competicion, CompeticionDto>();
+        CreateMap<Equipo, EquipoDto>();
+        CreateMap<Tabla, TablaDto>();
+        CreateMap<Temporada, TemporadaDto>();
     }
 }

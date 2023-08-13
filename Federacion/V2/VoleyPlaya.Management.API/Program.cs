@@ -1,3 +1,5 @@
+using Common.Infraestructure;
+
 using Microsoft.EntityFrameworkCore;
 
 using System.Text.Json.Serialization;
@@ -17,6 +19,7 @@ builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttri
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCommonInfrastructureServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
@@ -30,7 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetService<VoleyPlayaManagementContext>()?.Database.Migrate();
+    scope.ServiceProvider.GetService<VoleyPlayaManagementContext>().Database.Migrate();
 }
 app.UseAuthorization();
 

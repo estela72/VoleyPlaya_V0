@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Application.Contracts.Persistence;
 
 using System;
 using System.Collections.Generic;

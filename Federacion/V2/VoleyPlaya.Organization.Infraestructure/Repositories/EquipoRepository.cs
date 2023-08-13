@@ -1,4 +1,5 @@
-﻿using GenericLib;
+﻿using Common.Infraestructure.Persistence;
+using Common.Infraestructure.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +16,8 @@ using VoleyPlaya.Organization.Infraestructure.Persistence;
 namespace VoleyPlaya.Organization.Infraestructure.Repositories
 {
     public class EquipoRepository : RepositoryBase<Equipo>, IEquipoRepository
-    {
-        public EquipoRepository(GenericDbContext context) : base(context)
+        {
+            public EquipoRepository(GenericDbContext context) : base(context)
         {
         }
     }

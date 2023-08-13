@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GenericLib\GenericLib.csproj" />
+    <ProjectReference Include="..\Common\Common.Application\Common.Application.csproj" />
     <ProjectReference Include="..\VoleyPlaya.Management.Domain\VoleyPlaya.Management.Domain.csproj" />
   </ItemGroup>
 

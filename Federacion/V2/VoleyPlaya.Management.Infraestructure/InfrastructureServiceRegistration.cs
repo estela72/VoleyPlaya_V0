@@ -1,5 +1,4 @@
-﻿using GenericLib;
-
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,10 +24,8 @@ namespace VoleyPlaya.Management.Infraestructure
                 options.UseSqlServer(configuration.GetConnectionString("Development"))
             );
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUnitOfWorkManagement, UnitOfWorkManagement>();
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
-
+            
             services.AddScoped<IEdicionGrupoRepository, EdicionGrupoRepository>();
             services.AddScoped<IEdicionRepository, EdicionRepository>();
             services.AddScoped<IJornadaRepository, JornadaRepository>();

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VoleyPlaya.Organization.Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Setup : Migration
+    public partial class StartUp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,11 +17,11 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,11 +34,11 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,11 +46,12 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Equipo",
+                name: "Equipos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EdicionId = table.Column<int>(type: "int", nullable: true),
                     OrdenCalendario = table.Column<int>(type: "int", nullable: true),
                     Jugados = table.Column<int>(type: "int", nullable: true),
@@ -60,18 +61,17 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     PuntosContra = table.Column<int>(type: "int", nullable: true),
                     Coeficiente = table.Column<double>(type: "float", nullable: true),
                     Puntos = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Retirado = table.Column<bool>(type: "bit", nullable: true),
                     OrdenEntrada = table.Column<int>(type: "int", nullable: true),
-                    ClasificacionFinal = table.Column<int>(type: "int", nullable: false)
+                    ClasificacionFinal = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equipo", x => x.Id);
+                    table.PrimaryKey("PK_Equipos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,18 +80,18 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NumEquipos = table.Column<int>(type: "int", nullable: false),
                     NumPartido = table.Column<int>(type: "int", nullable: false),
                     Ronda = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Equipo1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Equipo2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Jornada = table.Column<int>(type: "int", nullable: false),
-                    NumGrupos = table.Column<int>(type: "int", nullable: false)
+                    NumGrupos = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,12 +104,12 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Actual = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "(CONVERT([bit],(0)))")
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Actual = table.Column<bool>(type: "bit", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,32 +117,34 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categoria",
+                name: "IX_Categorias_Nombre",
                 table: "Categorias",
                 column: "Nombre",
-                unique: true,
-                filter: "([Nombre] IS NOT NULL)");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Competicion",
+                name: "IX_Competiciones_Nombre",
                 table: "Competiciones",
                 column: "Nombre",
-                unique: true,
-                filter: "([Nombre] IS NOT NULL)");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipo",
-                table: "Equipo",
-                columns: new[] { "EdicionId", "Nombre" },
-                unique: true,
-                filter: "([EdicionId] IS NOT NULL AND [Nombre] IS NOT NULL)");
+                name: "IX_Equipos_Nombre",
+                table: "Equipos",
+                column: "Nombre",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Temporada",
+                name: "IX_Tablas_Nombre",
+                table: "Tablas",
+                column: "Nombre",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Temporadas_Nombre",
                 table: "Temporadas",
                 column: "Nombre",
-                unique: true,
-                filter: "([Nombre] IS NOT NULL)");
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -155,7 +157,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                 name: "Competiciones");
 
             migrationBuilder.DropTable(
-                name: "Equipo");
+                name: "Equipos");
 
             migrationBuilder.DropTable(
                 name: "Tablas");

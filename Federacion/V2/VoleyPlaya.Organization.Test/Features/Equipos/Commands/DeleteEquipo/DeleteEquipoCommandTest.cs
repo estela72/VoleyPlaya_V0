@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-using GenericLib;
+using Common.Application.Exceptions;
 
 using MediatR;
 

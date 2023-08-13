@@ -12,15 +12,14 @@ using VoleyPlaya.Organization.Infraestructure.Persistence;
 namespace VoleyPlaya.Organization.Infraestructure.Migrations
 {
     [DbContext(typeof(VoleyPlayaOrganizationContext))]
-    [Migration("20230802084309_Setup")]
-    partial class Setup
+    [Migration("20230813142708_StartUp")]
+    partial class StartUp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -35,27 +34,28 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Nombre" }, "IX_Categoria")
-                        .IsUnique()
-                        .HasFilter("([Nombre] IS NOT NULL)");
+                    b.HasIndex("Nombre")
+                        .IsUnique();
 
                     b.ToTable("Categorias");
                 });
@@ -69,27 +69,28 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Nombre" }, "IX_Competicion")
-                        .IsUnique()
-                        .HasFilter("([Nombre] IS NOT NULL)");
+                    b.HasIndex("Nombre")
+                        .IsUnique();
 
                     b.ToTable("Competiciones");
                 });
@@ -109,11 +110,11 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("EdicionId")
                         .HasColumnType("int");
@@ -125,6 +126,7 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("OrdenCalendario")
@@ -149,19 +151,19 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "EdicionId", "Nombre" }, "IX_Equipo")
-                        .IsUnique()
-                        .HasFilter("([EdicionId] IS NOT NULL AND [Nombre] IS NOT NULL)");
+                    b.HasIndex("Nombre")
+                        .IsUnique();
 
-                    b.ToTable("Equipo");
+                    b.ToTable("Equipos");
                 });
 
             modelBuilder.Entity("VoleyPlaya.Organization.Domain.Tabla", b =>
@@ -173,11 +175,11 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Equipo1")
                         .IsRequired()
@@ -191,7 +193,8 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("NumEquipos")
                         .HasColumnType("int");
@@ -207,13 +210,17 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique();
 
                     b.ToTable("Tablas");
                 });
@@ -227,33 +234,31 @@ namespace VoleyPlaya.Organization.Infraestructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool?>("Actual")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("(CONVERT([bit],(0)))");
+                        .HasColumnType("bit");
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Nombre" }, "IX_Temporada")
-                        .IsUnique()
-                        .HasFilter("([Nombre] IS NOT NULL)");
+                    b.HasIndex("Nombre")
+                        .IsUnique();
 
                     b.ToTable("Temporadas");
                 });

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
-using GenericLib;
+using Common.Application.Contracts.Persistence;
+using Common.Application.Exceptions;
 
 using MediatR;
 

@@ -1,4 +1,4 @@
-﻿using GenericLib;
+﻿using Common.Domain;
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ public partial class Edicion : BaseDomain, IAggregateRoot
 
     public string? TipoCalendario { get; set; }
 
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
 
     public string? ModeloCompeticion { get; set; }
 

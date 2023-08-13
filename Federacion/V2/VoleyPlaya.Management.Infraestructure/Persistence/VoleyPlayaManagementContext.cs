@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
-using GenericLib;
+using Common.Infraestructure.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,8 +13,8 @@ namespace VoleyPlaya.Management.Infraestructure.Persistence;
 
 public partial class VoleyPlayaManagementContext : GenericDbContext
 {
-    public VoleyPlayaManagementContext(DbContextOptions<VoleyPlayaManagementContext> options)
-        : base(options)
+    public VoleyPlayaManagementContext(DbContextOptions<VoleyPlayaManagementContext> options/*,IIdentity identity*/)
+        : base(options/*,identity*/)
     {
     }
     public virtual DbSet<EdicionGrupo> EdicionGrupos { get; set; }

@@ -1,4 +1,8 @@
-﻿using GenericLib;
+﻿
+using Common.Infraestructure.Persistence;
+using Common.Infraestructure.Repositories;
+
+using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
