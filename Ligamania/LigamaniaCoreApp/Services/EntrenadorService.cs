@@ -254,17 +254,18 @@ namespace LigamaniaCoreApp.Services
                 string jCambio = LigamaniaConst.CadenaInicial; string pCambio = LigamaniaConst.CadenaInicial; string cCambio = LigamaniaConst.CadenaInicial; string aCambio = LigamaniaConst.CadenaInicial; int idCambio = -1;
                 jPrevia = previa.Jugador; pPrevia = previa.Puesto; cPrevia = previa.Club; aPrevia = previa.Alias; idPrevia = previa.Id;
                 var cambio = cambios.SingleOrDefault(c => c.JugadorCambio!=null && c.JugadorCambio.Equals(previa.Jugador));
+                bool pendBaja = false;
                 if (cambio==null)
                 {
-                    jCambio = jPrevia;pCambio = pPrevia;cCambio = cPrevia;aCambio = aPrevia;idCambio = -1;
+                    jCambio = jPrevia; pCambio = pPrevia; cCambio = cPrevia; aCambio = aPrevia; idCambio = -1; pendBaja = previa.PendienteBaja;
                 }
                 else
                 {
-                    jCambio = cambio.Jugador;pCambio = cambio.Puesto;cCambio = cambio.Club;aCambio = cambio.Alias;idCambio = cambio.Id;
+                    jCambio = cambio.Jugador;pCambio = cambio.Puesto;cCambio = cambio.Club;aCambio = cambio.Alias;idCambio = cambio.Id; pendBaja = cambio.PendienteBaja;
                 }
                 InfoAlineacion info = new InfoAlineacion();
-                info.JugadorPrevia = new AlineacionViewModel { Jugador = jPrevia, Puesto = pPrevia, Club = cPrevia, Alias = aPrevia, Id = idPrevia };
-                info.JugadorCambio = new AlineacionViewModel { Jugador = jCambio, Puesto = pCambio, Club = cCambio, Alias = aCambio, Id = idCambio };
+                info.JugadorPrevia = new AlineacionViewModel { Jugador = jPrevia, Puesto = pPrevia, Club = cPrevia, Alias = aPrevia, Id = idPrevia, PendienteBaja = pendBaja };
+                info.JugadorCambio = new AlineacionViewModel { Jugador = jCambio, Puesto = pCambio, Club = cCambio, Alias = aCambio, Id = idCambio, PendienteBaja = pendBaja };
                 lista.Add(info);
             }
             if (previas.Count < cambios.Count)

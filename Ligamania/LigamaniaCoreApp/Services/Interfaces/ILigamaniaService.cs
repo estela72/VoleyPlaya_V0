@@ -54,6 +54,7 @@ namespace LigamaniaCoreApp.Services
         Task<Tuple<string, string>> GetCompeticionLigaUsuario(string user);
         Task<ICollection<ClasificacionViewModel>> GetClasificacionesVuelta2();
         Task<TemporadaCompeticionDTO> GetCompeticionLigaActual();
+        Task<List<JugadorBajaViewModel>> GetJugadoresBaja();
         //Task<SelectList> GetAllPuestosPremios();
     }
 }

@@ -3,8 +3,8 @@
 @model LigamaniaCoreApp.Models.ManagerViewModels.TemporadaPartidoViewModel
 
 @{
-    var equipoA = Model.AlineacionEquipoA.OrderBy(a => a.OrdenPuesto).ToList();
-    var equipoB = Model.AlineacionEquipoB.OrderBy(a => a.OrdenPuesto).ToList();
+    var equipoA = Model.AlineacionEquipoA.OrderBy(a => a.OrdenPuesto).ThenBy(a => a.Jugador).ToList();
+    var equipoB = Model.AlineacionEquipoB.OrderBy(a => a.OrdenPuesto).ThenBy(a => a.Jugador).ToList();
 
     var editable = "false";
     var jornada = 0;

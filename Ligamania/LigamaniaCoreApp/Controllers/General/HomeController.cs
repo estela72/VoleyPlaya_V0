@@ -65,6 +65,12 @@ namespace LigamaniaCoreApp.Controllers
         }
 
         [HttpGet]
+        public async Task<PartialViewResult> JugadoresBajaGrid()
+        {
+            var jugadores = await _ligamaniaService.GetJugadoresBaja().ConfigureAwait(false);
+            return PartialView("_JugadoresBajaPartial", jugadores);
+        }
+        [HttpGet]
         public async Task<PartialViewResult> JugadoresEliminadosGrid()
         {
             var jugadores = await _ligamaniaService.GetJugadoresEliminados().ConfigureAwait(false);

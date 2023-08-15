@@ -665,10 +665,22 @@ namespace LigamaniaCoreApp.Services
             return reglamentos.ToList();
         }
 
-        //public Task<SelectList> GetAllPuestosPremios()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<List<JugadorBajaViewModel>> GetJugadoresBaja()
+        {
+            List<JugadorBajaViewModel> lista = new List<JugadorBajaViewModel>();
+            // si no hay temporada actual, no mostrar jugadores de baja
+            TemporadaDTO temporada = _temporadaRepository.GetActual();
+            if (temporada == null) return lista;
+
+            ICollection<TemporadaJugadorDTO> jugadores = await _temporadaJugadorRepository.GetJugadoresBaja().ConfigureAwait(false);
+
+            foreach (var jugador in jugadores)
+            {
+                JugadorBajaViewModel jugadorVM = _mapper.Map<JugadorBajaViewModel>(jugador);
+                lista.Add(jugadorVM);
+            }
+            return lista.OrderBy(j => j.Jugador).ToList();
+        }
     }
 }
 

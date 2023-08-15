@@ -32,5 +32,6 @@ namespace LigamaniaCoreApp.Models.ManagerViewModels
         public string JugadorCambio { get; set; }
         public string ClubCambioJugador { get { return ClubCambio + " - " + JugadorCambio; } }
         public string AliasCambioJugador { get { return AliasCambio + " - " + JugadorCambio; } }
+        public bool PendienteBaja { get; set; }
     }
 }

@@ -52,5 +52,12 @@ namespace LigamaniaCoreApp.Data.Repository.Ligamania.Model
         {
             return await FindAsync(tj => tj.Temporada_ID.Equals(temporada.Id) && tj.Jugador_ID.Equals(jugador.Id) && tj.Activo).ConfigureAwait(false);
         }
+
+        public async Task<ICollection<TemporadaJugadorDTO>> GetJugadoresBaja()
+        {
+            var lista = await FindAllIncludingAsync(tj => tj.Temporada.Actual && tj.Activo && tj.Jugador.PendienteBaja, tj => tj.Temporada, tj => tj.Jugador).ConfigureAwait(false);
+            lista = lista.GroupBy(tj => tj.Jugador_ID).Select(grp => grp.First()).ToList();
+            return lista;
+        }
     }
 }

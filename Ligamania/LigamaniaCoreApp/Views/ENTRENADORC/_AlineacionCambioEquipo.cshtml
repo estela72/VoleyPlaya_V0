@@ -111,7 +111,8 @@
                         @await Html.PartialAsync("_jugadorAlineacion", Model.Alineaciones.Medio1, viewData: new ViewDataDictionary(ViewData)
                         {   { "puesto", "Medio1" }, { "aliIni", Model.Alineaciones.AlineacionInicalActivo }, {"cambios",Model.Alineaciones.CambiosActivo }, {"lista",listaMedios1 },
                             { "listaEliminados",listaEliminados }, {"listaEliminadosJornada",listaEliminadosJornada }, {"maxcambiosfijos",Model.MaxCambiosFijosPosibles},
-                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
+                            { "numCambiosFijosRealizados",Model.Alineaciones.NumCambiosFijosRealizados}, {"numCambiosExtrasRealizados",Model.Alineaciones.NumCambiosExtrasRealizados }, 
+                            {"equipo", Model.Equipo }, {"competicion",Model.Competicion}, {"numJugadoresEliminadosJornada", numJugadoresEliminadosJornada}
                         })
                     </div>
                     <div class="col col-lg-3 col-md-3 col-sm-3"></div>
@@ -227,6 +228,9 @@
                         @Html.Label("labelText", "[Jugador Eliminado]", new { @style = "background-color:cyan;color:red" })
                     </li>
                     <li>
+                        @Html.Label("labelText", "[Jugador de Baja]", new { @style="background-color:white; color:red"})
+                    </li>
+                    <li>
                         @if (!Model.RepetirClub)
                         {
                             <h4 style="color:red;font-weight:bold;font-size:3rem">Recuerda que no se debe repetir jugadores del mismo club. ¡¡Modifica los jugadores de clubs REPETIDOS!!</h4>
@@ -253,6 +257,10 @@
                     <li>@Html.Label("labelText","[Cambios extraordinarios]", new { @style = "background-color:red;color:yellow" })</li>
                     <li>@Html.Label("labelText","[Cambios ordinarios para jugadores eliminados]", new { @style = "background-color:cyan;color:red" })</li>*@
                     <li>@Html.Label("labelText","[Cambio realizado]", new { @style = "background-color:yellow;color:blue" })</li>
+                    <li>
+                        @Html.Label("labelText", "[Jugador de Baja]", new { @style="background-color:white; color:red"})
+                    </li>
+
                     @*<li>@Html.Label("labelText","[Cambios ordinarios finalizados]", new { @style = "background-color:grey;color:white" })</li>*@
                     <li>
                         <a href='#' style="color:yellow">

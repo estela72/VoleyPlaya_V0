@@ -18,6 +18,11 @@ namespace LigamaniaCoreApp.AutomapperProfiles
             CreateMap<TemporadaJugadorDTO, JugadorEliminadoViewModel>()
                 .ForMember(dest => dest.Jugador, opt => opt.MapFrom(src => src.Jugador.Nombre))
                 .ForMember(dest => dest.JornadaEliminado, opt => opt.MapFrom(src => src.LastJornadaEliminacion.NumeroJornada));
+
+            CreateMap<TemporadaJugadorDTO, JugadorBajaViewModel>()
+                .ForMember(dest => dest.Jugador, opt => opt.MapFrom(src => src.Jugador.Nombre))
+                .ForMember(dest => dest.PendienteBaja, opt => opt.MapFrom(src => src.Jugador.PendienteBaja));
+
         }
     }
 }

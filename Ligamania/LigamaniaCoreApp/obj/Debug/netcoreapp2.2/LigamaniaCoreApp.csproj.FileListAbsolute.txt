@@ -312,3 +312,4 @@ D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\obj\Debug\netcoreapp
 D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\obj\Debug\netcoreapp2.2\LigamaniaCoreApp.pdb
 D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\obj\Debug\netcoreapp2.2\LigamaniaCoreApp.genruntimeconfig.cache
 D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\obj\Debug\netcoreapp2.2\LigamaniaCoreApp.csproj.CopyComplete
+D:\srcRepository\ProyectosEstela\Ligamania\LigamaniaCoreApp\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_JugadoresBajaPartial.cshtml.g.cs
