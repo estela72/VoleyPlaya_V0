@@ -71,6 +71,29 @@
         "build": {
           "buildTransitive/net6.0/System.Text.Json.targets": {}
         }
+      },
+      "Common.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Common.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.Domain.dll": {}
+        }
+      },
+      "VoleyPlaya.Management.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Common.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/VoleyPlaya.Management.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/VoleyPlaya.Management.Domain.dll": {}
+        }
       }
     }
   },
@@ -226,12 +249,23 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Common.Domain/1.0.0": {
+      "type": "project",
+      "path": "../../Common/Common.Domain/Common.Domain.csproj",
+      "msbuildProject": "../../Common/Common.Domain/Common.Domain.csproj"
+    },
+    "VoleyPlaya.Management.Domain/1.0.0": {
+      "type": "project",
+      "path": "../../Services/Management/VoleyPlaya.Management.Domain/VoleyPlaya.Management.Domain.csproj",
+      "msbuildProject": "../../Services/Management/VoleyPlaya.Management.Domain/VoleyPlaya.Management.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "Newtonsoft.Json >= 13.0.3",
-      "RestSharp >= 110.2.0"
+      "RestSharp >= 110.2.0",
+      "VoleyPlaya.Management.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -268,7 +302,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\srcRepository\\VoleyPlaya\\V2-2023\\Services\\Management\\VoleyPlaya.Management.Domain\\VoleyPlaya.Management.Domain.csproj": {
+              "projectPath": "D:\\srcRepository\\VoleyPlaya\\V2-2023\\Services\\Management\\VoleyPlaya.Management.Domain\\VoleyPlaya.Management.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

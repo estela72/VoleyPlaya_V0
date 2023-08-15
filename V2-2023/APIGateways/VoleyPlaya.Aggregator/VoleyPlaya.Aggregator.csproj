@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Model\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <ProjectReference Include="..\..\Services\Management\VoleyPlaya.Management.Domain\VoleyPlaya.Management.Domain.csproj" />
   </ItemGroup>
 
 </Project>
