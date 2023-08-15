@@ -10,10 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using VoleyPlaya.Management.Application.Contracts.Persistence;
-using VoleyPlaya.Management.Infraestructure.Persistence;
 using VoleyPlaya.Management.Infraestructure.Repositories;
 
-namespace VoleyPlaya.Organization.Infraestructure.Persistence
+namespace VoleyPlaya.Management.Infraestructure.Persistence
 {
     public class UnitOfWorkManagement : UnitOfWork, IUnitOfWorkManagement
     {

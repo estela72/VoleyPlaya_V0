@@ -28,9 +28,10 @@ namespace VoleyPlaya.Management.Application.Features.EdicionGrupos.Commands.AddE
         }
         public async Task<EdicionGrupoDto> Handle(AddEdicionGrupoCommand request, CancellationToken cancellationToken)
         {
-            EdicionGrupo edicionGrupo = new EdicionGrupo() { Nombre = request.Nombre };
-            if (await _unitOfWork.EdicionGrupoRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new GenericDomainException("Ya existe una edición con el nombre " + request.Nombre);
+            EdicionGrupo edicionGrupo = new EdicionGrupo() { Nombre = request.Nombre, Fase = request.Fase, EdicionId = request.EdicionId };
+
+            if (await _unitOfWork.EdicionGrupoRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre) && c.EdicionId.Equals(request.EdicionId)))
+                throw new GenericDomainException("Ya existe un grupo con el nombre " + request.Nombre+ " para la edición con id "+request.EdicionId);
 
             edicionGrupo = await _unitOfWork.EdicionGrupoRepository.AddAsync(edicionGrupo);
             return _mapper.Map<EdicionGrupoDto>(edicionGrupo);

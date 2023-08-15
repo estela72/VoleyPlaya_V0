@@ -13,7 +13,8 @@ namespace VoleyPlaya.Management.Application.Features.Jornadas.Commands.AddJornad
     public class AddJornadaCommand : IRequest<JornadaDto>
     {
         public string Nombre { get; set; } = string.Empty;
-        public string Genero { get; set; } = string.Empty;
-        public string Prueba { get; set; } = string.Empty;
+        public int Numero { get; set; }
+        public DateTime Fecha { get; set; }
+        public int EdicionId { get; set; }
     }
 }

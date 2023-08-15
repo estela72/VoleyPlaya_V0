@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoleyPlaya.Management.Application.DTOs
-{
-    public record EdicionDto(int Id, int TemporadaId, int CompeticionId, int CategoriaId, string Genero, string Prueba);
-}
+using VoleyPlaya.Management.Domain.Enums;
+
+namespace VoleyPlaya.Management.Application.DTOs;
+
+public record EdicionDto(int Id, string Nombre, string Prueba, Generos Genero, EstadosEdicion Estado, ModelosCompeticion? ModeloCompeticion,
+    int TemporadaId, int CompeticionId, int CategoriaId);
