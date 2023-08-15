@@ -29,9 +29,9 @@ namespace VoleyPlaya.Management.Application.Features.Jornadas.Commands.AddJornad
         }
         public async Task<JornadaDto> Handle(AddJornadaCommand request, CancellationToken cancellationToken)
         {
-            Jornada edicion = new Jornada() { Nombre = request.Nombre };
-            if (await _unitOfWork.JornadaRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new GenericDomainException("Ya existe una edición con el nombre " + request.Nombre);
+            Jornada edicion = new Jornada() { Nombre = request.Nombre, Numero = request.Numero, Fecha=request.Fecha, EdicionId=request.EdicionId };
+            if (await _unitOfWork.JornadaRepository.ExistsAsync(c => c.EdicionId.Equals(request.EdicionId) && c.Numero.Equals(request.Numero)))
+                throw new GenericDomainException("Ya existe la jornada " + request.Numero + " para la edición "+request.EdicionId);
 
             edicion = await _unitOfWork.JornadaRepository.AddAsync(edicion);
             return _mapper.Map<JornadaDto>(edicion);

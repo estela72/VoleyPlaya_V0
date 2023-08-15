@@ -27,9 +27,12 @@ namespace VoleyPlaya.Management.Application.Features.Ediciones.Commands.AddEdici
         }
         public async Task<EdicionDto> Handle(AddEdicionCommand request, CancellationToken cancellationToken)
         {
-            Edicion edicion = new Edicion() { Nombre = request.Nombre };
-            if (await _unitOfWork.EdicionRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre)))
-                throw new GenericDomainException("Ya existe una edición con el nombre " + request.Nombre);
+            Edicion edicion = new Edicion() { Nombre = request.Nombre, Genero=request.Genero, Prueba=request.Prueba, Estado=request.Estado, ModeloCompeticion = request.Modelo,
+                TemporadaId = request.TemporadaId, CompeticionId = request.CompeticionId, CategoriaId = request.CategoriaId};
+
+            if (await _unitOfWork.EdicionRepository.ExistsAsync(c => c.Nombre.Equals(request.Nombre) && c.Genero.Equals(request.Genero) && c.Prueba.Equals(request.Prueba) &&
+                c.TemporadaId.Equals(request.TemporadaId) && c.CompeticionId.Equals(request.CompeticionId) && c.CategoriaId.Equals(request.CategoriaId)))
+                throw new GenericDomainException("Ya existe la edición que está intentando crear: " + request.Nombre);
 
             edicion = await _unitOfWork.EdicionRepository.AddAsync(edicion);
             return _mapper.Map<EdicionDto>(edicion);

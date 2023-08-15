@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using VoleyPlaya.Management.Application.DTOs;
+using VoleyPlaya.Management.Application.Features.Partidos.Commands.UpdatePartido;
 using VoleyPlaya.Management.Domain;
 
 namespace VoleyPlaya.Management.Application.Mappings
@@ -20,6 +21,7 @@ namespace VoleyPlaya.Management.Application.Mappings
             CreateMap<Jornada, JornadaDto>();
             CreateMap<Parcial, ParcialDto>();
             CreateMap<Partido, PartidoDto>();
+            CreateMap<UpdatePartidoCommand, Partido>();
         }
     }
 }

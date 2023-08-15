@@ -8,9 +8,8 @@ namespace VoleyPlaya.Management.Domain;
 
 public partial class Jornada : BaseDomain, IAggregateRoot
 {
-
+    public string Nombre { get; set; } = string.Empty;
     public int Numero { get; set; }
-
     public DateTime Fecha { get; set; }
 
     public int EdicionId { get; set; }
@@ -20,6 +19,4 @@ public partial class Jornada : BaseDomain, IAggregateRoot
         get { return _edicion ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Edicion)); }
         set { _edicion = value; }
     }
-
-    public string Nombre { get; set; } = string.Empty;
 }

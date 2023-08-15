@@ -31,7 +31,7 @@ namespace VoleyPlaya.Management.Application.Features.Partidos.Commands.UpdatePar
             Partido partido = await _unitOfWork.PartidoRepository.GetByIdAsync(request.Id);
             if (partido == null)
                 throw new GenericDomainException("El partido no existe");
-
+            partido = _mapper.Map<Partido>(request);
             partido = await _unitOfWork.PartidoRepository.UpdateAsync(partido);
             return _mapper.Map<PartidoDto>(partido);
         }

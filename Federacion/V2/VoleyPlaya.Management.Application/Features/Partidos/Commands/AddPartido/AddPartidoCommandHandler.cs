@@ -28,9 +28,13 @@ namespace VoleyPlaya.Management.Application.Features.Partidos.Commands.AddPartid
         }
         public async Task<PartidoDto> Handle(AddPartidoCommand request, CancellationToken cancellationToken)
         {
-            Partido partido = new Partido() { Label = request.Nombre };
-            if (await _unitOfWork.PartidoRepository.ExistsAsync(c => c.Label.Equals(request.Nombre)))
-                throw new GenericDomainException("Ya existe un partido con el nombre " + request.Nombre);
+            Partido partido = new Partido() { Label = request.Label, ConResultado = request.ConResultado, FechaHora=request.FechaHora, NumPartido = request.NumPartido,
+                Pista = request.Pista, EdicionGrupoId = request.EdicionGrupoId.GetValueOrDefault(), EquipoLocalId = request.EquipoLocalId, JornadaId = request.JornadaId, 
+                NombreLocal = request.NombreLocal, NombreVisitante = request.NombreVisitante, ResultadoLocal = request.ResultadoLocal, ResultadoVisitante = request.ResultadoVisitante
+                , Ronda = request.Ronda, UserResultado = request.UserResultado, UserValidador = request.UserValidador, Validado = request.Validado};
+
+            if (await _unitOfWork.PartidoRepository.ExistsAsync(c => c.Label.Equals(request.Label)))
+                throw new GenericDomainException("Ya existe un partido con el nombre " + request.Label);
 
             partido = await _unitOfWork.PartidoRepository.AddAsync(partido);
             return _mapper.Map<PartidoDto>(partido);

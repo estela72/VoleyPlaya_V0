@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Application", "Feder
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infraestructure", "Federacion\V2\Common\Common.Infraestructure\Common.Infraestructure.csproj", "{C924FE2D-25D3-47C9-B4FF-76AFF56C4873}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoleyPlaya.Management.Test", "Federacion\V2\Tests\VoleyPlaya.Management.Test\VoleyPlaya.Management.Test.csproj", "{126BEDD9-C6F1-41AB-98F5-64666A8C691A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -285,6 +287,12 @@ Global
 		{C924FE2D-25D3-47C9-B4FF-76AFF56C4873}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C924FE2D-25D3-47C9-B4FF-76AFF56C4873}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{C924FE2D-25D3-47C9-B4FF-76AFF56C4873}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +342,7 @@ Global
 		{70661DD0-9BCC-4BD6-AFEB-F2F74115C668} = {FE872301-DCC9-4E03-A1E5-0381EDC47AE2}
 		{E8F98690-962B-445F-9527-EA2C2B46D843} = {FE872301-DCC9-4E03-A1E5-0381EDC47AE2}
 		{C924FE2D-25D3-47C9-B4FF-76AFF56C4873} = {FE872301-DCC9-4E03-A1E5-0381EDC47AE2}
+		{126BEDD9-C6F1-41AB-98F5-64666A8C691A} = {C1ED3FB4-342C-4465-9772-CFD275710E31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {540FF9B9-61AA-4A24-9683-26130E63A018}

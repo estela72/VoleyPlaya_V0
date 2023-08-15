@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using VoleyPlaya.Management.Application.Contracts.Persistence;
 using VoleyPlaya.Management.Infraestructure.Persistence;
 using VoleyPlaya.Management.Infraestructure.Repositories;
-using VoleyPlaya.Organization.Infraestructure.Persistence;
 
 namespace VoleyPlaya.Management.Infraestructure
 {
