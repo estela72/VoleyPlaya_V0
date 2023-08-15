@@ -1,0 +1,19 @@
+﻿@using LigamaniaCoreApp.Models.GlobalViewModels
+@model IEnumerable<JugadorBajaViewModel>
+@{
+    if (Model.Any())
+    {
+        <h4 class="text-center">Jugadores de baja alineados en algún equipo</h4>
+
+            @(Html
+                .Grid(Model)
+                .Build(columns =>
+                {
+                    columns.Add(model => model.Jugador).Titled("Jugador");
+                })
+                .Empty("No hay jugadores de baja alineados")
+                .Id("ajax-grid-jugbaja")
+                .Css("grid-jug-baja")
+        )
+     }
+}

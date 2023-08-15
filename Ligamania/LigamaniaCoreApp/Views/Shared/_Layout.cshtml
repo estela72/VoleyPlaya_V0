@@ -243,6 +243,9 @@
             <hr />
             @if (User.Identity.IsAuthenticated)
             {
+                <div id="grid-jugbaja" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
+                    @Html.AjaxGrid(Url.Action("JugadoresBajaGrid", "Home"), new { id = "ajax-grid-jugbaja" })
+                </div>
                 <div id="grid-jugeli" class="mvc-grid" data-name="" data-filter-mode="FilterRow" data-source-url="">
                     @Html.AjaxGrid(Url.Action("JugadoresEliminadosGrid", "Home"), new { id = "ajax-grid-jugeli" })
                 </div>

@@ -32,6 +32,7 @@
     var styleEliminadoJornada = "background-color:cyan;color:red";
     var styleCambiado = "background-color:yellow;color:black";
     var colorJugador = "color:yellow;";
+    var styleBaja = "background-color:white; color:red";
 
     bool esCambioNormal = true;
     if (Model != null && listaEliminadosJornada.Contains(Model.JugadorPrevia.Jugador)) { esCambioNormal = false; }
@@ -51,6 +52,8 @@
     if (Model != null && listaEliminadosJornada.Contains(Model.JugadorCambio.Jugador)) { styleCambio = styleEliminadoJornada; }
 
     var jugadorYaCambiado = (Model!=null) ? Model.JugadorCambio.AliasJugador : string.Empty;
+
+    if (Model != null && Model.JugadorCambio.PendienteBaja) { styleCambio = styleBaja; }
 
     //ViewBag.equipo = equipo;
 }

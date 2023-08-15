@@ -15,5 +15,6 @@ namespace LigamaniaCoreApp.Data.Repository.Ligamania.Interfaces
         Task<ICollection<TemporadaJugadorDTO>> GetJugadoresFromTemporada(int temporadaId);
         Task<ICollection<TemporadaJugadorDTO>> GetJugadoresPreEliminados();
         Task<TemporadaJugadorDTO> GetJugador(TemporadaDTO temporada, JugadorDTO jugador);
+        Task<ICollection<TemporadaJugadorDTO>> GetJugadoresBaja();
     }
 }

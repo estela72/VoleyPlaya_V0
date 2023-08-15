@@ -18,7 +18,9 @@ namespace LigamaniaCoreApp.AutomapperProfiles
                 .ForMember(dest => dest.Club, opt => opt.MapFrom(src => src.Club.Nombre))
                 .ForMember(dest => dest.Alias, opt => opt.MapFrom(src => src.Club.Alias))
                 .ForMember(dest => dest.Puesto, opt => opt.MapFrom(src => src.Puesto.Nombre))
-                .ForMember(dest => dest.OrdenPuesto, opt => opt.MapFrom(src => src.Puesto.Orden));
+                .ForMember(dest => dest.OrdenPuesto, opt => opt.MapFrom(src => src.Puesto.Orden))
+                .ForMember(dest => dest.PendienteBaja, opt => opt.MapFrom(src => src.Jugador.PendienteBaja))
+                ;
         }
     }
 }
